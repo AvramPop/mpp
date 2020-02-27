@@ -1,4 +1,3 @@
 package domain;
 
-public class LabProblem extends BaseEntity<Long> {
-}
+public class LabProblem extends BaseEntity<Long> {}

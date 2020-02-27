@@ -10,22 +10,23 @@ import java.util.stream.StreamSupport;
 
 public class LabProblemService {
 
-    Repository<Long, LabProblem> repository;
-    LabProblemService(Repository<Long,LabProblem> repository){
-        this.repository = repository;
-    }
+  Repository<Long, LabProblem> repository;
 
-    /**
-     * Adds a new entity to the repository, if it is correct
-     * @param labProblem
-     */
-    public void addLabProblem(LabProblem labProblem) throws ValidatorException
-    {
-        repository.save(labProblem);
-    }
+  LabProblemService(Repository<Long, LabProblem> repository) {
+    this.repository = repository;
+  }
 
-    public Set<LabProblem> getAllLabProblems() {
-        Iterable<LabProblem> problems  = repository.findAll();
-        return StreamSupport.stream(problems.spliterator(),false).collect(Collectors.toSet());
-    }
+  /**
+   * Adds a new entity to the repository, if it is correct
+   *
+   * @param labProblem
+   */
+  public void addLabProblem(LabProblem labProblem) throws ValidatorException {
+    repository.save(labProblem);
+  }
+
+  public Set<LabProblem> getAllLabProblems() {
+    Iterable<LabProblem> problems = repository.findAll();
+    return StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toSet());
+  }
 }

@@ -1,11 +1,9 @@
-package service.validators;
+package domain.validators;
 
 import domain.LabProblem;
 import domain.exceptions.ValidatorException;
 
 public class LabProblemValidator implements Validator<LabProblem> {
-    @Override
-    public void validate(LabProblem entity) throws ValidatorException {
-
-    }
+  @Override
+  public void validate(LabProblem entity) throws ValidatorException {}
 }
