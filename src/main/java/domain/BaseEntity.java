@@ -1,5 +1,10 @@
 package domain;
 
+/**
+ * A base class to be extended by any in domain, having only an id.
+ *
+ * @param <ID>  the type of the identifier
+ */
 public class BaseEntity<ID> {
   private ID id;
 

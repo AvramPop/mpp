@@ -1,5 +1,9 @@
 package domain.exceptions;
 
+/**
+ * RepositoryException wraps RuntimeException
+ * and is used for exceptions being thrown in the repository part of the application
+ */
 public class RepositoryException extends RuntimeException {
   public RepositoryException(String message) {
     super(message);

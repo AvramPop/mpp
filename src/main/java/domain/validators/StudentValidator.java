@@ -3,20 +3,30 @@ package domain.validators;
 import domain.Student;
 import domain.exceptions.ValidatorException;
 
+/**
+ * StudentValidator has it's sole purpose to check out whether
+ * an instance of Student complies to the requirements for
+ * such objects.
+ */
 public class StudentValidator implements Validator<Student> {
+
+  /**
+   * Checks whether the given Student instance is valid.
+   * @param entity the Student to be validated
+   * @throws ValidatorException if at least one of the criteria for creating the Student is violated
+   */
   @Override
   public void validate(Student entity) throws ValidatorException {
-    StringBuilder _error = new StringBuilder();
-    if (entity.getId() < 0) _error.append("Invalid id! ");
-    if (entity.getName().equals("")) _error.append("Invalid name! ");
-    if (entity.getGroup() < 0) _error.append("Invalid group id! ");
+    StringBuilder errorMessage = new StringBuilder();
+    if (entity.getId() < 0) errorMessage.append("Invalid id! ");
+    if (entity.getName().equals("")) errorMessage.append("Invalid name! ");
+    if (entity.getGroup() < 0) errorMessage.append("Invalid group id! ");
 
     char[] arrayOfSerial = entity.getSerialNumber().toCharArray();
 
     if (entity.getSerialNumber().chars().allMatch(Character::isDigit))
-      _error.append("Invalid serial number! ");
+      errorMessage.append("Invalid serial number! ");
 
-    if (_error.length() > 0) throw new ValidatorException(_error.toString());
-    return;
+    if (errorMessage.length() > 0) throw new ValidatorException(errorMessage.toString());
   }
 }

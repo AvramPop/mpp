@@ -3,8 +3,8 @@ package domain;
 import java.util.Objects;
 
 /**
- * Entity representing the student group must be positive name must not be empty serialNumber must
- * not be empty
+ * A student having group (positive integer), name (nonempty)
+ * and serialNumber (nonempty).
  */
 public class Student extends BaseEntity<Long> {
   private String serialNumber;
