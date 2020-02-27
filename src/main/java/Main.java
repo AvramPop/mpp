@@ -6,9 +6,27 @@
 //    filter entities based on various criteria
 //    reports: e.g. find the problem that was assigned most times
 
+import UI.Console;
+import domain.LabProblem;
+import domain.Student;
+import domain.validators.LabProblemValidator;
+import domain.validators.StudentValidator;
+import domain.validators.Validator;
+import repository.InMemoryRepository;
+import repository.Repository;
+import service.LabProblemService;
+import service.StudentService;
+
+
 public class Main {
   public static void main(String[] args) {
-    System.out.println("Hello world!");
-    System.out.println("hello");
+    Validator<Student> studentValidator = new StudentValidator();
+    Validator<LabProblem> labProblemValidator = new LabProblemValidator();
+    Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+    Repository<Long, LabProblem> labProblemRepository = new InMemoryRepository<>(labProblemValidator);
+    StudentService studentService = new StudentService(studentRepository);
+    LabProblemService labProblemService = new LabProblemService(labProblemRepository);
+    Console console = new Console(studentService,labProblemService);
+    console.run();
   }
 }

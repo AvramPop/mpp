@@ -24,7 +24,7 @@ public class StudentValidator implements Validator<Student> {
 
     char[] arrayOfSerial = entity.getSerialNumber().toCharArray();
 
-    if (entity.getSerialNumber().chars().allMatch(Character::isDigit))
+    if (!entity.getSerialNumber().chars().allMatch(Character::isLetterOrDigit) || entity.getSerialNumber().length() == 0)
       errorMessage.append("Invalid serial number! ");
 
     if (errorMessage.length() > 0) throw new ValidatorException(errorMessage.toString());
