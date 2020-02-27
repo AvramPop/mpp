@@ -9,21 +9,38 @@ import service.StudentService;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.Set;
 
 public class Console {
     StudentService studentController;
     LabProblemService lapProblemController;
+    HashMap<String, Runnable> dictionaryOfCommands;
+
     Console(StudentService studentController, LabProblemService lapProblemController)
     {
         this.studentController = studentController;
         this.lapProblemController = lapProblemController;
+        dictionaryOfCommands = new HashMap<>();
+        dictionaryOfCommands.put("add student", this::addStudent);
+        dictionaryOfCommands.put("printall student", this::addStudent);
     }
 
     public void run()
     {
         while (true)
         {
+            BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+            try{
+                String inputString = input.readLine();
+                dictionaryOfCommands.get(inputString).run();
+            }
+            catch (IOException ex)
+            {
+                System.out.println("Error with input!");
+            } catch (Exception e) {
+                System.out.println("Not existing command!");
+            }
 
         }
     }
