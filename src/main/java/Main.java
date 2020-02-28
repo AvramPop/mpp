@@ -17,16 +17,16 @@ import repository.Repository;
 import service.LabProblemService;
 import service.StudentService;
 
-
 public class Main {
   public static void main(String[] args) {
     Validator<Student> studentValidator = new StudentValidator();
     Validator<LabProblem> labProblemValidator = new LabProblemValidator();
     Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
-    Repository<Long, LabProblem> labProblemRepository = new InMemoryRepository<>(labProblemValidator);
+    Repository<Long, LabProblem> labProblemRepository =
+        new InMemoryRepository<>(labProblemValidator);
     StudentService studentService = new StudentService(studentRepository);
     LabProblemService labProblemService = new LabProblemService(labProblemRepository);
-    Console console = new Console(studentService,labProblemService);
+    Console console = new Console(studentService, labProblemService);
     console.run();
   }
 }

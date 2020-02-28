@@ -19,8 +19,8 @@ public class LabProblemService {
    * Adds a new entity to the repository, if it is correctly performed the
    *
    * @param labProblem the labProblem entity which is to be added to the repository
-   * @throws ValidatorException in the case that the labProblem entity is invalid, this is verified by
-   *     * the labProblem validator
+   * @throws ValidatorException in the case that the labProblem entity is invalid, this is verified
+   *     by * the labProblem validator
    */
   public void addLabProblem(LabProblem labProblem) throws ValidatorException {
     repository.save(labProblem);
@@ -28,6 +28,7 @@ public class LabProblemService {
 
   /**
    * Returns all the lab problems in the repository in a Set
+   *
    * @return a Set which stores all the lab problems
    */
   public Set<LabProblem> getAllLabProblems() {

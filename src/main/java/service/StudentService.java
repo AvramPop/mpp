@@ -10,8 +10,8 @@ import java.util.stream.StreamSupport;
 
 /**
  * @author Ravasz Tamas
- * The controller for the student entities, and for the functionalities which are
- * performed on these entities
+ * The controller for the student entities, and for the functionalities which
+ *     are performed on these entities
  */
 public class StudentService {
   private Repository<Long, Student> repository;
