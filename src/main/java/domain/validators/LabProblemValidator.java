@@ -18,7 +18,8 @@ public class LabProblemValidator implements Validator<LabProblem> {
   @Override
   public void validate(LabProblem entity) throws ValidatorException {
     StringBuilder errorMessage = new StringBuilder();
-    if (entity.getId() < 0) errorMessage.append("Invalid id! ");
+    if (entity.getId() == null) errorMessage.append("Id is null");
+    else if (entity.getId() < 0) errorMessage.append("Invalid id! ");
     if (entity.getProblemNumber() < 0) errorMessage.append("Invalid problem number! ");
     if (entity.getDescription().isEmpty()) errorMessage.append("Invalid description! ");
 

@@ -87,7 +87,7 @@ public class Console {
   }
 
   private LabProblem readLabProblem() {
-    System.out.println("Read lab problem {id,problem number, description}");
+    System.out.println("Read lab problem {id, problem number, description}");
     LabProblem newLabProblem = null;
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     try {
