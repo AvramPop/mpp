@@ -104,8 +104,11 @@ public class Console {
     LabProblem newLabProblem = null;
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     try {
+      System.out.println("Enter id: ");
       long id = Long.parseLong(input.readLine().strip());
+      System.out.println("Enter problem number: ");
       int problemNumber = Integer.parseInt(input.readLine().strip());
+      System.out.println("Enter description: ");
       String description = input.readLine().strip();
       newLabProblem = new LabProblem(problemNumber, description);
       newLabProblem.setId(id);
@@ -123,9 +126,13 @@ public class Console {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     Student newStudent = null;
     try {
+      System.out.println("Enter id: ");
       long id = Long.parseLong(input.readLine().strip());
+      System.out.println("Enter serial number: ");
       String serialNumber = input.readLine().strip();
+      System.out.println("Enter name: ");
       String name = input.readLine().strip();
+      System.out.println("Enter group: ");
       int group = Integer.parseInt(input.readLine().strip());
       newStudent = new Student(serialNumber, name, group);
       newStudent.setId(id);
