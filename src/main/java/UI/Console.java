@@ -13,6 +13,9 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Set;
 
+/**
+ * Console based user interface
+ */
 public class Console {
   private StudentService studentController;
   private LabProblemService lapProblemController;
@@ -22,13 +25,16 @@ public class Console {
     this.studentController = studentController;
     this.lapProblemController = lapProblemController;
     dictionaryOfCommands = new HashMap<>();
-    dictionaryOfCommands.put("add student", this::addStudent);
-    dictionaryOfCommands.put("print students", this::printStudents);
-    dictionaryOfCommands.put("add lab problem", this::addLabProblem);
+    dictionaryOfCommands.put("add student", this::addStudent);// I use lambda functions with a hash table to not to make if statements
+    dictionaryOfCommands.put("print students", this::printStudents);//if the thing fails it gets a null pointer exception
+    dictionaryOfCommands.put("add lab problem", this::addLabProblem);// which means not a valid command
     dictionaryOfCommands.put("print lab problems", this::printLabProblems);
     dictionaryOfCommands.put("exit", () -> System.exit(0));
   }
 
+  /**
+   * Main loop of the user interface
+   */
   public void run() {
     while (true) {
       BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -40,12 +46,16 @@ public class Console {
         System.out.println(ex.getMessage());
       } catch (IOException ex) {
         System.out.println("Error with input!");
-      } catch (Exception e) {
-        System.out.println("Not existing command!");
+      }
+      catch (NullPointerException ex){
+        System.out.println("Not a vaild comand");
       }
     }
   }
 
+  /**
+   * UI function for adding a student
+   */
   private void addStudent() {
     try {
       Student newStudent = readStudent();
@@ -60,32 +70,35 @@ public class Console {
       System.out.println(ex.getMessage());
     }
   }
-
+  /**
+   * UI function for adding a lab problem
+   */
   private void addLabProblem() {
-    try {
-      LabProblem newLabProblem = readLabProblem();
-      if (newLabProblem == null) {
-        System.out.println("Invalid input! ID must be positive number");
-        return;
-      }
-      lapProblemController.addLabProblem(newLabProblem);
-      System.out.println("Lab Problem added");
-    } catch (ValidatorException ex) {
-      // ex.printStackTrace();
-      System.out.println(ex.getMessage());
+    LabProblem newLabProblem = readLabProblem();
+    if (newLabProblem == null) {
+      System.out.println("Invalid input! ID must be positive number");
+      return;
     }
+    lapProblemController.addLabProblem(newLabProblem);
+    System.out.println("Lab Problem added");
   }
-
+  /**
+   * UI function for printing all students
+   */
   private void printStudents() {
     Set<Student> students = studentController.getAllStudents();
     students.forEach(System.out::println);
   }
-
+  /**
+   * UI function for printing all lab problems
+   */
   private void printLabProblems() {
     Set<LabProblem> students = lapProblemController.getAllLabProblems();
     students.forEach(System.out::println);
   }
-
+  /**
+   * UI function for reading a new lab problem from the user
+   */
   private LabProblem readLabProblem() {
     System.out.println("Read lab problem {id, problem number, description}");
     LabProblem newLabProblem = null;
@@ -101,7 +114,9 @@ public class Console {
     }
     return newLabProblem;
   }
-
+  /**
+   * UI function for reading a new student from the user
+   */
   private Student readStudent() {
     System.out.println("Read student {id,serialNumber, name, group}");
 

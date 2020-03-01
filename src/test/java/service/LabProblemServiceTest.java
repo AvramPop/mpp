@@ -46,30 +46,34 @@ class LabProblemServiceTest {
   }
 
   @Test
-  void addLabProblemSuccess() {
+  void Given_EmptyRepository_When_ValidLabProblemAdded_Then_AdditionWillSucceed() {
     labProblemService.addLabProblem(labProblem);
   }
 
   @Test
-  void addLabProblemFailWrongID() {
+  void Given_EmptyRepository_When_InvalidIdAttributeOfLabProblemEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     labProblem.setId(-1L);
     Assertions.assertThrows(ValidatorException.class,()->labProblemService.addLabProblem(labProblem));
   }
 
   @Test
-  void addLabProblemFailWrongProblemNumber() {
+  void Given_EmptyRepository_When_InvalidProblemNumberAttributeOfLabProblemEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     labProblem.setProblemNumber(-1);
     Assertions.assertThrows(ValidatorException.class,()->labProblemService.addLabProblem(labProblem));
 
   }
 
   @Test
-  void addLabProblemFailWrongDescription() {
+  void Given_EmptyRepository_When_InvalidDescriptionAttributeOfLabProblemEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     labProblem.setDescription("");
     Assertions.assertThrows(ValidatorException.class,()->labProblemService.addLabProblem(labProblem));
 
   }
 
   @Test
-  void getAllLabProblems() {}
+  void Given_LabProblemRepositoryWithOneEntity_When_ReadingAllLabProblemEntitiesFormRepository_Then_NumberOfEntitiesReturnedIsOne() {
+    labProblemService.addLabProblem(labProblem);
+    Assertions.assertEquals(labProblemService.getAllLabProblems().size(),1);
+
+  }
 }

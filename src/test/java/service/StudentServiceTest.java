@@ -44,37 +44,37 @@ class StudentServiceTest {
   }
 
   @Test
-  void addStudentSuccess() {
+  void Given_EmptyRepository_When_ValidStudentAdded_Then_AdditionWillSucceed() {
     studentService.addStudent(student);
   }
 
   @Test
-  void addStudentFailsInvalidID() {
+  void Given_EmptyRepository_When_InvalidIdAttributeOfStudentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     student.setId(-1L);
     Assertions.assertThrows(ValidatorException.class, ()->studentService.addStudent(student));
 
   }
   @Test
-  void addStudentFailsInvalidName() {
+  void Given_EmptyRepository_When_InvalidNameAttributeOfStudentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     student.setName("");
     Assertions.assertThrows(ValidatorException.class, ()->studentService.addStudent(student));
 
   }
   @Test
-  void addStudentFailsInvalidSerial() {
+  void Given_EmptyRepository_When_InvalidSerialNumberAttributeOfStudentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     student.setSerialNumber("ad s");
     Assertions.assertThrows(ValidatorException.class, ()->studentService.addStudent(student));
 
   }
   @Test
-  void addStudentFailsInvalidGroup() {
+  void Given_EmptyRepository_When_InvalidGroupIDAttributeOfStudentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     student.setGroup(-1);
     Assertions.assertThrows(ValidatorException.class, ()->studentService.addStudent(student));
 
   }
 
   @Test
-  void getAllStudents() {
+  void Given_StudentRepositoryWithOneEntity_When_ReadingAllStudentEntitiesFormRepository_Then_NumberOfEntitiesReturnedIsOne() {
     studentService.addStudent(student);
     Assertions.assertEquals(studentService.getAllStudents().size(),1);
   }
