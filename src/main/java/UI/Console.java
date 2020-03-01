@@ -41,7 +41,7 @@ public class Console {
       try {
         String inputString = input.readLine();
         dictionaryOfCommands.get(inputString).run();
-      } catch (RepositoryException | ValidatorException ex) {
+      } catch (ValidatorException ex) {
         ex.printStackTrace();
         System.out.println(ex.getMessage());
       } catch (IOException ex) {
