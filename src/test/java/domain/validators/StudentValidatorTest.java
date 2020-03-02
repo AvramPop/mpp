@@ -31,38 +31,65 @@ class StudentValidatorTest {
   }
 
   @Test
-  void whenIdNull_throwException() {
+  void Given_StudentValidator_When_ValidatingStudentWithNullId_Then_ThrowsValidatorException() {
     student.setId(null);
-    Assertions.assertThrows(ValidatorException.class, () -> {validator.validate(student);});
+    Assertions.assertThrows(
+        ValidatorException.class,
+        () -> {
+          validator.validate(student);
+        });
   }
 
   @Test
-  void whenSerialNumberNonAlphanumeric_throwException(){
+  void
+      Given_StudentValidator_When_ValidatingStudentWithInvalidSerialNumber_Then_ThrowsValidatorException() {
     student.setSerialNumber("!");
-    Assertions.assertThrows(ValidatorException.class, () -> {validator.validate(student);});
+    Assertions.assertThrows(
+        ValidatorException.class,
+        () -> {
+          validator.validate(student);
+        });
   }
 
   @Test
-  void whenSerialNumberEmpty_throwException(){
+  void
+      Given_StudentValidator_When_ValidatingStudentWithEmptySerialNumber_Then_ThrowsValidatorException() {
     student.setSerialNumber("");
-    Assertions.assertThrows(ValidatorException.class, () -> {validator.validate(student);});
+    Assertions.assertThrows(
+        ValidatorException.class,
+        () -> {
+          validator.validate(student);
+        });
   }
 
   @Test
-  void whenNameEmpty_throwException(){
+  void Given_StudentValidator_When_ValidatingStudentWithEmptyName_Then_ThrowsValidatorException() {
     student.setName("");
-    Assertions.assertThrows(ValidatorException.class, () -> {validator.validate(student);});
+    Assertions.assertThrows(
+        ValidatorException.class,
+        () -> {
+          validator.validate(student);
+        });
   }
 
   @Test
-  void whenGroupNegative_throwException(){
+  void
+      Given_StudentValidator_When_ValidatingStudentWithNegativeGroupNumber_Then_ThrowsValidatorException() {
     student.setGroup(-1);
-    Assertions.assertThrows(ValidatorException.class, () -> {validator.validate(student);});
+    Assertions.assertThrows(
+        ValidatorException.class,
+        () -> {
+          validator.validate(student);
+        });
   }
 
   @Test
-  void whenIdNegative_throwException(){
+  void Given_StudentValidator_When_ValidatingStudentWithNegativeId_Then_ThrowsValidatorException() {
     student.setId(-1L);
-    Assertions.assertThrows(ValidatorException.class, () -> {validator.validate(student);});
+    Assertions.assertThrows(
+        ValidatorException.class,
+        () -> {
+          validator.validate(student);
+        });
   }
 }

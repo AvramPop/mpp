@@ -11,8 +11,9 @@ import java.util.Optional;
 
 /**
  * Volatile generic data repository holding everything in memory.
- * @param <ID>  type of the id of given entity to store
- * @param <T>  type of entity to store
+ *
+ * @param <ID> type of the id of given entity to store
+ * @param <T> type of entity to store
  */
 public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Repository<ID, T> {
 
@@ -38,9 +39,7 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
     return Optional.ofNullable(entities.get(id));
   }
 
-  /**
-   * @return all entities
-   */
+  /** @return all entities */
   @Override
   public Iterable<T> findAll() {
     return new HashSet<>(entities.values());

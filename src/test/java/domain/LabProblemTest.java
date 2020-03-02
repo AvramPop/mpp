@@ -4,7 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LabProblemTest {
 
@@ -18,46 +18,46 @@ class LabProblemTest {
   private LabProblem labProblem;
 
   @BeforeEach
-  public void setUp() throws Exception {
+  void setUp() {
     labProblem = new LabProblem(PROBLEM_NUMBER, DESCRIPTION);
     labProblem.setId(ID);
   }
 
   @AfterEach
-  public void tearDown() throws Exception {
+  void tearDown() {
     labProblem = null;
   }
 
   @Test
-  public void testGetId() throws Exception {
+  void Given_ValidLabProblem_When_GettingId_Then_GetProperId() {
     assertEquals(ID, labProblem.getId(), "Ids should be equal");
   }
 
   @Test
-  public void testSetId() throws Exception {
+  void Given_ValidLabProblem_When_SettingId_Then_SetProperId() {
     labProblem.setId(NEW_ID);
     assertEquals(NEW_ID, labProblem.getId(), "Ids should be equal");
   }
 
   @Test
-  void getProblemNumber() {
+  void Given_ValidLabProblem_When_GettingProblemNumber_Then_GetProperProblemNumber() {
     assertEquals(PROBLEM_NUMBER, labProblem.getProblemNumber(), "Problem numbers should be equal");
   }
 
   @Test
-  void setProblemNumber() {
+  void Given_ValidLabProblem_When_SettingProblemNumber_Then_SetProperProblemNumber() {
     labProblem.setProblemNumber(NEW_PROBLEM_NUMBER);
-    assertEquals(NEW_PROBLEM_NUMBER, labProblem.getProblemNumber(), "Problem numbers should be equal");
-
+    assertEquals(
+        NEW_PROBLEM_NUMBER, labProblem.getProblemNumber(), "Problem numbers should be equal");
   }
 
   @Test
-  void getDescription() {
+  void Given_ValidLabProblem_When_GettingDescription_Then_GetProperDescription() {
     assertEquals(DESCRIPTION, labProblem.getDescription(), "Descriptions should be equal");
   }
 
   @Test
-  void setDescription() {
+  void Given_ValidLabProblem_When_SettingDescription_Then_SetProperDescription() {
     labProblem.setDescription(NEW_DESCRIPTION);
     assertEquals(NEW_DESCRIPTION, labProblem.getDescription(), "Descriptions should be equal");
   }

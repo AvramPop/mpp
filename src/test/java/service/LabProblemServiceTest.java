@@ -11,8 +11,6 @@ import org.junit.jupiter.api.Test;
 import repository.InMemoryRepository;
 import repository.Repository;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class LabProblemServiceTest {
   private static final Long ID = 1L;
   private static final Long NEW_ID = 2L;
@@ -24,16 +22,15 @@ class LabProblemServiceTest {
   private LabProblemService labProblemService;
   private Validator<LabProblem> labProblemValidator;
   private Repository<Long, LabProblem> labProblemRepository;
+
   @BeforeEach
   void setUp() {
 
-    labProblem = new LabProblem(PROBLEM_NUMBER,DESCRIPTION);
+    labProblem = new LabProblem(PROBLEM_NUMBER, DESCRIPTION);
     labProblem.setId(ID);
     labProblemValidator = new LabProblemValidator();
     labProblemRepository = new InMemoryRepository<>(labProblemValidator);
     labProblemService = new LabProblemService(labProblemRepository);
-
-
   }
 
   @AfterEach
@@ -51,29 +48,33 @@ class LabProblemServiceTest {
   }
 
   @Test
-  void Given_EmptyRepository_When_InvalidIdAttributeOfLabProblemEntity_Then_AdditionWillFailAndThrowsValidatorException() {
+  void
+      Given_EmptyRepository_When_InvalidIdAttributeOfLabProblemEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     labProblem.setId(-1L);
-    Assertions.assertThrows(ValidatorException.class,()->labProblemService.addLabProblem(labProblem));
+    Assertions.assertThrows(
+        ValidatorException.class, () -> labProblemService.addLabProblem(labProblem));
   }
 
   @Test
-  void Given_EmptyRepository_When_InvalidProblemNumberAttributeOfLabProblemEntity_Then_AdditionWillFailAndThrowsValidatorException() {
+  void
+      Given_EmptyRepository_When_InvalidProblemNumberAttributeOfLabProblemEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     labProblem.setProblemNumber(-1);
-    Assertions.assertThrows(ValidatorException.class,()->labProblemService.addLabProblem(labProblem));
-
+    Assertions.assertThrows(
+        ValidatorException.class, () -> labProblemService.addLabProblem(labProblem));
   }
 
   @Test
-  void Given_EmptyRepository_When_InvalidDescriptionAttributeOfLabProblemEntity_Then_AdditionWillFailAndThrowsValidatorException() {
+  void
+      Given_EmptyRepository_When_InvalidDescriptionAttributeOfLabProblemEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     labProblem.setDescription("");
-    Assertions.assertThrows(ValidatorException.class,()->labProblemService.addLabProblem(labProblem));
-
+    Assertions.assertThrows(
+        ValidatorException.class, () -> labProblemService.addLabProblem(labProblem));
   }
 
   @Test
-  void Given_LabProblemRepositoryWithOneEntity_When_ReadingAllLabProblemEntitiesFormRepository_Then_NumberOfEntitiesReturnedIsOne() {
+  void
+      Given_LabProblemRepositoryWithOneEntity_When_ReadingAllLabProblemEntitiesFormRepository_Then_NumberOfEntitiesReturnedIsOne() {
     labProblemService.addLabProblem(labProblem);
-    Assertions.assertEquals(labProblemService.getAllLabProblems().size(),1);
-
+    Assertions.assertEquals(labProblemService.getAllLabProblems().size(), 1);
   }
 }

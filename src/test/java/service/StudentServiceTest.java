@@ -11,8 +11,6 @@ import org.junit.jupiter.api.Test;
 import repository.InMemoryRepository;
 import repository.Repository;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class StudentServiceTest {
   private static final Long ID = 1L;
   private static final Long NEW_ID = 2L;
@@ -26,9 +24,10 @@ class StudentServiceTest {
   private StudentService studentService;
   private Repository<Long, Student> studentRepository;
   private Validator<Student> studentValidator;
+
   @BeforeEach
   void setUp() {
-    student = new Student(SERIAL_NUMBER,NAME,GROUP);
+    student = new Student(SERIAL_NUMBER, NAME, GROUP);
     student.setId(ID);
     studentValidator = new StudentValidator();
     studentRepository = new InMemoryRepository<>(studentValidator);
@@ -49,33 +48,37 @@ class StudentServiceTest {
   }
 
   @Test
-  void Given_EmptyRepository_When_InvalidIdAttributeOfStudentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
+  void
+      Given_EmptyRepository_When_InvalidIdAttributeOfStudentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     student.setId(-1L);
-    Assertions.assertThrows(ValidatorException.class, ()->studentService.addStudent(student));
-
+    Assertions.assertThrows(ValidatorException.class, () -> studentService.addStudent(student));
   }
+
   @Test
-  void Given_EmptyRepository_When_InvalidNameAttributeOfStudentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
+  void
+      Given_EmptyRepository_When_InvalidNameAttributeOfStudentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     student.setName("");
-    Assertions.assertThrows(ValidatorException.class, ()->studentService.addStudent(student));
-
+    Assertions.assertThrows(ValidatorException.class, () -> studentService.addStudent(student));
   }
+
   @Test
-  void Given_EmptyRepository_When_InvalidSerialNumberAttributeOfStudentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
+  void
+      Given_EmptyRepository_When_InvalidSerialNumberAttributeOfStudentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     student.setSerialNumber("ad s");
-    Assertions.assertThrows(ValidatorException.class, ()->studentService.addStudent(student));
-
+    Assertions.assertThrows(ValidatorException.class, () -> studentService.addStudent(student));
   }
+
   @Test
-  void Given_EmptyRepository_When_InvalidGroupIDAttributeOfStudentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
+  void
+      Given_EmptyRepository_When_InvalidGroupIDAttributeOfStudentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     student.setGroup(-1);
-    Assertions.assertThrows(ValidatorException.class, ()->studentService.addStudent(student));
-
+    Assertions.assertThrows(ValidatorException.class, () -> studentService.addStudent(student));
   }
 
   @Test
-  void Given_StudentRepositoryWithOneEntity_When_ReadingAllStudentEntitiesFormRepository_Then_NumberOfEntitiesReturnedIsOne() {
+  void
+      Given_StudentRepositoryWithOneEntity_When_ReadingAllStudentEntitiesFormRepository_Then_NumberOfEntitiesReturnedIsOne() {
     studentService.addStudent(student);
-    Assertions.assertEquals(studentService.getAllStudents().size(),1);
+    Assertions.assertEquals(studentService.getAllStudents().size(), 1);
   }
 }

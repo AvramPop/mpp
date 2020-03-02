@@ -31,26 +31,39 @@ class InMemoryRepositoryTest {
   }
 
   @Test
-  void findOne() {
-    Assertions.assertThrows(IllegalArgumentException.class, () -> repository.findOne(null));
-    Assertions.assertTrue(repository.findOne(1L).isPresent(), "member with id given found");
-    Assertions.assertFalse(repository.findOne(2L).isPresent(), "member with id given not found");
+  void
+      Given_StudentRepositoryWithOneEntity_When_FindingSerialNumberOfOneThatIsInRepository_Then_ReturnSoughtSerialNumber() {
     Assertions.assertEquals("sn1", repository.findOne(1L).get().getSerialNumber());
   }
 
   @Test
-  void findAll() {
+  void
+      Given_StudentRepositoryWithOneEntity_When_FindingOneThatIsNotInRepository_Then_ReturnFalse() {
+    Assertions.assertFalse(repository.findOne(2L).isPresent(), "member with id given not found");
+  }
+
+  @Test
+  void Given_StudentRepositoryWithOneEntity_When_FindingOneThatIsInRepository_Then_ReturnTrue() {
+    Assertions.assertTrue(repository.findOne(1L).isPresent(), "member with id given found");
+  }
+
+  @Test
+  void
+      Given_StudentRepositoryWithOneEntity_WhenFindOneWithNullId_Then_ThrowIllegalArgumentException() {
+    Assertions.assertThrows(IllegalArgumentException.class, () -> repository.findOne(null));
+  }
+
+  @Test
+  void
+      Given_StudentRepositoryWithOneEntity_When_FindingAllInRepository_Then_ReturnSetWithThatEntity() {
     Set<Student> students = new HashSet<>();
     students.add(student);
     Assertions.assertEquals(students, repository.findAll());
   }
 
   @Test
-  void save() {
-    Assertions.assertThrows(IllegalArgumentException.class, () -> repository.save(null));
-    Assertions.assertThrows(ValidatorException.class, () -> repository.save(new Student()));
-    repository.save(student);
-    Assertions.assertEquals(1, ((Set<Student>) repository.findAll()).size());
+  void
+      Given_StudentRepositoryWithOneEntity_When_SavingNewValidEntity_Then_NumberOfEntitiesInRepositoryIncrements() {
     Student student2 = new Student("sn2", "studentName2", 2);
     student2.setId(2L);
     repository.save(student2);
@@ -58,26 +71,85 @@ class InMemoryRepositoryTest {
   }
 
   @Test
-  void delete() {
-    Assertions.assertThrows(IllegalArgumentException.class, () -> repository.delete(null));
-    Assertions.assertTrue(repository.delete(1L).isPresent(), "member with id given deleted");
-    Assertions.assertFalse(repository.delete(2L).isPresent(), "member with id given not found");
+  void
+      Given_StudentRepositoryWithOneEntity_When_SavingEntityWithIdAlreadyInRepository_Then_SizeOfRepositoryRemainsOne() {
     repository.save(student);
-    Assertions.assertEquals("sn1", repository.delete(1L).get().getSerialNumber());
+    Assertions.assertEquals(1, ((Set<Student>) repository.findAll()).size());
+  }
+
+  @Test
+  void
+      Given_StudentRepositoryWithOneEntity_When_SavingInvalidEntity_Then_ThrowsValidatorException() {
+    Assertions.assertThrows(ValidatorException.class, () -> repository.save(new Student()));
+  }
+
+  @Test
+  void Given_StudentRepositoryWithOneEntity_When_SavingNull_Then_ThrowsIllegalArgumentException() {
+    Assertions.assertThrows(IllegalArgumentException.class, () -> repository.save(null));
+  }
+
+  @Test
+  void
+      Given_StudentRepositoryWithOneEntity_When_DeletingSingleEntityInRepository_Then_SizeOfRepositoryIsZero() {
+    repository.delete(1L);
     Assertions.assertEquals(0, ((Set<Student>) repository.findAll()).size());
   }
 
   @Test
-  void update() {
-    Assertions.assertThrows(IllegalArgumentException.class, () -> repository.update(null));
-    Assertions.assertThrows(ValidatorException.class, () -> repository.update(new Student()));
-    Student updatedStudent = new Student("sn1", "updatedStudentName", 1);
-    updatedStudent.setId(1L);
+  void
+      Given_StudentRepositoryWithOneEntity_When_DeletingEntityInRepository_Then_ReturnRightDataAboutTheDeletedEntity() {
+    Assertions.assertEquals("sn1", repository.delete(1L).get().getSerialNumber());
+  }
+
+  @Test
+  void Given_StudentRepositoryWithOneEntity_When_DeletingEntityNotInRepository_Then_ReturnFalse() {
+    Assertions.assertFalse(repository.delete(2L).isPresent(), "member with id given not found");
+  }
+
+  @Test
+  void Given_StudentRepositoryWithOneEntity_When_DeletingEntityInRepository_Then_ReturnTrue() {
+    Assertions.assertTrue(repository.delete(1L).isPresent(), "member with id given deleted");
+  }
+
+  @Test
+  void
+      Given_StudentRepositoryWithOneEntity_When_DeletingWithNullId_Then_ThrowsIllegalArgumentException() {
+    Assertions.assertThrows(IllegalArgumentException.class, () -> repository.delete(null));
+  }
+
+  @Test
+  void
+      Given_StudentRepositoryWithOneEntity_When_UpdatingEntityNotInRepository_Then_ReturnNullNotUpdatingAnything() {
     Student updatedStudent2 = new Student("sn2", "updatedStudentName2", 2);
     updatedStudent2.setId(2L);
-    Assertions.assertTrue(repository.update(updatedStudent).isPresent());
-    Assertions.assertEquals("updatedStudentName", repository.findOne(1L).get().getName());
     Assertions.assertFalse(repository.update(updatedStudent2).isPresent());
+  }
 
+  @Test
+  void Given_StudentRepositoryWithOneEntity_When_UpdatingEntityInRepository_Then_UpdateEntity() {
+    Student updatedStudent = new Student("sn1", "updatedStudentName", 1);
+    updatedStudent.setId(1L);
+    repository.update(updatedStudent);
+    Assertions.assertEquals("updatedStudentName", repository.findOne(1L).get().getName());
+  }
+
+  @Test
+  void
+      Given_StudentRepositoryWithOneEntity_When_UpdatingEntityInRepository_Then_ReturnOptionalWithValueInside() {
+    Student updatedStudent = new Student("sn1", "updatedStudentName", 1);
+    updatedStudent.setId(1L);
+    Assertions.assertTrue(repository.update(updatedStudent).isPresent());
+  }
+
+  @Test
+  void
+      Given_StudentRepositoryWithOneEntity_When_UpdatingInvalidEntity_Then_ThrowsValidatorException() {
+    Assertions.assertThrows(ValidatorException.class, () -> repository.update(new Student()));
+  }
+
+  @Test
+  void
+      Given_StudentRepositoryWithOneEntity_When_UpdatingWithNullId_Then_ThrowsIllegalArgumentException() {
+    Assertions.assertThrows(IllegalArgumentException.class, () -> repository.update(null));
   }
 }

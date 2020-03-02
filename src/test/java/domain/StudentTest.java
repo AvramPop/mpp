@@ -20,56 +20,56 @@ class StudentTest {
   private Student student;
 
   @BeforeEach
-  public void setUp() throws Exception {
+  void setUp() {
     student = new Student(SERIAL_NUMBER, NAME, GROUP);
     student.setId(ID);
   }
 
   @AfterEach
-  public void tearDown() throws Exception {
+  void tearDown() {
     student = null;
   }
 
   @Test
-  public void testGetSerialNumber() throws Exception {
+  void Given_ValidStudent_When_GettingSerialNumber_Then_GetProperSerialNumber() {
     assertEquals(SERIAL_NUMBER, student.getSerialNumber(), "Serial numbers should be equal");
   }
 
   @Test
-  public void testSetSerialNumber() throws Exception {
+  void Given_ValidStudent_When_SettingSerialNumber_Then_SetProperSerialNumber() {
     student.setSerialNumber(NEW_SERIAL_NUMBER);
     assertEquals(NEW_SERIAL_NUMBER, student.getSerialNumber(), "Serial numbers should be equal");
   }
 
   @Test
-  public void testGetId() throws Exception {
+  void Given_ValidStudent_When_GettingId_Then_GetProperId() {
     assertEquals(ID, student.getId(), "Ids should be equal");
   }
 
   @Test
-  public void testSetId() throws Exception {
+  void Given_ValidStudent_When_SettingId_Then_SetProperId() {
     student.setId(NEW_ID);
     assertEquals(NEW_ID, student.getId(), "Ids should be equal");
   }
 
   @Test
-  public void testGetName() throws Exception {
+  void Given_ValidStudent_When_GettingName_Then_GetProperName() {
     assertEquals(NAME, student.getName(), "Names should be equal");
   }
 
   @Test
-  public void testSetName() throws Exception {
+  void Given_ValidStudent_When_SettingName_Then_SetProperName() {
     student.setName(NEW_NAME);
     assertEquals(NEW_NAME, student.getName(), "Names should be equal");
   }
 
   @Test
-  public void testGetGroup() throws Exception {
+  void Given_ValidStudent_When_GettingGroup_Then_GetProperGroup() {
     assertEquals(GROUP, student.getGroup(), "Groups should be equal");
   }
 
   @Test
-  public void testSetGroup() throws Exception {
+  void Given_ValidStudent_When_SettingGroup_Then_SetProperGroup() {
     student.setGroup(NEW_GROUP);
     assertEquals(NEW_GROUP, student.getGroup(), "Groups should be equal");
   }

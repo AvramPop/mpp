@@ -2,10 +2,7 @@ package domain;
 
 import java.util.Objects;
 
-/**
- * A student having group (positive integer), name (nonempty)
- * and serialNumber (nonempty).
- */
+/** A student having group (positive integer), name (nonempty) and serialNumber (nonempty). */
 public class Student extends BaseEntity<Long> {
   private String serialNumber;
   private String name;

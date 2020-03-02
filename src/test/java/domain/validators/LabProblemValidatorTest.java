@@ -30,28 +30,46 @@ class LabProblemValidatorTest {
   }
 
   @Test
-  void whenIdNull_throwException() {
+  void
+      Given_LabProblemValidator_When_ValidatingLabProblemWithNullId_Then_ThrowsValidatorException() {
     labProblem.setId(null);
-    Assertions.assertThrows(ValidatorException.class, () -> {validator.validate(labProblem);});
+    Assertions.assertThrows(
+        ValidatorException.class,
+        () -> {
+          validator.validate(labProblem);
+        });
   }
 
   @Test
-  void whenIdNegative_throwException(){
+  void
+      Given_LabProblemValidator_When_ValidatingLabProblemWithNegativeId_Then_ThrowsValidatorException() {
     labProblem.setId(-1L);
-    Assertions.assertThrows(ValidatorException.class, () -> {validator.validate(labProblem);});
+    Assertions.assertThrows(
+        ValidatorException.class,
+        () -> {
+          validator.validate(labProblem);
+        });
   }
 
   @Test
-  void whenDescriptionEmpty_throwException() {
+  void
+      Given_LabProblemValidator_When_ValidatingLabProblemWithEmptyDescription_Then_ThrowsValidatorException() {
     labProblem.setDescription("");
-    Assertions.assertThrows(ValidatorException.class, () -> {validator.validate(labProblem);});
+    Assertions.assertThrows(
+        ValidatorException.class,
+        () -> {
+          validator.validate(labProblem);
+        });
   }
 
   @Test
-  void whenLabProblemNumberIsNegative_throwException() {
+  void
+      Given_LabProblemValidator_When_ValidatingLabProblemWithNegativeProblemNumber_Then_ThrowsValidatorException() {
     labProblem.setProblemNumber(-1);
-    Assertions.assertThrows(ValidatorException.class, () -> {validator.validate(labProblem);});
+    Assertions.assertThrows(
+        ValidatorException.class,
+        () -> {
+          validator.validate(labProblem);
+        });
   }
-
-
 }

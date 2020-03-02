@@ -9,8 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
- * @author Ravasz Tamas
- * The controller for the student entities, and for the functionalities which
+ * @author Ravasz Tamas The controller for the student entities, and for the functionalities which
  *     are performed on these entities
  */
 public class StudentService {
