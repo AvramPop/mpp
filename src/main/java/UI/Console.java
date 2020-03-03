@@ -58,11 +58,11 @@ public class Console {
    */
   private void printMenu(){
     System.out.println("Menu options:");
-    System.out.println("1. Add student");
-    System.out.println("2. Print students");
-    System.out.println("3. Add lab problem");
-    System.out.println("4. Print lab problems");
-    System.out.println("5. exit");
+    System.out.println("- add student");
+    System.out.println("- print students");
+    System.out.println("- add lab problem");
+    System.out.println("- print lab problems");
+    System.out.println("- exit");
   }
 
   /** UI method for adding a student */
