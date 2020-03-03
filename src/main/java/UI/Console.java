@@ -115,7 +115,7 @@ public class Console {
       newLabProblem = new LabProblem(problemNumber, description);
       newLabProblem.setId(id);
     } catch (IOException | NumberFormatException ex) {
-      // ex.printStackTrace();
+      System.out.println("Invalid input!");
     }
     return newLabProblem;
   }
@@ -137,7 +137,7 @@ public class Console {
       newStudent = new Student(serialNumber, name, group);
       newStudent.setId(id);
     } catch (IOException | NumberFormatException ex) {
-      // ex.printStackTrace();
+      System.out.println("Invalid input!");
     }
     return newStudent;
   }
