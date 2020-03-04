@@ -3,7 +3,7 @@ package domain;
 import java.util.Objects;
 
 /** A student having group (positive integer), name (nonempty) and serialNumber (nonempty). */
-public class Student extends BaseEntity<Long> {
+public class Student extends BaseEntity<Long> implements SerializableToFile<Student>{
   private String serialNumber;
   private String name;
   private int group;
@@ -72,5 +72,15 @@ public class Student extends BaseEntity<Long> {
   @Override
   public int hashCode() {
     return Objects.hash(serialNumber, name, group);
+  }
+
+  @Override
+  public Student objectFromFileLine(String fileLine, String delimiter){
+    return null;
+  }
+
+  @Override
+  public String objectToFileLine(String delimiter){
+    return null;
   }
 }

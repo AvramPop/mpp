@@ -3,7 +3,7 @@ package domain;
 import java.util.Objects;
 
 /** A LabProblem having a number (positive integer) and a description (nonempty). */
-public class LabProblem extends BaseEntity<Long> {
+public class LabProblem extends BaseEntity<Long> implements SerializableToFile<LabProblem> {
   private int problemNumber;
   private String description;
 
@@ -50,5 +50,15 @@ public class LabProblem extends BaseEntity<Long> {
   @Override
   public int hashCode() {
     return Objects.hash(problemNumber, description);
+  }
+
+  @Override
+  public LabProblem objectFromFileLine(String fileLine, String delimiter){
+    return null;
+  }
+
+  @Override
+  public String objectToFileLine(String delimiter){
+    return null;
   }
 }

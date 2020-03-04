@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 class InMemoryRepositoryTest {
@@ -119,10 +120,12 @@ class InMemoryRepositoryTest {
 
   @Test
   void
-      Given_StudentRepositoryWithOneEntity_When_UpdatingEntityNotInRepository_Then_ReturnNullNotUpdatingAnything() {
+      Given_StudentRepositoryWithOneEntity_When_UpdatingEntityNotInRepository_Then_ReturnOptionalWithEntity() {
     Student updatedStudent2 = new Student("sn2", "updatedStudentName2", 2);
     updatedStudent2.setId(2L);
-    Assertions.assertFalse(repository.update(updatedStudent2).isPresent());
+    Optional<Student> updateResult = repository.update(updatedStudent2);
+    Assertions.assertTrue(updateResult.isPresent());
+    Assertions.assertEquals(updatedStudent2, updateResult.get());
   }
 
   @Test
@@ -135,10 +138,10 @@ class InMemoryRepositoryTest {
 
   @Test
   void
-      Given_StudentRepositoryWithOneEntity_When_UpdatingEntityInRepository_Then_ReturnOptionalWithValueInside() {
+      Given_StudentRepositoryWithOneEntity_When_UpdatingEntityInRepository_Then_ReturnOptionalWithNoValue() {
     Student updatedStudent = new Student("sn1", "updatedStudentName", 1);
     updatedStudent.setId(1L);
-    Assertions.assertTrue(repository.update(updatedStudent).isPresent());
+    Assertions.assertFalse(repository.update(updatedStudent).isPresent());
   }
 
   @Test
