@@ -3,9 +3,16 @@ package domain;
 import java.util.Objects;
 
 /** A LabProblem having a number (positive integer) and a description (nonempty). */
-public class LabProblem extends BaseEntity<Long> implements SerializableToFile<LabProblem> {
+public class LabProblem extends BaseEntity<Long> {
   private int problemNumber;
   private String description;
+
+  public LabProblem() {
+    this.problemNumber = -1;
+    this.description = "";
+    setId(-1L);
+  }
+
 
   public LabProblem(int problemNumber, String description) {
     this.problemNumber = problemNumber;
@@ -54,11 +61,15 @@ public class LabProblem extends BaseEntity<Long> implements SerializableToFile<L
 
   @Override
   public LabProblem objectFromFileLine(String fileLine, String delimiter){
-    return null;
+
+    String[] components = fileLine.split(";");
+    LabProblem newEntity = new LabProblem(Integer.parseInt(components[1]),components[2]);
+    newEntity.setId(Long.parseLong(components[0]));
+    return newEntity;
   }
 
   @Override
   public String objectToFileLine(String delimiter){
-    return null;
+      return this.getId() + delimiter + this.problemNumber + delimiter + this.description;
   }
 }

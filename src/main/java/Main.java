@@ -12,21 +12,48 @@ import domain.Student;
 import domain.validators.LabProblemValidator;
 import domain.validators.StudentValidator;
 import domain.validators.Validator;
+import repository.FileRepository;
 import repository.InMemoryRepository;
 import repository.Repository;
 import service.LabProblemService;
 import service.StudentService;
 
+import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+
 public class Main {
   public static void main(String[] args) {
-    Validator<Student> studentValidator = new StudentValidator();
-    Validator<LabProblem> labProblemValidator = new LabProblemValidator();
-    Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
-    Repository<Long, LabProblem> labProblemRepository =
-        new InMemoryRepository<>(labProblemValidator);
-    StudentService studentService = new StudentService(studentRepository);
-    LabProblemService labProblemService = new LabProblemService(labProblemRepository);
-    Console console = new Console(studentService, labProblemService);
-    console.run();
+    try {
+      Validator<Student> studentValidator = new StudentValidator();
+      Validator<LabProblem> labProblemValidator = new LabProblemValidator();
+      Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+      // Repository<Long, LabProblem> labProblemRepository =
+      // new InMemoryRepository<>(labProblemValidator);
+        try{ Files.createFile(Paths.get("Data\\labProblems.txt"));} catch(FileAlreadyExistsException ignored){}
+
+        Repository<Long, LabProblem> labProblemRepository =
+          new FileRepository<>(
+              labProblemValidator,
+              "Data\\labProblems.txt",
+              ";",
+              (line, delimiter) -> {
+                List<String> params = Arrays.asList(line.split(delimiter));
+                LabProblem labProblem =
+                    new LabProblem(Integer.parseInt(params.get(1)), params.get(2));
+                labProblem.setId(Long.parseLong(params.get(0)));
+                return labProblem;
+              });
+      StudentService studentService = new StudentService(studentRepository);
+      LabProblemService labProblemService = new LabProblemService(labProblemRepository);
+      Console console = new Console(studentService, labProblemService);
+      console.run();
+    }
+    catch(IOException ex){
+      System.out.println("Can't create files\nTerminating...");
+    }
   }
 }

@@ -61,4 +61,17 @@ class LabProblemTest {
     labProblem.setDescription(NEW_DESCRIPTION);
     assertEquals(NEW_DESCRIPTION, labProblem.getDescription(), "Descriptions should be equal");
   }
+
+  @Test
+  void Givem_ValidLabProblem_When_StringIsConverted_Then_ResultIsCorrect() {
+    LabProblem labProblemFormSerial = labProblem.objectFromFileLine("1;10;description",";");
+    LabProblem labProblem= new LabProblem(10,"description");
+    labProblem.setId(1L);
+    assertEquals(labProblemFormSerial, labProblem);
+  }
+
+  @Test
+  void objectToFileLine() {
+    assertEquals(labProblem.objectToFileLine(";"),"1;123;problemDescription");
+  }
 }
