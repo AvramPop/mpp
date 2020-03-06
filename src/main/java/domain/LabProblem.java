@@ -38,7 +38,9 @@ public class LabProblem extends BaseEntity<Long> {
   @Override
   public String toString() {
     return "LabProblem{"
-        + "problemNumber="
+        + "id="
+        + getId()
+        + ", problemNumber="
         + problemNumber
         + ", description='"
         + description

@@ -77,4 +77,89 @@ class LabProblemServiceTest {
     labProblemService.addLabProblem(labProblem);
     Assertions.assertEquals(labProblemService.getAllLabProblems().size(), 1);
   }
+
+  @Test
+  void Given_LabProblemRepositoryWithOneEntity_When_DeletingAnEntityInsideTheRepository_Then_NumberOfEntitiesReturnedIsZero() {
+
+    labProblemService.addLabProblem(labProblem);
+    labProblemService.deleteLabProblem(labProblem.getId());
+    Assertions.assertEquals(labProblemService.getAllLabProblems().size(), 0);
+  }
+
+  @Test
+  void Given_LabProblemRepositoryWithOneEntity_When_DeletingAnEntityInsideTheRepository_Then_TheReturnedOptionalIsNotNull() {
+    labProblemService.addLabProblem(labProblem);
+    Assertions.assertTrue(labProblemService.deleteLabProblem(labProblem.getId()).isPresent());
+  }
+
+  @Test
+  void Given_LabProblemRepositoryWithOneEntity_When_DeletingAnEntityInsideTheRepository_Then_TheReturnedOptionalContainsTheEntity() {
+    labProblemService.addLabProblem(labProblem);
+    Assertions.assertEquals(labProblemService.deleteLabProblem(labProblem.getId()).get(),labProblem);
+  }
+
+  @Test
+  void Given_EmptyRepository_When_DeletingAnEntityInsideTheRepository_Then_TheReturnedOptionalIsNull() {
+    Assertions.assertFalse(labProblemService.deleteLabProblem(labProblem.getId()).isPresent());
+  }
+
+  @Test
+  void Given_EmptyRepository_When_DeletingANull_Then_ThenThrowsIllegalArgumentException() {
+    Assertions.assertThrows(IllegalArgumentException.class,()->labProblemService.deleteLabProblem(null));
+  }
+  @Test
+  void
+  Given_EmptyRepository_When_InvalidIdAttributeOfLabProblemEntity_Then_UpdateWillFailAndThrowsValidatorException() {
+    labProblem.setId(-1L);
+    Assertions.assertThrows(
+            ValidatorException.class, () -> labProblemService.updateLabProblem(labProblem));
+  }
+  @Test
+  void
+  Given_EmptyRepository_When_InvalidProblemNumberAttributeOfLabProblemEntity_Then_UpdateWillFailAndThrowsValidatorException() {
+    labProblem.setProblemNumber(-1);
+    Assertions.assertThrows(
+            ValidatorException.class, () -> labProblemService.updateLabProblem(labProblem));
+  }
+
+  @Test
+  void
+  Given_EmptyRepository_When_InvalidDescriptionAttributeOfLabProblemEntity_Then_UpdateWillFailAndThrowsValidatorException() {
+    labProblem.setDescription("");
+    Assertions.assertThrows(
+            ValidatorException.class, () -> labProblemService.updateLabProblem(labProblem));
+  }
+
+  @Test
+  void Given_LabProblemRepositoryWithOneEntity_When_DeletingAnEntityNotInsideTheRepository_Then_TheReturnedOptionalIsNull() {
+    labProblemService.addLabProblem(labProblem);
+    Assertions.assertFalse(labProblemService.deleteLabProblem(NEW_ID).isPresent());
+  }
+
+  @Test
+  void Given_LabProblemRepositoryWithOneEntity_When_UpdatingTheEntity_Then_UpdateSucceedsReturnsEmptyOptional() {
+    labProblemService.addLabProblem(labProblem);
+    labProblem.setDescription(NEW_DESCRIPTION);
+    Assertions.assertFalse(labProblemService.updateLabProblem(labProblem).isPresent());
+
+  }
+  @Test
+  void Given_LabProblemRepositoryWithOneEntity_When_UpdatingNonExistingEntity_Then_UpdateFailsReturnsOptionalWithEntity() {
+    labProblemService.addLabProblem(labProblem);
+    labProblem.setId(2L);
+    Assertions.assertEquals(labProblemService.updateLabProblem(labProblem).get(),labProblem);
+
+  }
+
+  @Test
+  void Given_EmptyLabProblemRepository_When_FilteringByProblemNumber_Then_ReturnsEmptySet() {
+    Assertions.assertEquals(labProblemService.filterByProblemNumber(PROBLEM_NUMBER).size(),0);
+  }
+
+  @Test
+  void Given_LabProblemRepositoryWithOneEntity_When_FilteringByProblemNumberWhichIsInRepository_Then_SetWithOneElement() {
+    labProblemService.addLabProblem(labProblem);
+    Assertions.assertEquals(labProblemService.filterByProblemNumber(PROBLEM_NUMBER).size(),1);
+  }
+
 }

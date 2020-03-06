@@ -48,7 +48,9 @@ public class Student extends BaseEntity<Long>{
   @Override
   public String toString() {
     return "Student{"
-        + "serialNumber='"
+        + "id="
+        + getId()
+        + ", serialNumber='"
         + serialNumber
         + '\''
         + ", name='"
