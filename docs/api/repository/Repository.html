@@ -116,8 +116,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <!-- ======== START OF CLASS DATA ======== -->
 <main role="main">
 <div class="header">
-<div class="subTitle"><span class="packageLabelInType">Package</span>&nbsp;<a href="package-summary.html">repository</a></div>
-<h2 title="Interface Repository" class="title">Interface Repository&lt;ID,&#8203;T extends <a href="../domain/BaseEntity.html" title="class in domain">BaseEntity</a>&lt;ID&gt;&gt;</h2>
+<div class="subTitle"><span class="packageLabelInType">Package</span>&nbsp;<a href="package-summary.html">ro.ubb.repository</a></div>
+<h2 title="Interface Repository" class="title">Interface Repository&lt;ID,&#8203;T extends <a href="../ro.ubb.domain/BaseEntity.html" title="class in ro.ubb.domain">BaseEntity</a>&lt;ID&gt;&gt;</h2>
 </div>
 <div class="contentContainer">
 <div class="description">
@@ -125,11 +125,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="InMemoryRepository.html" title="class in repository">InMemoryRepository</a></code></dd>
+<dd><code><a href="InMemoryRepository.html" title="class in ro.ubb.repository">InMemoryRepository</a></code></dd>
 </dl>
 <hr>
-<pre>public interface <span class="typeNameLabel">Repository&lt;ID,&#8203;T extends <a href="../domain/BaseEntity.html" title="class in domain">BaseEntity</a>&lt;ID&gt;&gt;</span></pre>
-<div class="block">Interface for generic CRUD operations on a repository for a specific type.</div>
+<pre>public interface <span class="typeNameLabel">Repository&lt;ID,&#8203;T extends <a href="../ro.ubb.domain/BaseEntity.html" title="class in ro.ubb.domain">BaseEntity</a>&lt;ID&gt;&gt;</span></pre>
+<div class="block">Interface for generic CRUD operations on a ro.ubb.repository for a specific type.</div>
 </li>
 </ul>
 </div>
@@ -233,7 +233,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="save(domain.BaseEntity)">
+<a id="save(ro.ubb.domain.BaseEntity)">
 <!--   -->
 </a><a id="save(T)">
 <!--   -->
@@ -242,7 +242,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>save</h4>
 <pre class="methodSignature">java.util.Optional&lt;<a href="Repository.html" title="type parameter in Repository">T</a>&gt;&nbsp;save&#8203;(<a href="Repository.html" title="type parameter in Repository">T</a>&nbsp;entity)
-                    throws <a href="../domain/exceptions/ValidatorException.html" title="class in domain.exceptions">ValidatorException</a></pre>
+                    throws <a href="../ro.ubb.domain/exceptions/ValidatorException.html" title="class in ro.ubb.domain.exceptions">ValidatorException</a></pre>
 <div class="block">Saves the given entity.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -252,7 +252,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
      returns the entity.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>java.lang.IllegalArgumentException</code> - if the given entity is null.</dd>
-<dd><code><a href="../domain/exceptions/ValidatorException.html" title="class in domain.exceptions">ValidatorException</a></code> - if the entity is not valid.</dd>
+<dd><code><a href="../ro.ubb.domain/exceptions/ValidatorException.html" title="class in ro.ubb.domain.exceptions">ValidatorException</a></code> - if the entity is not valid.</dd>
 </dl>
 </li>
 </ul>
@@ -277,7 +277,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="update(domain.BaseEntity)">
+<a id="update(ro.ubb.domain.BaseEntity)">
 <!--   -->
 </a><a id="update(T)">
 <!--   -->
@@ -286,7 +286,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>update</h4>
 <pre class="methodSignature">java.util.Optional&lt;<a href="Repository.html" title="type parameter in Repository">T</a>&gt;&nbsp;update&#8203;(<a href="Repository.html" title="type parameter in Repository">T</a>&nbsp;entity)
-                      throws <a href="../domain/exceptions/ValidatorException.html" title="class in domain.exceptions">ValidatorException</a></pre>
+                      throws <a href="../ro.ubb.domain/exceptions/ValidatorException.html" title="class in ro.ubb.domain.exceptions">ValidatorException</a></pre>
 <div class="block">Updates the given entity.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -296,7 +296,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
      returns the entity.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>java.lang.IllegalArgumentException</code> - if the given entity is null.</dd>
-<dd><code><a href="../domain/exceptions/ValidatorException.html" title="class in domain.exceptions">ValidatorException</a></code> - if the entity is not valid.</dd>
+<dd><code><a href="../ro.ubb.domain/exceptions/ValidatorException.html" title="class in ro.ubb.domain.exceptions">ValidatorException</a></code> - if the entity is not valid.</dd>
 </dl>
 </li>
 </ul>

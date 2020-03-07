@@ -116,15 +116,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <!-- ======== START OF CLASS DATA ======== -->
 <main role="main">
 <div class="header">
-<div class="subTitle"><span class="packageLabelInType">Package</span>&nbsp;<a href="package-summary.html">repository</a></div>
-<h2 title="Class InMemoryRepository" class="title">Class InMemoryRepository&lt;ID,&#8203;T extends <a href="../domain/BaseEntity.html" title="class in domain">BaseEntity</a>&lt;ID&gt;&gt;</h2>
+<div class="subTitle"><span class="packageLabelInType">Package</span>&nbsp;<a href="package-summary.html">ro.ubb.repository</a></div>
+<h2 title="Class InMemoryRepository" class="title">Class InMemoryRepository&lt;ID,&#8203;T extends <a href="../ro.ubb.domain/BaseEntity.html" title="class in ro.ubb.domain">BaseEntity</a>&lt;ID&gt;&gt;</h2>
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li>repository.InMemoryRepository&lt;ID,&#8203;T&gt;</li>
+<li>ro.ubb.repository.InMemoryRepository&lt;ID,&#8203;T&gt;</li>
 </ul>
 </li>
 </ul>
@@ -138,13 +138,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="Repository.html" title="interface in repository">Repository</a>&lt;ID,&#8203;T&gt;</code></dd>
+<dd><code><a href="Repository.html" title="interface in ro.ubb.repository">Repository</a>&lt;ID,&#8203;T&gt;</code></dd>
 </dl>
 <hr>
-<pre>public class <span class="typeNameLabel">InMemoryRepository&lt;ID,&#8203;T extends <a href="../domain/BaseEntity.html" title="class in domain">BaseEntity</a>&lt;ID&gt;&gt;</span>
+<pre>public class <span class="typeNameLabel">InMemoryRepository&lt;ID,&#8203;T extends <a href="../ro.ubb.domain/BaseEntity.html" title="class in ro.ubb.domain">BaseEntity</a>&lt;ID&gt;&gt;</span>
 extends java.lang.Object
-implements <a href="Repository.html" title="interface in repository">Repository</a>&lt;ID,&#8203;T&gt;</pre>
-<div class="block">Volatile generic data repository holding everything in memory.</div>
+implements <a href="Repository.html" title="interface in ro.ubb.repository">Repository</a>&lt;ID,&#8203;T&gt;</pre>
+<div class="block">Volatile generic data ro.ubb.repository holding everything in memory.</div>
 </li>
 </ul>
 </div>
@@ -165,7 +165,7 @@ implements <a href="Repository.html" title="interface in repository">Repository<
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(domain.validators.Validator)">InMemoryRepository</a></span>&#8203;(<a href="../domain/validators/Validator.html" title="interface in domain.validators">Validator</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">T</a>&gt;&nbsp;validator)</code></th>
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(ro.ubb.domain.validators.Validator)">InMemoryRepository</a></span>&#8203;(<a href="../ro.ubb.domain/validators/Validator.html" title="interface in ro.ubb.domain.validators">Validator</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">T</a>&gt;&nbsp;validator)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
@@ -243,13 +243,13 @@ implements <a href="Repository.html" title="interface in repository">Repository<
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a id="&lt;init&gt;(domain.validators.Validator)">
+<a id="&lt;init&gt;(ro.ubb.domain.validators.Validator)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>InMemoryRepository</h4>
-<pre>public&nbsp;InMemoryRepository&#8203;(<a href="../domain/validators/Validator.html" title="interface in domain.validators">Validator</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">T</a>&gt;&nbsp;validator)</pre>
+<pre>public&nbsp;InMemoryRepository&#8203;(<a href="../ro.ubb.domain/validators/Validator.html" title="interface in ro.ubb.domain.validators">Validator</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">T</a>&gt;&nbsp;validator)</pre>
 </li>
 </ul>
 </li>
@@ -274,7 +274,7 @@ implements <a href="Repository.html" title="interface in repository">Repository<
 <div class="block">Find the entity with the given <code>id</code>.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="Repository.html#findOne(ID)">findOne</a></code>&nbsp;in interface&nbsp;<code><a href="Repository.html" title="interface in repository">Repository</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>,&#8203;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">T</a> extends <a href="../domain/BaseEntity.html" title="class in domain">BaseEntity</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>&gt;&gt;</code></dd>
+<dd><code><a href="Repository.html#findOne(ID)">findOne</a></code>&nbsp;in interface&nbsp;<code><a href="Repository.html" title="interface in ro.ubb.repository">Repository</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>,&#8203;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">T</a> extends <a href="../ro.ubb.domain/BaseEntity.html" title="class in ro.ubb.domain">BaseEntity</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>&gt;&gt;</code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>id</code> - must be not null.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -293,13 +293,13 @@ implements <a href="Repository.html" title="interface in repository">Repository<
 <pre class="methodSignature">public&nbsp;java.lang.Iterable&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">T</a>&gt;&nbsp;findAll()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="Repository.html#findAll()">findAll</a></code>&nbsp;in interface&nbsp;<code><a href="Repository.html" title="interface in repository">Repository</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>,&#8203;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">T</a> extends <a href="../domain/BaseEntity.html" title="class in domain">BaseEntity</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>&gt;&gt;</code></dd>
+<dd><code><a href="Repository.html#findAll()">findAll</a></code>&nbsp;in interface&nbsp;<code><a href="Repository.html" title="interface in ro.ubb.repository">Repository</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>,&#8203;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">T</a> extends <a href="../ro.ubb.domain/BaseEntity.html" title="class in ro.ubb.domain">BaseEntity</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>&gt;&gt;</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>all entities</dd>
 </dl>
 </li>
 </ul>
-<a id="save(domain.BaseEntity)">
+<a id="save(ro.ubb.domain.BaseEntity)">
 <!--   -->
 </a><a id="save(T)">
 <!--   -->
@@ -308,11 +308,11 @@ implements <a href="Repository.html" title="interface in repository">Repository<
 <li class="blockList">
 <h4>save</h4>
 <pre class="methodSignature">public&nbsp;java.util.Optional&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">T</a>&gt;&nbsp;save&#8203;(<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">T</a>&nbsp;entity)
-                           throws <a href="../domain/exceptions/ValidatorException.html" title="class in domain.exceptions">ValidatorException</a></pre>
+                           throws <a href="../ro.ubb.domain/exceptions/ValidatorException.html" title="class in ro.ubb.domain.exceptions">ValidatorException</a></pre>
 <div class="block">Saves the given entity.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="Repository.html#save(T)">save</a></code>&nbsp;in interface&nbsp;<code><a href="Repository.html" title="interface in repository">Repository</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>,&#8203;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">T</a> extends <a href="../domain/BaseEntity.html" title="class in domain">BaseEntity</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>&gt;&gt;</code></dd>
+<dd><code><a href="Repository.html#save(T)">save</a></code>&nbsp;in interface&nbsp;<code><a href="Repository.html" title="interface in ro.ubb.repository">Repository</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>,&#8203;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">T</a> extends <a href="../ro.ubb.domain/BaseEntity.html" title="class in ro.ubb.domain">BaseEntity</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>&gt;&gt;</code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>entity</code> - must not be null.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -320,7 +320,7 @@ implements <a href="Repository.html" title="interface in repository">Repository<
      returns the entity.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>java.lang.IllegalArgumentException</code> - if the given entity is null.</dd>
-<dd><code><a href="../domain/exceptions/ValidatorException.html" title="class in domain.exceptions">ValidatorException</a></code> - if the entity is not valid.</dd>
+<dd><code><a href="../ro.ubb.domain/exceptions/ValidatorException.html" title="class in ro.ubb.domain.exceptions">ValidatorException</a></code> - if the entity is not valid.</dd>
 </dl>
 </li>
 </ul>
@@ -336,7 +336,7 @@ implements <a href="Repository.html" title="interface in repository">Repository<
 <div class="block">Removes the entity with the given id.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="Repository.html#delete(ID)">delete</a></code>&nbsp;in interface&nbsp;<code><a href="Repository.html" title="interface in repository">Repository</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>,&#8203;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">T</a> extends <a href="../domain/BaseEntity.html" title="class in domain">BaseEntity</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>&gt;&gt;</code></dd>
+<dd><code><a href="Repository.html#delete(ID)">delete</a></code>&nbsp;in interface&nbsp;<code><a href="Repository.html" title="interface in ro.ubb.repository">Repository</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>,&#8203;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">T</a> extends <a href="../ro.ubb.domain/BaseEntity.html" title="class in ro.ubb.domain">BaseEntity</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>&gt;&gt;</code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>id</code> - must not be null.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -347,7 +347,7 @@ implements <a href="Repository.html" title="interface in repository">Repository<
 </dl>
 </li>
 </ul>
-<a id="update(domain.BaseEntity)">
+<a id="update(ro.ubb.domain.BaseEntity)">
 <!--   -->
 </a><a id="update(T)">
 <!--   -->
@@ -356,11 +356,11 @@ implements <a href="Repository.html" title="interface in repository">Repository<
 <li class="blockList">
 <h4>update</h4>
 <pre class="methodSignature">public&nbsp;java.util.Optional&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">T</a>&gt;&nbsp;update&#8203;(<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">T</a>&nbsp;entity)
-                             throws <a href="../domain/exceptions/ValidatorException.html" title="class in domain.exceptions">ValidatorException</a></pre>
+                             throws <a href="../ro.ubb.domain/exceptions/ValidatorException.html" title="class in ro.ubb.domain.exceptions">ValidatorException</a></pre>
 <div class="block">Updates the given entity.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="Repository.html#update(T)">update</a></code>&nbsp;in interface&nbsp;<code><a href="Repository.html" title="interface in repository">Repository</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>,&#8203;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">T</a> extends <a href="../domain/BaseEntity.html" title="class in domain">BaseEntity</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>&gt;&gt;</code></dd>
+<dd><code><a href="Repository.html#update(T)">update</a></code>&nbsp;in interface&nbsp;<code><a href="Repository.html" title="interface in ro.ubb.repository">Repository</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>,&#8203;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">T</a> extends <a href="../ro.ubb.domain/BaseEntity.html" title="class in ro.ubb.domain">BaseEntity</a>&lt;<a href="InMemoryRepository.html" title="type parameter in InMemoryRepository">ID</a>&gt;&gt;</code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>entity</code> - must not be null.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -368,7 +368,7 @@ implements <a href="Repository.html" title="interface in repository">Repository<
      returns the entity.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>java.lang.IllegalArgumentException</code> - if the given entity is null.</dd>
-<dd><code><a href="../domain/exceptions/ValidatorException.html" title="class in domain.exceptions">ValidatorException</a></code> - if the entity is not valid.</dd>
+<dd><code><a href="../ro.ubb.domain/exceptions/ValidatorException.html" title="class in ro.ubb.domain.exceptions">ValidatorException</a></code> - if the entity is not valid.</dd>
 </dl>
 </li>
 </ul>

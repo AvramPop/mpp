@@ -116,7 +116,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <!-- ======== START OF CLASS DATA ======== -->
 <main role="main">
 <div class="header">
-<div class="subTitle"><span class="packageLabelInType">Package</span>&nbsp;<a href="package-summary.html">service</a></div>
+<div class="subTitle"><span class="packageLabelInType">Package</span>&nbsp;<a href="package-summary.html">ro.ubb.service</a></div>
 <h2 title="Class LabProblemService" class="title">Class LabProblemService</h2>
 </div>
 <div class="contentContainer">
@@ -124,7 +124,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li>service.LabProblemService</li>
+<li>ro.ubb.service.LabProblemService</li>
 </ul>
 </li>
 </ul>
@@ -154,7 +154,7 @@ extends java.lang.Object</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(repository.Repository)">LabProblemService</a></span>&#8203;(<a href="../repository/Repository.html" title="interface in repository">Repository</a>&lt;java.lang.Long,&#8203;<a href="../domain/LabProblem.html" title="class in domain">LabProblem</a>&gt;&nbsp;repository)</code></th>
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(ro.ubb.repository.Repository)">LabProblemService</a></span>&#8203;(<a href="../ro.ubb.repository/Repository.html" title="interface in ro.ubb.repository">Repository</a>&lt;java.lang.Long,&#8203;<a href="../ro.ubb.domain/LabProblem.html" title="class in ro.ubb.domain">LabProblem</a>&gt;&nbsp;ro.ubb.repository)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
@@ -177,16 +177,16 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addLabProblem(domain.LabProblem)">addLabProblem</a></span>&#8203;(<a href="../domain/LabProblem.html" title="class in domain">LabProblem</a>&nbsp;labProblem)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addLabProblem(ro.ubb.domain.LabProblem)">addLabProblem</a></span>&#8203;(<a href="../ro.ubb.domain/LabProblem.html" title="class in ro.ubb.domain">LabProblem</a>&nbsp;labProblem)</code></th>
 <td class="colLast">
-<div class="block">Adds a new entity to the repository, if it is correctly performed the</div>
+<div class="block">Adds a new entity to the ro.ubb.repository, if it is correctly performed the</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.util.Set&lt;<a href="../domain/LabProblem.html" title="class in domain">LabProblem</a>&gt;</code></td>
+<td class="colFirst"><code>java.util.Set&lt;<a href="../ro.ubb.domain/LabProblem.html" title="class in ro.ubb.domain">LabProblem</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAllLabProblems()">getAllLabProblems</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns all the lab problems in the repository in a Set</div>
+<div class="block">Returns all the lab problems in the ro.ubb.repository in a Set</div>
 </td>
 </tr>
 </table>
@@ -213,13 +213,13 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a id="&lt;init&gt;(repository.Repository)">
+<a id="&lt;init&gt;(ro.ubb.repository.Repository)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>LabProblemService</h4>
-<pre>public&nbsp;LabProblemService&#8203;(<a href="../repository/Repository.html" title="interface in repository">Repository</a>&lt;java.lang.Long,&#8203;<a href="../domain/LabProblem.html" title="class in domain">LabProblem</a>&gt;&nbsp;repository)</pre>
+<pre>public&nbsp;LabProblemService&#8203;(<a href="../ro.ubb.repository/Repository.html" title="interface in ro.ubb.repository">Repository</a>&lt;java.lang.Long,&#8203;<a href="../ro.ubb.domain/LabProblem.html" title="class in ro.ubb.domain">LabProblem</a>&gt;&nbsp;ro.ubb.repository)</pre>
 </li>
 </ul>
 </li>
@@ -232,20 +232,20 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="addLabProblem(domain.LabProblem)">
+<a id="addLabProblem(ro.ubb.domain.LabProblem)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>addLabProblem</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;addLabProblem&#8203;(<a href="../domain/LabProblem.html" title="class in domain">LabProblem</a>&nbsp;labProblem)
-                   throws <a href="../domain/exceptions/ValidatorException.html" title="class in domain.exceptions">ValidatorException</a></pre>
-<div class="block">Adds a new entity to the repository, if it is correctly performed the</div>
+<pre class="methodSignature">public&nbsp;void&nbsp;addLabProblem&#8203;(<a href="../ro.ubb.domain/LabProblem.html" title="class in ro.ubb.domain">LabProblem</a>&nbsp;labProblem)
+                   throws <a href="../ro.ubb.domain/exceptions/ValidatorException.html" title="class in ro.ubb.domain.exceptions">ValidatorException</a></pre>
+<div class="block">Adds a new entity to the ro.ubb.repository, if it is correctly performed the</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>labProblem</code> - the labProblem entity which is to be added to the repository</dd>
+<dd><code>labProblem</code> - the labProblem entity which is to be added to the ro.ubb.repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../domain/exceptions/ValidatorException.html" title="class in domain.exceptions">ValidatorException</a></code> - in the case that the labProblem entity is invalid, this is verified
+<dd><code><a href="../ro.ubb.domain/exceptions/ValidatorException.html" title="class in ro.ubb.domain.exceptions">ValidatorException</a></code> - in the case that the labProblem entity is invalid, this is verified
      by * the labProblem validator</dd>
 </dl>
 </li>
@@ -256,8 +256,8 @@ extends java.lang.Object</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getAllLabProblems</h4>
-<pre class="methodSignature">public&nbsp;java.util.Set&lt;<a href="../domain/LabProblem.html" title="class in domain">LabProblem</a>&gt;&nbsp;getAllLabProblems()</pre>
-<div class="block">Returns all the lab problems in the repository in a Set</div>
+<pre class="methodSignature">public&nbsp;java.util.Set&lt;<a href="../ro.ubb.domain/LabProblem.html" title="class in ro.ubb.domain">LabProblem</a>&gt;&nbsp;getAllLabProblems()</pre>
+<div class="block">Returns all the lab problems in the ro.ubb.repository in a Set</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>a Set which stores all the lab problems</dd>
