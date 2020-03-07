@@ -4,6 +4,8 @@ import domain.Student;
 import domain.exceptions.ValidatorException;
 import repository.Repository;
 
+import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -38,5 +40,41 @@ public class StudentService {
   public Set<Student> getAllStudents() {
     Iterable<Student> students = repository.findAll();
     return StreamSupport.stream(students.spliterator(), false).collect(Collectors.toSet());
+  }
+
+  /**
+   * Deletes a student from the repository
+   *
+   * @param id the id of the student to be deleted
+   */
+  public Optional<Student> deleteStudent(Long id) throws ValidatorException {
+    if (id == null || id < 0) throw new ValidatorException("Invalid id!");
+    return repository.delete(id);
+  }
+
+  /**
+   * Updates an existing entity in the repository with the same id
+   *
+   * @param student the student to be updated
+   * @return an {@code Optional} - null if the enti ty was updated otherwise (e.g. id does not exist)
+   *     * returns the entity.
+   */
+  public Optional<Student> updateStudent(Student student) throws ValidatorException {
+
+    return repository.update(student);
+  }
+
+  /**
+   * Filters the elements of the repository by a given group number
+   *
+   * @param group the group number to be filtered by
+   * @return a {@code Set} - of entities filtered by the given group number
+   */
+  public Set<Student> filterByGroup(Integer group) {
+    Iterable<Student> students = repository.findAll();
+    Set<Student> filteredStudents = new HashSet<>();
+    students.forEach(filteredStudents::add);
+    filteredStudents.removeIf(entity -> entity.getGroup() != group);
+    return filteredStudents;
   }
 }

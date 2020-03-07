@@ -13,7 +13,6 @@ public class LabProblem extends BaseEntity<Long> {
     setId(-1L);
   }
 
-
   public LabProblem(int problemNumber, String description) {
     this.problemNumber = problemNumber;
     this.description = description;
@@ -62,16 +61,16 @@ public class LabProblem extends BaseEntity<Long> {
   }
 
   @Override
-  public LabProblem objectFromFileLine(String fileLine, String delimiter){
+  public LabProblem objectFromFileLine(String fileLine, String delimiter) {
 
     String[] components = fileLine.split(";");
-    LabProblem newEntity = new LabProblem(Integer.parseInt(components[1]),components[2]);
+    LabProblem newEntity = new LabProblem(Integer.parseInt(components[1]), components[2]);
     newEntity.setId(Long.parseLong(components[0]));
     return newEntity;
   }
 
   @Override
-  public String objectToFileLine(String delimiter){
-      return this.getId() + delimiter + this.problemNumber + delimiter + this.description;
+  public String objectToFileLine(String delimiter) {
+    return this.getId() + delimiter + this.problemNumber + delimiter + this.description;
   }
 }

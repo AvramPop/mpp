@@ -40,12 +40,11 @@ public class LabProblemService {
 
   /**
    * Deletes a lab problem from the repository
+   *
    * @param id the id of the lab problem to be deleted
    */
-  public Optional<LabProblem> deleteLabProblem(Long id) throws ValidatorException
-  {
-    if(id == null || id < 0)
-      throw new ValidatorException("Invalid id!");
+  public Optional<LabProblem> deleteLabProblem(Long id) throws ValidatorException {
+    if (id == null || id < 0) throw new ValidatorException("Invalid id!");
     return repository.delete(id);
   }
 
@@ -53,8 +52,8 @@ public class LabProblemService {
    * Updates an existing entity in the repository with the same id
    *
    * @param labProblem the lab problem to be updated
-   * @return an {@code Optional}  - null if the entity was updated otherwise
-   *     (e.g. id does not exist) * returns the entity.
+   * @return an {@code Optional} - null if the entity was updated otherwise (e.g. id does not exist)
+   *     * returns the entity.
    */
   public Optional<LabProblem> updateLabProblem(LabProblem labProblem) throws ValidatorException {
 
@@ -63,14 +62,15 @@ public class LabProblemService {
 
   /**
    * Filters the elements of the repository by a given problem number
+   *
    * @param problemNumberToFilterBy the problem number to be filtered by
    * @return a {@code Set} - of entities filtered by the given problem number
    */
-  public Set<LabProblem> filterByProblemNumber(Integer problemNumberToFilterBy){
+  public Set<LabProblem> filterByProblemNumber(Integer problemNumberToFilterBy) {
     Iterable<LabProblem> labProblems = repository.findAll();
     Set<LabProblem> filteredLabProblems = new HashSet<>();
     labProblems.forEach(filteredLabProblems::add);
-    filteredLabProblems.removeIf(entity->entity.getProblemNumber() != problemNumberToFilterBy);
+    filteredLabProblems.removeIf(entity -> entity.getProblemNumber() != problemNumberToFilterBy);
     return filteredLabProblems;
   }
 }

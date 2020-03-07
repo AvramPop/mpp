@@ -15,25 +15,35 @@ import java.util.Set;
 /** Console based user interface */
 public class Console {
   private StudentService studentController;
-  private LabProblemService lapProblemController;
+  private LabProblemService labProblemController;
   private HashMap<String, Runnable> dictionaryOfCommands;
 
-  public Console(StudentService studentController, LabProblemService lapProblemController) {
+  public Console(StudentService studentController, LabProblemService labProblemController) {
     this.studentController = studentController;
-    this.lapProblemController = lapProblemController;
+    this.labProblemController = labProblemController;
+    // I use lambda methods with a hash table to not to make if statements
+    // if the thing fails it gets a null pointer exception
+    // which means not a valid command
+    initDictionaryOfCommands();
+  }
+
+  private void initDictionaryOfCommands(){
     dictionaryOfCommands = new HashMap<>();
     dictionaryOfCommands.put(
         "add student",
-        this::addStudent); // I use lambda methods with a hash table to not to make if statements
+        this::addStudent);
     dictionaryOfCommands.put(
         "print students",
-        this::printStudents); // if the thing fails it gets a null pointer exception
+        this::printStudents);
     dictionaryOfCommands.put(
-        "add lab problem", this::addLabProblem); // which means not a valid command
+        "add lab problem", this::addLabProblem);
     dictionaryOfCommands.put("print lab problems", this::printLabProblems);
-    dictionaryOfCommands.put("update lab problem",this::updateLabProblem);
-    dictionaryOfCommands.put("delete lab problem",this::deleteLabProblem);
-    dictionaryOfCommands.put("filter lab problems",this::filterLabProblemsByProblemNumber);
+    dictionaryOfCommands.put("update lab problem", this::updateLabProblem);
+    dictionaryOfCommands.put("delete lab problem", this::deleteLabProblem);
+    dictionaryOfCommands.put("filter lab problems", this::filterLabProblemsByProblemNumber);
+    dictionaryOfCommands.put("update student", this::updateStudent);
+    dictionaryOfCommands.put("delete student", this::deleteStudent);
+    dictionaryOfCommands.put("filter students", this::filterStudentsByGroup);
     dictionaryOfCommands.put("exit", () -> System.exit(0));
   }
 
@@ -56,10 +66,8 @@ public class Console {
     }
   }
 
-  /**
-   * UI method for printing the console menu
-   */
-  private void printMenu(){
+  /** UI method for printing the console menu */
+  private void printMenu() {
     System.out.println("Menu options:");
     System.out.println("- add student");
     System.out.println("- print students");
@@ -68,6 +76,9 @@ public class Console {
     System.out.println("- update lab problem");
     System.out.println("- delete lab problem");
     System.out.println("- filter lab problems");
+    System.out.println("- update student");
+    System.out.println("- delete student");
+    System.out.println("- filter students");
     System.out.println("- exit");
   }
 
@@ -98,30 +109,28 @@ public class Console {
       System.out.println("Invalid input! ID must be positive number");
       return;
     }
-    if(lapProblemController.addLabProblem(newLabProblem).isEmpty())
-    System.out.println("Lab Problem added");
-    else
-      System.out.println("Lab Problem not added");
+    if (labProblemController.addLabProblem(newLabProblem).isEmpty())
+      System.out.println("Lab Problem added");
+    else System.out.println("Lab Problem not added");
   }
   /** UI method for printing all lab problems */
   private void printLabProblems() {
-    Set<LabProblem> students = lapProblemController.getAllLabProblems();
+    Set<LabProblem> students = labProblemController.getAllLabProblems();
     students.forEach(System.out::println);
   }
-  /**UI method update a lab problem*/
-  private void updateLabProblem(){
+  /** UI method update a lab problem */
+  private void updateLabProblem() {
     LabProblem newLabProblem = readLabProblem();
     if (newLabProblem == null) {
       System.out.println("Invalid input! ID must be positive number");
       return;
     }
-    if(lapProblemController.updateLabProblem(newLabProblem).isEmpty())
+    if (labProblemController.updateLabProblem(newLabProblem).isEmpty())
       System.out.println("Lab Problem updated");
-    else
-      System.out.println("Lab Problem not updated");
+    else System.out.println("Lab Problem not updated");
   }
-  /**UI method deletes a lab problem*/
-  private void deleteLabProblem(){
+  /** UI method deletes a lab problem */
+  private void deleteLabProblem() {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     long id;
     try {
@@ -132,25 +141,25 @@ public class Console {
       System.out.println("Invalid input!");
       return;
     }
-    lapProblemController.deleteLabProblem(id);
+    labProblemController.deleteLabProblem(id);
   }
-  /** UI method deletes a lab problem */
+  /** UI method filters lab problems by problem number */
   private void filterLabProblemsByProblemNumber() {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-    int number;
+    int problemNumber;
     try {
       System.out.println("Enter problem number: ");
-      number = Integer.parseInt(input.readLine().strip());
+      problemNumber = Integer.parseInt(input.readLine().strip());
 
     } catch (IOException | NumberFormatException ex) {
       System.out.println("Invalid input!");
       return;
     }
 
-    Set<LabProblem> students = lapProblemController.filterByProblemNumber(number);
-    students.forEach(System.out::println);
+    Set<LabProblem> labProblems = labProblemController.filterByProblemNumber(problemNumber);
+    labProblems.forEach(System.out::println);
   }
-    /** UI method for reading a new lab problem from the user */
+  /** UI method for reading a new lab problem from the user */
   private LabProblem readLabProblem() {
     System.out.println("Read lab problem {id, problem number, description}");
     LabProblem newLabProblem = null;
@@ -190,5 +199,47 @@ public class Console {
       System.out.println("Invalid input!");
     }
     return newStudent;
+  }
+
+  /** UI method update a student */
+  private void updateStudent() {
+    Student newStudent = readStudent();
+    if (newStudent == null) {
+      System.out.println("Invalid input! ID must be positive number");
+      return;
+    }
+    if (studentController.updateStudent(newStudent).isEmpty())
+      System.out.println("Student updated");
+    else System.out.println("Student not updated");
+  }
+  /** UI method deletes a student */
+  private void deleteStudent() {
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    long id;
+    try {
+      System.out.println("Enter id: ");
+      id = Long.parseLong(input.readLine().strip());
+
+    } catch (IOException | NumberFormatException ex) {
+      System.out.println("Invalid input!");
+      return;
+    }
+    studentController.deleteStudent(id);
+  }
+  /** UI method filters students by group number */
+  private void filterStudentsByGroup() {
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    int groupNumber;
+    try {
+      System.out.println("Enter group number: ");
+      groupNumber = Integer.parseInt(input.readLine().strip());
+
+    } catch (IOException | NumberFormatException ex) {
+      System.out.println("Invalid input!");
+      return;
+    }
+
+    Set<Student> students = studentController.filterByGroup(groupNumber);
+    students.forEach(System.out::println);
   }
 }

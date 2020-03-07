@@ -20,6 +20,7 @@ import service.StudentService;
 
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -33,12 +34,15 @@ public class Main {
       Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
       // Repository<Long, LabProblem> labProblemRepository =
       // new InMemoryRepository<>(labProblemValidator);
-        try{ Files.createFile(Paths.get("Data\\labProblems.txt"));} catch(FileAlreadyExistsException ignored){}
+      try { // TODO probably should use try-with-resources
+        Files.createFile(Paths.get(repoPath()));
+      } catch (FileAlreadyExistsException ignored) {
+      }
 
-        Repository<Long, LabProblem> labProblemRepository =
+      Repository<Long, LabProblem> labProblemRepository =
           new FileRepository<>(
               labProblemValidator,
-              "Data\\labProblems.txt",
+              repoPath(),
               ";",
               (line, delimiter) -> {
                 List<String> params = Arrays.asList(line.split(delimiter));
@@ -51,9 +55,19 @@ public class Main {
       LabProblemService labProblemService = new LabProblemService(labProblemRepository);
       Console console = new Console(studentService, labProblemService);
       console.run();
-    }
-    catch(IOException ex){
+    } catch (IOException ex) {
       System.out.println("Can't create files\nTerminating...");
     }
+  }
+
+  public static String repoPath() {
+    return "src"
+        + FileSystems.getDefault().getSeparator()
+        + "main"
+        + FileSystems.getDefault().getSeparator()
+        + "resources"
+        + FileSystems.getDefault().getSeparator()
+        + "LabProblems.txt"
+        + FileSystems.getDefault().getSeparator();
   }
 }

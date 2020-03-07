@@ -1,5 +1,4 @@
 package domain;
-
 /**
  * A base class to be extended by any in domain, having only an id.
  *
@@ -24,7 +23,7 @@ public class BaseEntity<ID> implements SerializableToFile<BaseEntity<ID>> {
   /**
    * Parse given string to object of the type of the generic
    *
-   * @param fileLine  given string to parse
+   * @param fileLine given string to parse
    * @param delimiter character between object fields in fileLine
    * @return object of type given with member as parsed from string
    */
@@ -43,6 +42,4 @@ public class BaseEntity<ID> implements SerializableToFile<BaseEntity<ID>> {
   public String objectToFileLine(String delimiter) {
     return id.toString();
   }
-
-
 }

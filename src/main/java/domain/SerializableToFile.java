@@ -3,10 +3,11 @@ package domain;
 import domain.exceptions.RepositoryException;
 
 /**
- * Interface to be implemented by any in domain, standardizing object writing and reading from plain text file
+ * Interface to be implemented by any in domain, standardizing object writing and reading from plain
+ * text file
+ *
  * @param <T> the class implementing
  */
-
 public interface SerializableToFile<T> {
   /**
    * Parse given string to object of the type of the generic
@@ -24,5 +25,4 @@ public interface SerializableToFile<T> {
    * @return this in file-string format
    */
   String objectToFileLine(String delimiter);
-
 }
