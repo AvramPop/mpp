@@ -22,8 +22,6 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
 
 public class Main {
   public static void main(String[] args) {
@@ -46,26 +44,14 @@ public class Main {
               studentValidator,
               repoPath("students"),
               ";",
-              (line, delimiter) -> {
-                List<String> params = Arrays.asList(line.split(delimiter));
-                Student student =
-                    new Student(params.get(1), params.get(2), Integer.parseInt(params.get(3)));
-                student.setId(Long.parseLong(params.get(0)));
-                return student;
-              });
+              Student.objectFromFileLine());
 
       Repository<Long, LabProblem> labProblemRepository =
           new FileRepository<>(
               labProblemValidator,
               repoPath("labProblems"),
               ";",
-              (line, delimiter) -> {
-                List<String> params = Arrays.asList(line.split(delimiter));
-                LabProblem labProblem =
-                    new LabProblem(Integer.parseInt(params.get(1)), params.get(2));
-                labProblem.setId(Long.parseLong(params.get(0)));
-                return labProblem;
-              });
+              LabProblem.objectFromFileLine());
       StudentService studentService = new StudentService(studentRepository);
       LabProblemService labProblemService = new LabProblemService(labProblemRepository);
       Console console = new Console(studentService, labProblemService);

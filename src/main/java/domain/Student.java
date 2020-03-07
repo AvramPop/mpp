@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 /** A student having group (positive integer), name (nonempty) and serialNumber (nonempty). */
@@ -76,13 +78,14 @@ public class Student extends BaseEntity<Long> {
     return Objects.hash(serialNumber, name, group);
   }
 
-  @Override
-  public Student objectFromFileLine(String fileLine, String delimiter) {
-
-    String[] components = fileLine.split(";");
-    Student newEntity = new Student(components[1], components[2], Integer.parseInt(components[3]));
-    newEntity.setId(Long.parseLong(components[0]));
-    return newEntity;
+  public static ObjectFromFileLine<Student> objectFromFileLine() {
+    return (line, delimiter) -> {
+      List<String> params = Arrays.asList(line.split(delimiter));
+      Student student =
+          new Student(params.get(1), params.get(2), Integer.parseInt(params.get(3)));
+      student.setId(Long.parseLong(params.get(0)));
+      return student;
+    };
   }
 
   @Override
