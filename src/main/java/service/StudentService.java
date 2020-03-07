@@ -21,7 +21,15 @@ public class StudentService {
     this.repository = repository;
   }
 
-
+  /**
+   * Updates a student inside the repository
+   * @param id id number of entity to be updated
+   * @param serialNumber serial number of entity to be updated
+   * @param name name of entity to be updated
+   * @param group group number of entity to be updated
+   * @return an {@code Optional} containing the null if successfully added or the entity passed to the repository otherwise
+   * @throws ValidatorException if the object is incorrectly defined by the user
+   */
   public void addStudent(Long id, String serialNumber, String name, int group) throws ValidatorException {
     Student newStudent = new Student(serialNumber, name, group);
     newStudent.setId(id);
@@ -48,6 +56,15 @@ public class StudentService {
     return repository.delete(id);
   }
 
+  /**
+   * Updates a student inside the repository
+   * @param id id number of entity to be updated
+   * @param serialNumber serial number of entity to be updated
+   * @param name name of entity to be updated
+   * @param group group number of entity to be updated
+   * @return an {@code Optional} containing the null if successfully updated or the entity passed to the repository otherwise
+   * @throws ValidatorException if the object is incorrectly defined by the user
+   */
   public Optional<Student> updateStudent(Long id, String serialNumber, String name, int group) throws ValidatorException {
     Student student = new Student(serialNumber, name, group);
     student.setId(id);

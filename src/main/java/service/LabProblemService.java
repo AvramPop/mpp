@@ -18,7 +18,14 @@ public class LabProblemService {
     this.repository = repository;
   }
 
-
+  /**
+   * Adds a lab problem inside the repository
+   * @param id id number of entity to be updated
+   * @param problemNumber problem number of entity to be updated
+   * @param description description of entity to be updated
+   * @return an {@code Optional} containing the null if successfully added or the passed entity otherwise
+   * @throws ValidatorException if the object is incorrectly defined by the user
+   */
   public Optional<LabProblem> addLabProblem(Long id, int problemNumber, String description) throws ValidatorException {
     LabProblem newLabProblem = new LabProblem(problemNumber, description);
     newLabProblem.setId(id);
@@ -59,7 +66,14 @@ public class LabProblemService {
     return repository.delete(id);
   }
 
-
+  /**
+   * Updates a lab problem inside the repository
+   * @param id id number of entity to be updated
+   * @param problemNumber problem number of entity to be updated
+   * @param description description of entity to be updated
+   * @return an {@code Optional} containing the null if successfully updated or the entity sent to the repository
+   * @throws ValidatorException if the object is incorrectly defined by the user
+   */
   public Optional<LabProblem> updateLabProblem(Long id, int problemNumber, String description) throws ValidatorException {
     LabProblem newLabProblem = new LabProblem(problemNumber, description);
     newLabProblem.setId(id);
