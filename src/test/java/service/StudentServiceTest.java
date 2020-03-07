@@ -81,4 +81,113 @@ class StudentServiceTest {
     studentService.addStudent(student);
     Assertions.assertEquals(studentService.getAllStudents().size(), 1);
   }
+  
+  @Test
+  void
+  Given_StudentRepositoryWithOneEntity_When_DeletingAnEntityInsideTheRepository_Then_NumberOfEntitiesReturnedIsZero() {
+
+    studentService.addStudent(student);
+    studentService.deleteStudent(student.getId());
+    Assertions.assertEquals(studentService.getAllStudents().size(), 0);
+  }
+
+  @Test
+  void
+  Given_StudentRepositoryWithOneEntity_When_DeletingAnEntityInsideTheRepository_Then_TheReturnedOptionalIsNotNull() {
+    studentService.addStudent(student);
+    Assertions.assertTrue(studentService.deleteStudent(student.getId()).isPresent());
+  }
+
+  @Test
+  void
+  Given_StudentRepositoryWithOneEntity_When_DeletingAnEntityInsideTheRepository_Then_TheReturnedOptionalContainsTheEntity() {
+    studentService.addStudent(student);
+    Assertions.assertEquals(
+        studentService.deleteStudent(student.getId()).get(), student);
+  }
+
+  @Test
+  void
+  Given_EmptyRepository_When_DeletingAnEntityInsideTheRepository_Then_TheReturnedOptionalIsNull() {
+    Assertions.assertFalse(studentService.deleteStudent(student.getId()).isPresent());
+  }
+
+  @Test
+  void Given_EmptyRepository_When_DeletingANull_Then_ThenThrowsIllegalArgumentException() {
+    Assertions.assertThrows(
+        IllegalArgumentException.class, () -> studentService.deleteStudent(null));
+  }
+
+
+  @Test
+  void
+  Given_StudentRepositoryWithOneEntity_When_DeletingAnEntityNotInsideTheRepository_Then_TheReturnedOptionalIsNull() {
+    studentService.addStudent(student);
+    Assertions.assertFalse(studentService.deleteStudent(NEW_ID).isPresent());
+  }
+
+  @Test
+  void
+  Given_StudentRepositoryWithOneEntity_When_UpdatingTheEntity_Then_UpdateSucceedsReturnsEmptyOptional() {
+    studentService.addStudent(student);
+    student.setSerialNumber(NEW_SERIAL_NUMBER);
+    Assertions.assertFalse(studentService.updateStudent(student).isPresent());
+  }
+
+  @Test
+  void
+  Given_StudentRepositoryWithOneEntity_When_UpdatingTheEntity_Then_EntityIsUpdated() {
+    studentService.addStudent(student);
+    student.setSerialNumber(NEW_SERIAL_NUMBER);
+    studentService.updateStudent(student);
+    Assertions.assertEquals(student, studentService.getAllStudents().toArray()[0]);
+  }
+
+  @Test
+  void
+  Given_StudentRepositoryWithOneEntity_When_UpdatingNonExistingEntity_Then_UpdateFailsReturnsOptionalWithEntity() {
+    studentService.addStudent(student);
+    student.setId(2L);
+    Assertions.assertEquals(studentService.updateStudent(student).get(), student);
+  }
+
+  @Test
+  void Given_EmptyStudentRepository_When_FilteringByGroup_Then_ReturnsEmptySet() {
+    Assertions.assertEquals(studentService.filterByGroup(GROUP).size(), 0);
+  }
+
+  @Test
+  void
+  Given_StudentRepositoryWithOneEntity_When_FilteringByGroupWhichIsInRepository_Then_SetWithOneElement() {
+    studentService.addStudent(student);
+    Assertions.assertEquals(studentService.filterByGroup(GROUP).size(), 1);
+  }
+
+  @Test
+  void
+  Given_StudentRepositoryWithOneEntity_When_FindingByIdThatEntity_Then_ReturnOptionalContainingIt() {
+    studentService.addStudent(student);
+    Assertions.assertEquals(studentService.getStudentById(student.getId()).get(), student);
+  }
+
+  @Test
+  void
+  Given_StudentRepositoryWithOneEntity_When_FindingByIdThatEntity_Then_ReturnOptionalWithValueInside() {
+    studentService.addStudent(student);
+    Assertions.assertTrue(studentService.getStudentById(student.getId()).isPresent());
+  }
+
+  @Test
+  void
+  Given_StudentRepositoryWithOneEntity_When_FindingByIdOtherEntity_Then_ReturnOptionalWithNullInside() {
+    studentService.addStudent(student);
+    Assertions.assertFalse(studentService.getStudentById(2L).isPresent());
+  }
+
+  @Test
+  void
+  Given_StudentRepositoryWithOneEntity_When_FindingByIdWithInvalidId_Then_ThrowIllegalArgumentException() {
+    Assertions.assertThrows(IllegalArgumentException.class, () -> studentService.getStudentById(-1l));
+    Assertions.assertThrows(IllegalArgumentException.class, () -> studentService.getStudentById(null));
+  }
 }

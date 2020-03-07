@@ -47,8 +47,8 @@ public class StudentService {
    *
    * @param id the id of the student to be deleted
    */
-  public Optional<Student> deleteStudent(Long id) throws ValidatorException {
-    if (id == null || id < 0) throw new ValidatorException("Invalid id!");
+  public Optional<Student> deleteStudent(Long id) {
+    if (id == null || id < 0) throw new IllegalArgumentException("Invalid id!");
     return repository.delete(id);
   }
 
@@ -71,10 +71,25 @@ public class StudentService {
    * @return a {@code Set} - of entities filtered by the given group number
    */
   public Set<Student> filterByGroup(Integer group) {
+    if(group < 0) {
+      throw new IllegalArgumentException("group negative!");
+    }
     Iterable<Student> students = repository.findAll();
     Set<Student> filteredStudents = new HashSet<>();
     students.forEach(filteredStudents::add);
     filteredStudents.removeIf(entity -> entity.getGroup() != group);
     return filteredStudents;
+  }
+
+  /**
+   * Get Optional containing student with given id if there is one in the repository below.
+   * @param id to find student by
+   * @return Optional containing the sought Student or null otherwise
+   */
+  public Optional<Student> getStudentById(Long id) {
+    if(id == null || id < 0) {
+      throw new IllegalArgumentException("negative id!");
+    }
+    return repository.findOne(id);
   }
 }

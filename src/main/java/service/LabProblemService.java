@@ -39,12 +39,26 @@ public class LabProblemService {
   }
 
   /**
+   * Get Optional containing lab problem with given id if there is one in the repository below.
+   * @param id to find lab problem by
+   * @return Optional containing the sought LabProblem or null otherwise
+   */
+  public Optional<LabProblem> getLabProblemById(Long id) {
+    if(id == null || id < 0) {
+      throw new IllegalArgumentException("negative id!");
+    }
+    return repository.findOne(id);
+  }
+
+  /**
    * Deletes a lab problem from the repository
    *
    * @param id the id of the lab problem to be deleted
    */
-  public Optional<LabProblem> deleteLabProblem(Long id) throws ValidatorException {
-    if (id == null || id < 0) throw new ValidatorException("Invalid id!");
+  public Optional<LabProblem> deleteLabProblem(Long id) {
+    if (id == null || id < 0) {
+      throw new IllegalArgumentException("Invalid id!");
+    }
     return repository.delete(id);
   }
 
@@ -67,6 +81,9 @@ public class LabProblemService {
    * @return a {@code Set} - of entities filtered by the given problem number
    */
   public Set<LabProblem> filterByProblemNumber(Integer problemNumberToFilterBy) {
+    if(problemNumberToFilterBy < 0){
+      throw new IllegalArgumentException("problem number negative!");
+    }
     Iterable<LabProblem> labProblems = repository.findAll();
     Set<LabProblem> filteredLabProblems = new HashSet<>();
     labProblems.forEach(filteredLabProblems::add);

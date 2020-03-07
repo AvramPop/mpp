@@ -14,13 +14,13 @@ import java.util.Set;
 
 /** Console based user interface */
 public class Console {
-  private StudentService studentController;
-  private LabProblemService labProblemController;
+  private StudentService studentService;
+  private LabProblemService labProblemService;
   private HashMap<String, Runnable> dictionaryOfCommands;
 
-  public Console(StudentService studentController, LabProblemService labProblemController) {
-    this.studentController = studentController;
-    this.labProblemController = labProblemController;
+  public Console(StudentService studentService, LabProblemService labProblemService) {
+    this.studentService = studentService;
+    this.labProblemService = labProblemService;
     // I use lambda methods with a hash table to not to make if statements
     // if the thing fails it gets a null pointer exception
     // which means not a valid command
@@ -90,7 +90,7 @@ public class Console {
         System.out.println("Invalid input! ID must be positive number");
         return;
       }
-      studentController.addStudent(newStudent);
+      studentService.addStudent(newStudent);
 
     } catch (ValidatorException ex) {
       // ex.printStackTrace();
@@ -99,7 +99,7 @@ public class Console {
   }
   /** UI method for printing all students */
   private void printStudents() {
-    Set<Student> students = studentController.getAllStudents();
+    Set<Student> students = studentService.getAllStudents();
     students.forEach(System.out::println);
   }
   /** UI method for adding a lab problem */
@@ -109,13 +109,13 @@ public class Console {
       System.out.println("Invalid input! ID must be positive number");
       return;
     }
-    if (labProblemController.addLabProblem(newLabProblem).isEmpty())
+    if (labProblemService.addLabProblem(newLabProblem).isEmpty())
       System.out.println("Lab Problem added");
     else System.out.println("Lab Problem not added");
   }
   /** UI method for printing all lab problems */
   private void printLabProblems() {
-    Set<LabProblem> students = labProblemController.getAllLabProblems();
+    Set<LabProblem> students = labProblemService.getAllLabProblems();
     students.forEach(System.out::println);
   }
   /** UI method update a lab problem */
@@ -125,7 +125,7 @@ public class Console {
       System.out.println("Invalid input! ID must be positive number");
       return;
     }
-    if (labProblemController.updateLabProblem(newLabProblem).isEmpty())
+    if (labProblemService.updateLabProblem(newLabProblem).isEmpty())
       System.out.println("Lab Problem updated");
     else System.out.println("Lab Problem not updated");
   }
@@ -141,7 +141,7 @@ public class Console {
       System.out.println("Invalid input!");
       return;
     }
-    labProblemController.deleteLabProblem(id);
+    labProblemService.deleteLabProblem(id);
   }
   /** UI method filters lab problems by problem number */
   private void filterLabProblemsByProblemNumber() {
@@ -156,7 +156,7 @@ public class Console {
       return;
     }
 
-    Set<LabProblem> labProblems = labProblemController.filterByProblemNumber(problemNumber);
+    Set<LabProblem> labProblems = labProblemService.filterByProblemNumber(problemNumber);
     labProblems.forEach(System.out::println);
   }
   /** UI method for reading a new lab problem from the user */
@@ -208,7 +208,7 @@ public class Console {
       System.out.println("Invalid input! ID must be positive number");
       return;
     }
-    if (studentController.updateStudent(newStudent).isEmpty())
+    if (studentService.updateStudent(newStudent).isEmpty())
       System.out.println("Student updated");
     else System.out.println("Student not updated");
   }
@@ -224,7 +224,7 @@ public class Console {
       System.out.println("Invalid input!");
       return;
     }
-    studentController.deleteStudent(id);
+    studentService.deleteStudent(id);
   }
   /** UI method filters students by group number */
   private void filterStudentsByGroup() {
@@ -239,7 +239,7 @@ public class Console {
       return;
     }
 
-    Set<Student> students = studentController.filterByGroup(groupNumber);
+    Set<Student> students = studentService.filterByGroup(groupNumber);
     students.forEach(System.out::println);
   }
 }

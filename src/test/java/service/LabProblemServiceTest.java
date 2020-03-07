@@ -155,6 +155,15 @@ class LabProblemServiceTest {
 
   @Test
   void
+  Given_LabProblemRepositoryWithOneEntity_When_UpdatingTheEntity_Then_EntityIsUpdated() {
+    labProblemService.addLabProblem(labProblem);
+    labProblem.setDescription(NEW_DESCRIPTION);
+    labProblemService.updateLabProblem(labProblem);
+    Assertions.assertEquals(labProblem, labProblemService.getAllLabProblems().toArray()[0]);
+  }
+
+  @Test
+  void
       Given_LabProblemRepositoryWithOneEntity_When_UpdatingNonExistingEntity_Then_UpdateFailsReturnsOptionalWithEntity() {
     labProblemService.addLabProblem(labProblem);
     labProblem.setId(2L);
@@ -171,5 +180,33 @@ class LabProblemServiceTest {
       Given_LabProblemRepositoryWithOneEntity_When_FilteringByProblemNumberWhichIsInRepository_Then_SetWithOneElement() {
     labProblemService.addLabProblem(labProblem);
     Assertions.assertEquals(labProblemService.filterByProblemNumber(PROBLEM_NUMBER).size(), 1);
+  }
+
+  @Test
+  void
+  Given_LabProblemRepositoryWithOneEntity_When_FindingByIdThatEntity_Then_ReturnOptionalContainingIt() {
+    labProblemService.addLabProblem(labProblem);
+    Assertions.assertEquals(labProblemService.getLabProblemById(labProblem.getId()).get(), labProblem);
+  }
+
+  @Test
+  void
+  Given_LabProblemRepositoryWithOneEntity_When_FindingByIdThatEntity_Then_ReturnOptionalWithValueInside() {
+    labProblemService.addLabProblem(labProblem);
+    Assertions.assertTrue(labProblemService.getLabProblemById(labProblem.getId()).isPresent());
+  }
+
+  @Test
+  void
+  Given_LabProblemRepositoryWithOneEntity_When_FindingByIdOtherEntity_Then_ReturnOptionalWithNullInside() {
+    labProblemService.addLabProblem(labProblem);
+    Assertions.assertFalse(labProblemService.getLabProblemById(2L).isPresent());
+  }
+
+  @Test
+  void
+  Given_LabProblemRepositoryWithOneEntity_When_FindingByIdWithInvalidId_Then_ThrowIllegalArgumentException() {
+    Assertions.assertThrows(IllegalArgumentException.class, () -> labProblemService.getLabProblemById(-1l));
+    Assertions.assertThrows(IllegalArgumentException.class, () -> labProblemService.getLabProblemById(null));
   }
 }
