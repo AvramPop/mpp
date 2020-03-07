@@ -78,6 +78,14 @@ public class Student extends BaseEntity<Long> {
     return Objects.hash(serialNumber, name, group);
   }
 
+
+//  /**
+//   * Parse given string to object of the type of the generic
+//   *
+//   * @param fileLine given string to parse
+//   * @param delimiter character between object fields in fileLine
+//   * @return object of type given with member as parsed from string
+//   */
   public static ObjectFromFileLine<Student> objectFromFileLine() {
     return (line, delimiter) -> {
       List<String> params = Arrays.asList(line.split(delimiter));
