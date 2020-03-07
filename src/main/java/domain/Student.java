@@ -78,13 +78,15 @@ public class Student extends BaseEntity<Long> {
 
   @Override
   public Student objectFromFileLine(String fileLine, String delimiter) {
-    return null;
+
+    String[] components = fileLine.split(";");
+    Student newEntity = new Student(components[1], components[2], Integer.parseInt(components[3]));
+    newEntity.setId(Long.parseLong(components[0]));
+    return newEntity;
   }
 
   @Override
   public String objectToFileLine(String delimiter) {
-    return null;
+    return this.getId() + delimiter + this.serialNumber + delimiter + this.name + delimiter + this.group;
   }
-
-  public static void malac() {}
 }

@@ -21,15 +21,11 @@ public class StudentService {
     this.repository = repository;
   }
 
-  /**
-   * Adds a new student to the repository
-   *
-   * @param student the new entity to be added
-   * @throws ValidatorException in the case that the student entity is invalid, this is verified by
-   *     the student validator
-   */
-  public void addStudent(Student student) throws ValidatorException {
-    repository.save(student);
+
+  public void addStudent(Long id, String serialNumber, String name, int group) throws ValidatorException {
+    Student newStudent = new Student(serialNumber, name, group);
+    newStudent.setId(id);
+    repository.save(newStudent);
   }
 
   /**
@@ -52,15 +48,9 @@ public class StudentService {
     return repository.delete(id);
   }
 
-  /**
-   * Updates an existing entity in the repository with the same id
-   *
-   * @param student the student to be updated
-   * @return an {@code Optional} - null if the enti ty was updated otherwise (e.g. id does not exist)
-   *     * returns the entity.
-   */
-  public Optional<Student> updateStudent(Student student) throws ValidatorException {
-
+  public Optional<Student> updateStudent(Long id, String serialNumber, String name, int group) throws ValidatorException {
+    Student student = new Student(serialNumber, name, group);
+    student.setId(id);
     return repository.update(student);
   }
 

@@ -84,17 +84,24 @@ public class Console {
 
   /** UI method for adding a student */
   private void addStudent() {
+    System.out.println("Read student {id,serialNumber, name, group}");
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     try {
-      Student newStudent = readStudent();
-      if (newStudent == null) {
-        System.out.println("Invalid input! ID must be positive number");
-        return;
-      }
-      studentService.addStudent(newStudent);
+      System.out.println("Enter id: ");
+      long id = Long.parseLong(input.readLine().strip());
+      System.out.println("Enter serial number: ");
+      String serialNumber = input.readLine().strip();
+      System.out.println("Enter name: ");
+      String name = input.readLine().strip();
+      System.out.println("Enter group: ");
+      int group = Integer.parseInt(input.readLine().strip());
+      studentService.addStudent(id, serialNumber, name, group);
 
     } catch (ValidatorException ex) {
-      // ex.printStackTrace();
       System.out.println(ex.getMessage());
+    } catch(IOException | NumberFormatException e){
+      //      e.printStackTrace();
+      System.out.println("invalid input");
     }
   }
   /** UI method for printing all students */
@@ -104,14 +111,24 @@ public class Console {
   }
   /** UI method for adding a lab problem */
   private void addLabProblem() {
-    LabProblem newLabProblem = readLabProblem();
-    if (newLabProblem == null) {
-      System.out.println("Invalid input! ID must be positive number");
-      return;
+    System.out.println("Read lab problem {id, problem number, description}");
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    try {
+      System.out.println("Enter id: ");
+      long id = Long.parseLong(input.readLine().strip());
+      System.out.println("Enter problem number: ");
+      int problemNumber = Integer.parseInt(input.readLine().strip());
+      System.out.println("Enter description: ");
+      String description = input.readLine().strip();
+      if (labProblemService.addLabProblem(id, problemNumber, description).isEmpty())
+        System.out.println("Lab Problem added");
+      else System.out.println("Lab Problem not added");
+      }catch(ValidatorException e){
+      System.err.println(e.getMessage());
+    } catch (IOException | NumberFormatException ex) {
+      System.out.println("Invalid input!");
     }
-    if (labProblemService.addLabProblem(newLabProblem).isEmpty())
-      System.out.println("Lab Problem added");
-    else System.out.println("Lab Problem not added");
+
   }
   /** UI method for printing all lab problems */
   private void printLabProblems() {
@@ -120,14 +137,24 @@ public class Console {
   }
   /** UI method update a lab problem */
   private void updateLabProblem() {
-    LabProblem newLabProblem = readLabProblem();
-    if (newLabProblem == null) {
-      System.out.println("Invalid input! ID must be positive number");
-      return;
+    System.out.println("Read lab problem {id, problem number, description}");
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    try {
+      System.out.println("Enter id: ");
+      long id = Long.parseLong(input.readLine().strip());
+      System.out.println("Enter problem number: ");
+      int problemNumber = Integer.parseInt(input.readLine().strip());
+      System.out.println("Enter description: ");
+      String description = input.readLine().strip();
+      if (labProblemService.updateLabProblem(id, problemNumber, description).isEmpty())
+        System.out.println("Lab Problem updated");
+      else System.out.println("Lab Problem not updated");
+    }catch(ValidatorException e){
+      System.err.println(e.getMessage());
+    } catch (IOException | NumberFormatException ex) {
+      System.out.println("Invalid input!");
     }
-    if (labProblemService.updateLabProblem(newLabProblem).isEmpty())
-      System.out.println("Lab Problem updated");
-    else System.out.println("Lab Problem not updated");
+
   }
   /** UI method deletes a lab problem */
   private void deleteLabProblem() {
@@ -159,31 +186,11 @@ public class Console {
     Set<LabProblem> labProblems = labProblemService.filterByProblemNumber(problemNumber);
     labProblems.forEach(System.out::println);
   }
-  /** UI method for reading a new lab problem from the user */
-  private LabProblem readLabProblem() {
-    System.out.println("Read lab problem {id, problem number, description}");
-    LabProblem newLabProblem = null;
-    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-    try {
-      System.out.println("Enter id: ");
-      long id = Long.parseLong(input.readLine().strip());
-      System.out.println("Enter problem number: ");
-      int problemNumber = Integer.parseInt(input.readLine().strip());
-      System.out.println("Enter description: ");
-      String description = input.readLine().strip();
-      newLabProblem = new LabProblem(problemNumber, description);
-      newLabProblem.setId(id);
-    } catch (IOException | NumberFormatException ex) {
-      System.out.println("Invalid input!");
-    }
-    return newLabProblem;
-  }
-  /** UI method for reading a new student from the user */
-  private Student readStudent() {
-    System.out.println("Read student {id,serialNumber, name, group}");
 
+  /** UI method update a student */
+  private void updateStudent() {
+    System.out.println("Update student {id,serialNumber, name, group}");
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-    Student newStudent = null;
     try {
       System.out.println("Enter id: ");
       long id = Long.parseLong(input.readLine().strip());
@@ -193,24 +200,16 @@ public class Console {
       String name = input.readLine().strip();
       System.out.println("Enter group: ");
       int group = Integer.parseInt(input.readLine().strip());
-      newStudent = new Student(serialNumber, name, group);
-      newStudent.setId(id);
-    } catch (IOException | NumberFormatException ex) {
-      System.out.println("Invalid input!");
+      if (studentService.updateStudent(id, serialNumber, name, group).isEmpty())
+        System.out.println("Student updated");
+      else System.out.println("Student not updated");
+    } catch (ValidatorException ex) {
+      // ex.printStackTrace();
+      System.out.println(ex.getMessage());
+    } catch(IOException | NumberFormatException e){
+      //      e.printStackTrace();
+      System.err.println("invalid input");
     }
-    return newStudent;
-  }
-
-  /** UI method update a student */
-  private void updateStudent() {
-    Student newStudent = readStudent();
-    if (newStudent == null) {
-      System.out.println("Invalid input! ID must be positive number");
-      return;
-    }
-    if (studentService.updateStudent(newStudent).isEmpty())
-      System.out.println("Student updated");
-    else System.out.println("Student not updated");
   }
   /** UI method deletes a student */
   private void deleteStudent() {
