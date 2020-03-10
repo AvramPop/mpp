@@ -54,7 +54,7 @@ public class LabProblem extends BaseEntity<Long> {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     LabProblem that = (LabProblem) o;
-    return problemNumber == that.problemNumber && Objects.equals(description, that.description);
+    return getId() == that.getId();
   }
 
   @Override
@@ -78,13 +78,5 @@ public class LabProblem extends BaseEntity<Long> {
 
 
 
-  public static ObjectFromFileLine<LabProblem> objectFromFileLine() {
-    return (line, delimiter) -> {
-      List<String> params = Arrays.asList(line.split(delimiter));
-      LabProblem labProblem =
-          new LabProblem(Integer.parseInt(params.get(1)), params.get(2));
-      labProblem.setId(Long.parseLong(params.get(0)));
-      return labProblem;
-    };
-  }
+
 }

@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"ro.ubb"},{"l":"ro.ubb.domain"},{"l":"ro.ubb.domain.exceptions"},{"l":"ro.ubb.domain.validators"},{"l":"ro.ubb.repository"},{"l":"ro.ubb.service"},{"l":"ro.ubb.UI"}]

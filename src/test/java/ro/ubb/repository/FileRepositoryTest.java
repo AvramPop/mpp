@@ -29,16 +29,10 @@ class FileRepositoryTest {
     labProblem.setId(1L);
     repository =
         new FileRepository<>(
-            new LabProblemValidator(),
             repoPath(),
             ";",
-            (line, delimiter) -> {
-              List<String> params = Arrays.asList(line.split(delimiter));
-              LabProblem labProblem =
-                  new LabProblem(Integer.parseInt(params.get(1)), params.get(2));
-              labProblem.setId(Long.parseLong(params.get(0)));
-              return labProblem;
-            });
+                FileLineEntityFactory.labProblemFromFileLine()
+           );
     repository.save(labProblem);
   }
 

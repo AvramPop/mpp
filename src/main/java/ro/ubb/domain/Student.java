@@ -68,9 +68,7 @@ public class Student extends BaseEntity<Long> {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Student student = (Student) o;
-    return group == student.group
-        && Objects.equals(serialNumber, student.serialNumber)
-        && Objects.equals(name, student.name);
+    return getId() == student.getId();
   }
 
   @Override
@@ -86,15 +84,7 @@ public class Student extends BaseEntity<Long> {
 //   * @param delimiter character between object fields in fileLine
 //   * @return object of type given with member as parsed from string
 //   */
-  public static ObjectFromFileLine<Student> objectFromFileLine() {
-    return (line, delimiter) -> {
-      List<String> params = Arrays.asList(line.split(delimiter));
-      Student student =
-          new Student(params.get(1), params.get(2), Integer.parseInt(params.get(3)));
-      student.setId(Long.parseLong(params.get(0)));
-      return student;
-    };
-  }
+
 
   @Override
   public String objectToFileLine(String delimiter) {

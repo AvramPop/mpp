@@ -2,6 +2,7 @@ package ro.ubb.service;
 
 import ro.ubb.domain.Student;
 import ro.ubb.domain.exceptions.ValidatorException;
+import ro.ubb.domain.validators.Validator;
 import ro.ubb.repository.Repository;
 
 import java.util.HashSet;
@@ -16,9 +17,10 @@ import java.util.stream.StreamSupport;
  */
 public class StudentService {
   private Repository<Long, Student> repository;
-
-  public StudentService(Repository<Long, Student> repository) {
+  private Validator<Student> validator;
+  public StudentService(Repository<Long, Student> repository,Validator<Student> validator) {
     this.repository = repository;
+    this.validator =validator;
   }
 
   /**
@@ -33,6 +35,9 @@ public class StudentService {
   public Optional<Student> addStudent(Long id, String serialNumber, String name, int group) throws ValidatorException {
     Student newStudent = new Student(serialNumber, name, group);
     newStudent.setId(id);
+
+    validator.validate(newStudent);
+
     return repository.save(newStudent);
   }
 
@@ -70,6 +75,7 @@ public class StudentService {
   public Optional<Student> updateStudent(Long id, String serialNumber, String name, int group) throws ValidatorException {
     Student student = new Student(serialNumber, name, group);
     student.setId(id);
+    validator.validate(student);
     return repository.update(student);
   }
 

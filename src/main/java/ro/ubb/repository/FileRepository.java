@@ -23,17 +23,15 @@ import java.util.stream.StreamSupport;
  */
 public class FileRepository<ID, T extends BaseEntity<ID>> implements Repository<ID, T> {
 
-  Validator<T> validator;
+
   String filename;
   String delimiter;
   ObjectFromFileLine<T> converterFunction;
 
   public FileRepository(
-      Validator<T> validator,
       String filename,
       String delimiter,
       ObjectFromFileLine<T> converterFunction) {
-    this.validator = validator;
     this.filename = filename;
     this.delimiter = delimiter;
     this.converterFunction = converterFunction;
@@ -79,7 +77,6 @@ public class FileRepository<ID, T extends BaseEntity<ID>> implements Repository<
     if (entity == null) {
       throw new IllegalArgumentException("id must not be null");
     }
-    validator.validate(entity);
 
     Map<ID, T> entities =
         StreamSupport.stream(loadData().spliterator(), false)
@@ -130,7 +127,7 @@ public class FileRepository<ID, T extends BaseEntity<ID>> implements Repository<
     if (entity == null) {
       throw new IllegalArgumentException("entity must not be null");
     }
-    validator.validate(entity);
+
 
     Map<ID, T> entities =
         StreamSupport.stream(loadData().spliterator(), false)

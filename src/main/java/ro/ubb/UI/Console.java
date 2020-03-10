@@ -2,7 +2,9 @@ package ro.ubb.UI;
 
 import ro.ubb.domain.LabProblem;
 import ro.ubb.domain.Student;
+import ro.ubb.domain.exceptions.RepositoryException;
 import ro.ubb.domain.exceptions.ValidatorException;
+import ro.ubb.service.AssignmentService;
 import ro.ubb.service.LabProblemService;
 import ro.ubb.service.StudentService;
 
@@ -16,11 +18,13 @@ import java.util.Set;
 public class Console {
   private StudentService studentService;
   private LabProblemService labProblemService;
+  private AssignmentService assignmentService;
   private HashMap<String, Runnable> dictionaryOfCommands;
 
-  public Console(StudentService studentService, LabProblemService labProblemService) {
+  public Console(StudentService studentService, LabProblemService labProblemService, AssignmentService assignmentService) {
     this.studentService = studentService;
     this.labProblemService = labProblemService;
+    this.assignmentService = assignmentService;
     // I use lambda methods with a hash table to not to make if statements
     // if the thing fails it gets a null pointer exception
     // which means not a valid command
@@ -44,7 +48,33 @@ public class Console {
     dictionaryOfCommands.put("update student", this::updateStudent);
     dictionaryOfCommands.put("delete student", this::deleteStudent);
     dictionaryOfCommands.put("filter students", this::filterStudentsByGroup);
+    dictionaryOfCommands.put("add assignment", this::addAssignment);
     dictionaryOfCommands.put("exit", () -> System.exit(0));
+  }
+
+  private void addAssignment() {
+    System.out.println("Read assignment {id, studentId, labProblemId}");
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    try {
+      System.out.println("Enter id: ");
+      long id = Long.parseLong(input.readLine().strip());
+      System.out.println("Enter studentId: ");
+      long studentId = Long.parseLong(input.readLine().strip());
+      System.out.println("Enter labProblemId: ");
+      long labProblemId = Long.parseLong(input.readLine().strip());
+      if (assignmentService.addAssignment(id, studentId, labProblemId).isEmpty())
+        System.out.println("Assignment added");
+      else System.out.println("Assignment not added");
+    }catch(ValidatorException e){
+      System.err.println(e.getMessage());
+    } catch (IOException | NumberFormatException ex) {
+      System.out.println("Invalid input!");
+    }
+    catch (RepositoryException ex) {
+      System.out.println("Invalid assignment");
+    }
+
+
   }
 
   /** ro.ubb.Main loop of the user interface */
@@ -79,6 +109,7 @@ public class Console {
     System.out.println("- update student");
     System.out.println("- delete student");
     System.out.println("- filter students");
+    System.out.println("- add assignment");
     System.out.println("- exit");
   }
 
@@ -97,6 +128,7 @@ public class Console {
       int group = Integer.parseInt(input.readLine().strip());
       if (studentService.addStudent(id, serialNumber, name, group).isEmpty())
         System.out.println("Student added");
+      else System.out.println("Student not added");
 
     } catch (ValidatorException ex) {
       System.out.println(ex.getMessage());

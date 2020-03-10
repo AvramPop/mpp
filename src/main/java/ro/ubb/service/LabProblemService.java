@@ -2,6 +2,7 @@ package ro.ubb.service;
 
 import ro.ubb.domain.LabProblem;
 import ro.ubb.domain.exceptions.ValidatorException;
+import ro.ubb.domain.validators.Validator;
 import ro.ubb.repository.Repository;
 
 import java.util.HashSet;
@@ -13,9 +14,10 @@ import java.util.stream.StreamSupport;
 public class LabProblemService {
 
   private Repository<Long, LabProblem> repository;
-
-  public LabProblemService(Repository<Long, LabProblem> repository) {
+  private Validator<LabProblem> labProblemValidator;
+  public LabProblemService(Repository<Long, LabProblem> repository, Validator<LabProblem> labProblemValidator) {
     this.repository = repository;
+    this.labProblemValidator = labProblemValidator;
   }
 
   /**
@@ -29,6 +31,9 @@ public class LabProblemService {
   public Optional<LabProblem> addLabProblem(Long id, int problemNumber, String description) throws ValidatorException {
     LabProblem newLabProblem = new LabProblem(problemNumber, description);
     newLabProblem.setId(id);
+
+    labProblemValidator.validate(newLabProblem);
+
     return repository.save(newLabProblem);
   }
 
@@ -78,6 +83,10 @@ public class LabProblemService {
   public Optional<LabProblem> updateLabProblem(Long id, int problemNumber, String description) throws ValidatorException {
     LabProblem newLabProblem = new LabProblem(problemNumber, description);
     newLabProblem.setId(id);
+
+    labProblemValidator.validate(newLabProblem);
+
+
     return repository.update(newLabProblem);
   }
 

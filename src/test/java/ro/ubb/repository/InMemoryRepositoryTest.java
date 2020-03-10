@@ -19,7 +19,7 @@ class InMemoryRepositoryTest {
 
   @BeforeEach
   void setUp() {
-    repository = new InMemoryRepository<>(new StudentValidator());
+    repository = new InMemoryRepository<>();
     student = new Student("sn1", "studentName", 1);
     student.setId(1L);
     repository.save(student);

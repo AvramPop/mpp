@@ -18,10 +18,8 @@ import java.util.Optional;
 public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Repository<ID, T> {
 
   private Map<ID, T> entities;
-  private Validator<T> validator;
 
-  public InMemoryRepository(Validator<T> validator) {
-    this.validator = validator;
+  public InMemoryRepository() {
     entities = new HashMap<>();
   }
   /**
@@ -59,7 +57,7 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
     if (entity == null) {
       throw new IllegalArgumentException("id must not be null");
     }
-    validator.validate(entity);
+
     return Optional.ofNullable(entities.putIfAbsent(entity.getId(), entity));
   }
 
@@ -93,7 +91,7 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
     if (entity == null) {
       throw new IllegalArgumentException("entity must not be null");
     }
-    validator.validate(entity);
+
     return Optional.ofNullable(
         entities.computeIfPresent(entity.getId(), (k, v) -> entity) == null ? entity : null);
   }
