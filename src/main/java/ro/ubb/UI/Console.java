@@ -1,5 +1,6 @@
 package ro.ubb.UI;
 
+import ro.ubb.domain.Assignment;
 import ro.ubb.domain.LabProblem;
 import ro.ubb.domain.Student;
 import ro.ubb.domain.exceptions.RepositoryException;
@@ -49,7 +50,16 @@ public class Console {
     dictionaryOfCommands.put("delete student", this::deleteStudent);
     dictionaryOfCommands.put("filter students", this::filterStudentsByGroup);
     dictionaryOfCommands.put("add assignment", this::addAssignment);
+    dictionaryOfCommands.put("print assignments", this::printAssignments);
     dictionaryOfCommands.put("exit", () -> System.exit(0));
+  }
+
+  private void printAssignments() {
+
+    Set<Assignment> students = assignmentService.getAllAssignments();
+    students.forEach(System.out::println);
+
+
   }
 
   private void addAssignment() {
@@ -110,6 +120,7 @@ public class Console {
     System.out.println("- delete student");
     System.out.println("- filter students");
     System.out.println("- add assignment");
+    System.out.println("- print assignments");
     System.out.println("- exit");
   }
 

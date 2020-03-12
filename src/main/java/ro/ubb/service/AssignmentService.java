@@ -8,6 +8,9 @@ import ro.ubb.domain.validators.Validator;
 import ro.ubb.repository.Repository;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class AssignmentService {
 
@@ -31,7 +34,12 @@ public class AssignmentService {
           assignmentValidator.validate(assignment);
           return repository.save(assignment);
         }
-    throw new RepositoryException("Invalid assignment");
+        throw new RepositoryException("Invalid assignment");
+    }
+
+    public Set<Assignment> getAllAssignments() {
+        Iterable<Assignment> problems = repository.findAll();
+        return StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toSet());
     }
 
 }
