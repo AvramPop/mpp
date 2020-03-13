@@ -29,8 +29,8 @@ class LabProblemServiceTest {
     labProblem = new LabProblem(PROBLEM_NUMBER, DESCRIPTION);
     labProblem.setId(ID);
     labProblemValidator = new LabProblemValidator();
-    labProblemRepository = new InMemoryRepository<>(labProblemValidator);
-    labProblemService = new LabProblemService(labProblemRepository);
+    labProblemRepository = new InMemoryRepository<>();
+    labProblemService = new LabProblemService(labProblemRepository, labProblemValidator);
   }
 
   @AfterEach

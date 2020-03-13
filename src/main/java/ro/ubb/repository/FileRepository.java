@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
- * Volatile generic data ro.ubb.repository holding everything in a file specified in the constructor
+ * Non-volatile generic data ro.ubb.repository holding everything in a file specified in the constructor
  * if the filename is empty it generates a default file
  *
  * @param <ID> type of the id of given entity to store

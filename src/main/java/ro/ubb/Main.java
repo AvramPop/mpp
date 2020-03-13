@@ -15,7 +15,9 @@ import ro.ubb.domain.validators.AssignmentValidator;
 import ro.ubb.domain.validators.LabProblemValidator;
 import ro.ubb.domain.validators.StudentValidator;
 import ro.ubb.domain.validators.Validator;
-import ro.ubb.repository.*;
+import ro.ubb.repository.Repository;
+import ro.ubb.repository.XMLElementToEntityFactory;
+import ro.ubb.repository.XMLRepository;
 import ro.ubb.service.AssignmentService;
 import ro.ubb.service.LabProblemService;
 import ro.ubb.service.StudentService;
@@ -82,15 +84,15 @@ public class Main {
 
       Repository<Long, Student> studentRepository =
           new XMLRepository<>(
-              repoPathXMLFile("students"), XMLElementToEntityFacotry.studentObjectFromXMLFile());
+              repoPathXMLFile("students"), XMLElementToEntityFactory.studentObjectFromXMLFile());
       Repository<Long, LabProblem> labProblemRepository =
           new XMLRepository<>(
               repoPathXMLFile("labProblems"),
-              XMLElementToEntityFacotry.labProblemObjectFromXMLFile());
+              XMLElementToEntityFactory.labProblemObjectFromXMLFile());
       Repository<Long, Assignment> assignmentRepository =
           new XMLRepository<>(
               repoPathXMLFile("assignments"),
-              XMLElementToEntityFacotry.assignmentObjectFromXMLFile());
+              XMLElementToEntityFactory.assignmentObjectFromXMLFile());
 
       StudentService studentService = new StudentService(studentRepository, studentValidator);
       LabProblemService labProblemService =

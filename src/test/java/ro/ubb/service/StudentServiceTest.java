@@ -30,8 +30,8 @@ class StudentServiceTest {
     student = new Student(SERIAL_NUMBER, NAME, GROUP);
     student.setId(ID);
     studentValidator = new StudentValidator();
-    studentRepository = new InMemoryRepository<>(studentValidator);
-    studentService = new StudentService(studentRepository);
+    studentRepository = new InMemoryRepository<>();
+    studentService = new StudentService(studentRepository, studentValidator);
   }
 
   @AfterEach

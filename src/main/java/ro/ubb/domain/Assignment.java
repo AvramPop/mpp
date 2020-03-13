@@ -4,8 +4,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 public class Assignment extends BaseEntity<Long> {

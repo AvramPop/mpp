@@ -6,14 +6,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import ro.ubb.domain.BaseEntity;
-import ro.ubb.domain.ObjectFromFileLine;
 import ro.ubb.domain.ObjectFromXMLFile;
 import ro.ubb.domain.exceptions.ValidatorException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -28,6 +26,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
 
+/**
+ * Non-volatile generic data ro.ubb.repository holding everything in a XML-file specified in the constructor
+ * if the filename is empty it generates a default file
+ *
+ * @param <ID> type of the id of given entity to store
+ * @param <T> type of entity to store
+ */
 public class XMLRepository<ID, T extends BaseEntity<ID>> implements Repository<ID, T> {
 
   private String filename;
@@ -198,9 +203,9 @@ public class XMLRepository<ID, T extends BaseEntity<ID>> implements Repository<I
     }
   }
   /**
-   * Loads the data from the file
+   * Loads the data from the XML document
    *
-   * @return all entitites
+   * @return Iterable of all entitites
    */
   private Iterable<T> loadData() {
 
@@ -224,7 +229,7 @@ public class XMLRepository<ID, T extends BaseEntity<ID>> implements Repository<I
     return newEntities;
   }
   /**
-   * Saves an entity to the file
+   * Saves an entity to the XML document
    *
    * @param entitiesToSave the entities to be saved on the file
    */
@@ -243,7 +248,7 @@ public class XMLRepository<ID, T extends BaseEntity<ID>> implements Repository<I
   }
 
   /**
-   * Saves an entity to the file
+   * Saves an entity to the XML document
    *
    * @param entity the entity to be saved on the list
    */

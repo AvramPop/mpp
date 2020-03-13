@@ -3,7 +3,7 @@ package ro.ubb.domain;
 import org.w3c.dom.Element;
 
 /**
- * Functional interface converts string with a given delimiter to object of type T
+ * Functional interface converts XML element to object of type T
  *
  * @param <T> the class implementing
  */
