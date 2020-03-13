@@ -22,9 +22,9 @@ import java.util.stream.StreamSupport;
  */
 public class FileRepository<ID, T extends BaseEntity<ID>> implements Repository<ID, T> {
 
-  String filename;
-  String delimiter;
-  ObjectFromFileLine<T> converterFunction;
+  private String filename;
+  private String delimiter;
+  private ObjectFromFileLine<T> converterFunction;
 
   public FileRepository(
       String filename, String delimiter, ObjectFromFileLine<T> converterFunction) {

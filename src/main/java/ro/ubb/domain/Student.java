@@ -1,5 +1,11 @@
 package ro.ubb.domain;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 /** A student having group (positive integer), name (nonempty) and serialNumber (nonempty). */
@@ -66,7 +72,7 @@ public class Student extends BaseEntity<Long> {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Student student = (Student) o;
-    return getId() == student.getId();
+    return getId().equals(student.getId());
   }
 
   @Override
@@ -92,4 +98,22 @@ public class Student extends BaseEntity<Long> {
         + delimiter
         + this.group;
   }
+
+  @Override
+  public  Node objectToXMLNode(Document document){
+    Element studentElement = document.createElement("student");
+    studentElement.setAttribute("Id", this.getId().toString());
+    appendChildWithTextToNode(document,studentElement,"serialNumber",this.serialNumber);
+    appendChildWithTextToNode(document,studentElement,"name",this.name);
+    appendChildWithTextToNode(document,studentElement,"group",Integer.toString(this.group));
+    return studentElement;
+  }
+  private  void appendChildWithTextToNode(Document document, Node parentNode, String tagName, String textContent) {
+
+      Element element = document.createElement(tagName);
+      element.setTextContent(textContent);
+      parentNode.appendChild(element);
+
+  }
+
 }

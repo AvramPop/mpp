@@ -1,13 +1,26 @@
 package ro.ubb.domain;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class Assignment extends BaseEntity<Long> {
 
-  Long studentId;
-  Long labProblemId;
-  int grade;
+  private Long studentId;
+  private Long labProblemId;
+  private int grade;
 
+    public Assignment() {
+    }
+
+    public Assignment(Long studentId, Long labProblemId) {
+        this.studentId = studentId;
+        this.labProblemId = labProblemId;
+    }
   public Assignment(Long studentId, Long labProblemId, int grade) {
     this.studentId = studentId;
     this.labProblemId = labProblemId;
@@ -33,7 +46,7 @@ public class Assignment extends BaseEntity<Long> {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Assignment that = (Assignment) o;
-    return getId() == that.getId();
+    return getId().equals(that.getId());
   }
 
   @Override
@@ -41,21 +54,21 @@ public class Assignment extends BaseEntity<Long> {
     return Objects.hash(studentId, labProblemId, grade);
   }
 
-  public Long getStudentId() {
-    return studentId;
-  }
+    public Long getStudentId() {
+        return studentId;
+    }
 
-  public void setStudentId(Long studentId) {
-    this.studentId = studentId;
-  }
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
+    }
 
-  public Long getLabProblemId() {
-    return labProblemId;
-  }
+    public Long getLabProblemId() {
+        return labProblemId;
+    }
 
-  public void setLabProblemId(Long labProblemId) {
-    this.labProblemId = labProblemId;
-  }
+    public void setLabProblemId(Long labProblemId) {
+        this.labProblemId = labProblemId;
+    }
 
   public int getGrade(){
     return grade;
@@ -65,8 +78,25 @@ public class Assignment extends BaseEntity<Long> {
     this.grade = grade;
   }
 
-  @Override
-  public String objectToFileLine(String delimiter) {
-    return this.getId() + delimiter + this.studentId + delimiter + this.labProblemId + delimiter + grade;
-  }
+    @Override
+    public String objectToFileLine(String delimiter) {
+        return this.getId() + delimiter + this.studentId + delimiter + this.labProblemId + delimiter + grade;
+    }
+
+    @Override
+    public  Node objectToXMLNode(Document document){
+        Element assignmentElement = document.createElement("assignment");
+        assignmentElement.setAttribute("Id", this.getId().toString());
+        appendChildWithTextToNode(document,assignmentElement,"studentId",Long.toString(this.studentId));
+        appendChildWithTextToNode(document,assignmentElement,"labProblemId",Long.toString(this.labProblemId));
+        return assignmentElement;
+    }
+    private  void appendChildWithTextToNode(Document document, Node parentNode, String tagName, String textContent) {
+
+        Element element = document.createElement(tagName);
+        element.setTextContent(textContent);
+        parentNode.appendChild(element);
+
+    }
+
 }

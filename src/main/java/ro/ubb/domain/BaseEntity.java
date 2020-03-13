@@ -1,10 +1,14 @@
 package ro.ubb.domain;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+
 /**
  * A base class to be extended by any in ro.ubb.domain, having only an id.
  *
  * @param <ID> the type of the identifier
  */
-public abstract class BaseEntity<ID> {
+public abstract class BaseEntity<ID>{
   private ID id;
 
   public ID getId() {
@@ -27,4 +31,7 @@ public abstract class BaseEntity<ID> {
    * @return this in file-string format
    */
   public abstract String objectToFileLine(String delimiter);
+
+  public abstract Node objectToXMLNode(Document document);
+
 }
