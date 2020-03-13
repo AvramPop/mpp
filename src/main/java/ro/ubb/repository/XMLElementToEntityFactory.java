@@ -7,7 +7,7 @@ import ro.ubb.domain.*;
 import java.util.Arrays;
 import java.util.List;
 
-public class XMLElementToEntityFacotry {
+public class XMLElementToEntityFactory {
 
   public static ObjectFromXMLFile<Assignment> assignmentObjectFromXMLFile() {
     return (element) -> {

@@ -82,15 +82,15 @@ public class Main {
 
       Repository<Long, Student> studentRepository =
           new XMLRepository<>(
-              repoPathXMLFile("students"), XMLElementToEntityFacotry.studentObjectFromXMLFile());
+              repoPathXMLFile("students"), XMLElementToEntityFactory.studentObjectFromXMLFile());
       Repository<Long, LabProblem> labProblemRepository =
           new XMLRepository<>(
               repoPathXMLFile("labProblems"),
-              XMLElementToEntityFacotry.labProblemObjectFromXMLFile());
+              XMLElementToEntityFactory.labProblemObjectFromXMLFile());
       Repository<Long, Assignment> assignmentRepository =
           new XMLRepository<>(
               repoPathXMLFile("assignments"),
-              XMLElementToEntityFacotry.assignmentObjectFromXMLFile());
+              XMLElementToEntityFactory.assignmentObjectFromXMLFile());
 
       StudentService studentService = new StudentService(studentRepository, studentValidator);
       LabProblemService labProblemService =
