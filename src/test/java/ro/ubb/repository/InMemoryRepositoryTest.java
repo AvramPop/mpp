@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ro.ubb.domain.Student;
-import ro.ubb.domain.exceptions.ValidatorException;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -78,12 +77,6 @@ class InMemoryRepositoryTest {
   }
 
   @Test
-  void
-      Given_StudentRepositoryWithOneEntity_When_SavingInvalidEntity_Then_ThrowsValidatorException() {
-    Assertions.assertThrows(ValidatorException.class, () -> repository.save(new Student()));
-  }
-
-  @Test
   void Given_StudentRepositoryWithOneEntity_When_SavingNull_Then_ThrowsIllegalArgumentException() {
     Assertions.assertThrows(IllegalArgumentException.class, () -> repository.save(null));
   }
@@ -141,12 +134,6 @@ class InMemoryRepositoryTest {
     Student updatedStudent = new Student("sn1", "updatedStudentName", 1);
     updatedStudent.setId(1L);
     Assertions.assertFalse(repository.update(updatedStudent).isPresent());
-  }
-
-  @Test
-  void
-      Given_StudentRepositoryWithOneEntity_When_UpdatingInvalidEntity_Then_ThrowsValidatorException() {
-    Assertions.assertThrows(ValidatorException.class, () -> repository.update(new Student()));
   }
 
   @Test

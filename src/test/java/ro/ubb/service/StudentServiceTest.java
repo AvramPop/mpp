@@ -195,4 +195,16 @@ class StudentServiceTest {
     Assertions.assertThrows(
         IllegalArgumentException.class, () -> studentService.getStudentById(null));
   }
+
+  @Test
+  void
+  Given_StudentService_When_SavingInvalidEntity_Then_ThrowsValidatorException() {
+    Assertions.assertThrows(ValidatorException.class, () -> studentService.addStudent(null, "", "", -1));
+  }
+
+  @Test
+  void
+  Given_StudentService_When_UpdatingInvalidEntity_Then_ThrowsValidatorException() {
+    Assertions.assertThrows(ValidatorException.class, () -> studentService.updateStudent(null, "", "", -1));
+  }
 }

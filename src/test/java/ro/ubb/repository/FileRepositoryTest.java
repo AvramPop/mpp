@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ro.ubb.domain.LabProblem;
-import ro.ubb.domain.exceptions.ValidatorException;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -104,12 +103,6 @@ class FileRepositoryTest {
 
   @Test
   void
-      Given_LabProblemRepositoryWithOneEntity_When_SavingInvalidEntity_Then_ThrowsValidatorException() {
-    Assertions.assertThrows(ValidatorException.class, () -> repository.save(new LabProblem()));
-  }
-
-  @Test
-  void
       Given_LabProblemRepositoryWithOneEntity_When_SavingNull_Then_ThrowsIllegalArgumentException() {
     Assertions.assertThrows(IllegalArgumentException.class, () -> repository.save(null));
   }
@@ -168,12 +161,6 @@ class FileRepositoryTest {
     LabProblem labProblem = new LabProblem(2, "descriptionUpdated");
     labProblem.setId(1L);
     Assertions.assertFalse(repository.update(labProblem).isPresent());
-  }
-
-  @Test
-  void
-      Given_StudentRepositoryWithOneEntity_When_UpdatingInvalidEntity_Then_ThrowsValidatorException() {
-    Assertions.assertThrows(ValidatorException.class, () -> repository.update(new LabProblem()));
   }
 
   @Test
