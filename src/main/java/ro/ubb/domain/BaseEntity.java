@@ -8,7 +8,7 @@ import org.w3c.dom.Node;
  *
  * @param <ID> the type of the identifier
  */
-public abstract class BaseEntity<ID>{
+public abstract class BaseEntity<ID> {
   private ID id;
 
   public ID getId() {
@@ -33,5 +33,4 @@ public abstract class BaseEntity<ID>{
   public abstract String objectToFileLine(String delimiter);
 
   public abstract Node objectToXMLNode(Document document);
-
 }

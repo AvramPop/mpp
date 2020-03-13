@@ -31,7 +31,10 @@ public class FileLineEntityFactory {
     return (line, delimiter) -> {
       List<String> params = Arrays.asList(line.split(delimiter));
       Assignment assignment =
-          new Assignment(Long.parseLong(params.get(1)), Long.parseLong(params.get(2)), Integer.parseInt(params.get(3)));
+          new Assignment(
+              Long.parseLong(params.get(1)),
+              Long.parseLong(params.get(2)),
+              Integer.parseInt(params.get(3)));
       assignment.setId(Long.parseLong(params.get(0)));
       return assignment;
     };

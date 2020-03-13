@@ -83,8 +83,8 @@ public class AssignmentService {
    *     the ro.ubb.repository
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
-  public Optional<Assignment> updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
-      throws ValidatorException {
+  public Optional<Assignment> updateAssignment(
+      Long id, Long studentID, Long labProblemID, int grade) throws ValidatorException {
     if (studentService.getStudentById(studentID).isPresent()
         && labProblemService.getLabProblemById(labProblemID).isPresent()) {
       Assignment assignment = new Assignment(studentID, labProblemID, grade);

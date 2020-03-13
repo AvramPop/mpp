@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <students>
-    <student Id="1">
-        <serialNumber>a1</serialNumber>
-        <name>ma</name>
-        <group>1</group>
-    </student>
+
     <student Id="2">
         <serialNumber>m</serialNumber>
         <name>ads</name>
         <group>22</group>
+    </student>
+
+    <student Id="1">
+        <serialNumber>1</serialNumber>
+        <name>1</name>
+        <group>1</group>
     </student>
 </students>

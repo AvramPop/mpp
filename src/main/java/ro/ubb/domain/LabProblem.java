@@ -66,14 +66,14 @@ public class LabProblem extends BaseEntity<Long> {
     return Objects.hash(problemNumber, description);
   }
 
-//  @Override
-//  public LabProblem objectFromFileLine(String fileLine, String delimiter) {
-//
-//    String[] components = fileLine.split(";");
-//    LabProblem newEntity = new LabProblem(Integer.parseInt(components[1]), components[2]);
-//    newEntity.setId(Long.parseLong(components[0]));
-//    return newEntity;
-//  }
+  //  @Override
+  //  public LabProblem objectFromFileLine(String fileLine, String delimiter) {
+  //
+  //    String[] components = fileLine.split(";");
+  //    LabProblem newEntity = new LabProblem(Integer.parseInt(components[1]), components[2]);
+  //    newEntity.setId(Long.parseLong(components[0]));
+  //    return newEntity;
+  //  }
 
   @Override
   public String objectToFileLine(String delimiter) {
@@ -81,21 +81,20 @@ public class LabProblem extends BaseEntity<Long> {
   }
 
   @Override
-  public Node objectToXMLNode(Document document){
+  public Node objectToXMLNode(Document document) {
     Element studentElement = document.createElement("labProblem");
     studentElement.setAttribute("Id", this.getId().toString());
-    appendChildWithTextToNode(document,studentElement,"problemNumber", Integer.toString(this.problemNumber));
-    appendChildWithTextToNode(document,studentElement,"description",this.description);
+    appendChildWithTextToNode(
+        document, studentElement, "problemNumber", Integer.toString(this.problemNumber));
+    appendChildWithTextToNode(document, studentElement, "description", this.description);
     return studentElement;
   }
-  private  void appendChildWithTextToNode(Document document, Node parentNode, String tagName, String textContent) {
+
+  private void appendChildWithTextToNode(
+      Document document, Node parentNode, String tagName, String textContent) {
 
     Element element = document.createElement(tagName);
     element.setTextContent(textContent);
     parentNode.appendChild(element);
-
   }
-
-
-
 }

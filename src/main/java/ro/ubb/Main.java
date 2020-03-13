@@ -32,7 +32,7 @@ public class Main {
       Validator<Student> studentValidator = new StudentValidator();
       Validator<LabProblem> labProblemValidator = new LabProblemValidator();
       Validator<Assignment> assignmentValidator = new AssignmentValidator();
-      //Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+      // Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
       // Repository<Long, LabProblem> labProblemRepository =
       // new InMemoryRepository<>(labProblemValidator);
       try { // TODO probably should use try-with-resources
@@ -80,18 +80,17 @@ public class Main {
                       FileLineEntityFactory.assignmentObjectFromFileLine());
       */
 
-      Repository<Long,Student> studentRepository = new XMLRepository<>(
-              repoPathXMLFile("students"),
-              XMLElementToEntityFacotry.studentObjectFromXMLFile()
-              );
-      Repository<Long,LabProblem> labProblemRepository = new XMLRepository<>(
+      Repository<Long, Student> studentRepository =
+          new XMLRepository<>(
+              repoPathXMLFile("students"), XMLElementToEntityFacotry.studentObjectFromXMLFile());
+      Repository<Long, LabProblem> labProblemRepository =
+          new XMLRepository<>(
               repoPathXMLFile("labProblems"),
-              XMLElementToEntityFacotry.labProblemObjectFromXMLFile()
-      );
-      Repository<Long,Assignment> assignmentRepository = new XMLRepository<>(
+              XMLElementToEntityFacotry.labProblemObjectFromXMLFile());
+      Repository<Long, Assignment> assignmentRepository =
+          new XMLRepository<>(
               repoPathXMLFile("assignments"),
-              XMLElementToEntityFacotry.assignmentObjectFromXMLFile()
-      );
+              XMLElementToEntityFacotry.assignmentObjectFromXMLFile());
 
       StudentService studentService = new StudentService(studentRepository, studentValidator);
       LabProblemService labProblemService =
@@ -119,13 +118,12 @@ public class Main {
 
   public static String repoPathXMLFile(String repoName) {
     return "src"
-            + FileSystems.getDefault().getSeparator()
-            + "main"
-            + FileSystems.getDefault().getSeparator()
-            + "resources"
-            + FileSystems.getDefault().getSeparator()
-            + repoName
-            + ".xml";
+        + FileSystems.getDefault().getSeparator()
+        + "main"
+        + FileSystems.getDefault().getSeparator()
+        + "resources"
+        + FileSystems.getDefault().getSeparator()
+        + repoName
+        + ".xml";
   }
-
 }

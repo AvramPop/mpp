@@ -100,20 +100,20 @@ public class Student extends BaseEntity<Long> {
   }
 
   @Override
-  public  Node objectToXMLNode(Document document){
+  public Node objectToXMLNode(Document document) {
     Element studentElement = document.createElement("student");
     studentElement.setAttribute("Id", this.getId().toString());
-    appendChildWithTextToNode(document,studentElement,"serialNumber",this.serialNumber);
-    appendChildWithTextToNode(document,studentElement,"name",this.name);
-    appendChildWithTextToNode(document,studentElement,"group",Integer.toString(this.group));
+    appendChildWithTextToNode(document, studentElement, "serialNumber", this.serialNumber);
+    appendChildWithTextToNode(document, studentElement, "name", this.name);
+    appendChildWithTextToNode(document, studentElement, "group", Integer.toString(this.group));
     return studentElement;
   }
-  private  void appendChildWithTextToNode(Document document, Node parentNode, String tagName, String textContent) {
 
-      Element element = document.createElement(tagName);
-      element.setTextContent(textContent);
-      parentNode.appendChild(element);
+  private void appendChildWithTextToNode(
+      Document document, Node parentNode, String tagName, String textContent) {
 
+    Element element = document.createElement(tagName);
+    element.setTextContent(textContent);
+    parentNode.appendChild(element);
   }
-
 }

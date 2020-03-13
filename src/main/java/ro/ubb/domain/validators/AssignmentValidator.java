@@ -17,7 +17,7 @@ public class AssignmentValidator implements Validator<Assignment> {
     else if (entity.getStudentId() < 0) errorMessage.append("Invalid id! ");
     if (entity.getLabProblemId() == null) errorMessage.append("Id is null");
     else if (entity.getLabProblemId() < 0) errorMessage.append("Invalid id! ");
-    if(entity.getGrade() < 0 || entity.getGrade() > 10) errorMessage.append("Invalid grade! ");
+    if (entity.getGrade() < 0 || entity.getGrade() > 10) errorMessage.append("Invalid grade! ");
     if (errorMessage.length() > 0) throw new ValidatorException(errorMessage.toString());
   }
 }
