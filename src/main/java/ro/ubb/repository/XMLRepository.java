@@ -192,9 +192,8 @@ public class XMLRepository<ID, T extends BaseEntity<ID>> implements Repository<I
           .filter(node -> node instanceof Element)
           .filter(
               element -> ((Element) element).getAttribute("Id").equals(entity.getId().toString()))
-          .forEach(element -> root.removeChild(element));
+          .forEach(element -> root.replaceChild(entity.objectToXMLNode(xmlFileDocument),element));
 
-      root.appendChild(entity.objectToXMLNode(xmlFileDocument));
 
       Transformer transformer = TransformerFactory.newInstance().newTransformer();
       transformer.transform(new DOMSource(xmlFileDocument), new StreamResult(new File(filename)));

@@ -81,7 +81,7 @@ public class Console {
   private void labProblemMostAssigned(){
     Optional<Pair<Long, Long>> idOfLabProblemMostAssigned = assignmentService.idOfLabProblemMostAssigned();
     if(idOfLabProblemMostAssigned.isPresent()){
-      System.out.println("lab problem most assigned id: " + idOfLabProblemMostAssigned.get().getKey() + " - " + idOfLabProblemMostAssigned.get().getValue() + "times");
+      System.out.println("lab problem most assigned id: " + idOfLabProblemMostAssigned.get().getKey() + " - " + idOfLabProblemMostAssigned.get().getValue() +  "times");
     } else {
       System.err.println("no lab problems assigned");
     }
