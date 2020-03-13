@@ -60,7 +60,7 @@ public class Main {
       } catch (FileAlreadyExistsException ignored) {
       }
 
-      /*
+    /*
       Repository<Long, Student> studentRepository =
           new FileRepository<>(
               repoPathTextFile("students"),
@@ -78,8 +78,8 @@ public class Main {
                       repoPathTextFile("assignments"),
                       ";",
                       FileLineEntityFactory.assignmentObjectFromFileLine());
-*/
 
+      */
       Repository<Long, Student> studentRepository =
           new XMLRepository<>(
               repoPathXMLFile("students"), XMLElementToEntityFactory.studentObjectFromXMLFile());
