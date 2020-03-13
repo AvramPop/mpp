@@ -1,7 +1,5 @@
 package ro.ubb.domain;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 /** A LabProblem having a number (positive integer) and a description (nonempty). */
@@ -62,21 +60,17 @@ public class LabProblem extends BaseEntity<Long> {
     return Objects.hash(problemNumber, description);
   }
 
-//  @Override
-//  public LabProblem objectFromFileLine(String fileLine, String delimiter) {
-//
-//    String[] components = fileLine.split(";");
-//    LabProblem newEntity = new LabProblem(Integer.parseInt(components[1]), components[2]);
-//    newEntity.setId(Long.parseLong(components[0]));
-//    return newEntity;
-//  }
+  //  @Override
+  //  public LabProblem objectFromFileLine(String fileLine, String delimiter) {
+  //
+  //    String[] components = fileLine.split(";");
+  //    LabProblem newEntity = new LabProblem(Integer.parseInt(components[1]), components[2]);
+  //    newEntity.setId(Long.parseLong(components[0]));
+  //    return newEntity;
+  //  }
 
   @Override
   public String objectToFileLine(String delimiter) {
     return this.getId() + delimiter + this.problemNumber + delimiter + this.description;
   }
-
-
-
-
 }

@@ -22,7 +22,10 @@ public class Console {
   private AssignmentService assignmentService;
   private HashMap<String, Runnable> dictionaryOfCommands;
 
-  public Console(StudentService studentService, LabProblemService labProblemService, AssignmentService assignmentService) {
+  public Console(
+      StudentService studentService,
+      LabProblemService labProblemService,
+      AssignmentService assignmentService) {
     this.studentService = studentService;
     this.labProblemService = labProblemService;
     this.assignmentService = assignmentService;
@@ -32,16 +35,11 @@ public class Console {
     initDictionaryOfCommands();
   }
 
-  private void initDictionaryOfCommands(){
+  private void initDictionaryOfCommands() {
     dictionaryOfCommands = new HashMap<>();
-    dictionaryOfCommands.put(
-        "add student",
-        this::addStudent);
-    dictionaryOfCommands.put(
-        "print students",
-        this::printStudents);
-    dictionaryOfCommands.put(
-        "add lab problem", this::addLabProblem);
+    dictionaryOfCommands.put("add student", this::addStudent);
+    dictionaryOfCommands.put("print students", this::printStudents);
+    dictionaryOfCommands.put("add lab problem", this::addLabProblem);
     dictionaryOfCommands.put("print lab problems", this::printLabProblems);
     dictionaryOfCommands.put("update lab problem", this::updateLabProblem);
     dictionaryOfCommands.put("delete lab problem", this::deleteLabProblem);
@@ -51,40 +49,29 @@ public class Console {
     dictionaryOfCommands.put("filter students", this::filterStudentsByGroup);
     dictionaryOfCommands.put("add assignment", this::addAssignment);
     dictionaryOfCommands.put("print assignments", this::printAssignments);
+    dictionaryOfCommands.put("delete assignment", this::deleteAssignment);
+    dictionaryOfCommands.put("update assignment", this::updateAssignment);
     dictionaryOfCommands.put("exit", () -> System.exit(0));
   }
 
-  private void printAssignments() {
-
-    Set<Assignment> students = assignmentService.getAllAssignments();
-    students.forEach(System.out::println);
-
-
-  }
-
-  private void addAssignment() {
-    System.out.println("Read assignment {id, studentId, labProblemId}");
-    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-    try {
-      System.out.println("Enter id: ");
-      long id = Long.parseLong(input.readLine().strip());
-      System.out.println("Enter studentId: ");
-      long studentId = Long.parseLong(input.readLine().strip());
-      System.out.println("Enter labProblemId: ");
-      long labProblemId = Long.parseLong(input.readLine().strip());
-      if (assignmentService.addAssignment(id, studentId, labProblemId).isEmpty())
-        System.out.println("Assignment added");
-      else System.out.println("Assignment not added");
-    }catch(ValidatorException e){
-      System.err.println(e.getMessage());
-    } catch (IOException | NumberFormatException ex) {
-      System.out.println("Invalid input!");
-    }
-    catch (RepositoryException ex) {
-      System.out.println("Invalid assignment");
-    }
-
-
+  /** ro.ubb.UI method for printing the console menu */
+  private void printMenu() {
+    System.out.println("Menu options:");
+    System.out.println("- add student");
+    System.out.println("- print students");
+    System.out.println("- add lab problem");
+    System.out.println("- print lab problems");
+    System.out.println("- update lab problem");
+    System.out.println("- delete lab problem");
+    System.out.println("- filter lab problems [by number]");
+    System.out.println("- update student");
+    System.out.println("- delete student");
+    System.out.println("- filter students [by group]");
+    System.out.println("- add assignment");
+    System.out.println("- print assignments");
+    System.out.println("- update assignment");
+    System.out.println("- delete assignment");
+    System.out.println("- exit");
   }
 
   /** ro.ubb.Main loop of the user interface */
@@ -106,22 +93,34 @@ public class Console {
     }
   }
 
-  /** ro.ubb.UI method for printing the console menu */
-  private void printMenu() {
-    System.out.println("Menu options:");
-    System.out.println("- add student");
-    System.out.println("- print students");
-    System.out.println("- add lab problem");
-    System.out.println("- print lab problems");
-    System.out.println("- update lab problem");
-    System.out.println("- delete lab problem");
-    System.out.println("- filter lab problems");
-    System.out.println("- update student");
-    System.out.println("- delete student");
-    System.out.println("- filter students");
-    System.out.println("- add assignment");
-    System.out.println("- print assignments");
-    System.out.println("- exit");
+  private void printAssignments() {
+
+    Set<Assignment> students = assignmentService.getAllAssignments();
+    students.forEach(System.out::println);
+  }
+
+  private void addAssignment() {
+    System.out.println("Read assignment {id, studentId, labProblemId}");
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    try {
+      System.out.println("Enter id: ");
+      long id = Long.parseLong(input.readLine().strip());
+      System.out.println("Enter studentId: ");
+      long studentId = Long.parseLong(input.readLine().strip());
+      System.out.println("Enter labProblemId: ");
+      long labProblemId = Long.parseLong(input.readLine().strip());
+      System.out.println("Enter grade: ");
+      int grade = Integer.parseInt(input.readLine().strip());
+      if (assignmentService.addAssignment(id, studentId, labProblemId, grade).isEmpty())
+        System.out.println("Assignment added");
+      else System.out.println("Assignment not added");
+    } catch (ValidatorException e) {
+      System.err.println(e.getMessage());
+    } catch (IOException | NumberFormatException ex) {
+      System.out.println("Invalid input!");
+    } catch (RepositoryException ex) {
+      System.out.println("Invalid assignment");
+    }
   }
 
   /** ro.ubb.UI method for adding a student */
@@ -143,7 +142,7 @@ public class Console {
 
     } catch (ValidatorException ex) {
       System.out.println(ex.getMessage());
-    } catch(IOException | NumberFormatException e){
+    } catch (IOException | NumberFormatException e) {
       //      e.printStackTrace();
       System.out.println("invalid input");
     }
@@ -167,12 +166,11 @@ public class Console {
       if (labProblemService.addLabProblem(id, problemNumber, description).isEmpty())
         System.out.println("Lab Problem added");
       else System.out.println("Lab Problem not added");
-      }catch(ValidatorException e){
+    } catch (ValidatorException e) {
       System.err.println(e.getMessage());
     } catch (IOException | NumberFormatException ex) {
       System.out.println("Invalid input!");
     }
-
   }
   /** ro.ubb.UI method for printing all lab problems */
   private void printLabProblems() {
@@ -193,12 +191,11 @@ public class Console {
       if (labProblemService.updateLabProblem(id, problemNumber, description).isEmpty())
         System.out.println("Lab Problem updated");
       else System.out.println("Lab Problem not updated");
-    }catch(ValidatorException e){
+    } catch (ValidatorException e) {
       System.err.println(e.getMessage());
     } catch (IOException | NumberFormatException ex) {
       System.out.println("Invalid input!");
     }
-
   }
   /** ro.ubb.UI method deletes a lab problem */
   private void deleteLabProblem() {
@@ -250,7 +247,7 @@ public class Console {
     } catch (ValidatorException ex) {
       // ex.printStackTrace();
       System.out.println(ex.getMessage());
-    } catch(IOException | NumberFormatException e){
+    } catch (IOException | NumberFormatException e) {
       //      e.printStackTrace();
       System.err.println("invalid input");
     }
@@ -284,5 +281,37 @@ public class Console {
 
     Set<Student> students = studentService.filterByGroup(groupNumber);
     students.forEach(System.out::println);
+  }
+
+  private void updateAssignment() {
+    System.out.println("Update assignment {id, studentId, labProblemId}");
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    try {
+      System.out.println("Enter id: ");
+      long id = Long.parseLong(input.readLine().strip());
+      System.out.println("Enter studentId: ");
+      long studentId = Long.parseLong(input.readLine().strip());
+      System.out.println("Enter labProblemId: ");
+      long labProblemId = Long.parseLong(input.readLine().strip());
+      System.out.println("Enter grade: ");
+      int grade = Integer.parseInt(input.readLine().strip());
+      if (assignmentService.updateAssignment(id, studentId, labProblemId, grade).isEmpty())
+        System.out.println("Assignment updated");
+      else System.out.println("Assignment not updated");
+    } catch (IOException e) {
+      System.err.println("bad input");
+    }
+  }
+
+  private void deleteAssignment() {
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    long id;
+    try {
+      System.out.println("Enter id: ");
+      id = Long.parseLong(input.readLine().strip());
+      assignmentService.deleteAssignment(id);
+    } catch (IOException e) {
+      System.err.println("bad input");
+    }
   }
 }

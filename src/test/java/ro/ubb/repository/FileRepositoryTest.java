@@ -1,18 +1,19 @@
 package ro.ubb.repository;
 
-import ro.ubb.domain.LabProblem;
-import ro.ubb.domain.exceptions.ValidatorException;
-import ro.ubb.domain.validators.LabProblemValidator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ro.ubb.domain.LabProblem;
+import ro.ubb.domain.exceptions.ValidatorException;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 class FileRepositoryTest {
 
@@ -28,11 +29,7 @@ class FileRepositoryTest {
     labProblem = new LabProblem(11, "description");
     labProblem.setId(1L);
     repository =
-        new FileRepository<>(
-            repoPath(),
-            ";",
-                FileLineEntityFactory.labProblemFromFileLine()
-           );
+        new FileRepository<>(repoPath(), ";", FileLineEntityFactory.labProblemFromFileLine());
     repository.save(labProblem);
   }
 

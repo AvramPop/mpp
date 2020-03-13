@@ -34,7 +34,7 @@ public class Main {
       Validator<Student> studentValidator = new StudentValidator();
       Validator<LabProblem> labProblemValidator = new LabProblemValidator();
       Validator<Assignment> assignmentValidator = new AssignmentValidator();
-      //Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+      // Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
       // Repository<Long, LabProblem> labProblemRepository =
       // new InMemoryRepository<>(labProblemValidator);
       try { // TODO probably should use try-with-resources
@@ -51,26 +51,23 @@ public class Main {
       }
       Repository<Long, Student> studentRepository =
           new FileRepository<>(
-              repoPath("students"),
-              ";",
-              FileLineEntityFactory.studentFromFileLine());
+              repoPath("students"), ";", FileLineEntityFactory.studentFromFileLine());
 
       Repository<Long, LabProblem> labProblemRepository =
           new FileRepository<>(
-              repoPath("labProblems"),
-              ";",
-                  FileLineEntityFactory.labProblemFromFileLine());
+              repoPath("labProblems"), ";", FileLineEntityFactory.labProblemFromFileLine());
 
       Repository<Long, Assignment> assignmentRepository =
-              new FileRepository<>(
-                      repoPath("assignments"),
-                      ";",
-                      FileLineEntityFactory.assignmentObjectFromFileLine());
+          new FileRepository<>(
+              repoPath("assignments"), ";", FileLineEntityFactory.assignmentObjectFromFileLine());
 
-      StudentService studentService = new StudentService(studentRepository,studentValidator);
-      LabProblemService labProblemService = new LabProblemService(labProblemRepository,labProblemValidator);
-      AssignmentService assignmentService = new AssignmentService(assignmentRepository,labProblemService,studentService,assignmentValidator);
-      Console console = new Console(studentService, labProblemService,assignmentService);
+      StudentService studentService = new StudentService(studentRepository, studentValidator);
+      LabProblemService labProblemService =
+          new LabProblemService(labProblemRepository, labProblemValidator);
+      AssignmentService assignmentService =
+          new AssignmentService(
+              assignmentRepository, labProblemService, studentService, assignmentValidator);
+      Console console = new Console(studentService, labProblemService, assignmentService);
       console.run();
     } catch (IOException ex) {
       System.out.println("Can't create files\nTerminating...");

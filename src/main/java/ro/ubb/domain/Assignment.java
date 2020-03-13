@@ -1,61 +1,72 @@
 package ro.ubb.domain;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 public class Assignment extends BaseEntity<Long> {
 
-    Long studentId;
-    Long labProblemId;
+  Long studentId;
+  Long labProblemId;
+  int grade;
 
-    public Assignment(Long studentId, Long labProblemId) {
-        this.studentId = studentId;
-        this.labProblemId = labProblemId;
-    }
+  public Assignment(Long studentId, Long labProblemId, int grade) {
+    this.studentId = studentId;
+    this.labProblemId = labProblemId;
+    this.grade = grade;
+  }
 
-    @Override
-    public String toString() {
-        return "Assignment{" +
-                "studentId=" + studentId +
-                ", labProblemId=" + labProblemId +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "Assignment{ "
+        + "id= "
+        + getId()
+        + ", studentId="
+        + studentId
+        + ", labProblemId="
+        + labProblemId
+        + ", grade="
+        + grade
+        + '}';
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Assignment that = (Assignment) o;
-        return getId() == that.getId();
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Assignment that = (Assignment) o;
+    return getId() == that.getId();
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(studentId, labProblemId);
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(studentId, labProblemId, grade);
+  }
 
-    public Long getStudentId() {
-        return studentId;
-    }
+  public Long getStudentId() {
+    return studentId;
+  }
 
-    public void setStudentId(Long studentId) {
-        this.studentId = studentId;
-    }
+  public void setStudentId(Long studentId) {
+    this.studentId = studentId;
+  }
 
-    public Long getLabProblemId() {
-        return labProblemId;
-    }
+  public Long getLabProblemId() {
+    return labProblemId;
+  }
 
-    public void setLabProblemId(Long labProblemId) {
-        this.labProblemId = labProblemId;
-    }
+  public void setLabProblemId(Long labProblemId) {
+    this.labProblemId = labProblemId;
+  }
 
+  public int getGrade(){
+    return grade;
+  }
 
-    @Override
-    public String objectToFileLine(String delimiter) {
-        return this.getId() + delimiter + this.studentId + delimiter + this.labProblemId;
-    }
+  public void setGrade(int grade){
+    this.grade = grade;
+  }
 
-
+  @Override
+  public String objectToFileLine(String delimiter) {
+    return this.getId() + delimiter + this.studentId + delimiter + this.labProblemId + delimiter + grade;
+  }
 }

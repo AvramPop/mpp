@@ -18,21 +18,25 @@ import java.util.stream.StreamSupport;
 public class StudentService {
   private Repository<Long, Student> repository;
   private Validator<Student> validator;
-  public StudentService(Repository<Long, Student> repository,Validator<Student> validator) {
+
+  public StudentService(Repository<Long, Student> repository, Validator<Student> validator) {
     this.repository = repository;
-    this.validator =validator;
+    this.validator = validator;
   }
 
   /**
    * Updates a student inside the ro.ubb.repository
+   *
    * @param id id number of entity to be updated
    * @param serialNumber serial number of entity to be updated
    * @param name name of entity to be updated
    * @param group group number of entity to be updated
-   * @return an {@code Optional} containing the null if successfully added or the entity passed to the ro.ubb.repository otherwise
+   * @return an {@code Optional} containing the null if successfully added or the entity passed to
+   *     the ro.ubb.repository otherwise
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
-  public Optional<Student> addStudent(Long id, String serialNumber, String name, int group) throws ValidatorException {
+  public Optional<Student> addStudent(Long id, String serialNumber, String name, int group)
+      throws ValidatorException {
     Student newStudent = new Student(serialNumber, name, group);
     newStudent.setId(id);
 
@@ -65,14 +69,17 @@ public class StudentService {
 
   /**
    * Updates a student inside the ro.ubb.repository
+   *
    * @param id id number of entity to be updated
    * @param serialNumber serial number of entity to be updated
    * @param name name of entity to be updated
    * @param group group number of entity to be updated
-   * @return an {@code Optional} containing the null if successfully updated or the entity passed to the ro.ubb.repository otherwise
+   * @return an {@code Optional} containing the null if successfully updated or the entity passed to
+   *     the ro.ubb.repository otherwise
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
-  public Optional<Student> updateStudent(Long id, String serialNumber, String name, int group) throws ValidatorException {
+  public Optional<Student> updateStudent(Long id, String serialNumber, String name, int group)
+      throws ValidatorException {
     Student student = new Student(serialNumber, name, group);
     student.setId(id);
     validator.validate(student);
@@ -86,7 +93,7 @@ public class StudentService {
    * @return a {@code Set} - of entities filtered by the given group number
    */
   public Set<Student> filterByGroup(Integer group) {
-    if(group < 0) {
+    if (group < 0) {
       throw new IllegalArgumentException("group negative!");
     }
     Iterable<Student> students = repository.findAll();
@@ -98,12 +105,13 @@ public class StudentService {
 
   /**
    * Get Optional containing student with given id if there is one in the ro.ubb.repository below.
+   *
    * @param id to find student by
    * @return Optional containing the sought Student or null otherwise
    */
   public Optional<Student> getStudentById(Long id) {
-    if(id == null || id < 0) {
-      throw new IllegalArgumentException("negative id!");
+    if (id == null || id < 0) {
+      throw new IllegalArgumentException("invalid id!");
     }
     return repository.findOne(id);
   }

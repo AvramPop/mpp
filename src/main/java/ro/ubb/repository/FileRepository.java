@@ -3,7 +3,6 @@ package ro.ubb.repository;
 import ro.ubb.domain.BaseEntity;
 import ro.ubb.domain.ObjectFromFileLine;
 import ro.ubb.domain.exceptions.ValidatorException;
-import ro.ubb.domain.validators.Validator;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,23 +14,20 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
- * Volatile generic data ro.ubb.repository holding everything in a file specified in the constructor if the
- * filename is empty it generates a default file
+ * Volatile generic data ro.ubb.repository holding everything in a file specified in the constructor
+ * if the filename is empty it generates a default file
  *
  * @param <ID> type of the id of given entity to store
  * @param <T> type of entity to store
  */
 public class FileRepository<ID, T extends BaseEntity<ID>> implements Repository<ID, T> {
 
-
   String filename;
   String delimiter;
   ObjectFromFileLine<T> converterFunction;
 
   public FileRepository(
-      String filename,
-      String delimiter,
-      ObjectFromFileLine<T> converterFunction) {
+      String filename, String delimiter, ObjectFromFileLine<T> converterFunction) {
     this.filename = filename;
     this.delimiter = delimiter;
     this.converterFunction = converterFunction;
@@ -127,7 +123,6 @@ public class FileRepository<ID, T extends BaseEntity<ID>> implements Repository<
     if (entity == null) {
       throw new IllegalArgumentException("entity must not be null");
     }
-
 
     Map<ID, T> entities =
         StreamSupport.stream(loadData().spliterator(), false)

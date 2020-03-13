@@ -1,7 +1,5 @@
 package ro.ubb.domain;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 /** A student having group (positive integer), name (nonempty) and serialNumber (nonempty). */
@@ -76,18 +74,22 @@ public class Student extends BaseEntity<Long> {
     return Objects.hash(serialNumber, name, group);
   }
 
-
-//  /**
-//   * Parse given string to object of the type of the generic
-//   *
-//   * @param fileLine given string to parse
-//   * @param delimiter character between object fields in fileLine
-//   * @return object of type given with member as parsed from string
-//   */
-
+  //  /**
+  //   * Parse given string to object of the type of the generic
+  //   *
+  //   * @param fileLine given string to parse
+  //   * @param delimiter character between object fields in fileLine
+  //   * @return object of type given with member as parsed from string
+  //   */
 
   @Override
   public String objectToFileLine(String delimiter) {
-    return this.getId() + delimiter + this.serialNumber + delimiter + this.name + delimiter + this.group;
+    return this.getId()
+        + delimiter
+        + this.serialNumber
+        + delimiter
+        + this.name
+        + delimiter
+        + this.group;
   }
 }

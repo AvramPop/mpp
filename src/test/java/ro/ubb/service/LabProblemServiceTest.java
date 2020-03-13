@@ -1,13 +1,13 @@
 package ro.ubb.service;
 
-import ro.ubb.domain.LabProblem;
-import ro.ubb.domain.exceptions.ValidatorException;
-import ro.ubb.domain.validators.LabProblemValidator;
-import ro.ubb.domain.validators.Validator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ro.ubb.domain.LabProblem;
+import ro.ubb.domain.exceptions.ValidatorException;
+import ro.ubb.domain.validators.LabProblemValidator;
+import ro.ubb.domain.validators.Validator;
 import ro.ubb.repository.InMemoryRepository;
 import ro.ubb.repository.Repository;
 
@@ -44,7 +44,7 @@ class LabProblemServiceTest {
 
   @Test
   void Given_EmptyRepository_When_ValidLabProblemAdded_Then_AdditionWillSucceed() {
-    labProblemService.addLabProblem(ID,PROBLEM_NUMBER,DESCRIPTION);
+    labProblemService.addLabProblem(ID, PROBLEM_NUMBER, DESCRIPTION);
   }
 
   @Test
@@ -52,7 +52,8 @@ class LabProblemServiceTest {
       Given_EmptyRepository_When_InvalidIdAttributeOfLabProblemEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     labProblem.setId(-1L);
     Assertions.assertThrows(
-        ValidatorException.class, () -> labProblemService.addLabProblem(-1L,PROBLEM_NUMBER,DESCRIPTION));
+        ValidatorException.class,
+        () -> labProblemService.addLabProblem(-1L, PROBLEM_NUMBER, DESCRIPTION));
   }
 
   @Test
@@ -60,7 +61,7 @@ class LabProblemServiceTest {
       Given_EmptyRepository_When_InvalidProblemNumberAttributeOfLabProblemEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     labProblem.setProblemNumber(-1);
     Assertions.assertThrows(
-        ValidatorException.class, () -> labProblemService.addLabProblem(ID,-1,DESCRIPTION));
+        ValidatorException.class, () -> labProblemService.addLabProblem(ID, -1, DESCRIPTION));
   }
 
   @Test
@@ -68,13 +69,13 @@ class LabProblemServiceTest {
       Given_EmptyRepository_When_InvalidDescriptionAttributeOfLabProblemEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     labProblem.setDescription("");
     Assertions.assertThrows(
-        ValidatorException.class, () -> labProblemService.addLabProblem(ID,PROBLEM_NUMBER,""));
+        ValidatorException.class, () -> labProblemService.addLabProblem(ID, PROBLEM_NUMBER, ""));
   }
 
   @Test
   void
       Given_LabProblemRepositoryWithOneEntity_When_ReadingAllLabProblemEntitiesFormRepository_Then_NumberOfEntitiesReturnedIsOne() {
-    labProblemService.addLabProblem(ID,PROBLEM_NUMBER,DESCRIPTION);
+    labProblemService.addLabProblem(ID, PROBLEM_NUMBER, DESCRIPTION);
     Assertions.assertEquals(labProblemService.getAllLabProblems().size(), 1);
   }
 
@@ -82,7 +83,7 @@ class LabProblemServiceTest {
   void
       Given_LabProblemRepositoryWithOneEntity_When_DeletingAnEntityInsideTheRepository_Then_NumberOfEntitiesReturnedIsZero() {
 
-    labProblemService.addLabProblem(ID,PROBLEM_NUMBER,DESCRIPTION);
+    labProblemService.addLabProblem(ID, PROBLEM_NUMBER, DESCRIPTION);
     labProblemService.deleteLabProblem(labProblem.getId());
     Assertions.assertEquals(labProblemService.getAllLabProblems().size(), 0);
   }
@@ -90,14 +91,14 @@ class LabProblemServiceTest {
   @Test
   void
       Given_LabProblemRepositoryWithOneEntity_When_DeletingAnEntityInsideTheRepository_Then_TheReturnedOptionalIsNotNull() {
-    labProblemService.addLabProblem(ID,PROBLEM_NUMBER,DESCRIPTION);
+    labProblemService.addLabProblem(ID, PROBLEM_NUMBER, DESCRIPTION);
     Assertions.assertTrue(labProblemService.deleteLabProblem(labProblem.getId()).isPresent());
   }
 
   @Test
   void
       Given_LabProblemRepositoryWithOneEntity_When_DeletingAnEntityInsideTheRepository_Then_TheReturnedOptionalContainsTheEntity() {
-    labProblemService.addLabProblem(ID,PROBLEM_NUMBER,DESCRIPTION);
+    labProblemService.addLabProblem(ID, PROBLEM_NUMBER, DESCRIPTION);
     Assertions.assertEquals(
         labProblemService.deleteLabProblem(labProblem.getId()).get(), labProblem);
   }
@@ -119,7 +120,8 @@ class LabProblemServiceTest {
       Given_EmptyRepository_When_InvalidIdAttributeOfLabProblemEntity_Then_UpdateWillFailAndThrowsValidatorException() {
     labProblem.setId(-1L);
     Assertions.assertThrows(
-        ValidatorException.class, () -> labProblemService.updateLabProblem(-1L,PROBLEM_NUMBER,DESCRIPTION));
+        ValidatorException.class,
+        () -> labProblemService.updateLabProblem(-1L, PROBLEM_NUMBER, DESCRIPTION));
   }
 
   @Test
@@ -127,7 +129,7 @@ class LabProblemServiceTest {
       Given_EmptyRepository_When_InvalidProblemNumberAttributeOfLabProblemEntity_Then_UpdateWillFailAndThrowsValidatorException() {
     labProblem.setProblemNumber(-1);
     Assertions.assertThrows(
-        ValidatorException.class, () -> labProblemService.updateLabProblem(ID,-1,DESCRIPTION));
+        ValidatorException.class, () -> labProblemService.updateLabProblem(ID, -1, DESCRIPTION));
   }
 
   @Test
@@ -135,39 +137,40 @@ class LabProblemServiceTest {
       Given_EmptyRepository_When_InvalidDescriptionAttributeOfLabProblemEntity_Then_UpdateWillFailAndThrowsValidatorException() {
     labProblem.setDescription("");
     Assertions.assertThrows(
-        ValidatorException.class, () -> labProblemService.updateLabProblem(ID,PROBLEM_NUMBER,""));
+        ValidatorException.class, () -> labProblemService.updateLabProblem(ID, PROBLEM_NUMBER, ""));
   }
 
   @Test
   void
       Given_LabProblemRepositoryWithOneEntity_When_DeletingAnEntityNotInsideTheRepository_Then_TheReturnedOptionalIsNull() {
-    labProblemService.addLabProblem(ID,PROBLEM_NUMBER,DESCRIPTION);
+    labProblemService.addLabProblem(ID, PROBLEM_NUMBER, DESCRIPTION);
     Assertions.assertFalse(labProblemService.deleteLabProblem(NEW_ID).isPresent());
   }
 
   @Test
   void
       Given_LabProblemRepositoryWithOneEntity_When_UpdatingTheEntity_Then_UpdateSucceedsReturnsEmptyOptional() {
-    labProblemService.addLabProblem(ID,PROBLEM_NUMBER,DESCRIPTION);
+    labProblemService.addLabProblem(ID, PROBLEM_NUMBER, DESCRIPTION);
     labProblem.setDescription(NEW_DESCRIPTION);
-    Assertions.assertFalse(labProblemService.updateLabProblem(ID,PROBLEM_NUMBER,NEW_DESCRIPTION).isPresent());
+    Assertions.assertFalse(
+        labProblemService.updateLabProblem(ID, PROBLEM_NUMBER, NEW_DESCRIPTION).isPresent());
   }
 
   @Test
-  void
-  Given_LabProblemRepositoryWithOneEntity_When_UpdatingTheEntity_Then_EntityIsUpdated() {
-    labProblemService.addLabProblem(ID,PROBLEM_NUMBER,DESCRIPTION);
+  void Given_LabProblemRepositoryWithOneEntity_When_UpdatingTheEntity_Then_EntityIsUpdated() {
+    labProblemService.addLabProblem(ID, PROBLEM_NUMBER, DESCRIPTION);
     labProblem.setDescription(NEW_DESCRIPTION);
-    labProblemService.updateLabProblem(ID,PROBLEM_NUMBER,NEW_DESCRIPTION);
+    labProblemService.updateLabProblem(ID, PROBLEM_NUMBER, NEW_DESCRIPTION);
     Assertions.assertEquals(labProblem, labProblemService.getAllLabProblems().toArray()[0]);
   }
 
   @Test
   void
       Given_LabProblemRepositoryWithOneEntity_When_UpdatingNonExistingEntity_Then_UpdateFailsReturnsOptionalWithEntity() {
-    labProblemService.addLabProblem(ID,PROBLEM_NUMBER,DESCRIPTION);
+    labProblemService.addLabProblem(ID, PROBLEM_NUMBER, DESCRIPTION);
     labProblem.setId(2L);
-    Assertions.assertEquals(labProblemService.updateLabProblem(2L,PROBLEM_NUMBER,DESCRIPTION).get(), labProblem);
+    Assertions.assertEquals(
+        labProblemService.updateLabProblem(2L, PROBLEM_NUMBER, DESCRIPTION).get(), labProblem);
   }
 
   @Test
@@ -178,35 +181,38 @@ class LabProblemServiceTest {
   @Test
   void
       Given_LabProblemRepositoryWithOneEntity_When_FilteringByProblemNumberWhichIsInRepository_Then_SetWithOneElement() {
-    labProblemService.addLabProblem(ID,PROBLEM_NUMBER,DESCRIPTION);
+    labProblemService.addLabProblem(ID, PROBLEM_NUMBER, DESCRIPTION);
     Assertions.assertEquals(labProblemService.filterByProblemNumber(PROBLEM_NUMBER).size(), 1);
   }
 
   @Test
   void
-  Given_LabProblemRepositoryWithOneEntity_When_FindingByIdThatEntity_Then_ReturnOptionalContainingIt() {
-    labProblemService.addLabProblem(ID,PROBLEM_NUMBER,DESCRIPTION);
-    Assertions.assertEquals(labProblemService.getLabProblemById(labProblem.getId()).get(), labProblem);
+      Given_LabProblemRepositoryWithOneEntity_When_FindingByIdThatEntity_Then_ReturnOptionalContainingIt() {
+    labProblemService.addLabProblem(ID, PROBLEM_NUMBER, DESCRIPTION);
+    Assertions.assertEquals(
+        labProblemService.getLabProblemById(labProblem.getId()).get(), labProblem);
   }
 
   @Test
   void
-  Given_LabProblemRepositoryWithOneEntity_When_FindingByIdThatEntity_Then_ReturnOptionalWithValueInside() {
-    labProblemService.addLabProblem(ID,PROBLEM_NUMBER,DESCRIPTION);
+      Given_LabProblemRepositoryWithOneEntity_When_FindingByIdThatEntity_Then_ReturnOptionalWithValueInside() {
+    labProblemService.addLabProblem(ID, PROBLEM_NUMBER, DESCRIPTION);
     Assertions.assertTrue(labProblemService.getLabProblemById(labProblem.getId()).isPresent());
   }
 
   @Test
   void
-  Given_LabProblemRepositoryWithOneEntity_When_FindingByIdOtherEntity_Then_ReturnOptionalWithNullInside() {
-    labProblemService.addLabProblem(ID,PROBLEM_NUMBER,DESCRIPTION);
+      Given_LabProblemRepositoryWithOneEntity_When_FindingByIdOtherEntity_Then_ReturnOptionalWithNullInside() {
+    labProblemService.addLabProblem(ID, PROBLEM_NUMBER, DESCRIPTION);
     Assertions.assertFalse(labProblemService.getLabProblemById(2L).isPresent());
   }
 
   @Test
   void
-  Given_LabProblemRepositoryWithOneEntity_When_FindingByIdWithInvalidId_Then_ThrowIllegalArgumentException() {
-    Assertions.assertThrows(IllegalArgumentException.class, () -> labProblemService.getLabProblemById(-1l));
-    Assertions.assertThrows(IllegalArgumentException.class, () -> labProblemService.getLabProblemById(null));
+      Given_LabProblemRepositoryWithOneEntity_When_FindingByIdWithInvalidId_Then_ThrowIllegalArgumentException() {
+    Assertions.assertThrows(
+        IllegalArgumentException.class, () -> labProblemService.getLabProblemById(-1l));
+    Assertions.assertThrows(
+        IllegalArgumentException.class, () -> labProblemService.getLabProblemById(null));
   }
 }

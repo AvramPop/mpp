@@ -2,7 +2,6 @@ package ro.ubb.repository;
 
 import ro.ubb.domain.BaseEntity;
 import ro.ubb.domain.exceptions.ValidatorException;
-import ro.ubb.domain.validators.Validator;
 
 import java.util.HashMap;
 import java.util.HashSet;

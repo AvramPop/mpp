@@ -4,7 +4,7 @@ package ro.ubb.domain;
  *
  * @param <ID> the type of the identifier
  */
-public abstract class BaseEntity<ID>{
+public abstract class BaseEntity<ID> {
   private ID id;
 
   public ID getId() {
@@ -27,5 +27,4 @@ public abstract class BaseEntity<ID>{
    * @return this in file-string format
    */
   public abstract String objectToFileLine(String delimiter);
-
 }
