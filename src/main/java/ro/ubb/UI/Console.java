@@ -1,5 +1,6 @@
 package ro.ubb.UI;
 
+import javafx.util.Pair;
 import ro.ubb.domain.Assignment;
 import ro.ubb.domain.LabProblem;
 import ro.ubb.domain.Student;
@@ -13,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.Set;
 
 /** Console based user interface */
@@ -51,7 +53,47 @@ public class Console {
     dictionaryOfCommands.put("print assignments", this::printAssignments);
     dictionaryOfCommands.put("delete assignment", this::deleteAssignment);
     dictionaryOfCommands.put("update assignment", this::updateAssignment);
+    dictionaryOfCommands.put("max mean student", this::greatestMeanOfStudent);
+    dictionaryOfCommands.put("max mean group", this::greatestMeanOfGroup);
+    dictionaryOfCommands.put("lab problem most", this::labProblemMostAssigned);
+    dictionaryOfCommands.put("avg grade", this::averageGrade);
     dictionaryOfCommands.put("exit", () -> System.exit(0));
+  }
+
+  private void greatestMeanOfGroup(){
+    Optional<Pair<Integer, Double>> greatestMean = assignmentService.groupWithGreatestMean();
+    if(greatestMean.isPresent()){
+      System.out.println("The greatest mean is of group id = " + greatestMean.get().getKey() + ": " + greatestMean.get().getValue());
+    } else {
+      System.err.println("no students or assignments");
+    }
+  }
+
+  private void averageGrade(){
+    Optional<Double> mean = assignmentService.averageGrade();
+    if(mean.isPresent()){
+      System.out.println("The mean of all assignments is " + mean.get());
+    } else {
+      System.err.println("assignments");
+    }
+  }
+
+  private void labProblemMostAssigned(){
+    Optional<Pair<Long, Long>> idOfLabProblemMostAssigned = assignmentService.idOfLabProblemMostAssigned();
+    if(idOfLabProblemMostAssigned.isPresent()){
+      System.out.println("lab problem most assigned id: " + idOfLabProblemMostAssigned.get().getKey() + " - " + idOfLabProblemMostAssigned.get().getValue() + "times");
+    } else {
+      System.err.println("no lab problems assigned");
+    }
+  }
+
+  private void greatestMeanOfStudent(){
+    Optional<Pair<Long, Double>> greatestMean = assignmentService.greatestMean();
+    if(greatestMean.isPresent()){
+      System.out.println("The greatest mean is of student id = " + greatestMean.get().getKey() + ": " + greatestMean.get().getValue());
+    } else {
+      System.err.println("no students or assignments");
+    }
   }
 
   /** ro.ubb.UI method for printing the console menu */
@@ -71,6 +113,10 @@ public class Console {
     System.out.println("- print assignments");
     System.out.println("- update assignment");
     System.out.println("- delete assignment");
+    System.out.println("- max mean student");
+    System.out.println("- max mean group");
+    System.out.println("- lab problem most");
+    System.out.println("- avg grade");
     System.out.println("- exit");
   }
 

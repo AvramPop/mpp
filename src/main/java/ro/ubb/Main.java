@@ -63,13 +63,13 @@ public class Main {
       /*
       Repository<Long, Student> studentRepository =
           new FileRepository<>(
-              repoPath("students"),
+              repoPathTextFile("students"),
               ";",
               FileLineEntityFactory.studentFromFileLine());
 
       Repository<Long, LabProblem> labProblemRepository =
           new FileRepository<>(
-              repoPath("labProblems"),
+              repoPathTextFile("labProblems"),
               ";",
                   FileLineEntityFactory.labProblemFromFileLine());
 
@@ -78,7 +78,7 @@ public class Main {
                       repoPathTextFile("assignments"),
                       ";",
                       FileLineEntityFactory.assignmentObjectFromFileLine());
-      */
+*/
 
       Repository<Long, Student> studentRepository =
           new XMLRepository<>(
