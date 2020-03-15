@@ -18,7 +18,7 @@ import ro.ubb.repository.Repository;
 
 class AssignmentServiceTest {
 
-  private static final Long IDLABPROBLEM= 1L;
+  private static final Long IDLABPROBLEM = 1L;
   private static final Long NEW_IDLABPROBLEM = 2L;
   private static final String DESCRIPTIONLABPROBLEM = "123123";
   private static final String NEW_DESCRIPTIONLABPROBLEM = "123";
@@ -28,7 +28,6 @@ class AssignmentServiceTest {
   private LabProblemService labProblemService;
   private Validator<LabProblem> labProblemValidator;
   private Repository<Long, LabProblem> labProblemRepository;
-
 
   private static final Long IDSTUDENT = 1L;
   private static final Long NEW_IDSTUDENT = 2L;
@@ -44,13 +43,12 @@ class AssignmentServiceTest {
   private Validator<Student> studentValidator;
 
   private static final Long IDASSIGNMENT = 1L;
-  private static final Long NEW_IDASSIGNMENT= 2L;
-  private static final int GRADE= 10;
+  private static final Long NEW_IDASSIGNMENT = 2L;
+  private static final int GRADE = 10;
   private Assignment assignment;
   private AssignmentService assignmentService;
   private Repository<Long, Assignment> assignmentRepository;
   private Validator<Assignment> assignmentValidator;
-
 
   @BeforeEach
   void setUp() {
@@ -66,11 +64,13 @@ class AssignmentServiceTest {
     studentRepository = new InMemoryRepository<>();
     studentService = new StudentService(studentRepository, studentValidator);
 
-    assignment = new Assignment(student.getId(),labProblem.getId());
+    assignment = new Assignment(student.getId(), labProblem.getId());
     assignment.setId(IDASSIGNMENT);
     assignmentRepository = new InMemoryRepository<>();
     assignmentValidator = new AssignmentValidator();
-    assignmentService = new AssignmentService(assignmentRepository,labProblemService,studentService,assignmentValidator);
+    assignmentService =
+        new AssignmentService(
+            assignmentRepository, labProblemService, studentService, assignmentValidator);
   }
 
   @AfterEach
@@ -88,193 +88,200 @@ class AssignmentServiceTest {
     student = null;
     studentRepository = null;
     studentValidator = null;
-
   }
 
   @Test
   void Given_EmptyRepository_When_ValidAssignmentAdded_Then_AdditionWillSucceed() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
-    assignmentService.addAssignment(IDASSIGNMENT,IDSTUDENT,IDLABPROBLEM,GRADE);
+    assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
   }
 
   @Test
   void
-  Given_EmptyRepository_When_InvalidIdAttributeOfAssignmentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
+      Given_EmptyRepository_When_InvalidIdAttributeOfAssignmentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
 
     Assertions.assertThrows(
-            ValidatorException.class,
-            () -> assignmentService.addAssignment(-1L, IDSTUDENT, IDLABPROBLEM,GRADE));
+        ValidatorException.class,
+        () -> assignmentService.addAssignment(-1L, IDSTUDENT, IDLABPROBLEM, GRADE));
   }
 
   @Test
   void
-  Given_EmptyRepository_When_InvalidStudentIdOfAssignmentEntity_Then_AdditionWillFailAndThrowsValidatorExcepton() {
+      Given_EmptyRepository_When_InvalidStudentIdOfAssignmentEntity_Then_AdditionWillFailAndThrowsValidatorExcepton() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
 
     Assertions.assertThrows(
-            ValidatorException.class,
-            () -> assignmentService.addAssignment(IDASSIGNMENT, -1L, IDLABPROBLEM,GRADE));
+        ValidatorException.class,
+        () -> assignmentService.addAssignment(IDASSIGNMENT, -1L, IDLABPROBLEM, GRADE));
   }
 
   @Test
   void
-  Given_EmptyRepository_When_InvalidLabProblemIdOfAssignmentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
+      Given_EmptyRepository_When_InvalidLabProblemIdOfAssignmentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
 
     Assertions.assertThrows(
-            ValidatorException.class,
-            () -> assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, -1L,GRADE));
+        ValidatorException.class,
+        () -> assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, -1L, GRADE));
   }
 
   @Test
   void
-  Given_EmptyRepository_When_InvalidGradeSmallerThanZeroOfAssignmentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
+      Given_EmptyRepository_When_InvalidGradeSmallerThanZeroOfAssignmentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
 
     Assertions.assertThrows(
-            ValidatorException.class,
-            () -> assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM,-1));
+        ValidatorException.class,
+        () -> assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, -1));
   }
 
   @Test
   void
-  Given_EmptyRepository_When_InvalidGradeLargerThanZeroOfAssignmentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
+      Given_EmptyRepository_When_InvalidGradeLargerThanZeroOfAssignmentEntity_Then_AdditionWillFailAndThrowsValidatorException() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
 
     Assertions.assertThrows(
-            ValidatorException.class,
-            () -> assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM,11));
-  }
-
-
-  @Test
-  void
-  Given_EmptyRepository_When_ValidEntityStudentIdNotInRepositoryOfAssignmentEntity_Then_AdditionWillFailReturnsEntity() {
-    labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
-    studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
-    Assertions.assertTrue(assignmentService.addAssignment(IDASSIGNMENT, NEW_IDSTUDENT, IDLABPROBLEM,GRADE).isPresent());
+        ValidatorException.class,
+        () -> assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, 11));
   }
 
   @Test
   void
-  Given_EmptyRepository_When_ValidEntityLabPRoblemIdNotInRepositoryOfAssignmentEntity_Then_AdditionWillFailReturnsEntity() {
+      Given_EmptyRepository_When_ValidEntityStudentIdNotInRepositoryOfAssignmentEntity_Then_AdditionWillFailReturnsEntity() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
-    Assertions.assertTrue(assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, NEW_IDLABPROBLEM,GRADE).isPresent());
+    Assertions.assertTrue(
+        assignmentService
+            .addAssignment(IDASSIGNMENT, NEW_IDSTUDENT, IDLABPROBLEM, GRADE)
+            .isPresent());
   }
-
 
   @Test
   void
-  Given_AssignmentRepositoryWithOneEntity_When_ReadingAllStudentEntitiesFormRepository_Then_NumberOfEntitiesReturnedIsOne() {
+      Given_EmptyRepository_When_ValidEntityLabPRoblemIdNotInRepositoryOfAssignmentEntity_Then_AdditionWillFailReturnsEntity() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
-    assignmentService.addAssignment(IDASSIGNMENT,IDSTUDENT,IDLABPROBLEM,GRADE);
+    Assertions.assertTrue(
+        assignmentService
+            .addAssignment(IDASSIGNMENT, IDSTUDENT, NEW_IDLABPROBLEM, GRADE)
+            .isPresent());
+  }
+
+  @Test
+  void
+      Given_AssignmentRepositoryWithOneEntity_When_ReadingAllStudentEntitiesFormRepository_Then_NumberOfEntitiesReturnedIsOne() {
+    labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
+    studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
+    assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
 
     Assertions.assertEquals(assignmentService.getAllAssignments().size(), 1);
   }
 
   @Test
   void
-  Given_AssignmentRepositoryWithOneEntity_When_DeletingAnEntityInsideTheRepository_Then_NumberOfEntitiesReturnedIsZero() {
+      Given_AssignmentRepositoryWithOneEntity_When_DeletingAnEntityInsideTheRepository_Then_NumberOfEntitiesReturnedIsZero() {
 
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
-    assignmentService.addAssignment(IDASSIGNMENT,IDSTUDENT,IDLABPROBLEM,GRADE);
+    assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
     assignmentService.deleteAssignment(assignment.getId());
     Assertions.assertEquals(assignmentService.getAllAssignments().size(), 0);
   }
 
   @Test
   void
-  Given_AssignmentRepositoryWithOneEntity_When_FindingByIdThatEntity_Then_ReturnOptionalContainingIt() {
+      Given_AssignmentRepositoryWithOneEntity_When_FindingByIdThatEntity_Then_ReturnOptionalContainingIt() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
-    assignmentService.addAssignment(IDASSIGNMENT,IDSTUDENT,IDLABPROBLEM,GRADE);
-    Assertions.assertEquals(assignmentService.getAssignmentById(assignment.getId()).get(), assignment);
+    assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
+    Assertions.assertEquals(
+        assignmentService.getAssignmentById(assignment.getId()).get(), assignment);
   }
 
   @Test
   void
-  Given_AssignmentRepositoryWithOneEntity_When_FindingByIdThatEntity_Then_ReturnOptionalWithValueInside() {
+      Given_AssignmentRepositoryWithOneEntity_When_FindingByIdThatEntity_Then_ReturnOptionalWithValueInside() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
-    assignmentService.addAssignment(IDASSIGNMENT,IDSTUDENT,IDLABPROBLEM,GRADE);
+    assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
     Assertions.assertTrue(assignmentService.getAssignmentById(assignment.getId()).isPresent());
   }
 
   @Test
   void
-  Given_AssignmentRepositoryWithOneEntity_When_FindingByIdOtherEntity_Then_ReturnOptionalWithNullInside() {
+      Given_AssignmentRepositoryWithOneEntity_When_FindingByIdOtherEntity_Then_ReturnOptionalWithNullInside() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
-    assignmentService.addAssignment(IDASSIGNMENT,IDSTUDENT,IDLABPROBLEM,GRADE);
+    assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
     Assertions.assertFalse(assignmentService.getAssignmentById(2L).isPresent());
   }
 
   @Test
   void
-  Given_AssignmentRepositoryWithOneEntity_When_DeletingAnEntityInsideTheRepository_Then_TheReturnedOptionalIsNotNull() {
+      Given_AssignmentRepositoryWithOneEntity_When_DeletingAnEntityInsideTheRepository_Then_TheReturnedOptionalIsNotNull() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
-    assignmentService.addAssignment(IDASSIGNMENT,IDSTUDENT,IDLABPROBLEM,GRADE);
+    assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
     Assertions.assertTrue(assignmentService.deleteAssignment(assignment.getId()).isPresent());
   }
 
   @Test
   void
-  Given_AssignmentRepositoryWithOneEntity_When_DeletingAnEntityInsideTheRepository_Then_TheReturnedOptionalContainsTheEntity() {
+      Given_AssignmentRepositoryWithOneEntity_When_DeletingAnEntityInsideTheRepository_Then_TheReturnedOptionalContainsTheEntity() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
-    assignmentService.addAssignment(IDASSIGNMENT,IDSTUDENT,IDLABPROBLEM,GRADE);
-    Assertions.assertEquals(assignmentService.deleteAssignment(assignment.getId()).get(), assignment);
+    assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
+    Assertions.assertEquals(
+        assignmentService.deleteAssignment(assignment.getId()).get(), assignment);
   }
 
   @Test
   void
-  Given_EmptyRepository_When_DeletingAnEntityInsideTheRepository_Then_TheReturnedOptionalIsNull() {
+      Given_EmptyRepository_When_DeletingAnEntityInsideTheRepository_Then_TheReturnedOptionalIsNull() {
     Assertions.assertFalse(assignmentService.deleteAssignment(assignment.getId()).isPresent());
   }
 
   @Test
   void Given_EmptyRepository_When_DeletingANull_Then_ThenThrowsIllegalArgumentException() {
     Assertions.assertThrows(
-            IllegalArgumentException.class, () -> assignmentService.deleteAssignment(null));
+        IllegalArgumentException.class, () -> assignmentService.deleteAssignment(null));
   }
 
   @Test
   void
-  Given_AssignmentRepositoryWithOneEntity_When_DeletingAnEntityNotInsideTheRepository_Then_TheReturnedOptionalIsNull() {
+      Given_AssignmentRepositoryWithOneEntity_When_DeletingAnEntityNotInsideTheRepository_Then_TheReturnedOptionalIsNull() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
-    assignmentService.addAssignment(IDASSIGNMENT,IDSTUDENT,IDLABPROBLEM,GRADE);
+    assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
     Assertions.assertFalse(assignmentService.deleteAssignment(NEW_IDASSIGNMENT).isPresent());
   }
 
   @Test
   void
-  Given_AssignmentRepositoryWithOneEntity_When_UpdatingTheEntity_Then_UpdateSucceedsReturnsEmptyOptional() {
+      Given_AssignmentRepositoryWithOneEntity_When_UpdatingTheEntity_Then_UpdateSucceedsReturnsEmptyOptional() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
     studentService.addStudent(NEW_IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
-    assignmentService.addAssignment(IDASSIGNMENT,IDSTUDENT,IDLABPROBLEM,GRADE);
+    assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
     Assertions.assertFalse(
-            assignmentService.updateAssignment(IDASSIGNMENT,NEW_IDSTUDENT,IDLABPROBLEM,GRADE).isPresent());
+        assignmentService
+            .updateAssignment(IDASSIGNMENT, NEW_IDSTUDENT, IDLABPROBLEM, GRADE)
+            .isPresent());
   }
 
   @Test
   void Given_AssignmentRepositoryWithOneEntity_When_UpdatingTheEntity_Then_EntityIsUpdated() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
-    assignmentService.addAssignment(IDASSIGNMENT,IDSTUDENT,IDLABPROBLEM,GRADE);
-    assignmentService.updateAssignment(IDASSIGNMENT,NEW_IDSTUDENT,IDLABPROBLEM,GRADE);
+    assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
+    assignmentService.updateAssignment(IDASSIGNMENT, NEW_IDSTUDENT, IDLABPROBLEM, GRADE);
     assignment.setStudentId(NEW_IDSTUDENT);
 
     Assertions.assertEquals(assignment, assignmentService.getAllAssignments().toArray()[0]);
@@ -282,50 +289,55 @@ class AssignmentServiceTest {
 
   @Test
   void
-  Given_AssignmentRepositoryWithOneEntity_When_UpdatingNonExistingEntity_Then_UpdateFailsReturnsOptionalWithEntity() {
+      Given_AssignmentRepositoryWithOneEntity_When_UpdatingNonExistingEntity_Then_UpdateFailsReturnsOptionalWithEntity() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
-    assignmentService.addAssignment(IDASSIGNMENT,IDSTUDENT,IDLABPROBLEM,GRADE);
-    assignmentService.updateAssignment(IDASSIGNMENT,NEW_IDSTUDENT,IDLABPROBLEM,GRADE);
+    assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
+    assignmentService.updateAssignment(IDASSIGNMENT, NEW_IDSTUDENT, IDLABPROBLEM, GRADE);
     assignment.setStudentId(NEW_IDSTUDENT);
     Assertions.assertEquals(
-            assignmentService.updateAssignment(IDASSIGNMENT,NEW_IDSTUDENT,IDLABPROBLEM,GRADE).get(), assignment);
+        assignmentService.updateAssignment(IDASSIGNMENT, NEW_IDSTUDENT, IDLABPROBLEM, GRADE).get(),
+        assignment);
   }
 
   @Test
   void
-  Given_EmptyRepository_When_ValidEntityStudentIdNotInRepositoryOfUpdateEntity_Then_UpdateWillFailReturnsEntity() {
+      Given_EmptyRepository_When_ValidEntityStudentIdNotInRepositoryOfUpdateEntity_Then_UpdateWillFailReturnsEntity() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
-    assignmentService.addAssignment(IDASSIGNMENT,IDSTUDENT,IDLABPROBLEM,GRADE);
+    assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
 
-    Assertions.assertTrue(assignmentService.updateAssignment(IDASSIGNMENT, NEW_IDSTUDENT, IDLABPROBLEM,GRADE).isPresent());
+    Assertions.assertTrue(
+        assignmentService
+            .updateAssignment(IDASSIGNMENT, NEW_IDSTUDENT, IDLABPROBLEM, GRADE)
+            .isPresent());
   }
 
   @Test
   void
-  Given_EmptyRepository_When_ValidEntityLabPRoblemIdNotInRepositoryOfUpdateEntity_Then_UpdateWillFailReturnsEntity() {
+      Given_EmptyRepository_When_ValidEntityLabPRoblemIdNotInRepositoryOfUpdateEntity_Then_UpdateWillFailReturnsEntity() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
-    assignmentService.addAssignment(IDASSIGNMENT,IDSTUDENT,IDLABPROBLEM,GRADE);
+    assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
 
-    Assertions.assertTrue(assignmentService.updateAssignment(IDASSIGNMENT, IDSTUDENT, NEW_IDLABPROBLEM,GRADE).isPresent());
+    Assertions.assertTrue(
+        assignmentService
+            .updateAssignment(IDASSIGNMENT, IDSTUDENT, NEW_IDLABPROBLEM, GRADE)
+            .isPresent());
   }
 
   @Test
   void Given_EmptyRepository_When_GettingGreatestMean_Then_NullIsReturned() {
     Assertions.assertTrue(assignmentService.greatestMean().isEmpty());
-
   }
 
   @Test
   void Given_RepositoryWithOneEntity_When_GettingGreatestMean_Then_EntityIsReturned() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
-    assignmentService.addAssignment(IDASSIGNMENT,IDSTUDENT,IDLABPROBLEM,GRADE);
+    assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
 
     Assertions.assertTrue(assignmentService.greatestMean().isPresent());
-
   }
 
   @Test
@@ -334,7 +346,7 @@ class AssignmentServiceTest {
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
     assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
 
-    Assertions.assertEquals(assignmentService.greatestMean().get().getValue(),GRADE);
+    Assertions.assertEquals(assignmentService.greatestMean().get().getValue(), GRADE);
   }
 
   @Test
@@ -343,13 +355,12 @@ class AssignmentServiceTest {
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
     assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
 
-    Assertions.assertEquals(assignmentService.greatestMean().get().getKey(),IDLABPROBLEM);
+    Assertions.assertEquals(assignmentService.greatestMean().get().getKey(), IDLABPROBLEM);
   }
 
   @Test
   void Given_EmptyRepository_When_IdOfMostAssignedLabProblem_Then_NullIsReturned() {
     Assertions.assertTrue(assignmentService.idOfLabProblemMostAssigned().isEmpty());
-
   }
 
   @Test
@@ -367,25 +378,23 @@ class AssignmentServiceTest {
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
     assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
 
-    Assertions.assertEquals(assignmentService.idOfLabProblemMostAssigned().get().getKey(),IDLABPROBLEM);
+    Assertions.assertEquals(
+        assignmentService.idOfLabProblemMostAssigned().get().getKey(), IDLABPROBLEM);
   }
 
   @Test
-  void Given_RepositoryWithOneEntity_When_IdOfMostAssignedLabProblem_Then_TheNumberOfAssignmentsIsOne() {
+  void
+      Given_RepositoryWithOneEntity_When_IdOfMostAssignedLabProblem_Then_TheNumberOfAssignmentsIsOne() {
     labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
     assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
 
-    Assertions.assertEquals(assignmentService.idOfLabProblemMostAssigned().get().getValue(),1);
+    Assertions.assertEquals(assignmentService.idOfLabProblemMostAssigned().get().getValue(), 1);
   }
-
-
-
 
   @Test
   void Given_EmptyRepository_When_GettingAverageGrade_Then_NullIsReturned() {
     Assertions.assertTrue(assignmentService.averageGrade().isEmpty());
-
   }
 
   @Test
@@ -403,17 +412,12 @@ class AssignmentServiceTest {
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
     assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
 
-    Assertions.assertEquals(assignmentService.averageGrade().get(),GRADE);
+    Assertions.assertEquals(assignmentService.averageGrade().get(), GRADE);
   }
-
-
-
-
 
   @Test
   void Given_EmptyRepository_When_GroupWithGreatestMean_Then_NullIsReturned() {
     Assertions.assertTrue(assignmentService.groupWithGreatestMean().isEmpty());
-
   }
 
   @Test
@@ -431,7 +435,7 @@ class AssignmentServiceTest {
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
     assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
 
-    Assertions.assertEquals(assignmentService.groupWithGreatestMean().get().getKey(),GROUPSTUDENT);
+    Assertions.assertEquals(assignmentService.groupWithGreatestMean().get().getKey(), GROUPSTUDENT);
   }
 
   @Test
@@ -440,5 +444,6 @@ class AssignmentServiceTest {
     studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
     assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
 
-    Assertions.assertEquals(assignmentService.groupWithGreatestMean().get().getValue(),10);
-  }}
+    Assertions.assertEquals(assignmentService.groupWithGreatestMean().get().getValue(), 10);
+  }
+}

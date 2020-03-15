@@ -211,21 +211,20 @@ class LabProblemServiceTest {
   void
       Given_LabProblemRepositoryWithOneEntity_When_FindingByIdWithInvalidId_Then_ThrowIllegalArgumentException() {
     Assertions.assertThrows(
-        IllegalArgumentException.class, () -> labProblemService.getLabProblemById(-1l));
+        IllegalArgumentException.class, () -> labProblemService.getLabProblemById(-1L));
     Assertions.assertThrows(
         IllegalArgumentException.class, () -> labProblemService.getLabProblemById(null));
   }
 
   @Test
-  void
-  Given_LabProblemService_When_SavingInvalidEntity_Then_ThrowsValidatorException() {
-    Assertions.assertThrows(ValidatorException.class, () -> labProblemService.addLabProblem(null, -1, ""));
+  void Given_LabProblemService_When_SavingInvalidEntity_Then_ThrowsValidatorException() {
+    Assertions.assertThrows(
+        ValidatorException.class, () -> labProblemService.addLabProblem(null, -1, ""));
   }
 
   @Test
-  void
-  Given_LabProblemService_When_UpdatingInvalidEntity_Then_ThrowsValidatorException() {
-    Assertions.assertThrows(ValidatorException.class, () -> labProblemService.updateLabProblem(null, -1, ""));
+  void Given_LabProblemService_When_UpdatingInvalidEntity_Then_ThrowsValidatorException() {
+    Assertions.assertThrows(
+        ValidatorException.class, () -> labProblemService.updateLabProblem(null, -1, ""));
   }
-
 }

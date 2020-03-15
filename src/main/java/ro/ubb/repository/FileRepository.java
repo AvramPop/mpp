@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
- * Non-volatile generic data ro.ubb.repository holding everything in a file specified in the constructor
- * if the filename is empty it generates a default file
+ * Non-volatile generic data ro.ubb.repository holding everything in a file specified in the
+ * constructor if the filename is empty it generates a default file
  *
  * @param <ID> type of the id of given entity to store
  * @param <T> type of entity to store
@@ -148,9 +148,7 @@ public class FileRepository<ID, T extends BaseEntity<ID>> implements Repository<
     try {
       Files.lines(path)
           .forEach(
-              line -> {
-                newEntities.add(converterFunction.convert(line, delimiter));
-              });
+              line -> newEntities.add(converterFunction.convert(line, delimiter)));
     } catch (IOException e) {
       e.printStackTrace();
     }

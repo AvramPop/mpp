@@ -191,20 +191,20 @@ class StudentServiceTest {
   void
       Given_StudentRepositoryWithOneEntity_When_FindingByIdWithInvalidId_Then_ThrowIllegalArgumentException() {
     Assertions.assertThrows(
-        IllegalArgumentException.class, () -> studentService.getStudentById(-1l));
+        IllegalArgumentException.class, () -> studentService.getStudentById(-1L));
     Assertions.assertThrows(
         IllegalArgumentException.class, () -> studentService.getStudentById(null));
   }
 
   @Test
-  void
-  Given_StudentService_When_SavingInvalidEntity_Then_ThrowsValidatorException() {
-    Assertions.assertThrows(ValidatorException.class, () -> studentService.addStudent(null, "", "", -1));
+  void Given_StudentService_When_SavingInvalidEntity_Then_ThrowsValidatorException() {
+    Assertions.assertThrows(
+        ValidatorException.class, () -> studentService.addStudent(null, "", "", -1));
   }
 
   @Test
-  void
-  Given_StudentService_When_UpdatingInvalidEntity_Then_ThrowsValidatorException() {
-    Assertions.assertThrows(ValidatorException.class, () -> studentService.updateStudent(null, "", "", -1));
+  void Given_StudentService_When_UpdatingInvalidEntity_Then_ThrowsValidatorException() {
+    Assertions.assertThrows(
+        ValidatorException.class, () -> studentService.updateStudent(null, "", "", -1));
   }
 }

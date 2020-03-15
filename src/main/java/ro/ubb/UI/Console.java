@@ -60,37 +60,51 @@ public class Console {
     dictionaryOfCommands.put("exit", () -> System.exit(0));
   }
 
-  private void greatestMeanOfGroup(){
+  private void greatestMeanOfGroup() {
     Optional<Pair<Integer, Double>> greatestMean = assignmentService.groupWithGreatestMean();
-    if(greatestMean.isPresent()){
-      System.out.println("The greatest mean is of group id = " + greatestMean.get().getKey() + ": " + greatestMean.get().getValue());
+    if (greatestMean.isPresent()) {
+      System.out.println(
+          "The greatest mean is of group id = "
+              + greatestMean.get().getKey()
+              + ": "
+              + greatestMean.get().getValue());
     } else {
       System.err.println("no students or assignments");
     }
   }
 
-  private void averageGrade(){
+  private void averageGrade() {
     Optional<Double> mean = assignmentService.averageGrade();
-    if(mean.isPresent()){
+    if (mean.isPresent()) {
       System.out.println("The mean of all assignments is " + mean.get());
     } else {
       System.err.println("assignments");
     }
   }
 
-  private void labProblemMostAssigned(){
-    Optional<Pair<Long, Long>> idOfLabProblemMostAssigned = assignmentService.idOfLabProblemMostAssigned();
-    if(idOfLabProblemMostAssigned.isPresent()){
-      System.out.println("lab problem most assigned id: " + idOfLabProblemMostAssigned.get().getKey() + " - " + idOfLabProblemMostAssigned.get().getValue() +  "times");
+  private void labProblemMostAssigned() {
+    Optional<Pair<Long, Long>> idOfLabProblemMostAssigned =
+        assignmentService.idOfLabProblemMostAssigned();
+    if (idOfLabProblemMostAssigned.isPresent()) {
+      System.out.println(
+          "lab problem most assigned id: "
+              + idOfLabProblemMostAssigned.get().getKey()
+              + " - "
+              + idOfLabProblemMostAssigned.get().getValue()
+              + "times");
     } else {
       System.err.println("no lab problems assigned");
     }
   }
 
-  private void greatestMeanOfStudent(){
+  private void greatestMeanOfStudent() {
     Optional<Pair<Long, Double>> greatestMean = assignmentService.greatestMean();
-    if(greatestMean.isPresent()){
-      System.out.println("The greatest mean is of student id = " + greatestMean.get().getKey() + ": " + greatestMean.get().getValue());
+    if (greatestMean.isPresent()) {
+      System.out.println(
+          "The greatest mean is of student id = "
+              + greatestMean.get().getKey()
+              + ": "
+              + greatestMean.get().getValue());
     } else {
       System.err.println("no students or assignments");
     }
@@ -255,10 +269,8 @@ public class Console {
       System.out.println("Invalid input!");
       return;
     }
-    if(labProblemService.deleteLabProblem(id).isEmpty())
-      System.out.println("Delete failed");
-    else
-      System.out.println("Delete successful");
+    if (labProblemService.deleteLabProblem(id).isEmpty()) System.out.println("Delete failed");
+    else System.out.println("Delete successful");
   }
   /** ro.ubb.UI method filters lab problems by problem number */
   private void filterLabProblemsByProblemNumber() {
@@ -313,11 +325,8 @@ public class Console {
       System.out.println("Invalid input!");
       return;
     }
-    if(studentService.deleteStudent(id).isEmpty())
-    System.out.println("Delete failed");
-    else
-    System.out.println("Delete successful");
-
+    if (studentService.deleteStudent(id).isEmpty()) System.out.println("Delete failed");
+    else System.out.println("Delete successful");
   }
   /** ro.ubb.UI method filters students by group number */
   private void filterStudentsByGroup() {
@@ -366,10 +375,8 @@ public class Console {
     try {
       System.out.println("Enter id: ");
       id = Long.parseLong(input.readLine().strip());
-      if(assignmentService.deleteAssignment(id).isEmpty())
-        System.out.println("Delete failed");
-      else
-        System.out.println("Delete successful");
+      if (assignmentService.deleteAssignment(id).isEmpty()) System.out.println("Delete failed");
+      else System.out.println("Delete successful");
 
     } catch (IOException | NumberFormatException e) {
       System.err.println("bad input");

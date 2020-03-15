@@ -29,16 +29,14 @@ class XMLRepositoryTest {
     labProblem = new LabProblem(11, "description");
     labProblem.setId(1L);
     repository =
-        new XMLRepository<>(
-            repoPath(),
-            XMLElementToEntityFactory.labProblemObjectFromXMLFile());
+        new XMLRepository<>(repoPath(), XMLElementToEntityFactory.labProblemObjectFromXMLFile());
     repository.save(labProblem);
   }
 
-  private String defaultStringInXML(){
-    return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
-        "<labProblems>\n" +
-        "</labProblems>";
+  private String defaultStringInXML() {
+    return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+        + "<labProblems>\n"
+        + "</labProblems>";
   }
 
   @AfterEach
@@ -47,7 +45,7 @@ class XMLRepositoryTest {
     labProblem = null;
     try {
       Files.delete(Paths.get(repoPath()));
-    } catch (IOException ex) {
+    } catch (IOException ignored) {
 
     }
   }
@@ -63,16 +61,15 @@ class XMLRepositoryTest {
         + FileSystems.getDefault().getSeparator();
   }
 
-
   @Test
   void
-  Given_LabProblemRepositoryWithOneEntity_When_FindingDescriptionOfOneThatIsInRepository_Then_ReturnSoughtDescription() {
+      Given_LabProblemRepositoryWithOneEntity_When_FindingDescriptionOfOneThatIsInRepository_Then_ReturnSoughtDescription() {
     Assertions.assertEquals("description", repository.findOne(1L).get().getDescription());
   }
 
   @Test
   void
-  Given_LabProblemRepositoryWithOneEntity_When_FindingOneThatIsNotInRepository_Then_ReturnFalse() {
+      Given_LabProblemRepositoryWithOneEntity_When_FindingOneThatIsNotInRepository_Then_ReturnFalse() {
     Assertions.assertFalse(repository.findOne(2L).isPresent(), "member with id given not found");
   }
 
@@ -83,13 +80,13 @@ class XMLRepositoryTest {
 
   @Test
   void
-  Given_LabProblemRepositoryWithOneEntity_WhenFindOneWithNullId_Then_ThrowIllegalArgumentException() {
+      Given_LabProblemRepositoryWithOneEntity_WhenFindOneWithNullId_Then_ThrowIllegalArgumentException() {
     Assertions.assertThrows(IllegalArgumentException.class, () -> repository.findOne(null));
   }
 
   @Test
   void
-  Given_LabProblemRepositoryWithOneEntity_When_FindingAllInRepository_Then_ReturnSetWithThatEntity() {
+      Given_LabProblemRepositoryWithOneEntity_When_FindingAllInRepository_Then_ReturnSetWithThatEntity() {
     Set<LabProblem> labProblems = new HashSet<>();
     labProblems.add(labProblem);
     Assertions.assertEquals(labProblems, repository.findAll());
@@ -97,7 +94,7 @@ class XMLRepositoryTest {
 
   @Test
   void
-  Given_LabProblemRepositoryWithOneEntity_When_SavingValidEntity_Then_NumberOfElementsInTheRepositoryIncrements() {
+      Given_LabProblemRepositoryWithOneEntity_When_SavingValidEntity_Then_NumberOfElementsInTheRepositoryIncrements() {
     LabProblem labProblem = new LabProblem(12, "description2");
     labProblem.setId(2L);
     repository.save(labProblem);
@@ -106,33 +103,33 @@ class XMLRepositoryTest {
 
   @Test
   void
-  Given_LabProblemWithOneEntity_When_SavingEntityWithIdAlreadyInRepository_Then_SizeOfRepositoryRemainsOne() {
+      Given_LabProblemWithOneEntity_When_SavingEntityWithIdAlreadyInRepository_Then_SizeOfRepositoryRemainsOne() {
     repository.save(labProblem);
     Assertions.assertEquals(1, ((Set<LabProblem>) repository.findAll()).size());
   }
 
   @Test
   void
-  Given_LabProblemRepositoryWithOneEntity_When_SavingNull_Then_ThrowsIllegalArgumentException() {
+      Given_LabProblemRepositoryWithOneEntity_When_SavingNull_Then_ThrowsIllegalArgumentException() {
     Assertions.assertThrows(IllegalArgumentException.class, () -> repository.save(null));
   }
 
   @Test
   void
-  Given_LabProblemRepositoryWithOneEntity_When_DeletingSingleEntityInRepository_Then_SizeOfRepositoryIsZero() {
+      Given_LabProblemRepositoryWithOneEntity_When_DeletingSingleEntityInRepository_Then_SizeOfRepositoryIsZero() {
     repository.delete(1L);
     Assertions.assertEquals(0, ((Set<LabProblem>) repository.findAll()).size());
   }
 
   @Test
   void
-  Given_LabProblemRepositoryWithOneEntity_When_DeletingEntityInRepository_Then_ReturnRightDataAboutTheDeletedEntity() {
+      Given_LabProblemRepositoryWithOneEntity_When_DeletingEntityInRepository_Then_ReturnRightDataAboutTheDeletedEntity() {
     Assertions.assertEquals("description", repository.delete(1L).get().getDescription());
   }
 
   @Test
   void
-  Given_LabProblemRepositoryWithOneEntity_When_DeletingEntityNotInRepository_Then_ReturnFalse() {
+      Given_LabProblemRepositoryWithOneEntity_When_DeletingEntityNotInRepository_Then_ReturnFalse() {
     Assertions.assertFalse(repository.delete(2L).isPresent(), "member with id given not found");
   }
 
@@ -143,13 +140,13 @@ class XMLRepositoryTest {
 
   @Test
   void
-  Given_LabProblemRepositoryWithOneEntity_When_DeletingWithNullId_Then_ThrowsIllegalArgumentException() {
+      Given_LabProblemRepositoryWithOneEntity_When_DeletingWithNullId_Then_ThrowsIllegalArgumentException() {
     Assertions.assertThrows(IllegalArgumentException.class, () -> repository.delete(null));
   }
 
   @Test
   void
-  Given_StudentRepositoryWithOneEntity_When_UpdatingEntityNotInRepository_Then_ReturnOptionalWithEntity() {
+      Given_StudentRepositoryWithOneEntity_When_UpdatingEntityNotInRepository_Then_ReturnOptionalWithEntity() {
     LabProblem updatedLabProblem2 = new LabProblem(12, "description2");
     updatedLabProblem2.setId(2L);
     Optional<LabProblem> updateResult = repository.update(updatedLabProblem2);
@@ -167,7 +164,7 @@ class XMLRepositoryTest {
 
   @Test
   void
-  Given_StudentRepositoryWithOneEntity_When_UpdatingEntityInRepository_Then_ReturnOptionalWithNoValue() {
+      Given_StudentRepositoryWithOneEntity_When_UpdatingEntityInRepository_Then_ReturnOptionalWithNoValue() {
     LabProblem labProblem = new LabProblem(2, "descriptionUpdated");
     labProblem.setId(1L);
     Assertions.assertFalse(repository.update(labProblem).isPresent());
@@ -175,7 +172,7 @@ class XMLRepositoryTest {
 
   @Test
   void
-  Given_StudentRepositoryWithOneEntity_When_UpdatingWithNullId_Then_ThrowsIllegalArgumentException() {
+      Given_StudentRepositoryWithOneEntity_When_UpdatingWithNullId_Then_ThrowsIllegalArgumentException() {
     Assertions.assertThrows(IllegalArgumentException.class, () -> repository.update(null));
   }
 }

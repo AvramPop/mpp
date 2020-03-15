@@ -7,14 +7,13 @@ import ro.ubb.domain.LabProblem;
 import ro.ubb.domain.ObjectFromXMLFile;
 import ro.ubb.domain.Student;
 
-
-/**
- * Instances factory from XML elements.
- */
+/** Instances factory from XML elements. */
 public class XMLElementToEntityFactory {
 
   /**
-   * Function that parses a XML element formatted with data of an Assignment to an Assignment object.
+   * Function that parses a XML element formatted with data of an Assignment to an Assignment
+   * object.
+   *
    * @return the parser function
    */
   public static ObjectFromXMLFile<Assignment> assignmentObjectFromXMLFile() {
@@ -34,6 +33,7 @@ public class XMLElementToEntityFactory {
 
   /**
    * Function that parses a XML element formatted with data of an Student to an Student object.
+   *
    * @return the parser function
    */
   public static ObjectFromXMLFile<Student> studentObjectFromXMLFile() {
@@ -52,7 +52,9 @@ public class XMLElementToEntityFactory {
   }
 
   /**
-   * Function that parses a XML element formatted with data of an LabProblem to an LabProblem object.
+   * Function that parses a XML element formatted with data of an LabProblem to an LabProblem
+   * object.
+   *
    * @return the parser function
    */
   public static ObjectFromXMLFile<LabProblem> labProblemObjectFromXMLFile() {
@@ -69,7 +71,7 @@ public class XMLElementToEntityFactory {
     };
   }
 
-  //TODO what does this function do? :)
+  // TODO what does this function do? :)
   private static String getTextFromTagName(Element element, String tagName) {
     Node node = element.getElementsByTagName(tagName).item(0);
     return node.getTextContent();

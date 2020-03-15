@@ -62,7 +62,7 @@ public class Main {
       } catch (FileAlreadyExistsException ignored) {
       }
 
-    /*
+      /*
       Repository<Long, Student> studentRepository =
           new FileRepository<>(
               repoPathTextFile("students"),
@@ -107,7 +107,7 @@ public class Main {
     }
   }
 
-  public static String repoPathTextFile(String repoName) {
+  private static String repoPathTextFile(String repoName) {
     return "src"
         + FileSystems.getDefault().getSeparator()
         + "main"
@@ -118,7 +118,7 @@ public class Main {
         + ".txt";
   }
 
-  public static String repoPathXMLFile(String repoName) {
+  private static String repoPathXMLFile(String repoName) {
     return "src"
         + FileSystems.getDefault().getSeparator()
         + "main"

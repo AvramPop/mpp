@@ -48,8 +48,7 @@ class AssignmentTest {
   @Test
   void Given_ValidAssignment_When_SettingStudentId_Then_SetProperStudentId() {
     assignment.setStudentId(NEW_STUDENT_ID);
-    assertEquals(
-        NEW_STUDENT_ID, assignment.getStudentId(), "student ids should be equal");
+    assertEquals(NEW_STUDENT_ID, assignment.getStudentId(), "student ids should be equal");
   }
 
   @Test
@@ -72,8 +71,7 @@ class AssignmentTest {
   @Test
   void Given_ValidAssignment_When_SettingGrade_Then_SetProperGrade() {
     assignment.setGrade(NEW_GRADE);
-    assertEquals(
-        NEW_GRADE, assignment.getGrade(), "grades should be equal");
+    assertEquals(NEW_GRADE, assignment.getGrade(), "grades should be equal");
   }
 
   @Test

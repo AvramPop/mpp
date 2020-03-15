@@ -99,56 +99,64 @@ public class AssignmentService {
 
   /**
    * Returns the student id who has the biggest mean of grades
-   * @return an {@code Optional} containing a null if no student is in the repository otherwise
-   *   an {@code Optional} containing a {@code Pair} of Long and Double, for the ID and the grade average
+   *
+   * @return an {@code Optional} containing a null if no student is in the repository otherwise an
+   *     {@code Optional} containing a {@code Pair} of Long and Double, for the ID and the grade
+   *     average
    */
-  public Optional<Pair<Long, Double>> greatestMean(){
+  public Optional<Pair<Long, Double>> greatestMean() {
     Iterable<Assignment> assignmentIterable = repository.findAll();
-    Set<Assignment> assignments = StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
+    Set<Assignment> assignments =
+        StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
     Double maximumMean = (double) -1;
     Long idOfStudentWithMaxMean = null;
-    for(Student student : studentService.getAllStudents()){
-      int gradesSum = assignments.stream()
-          .filter(assignment -> assignment.getStudentId().equals(student.getId()))
-          .map(Assignment::getGrade)
-          .reduce(0, Integer::sum);
-      long gradesCount = assignments.stream()
-          .filter(assignment -> assignment.getStudentId().equals(student.getId()))
-          .count();
+    for (Student student : studentService.getAllStudents()) {
+      int gradesSum =
+          assignments.stream()
+              .filter(assignment -> assignment.getStudentId().equals(student.getId()))
+              .map(Assignment::getGrade)
+              .reduce(0, Integer::sum);
+      long gradesCount =
+          assignments.stream()
+              .filter(assignment -> assignment.getStudentId().equals(student.getId()))
+              .count();
       double studentMean = (double) gradesSum / (double) gradesCount;
-      if(studentMean > maximumMean){
+      if (studentMean > maximumMean) {
         maximumMean = studentMean;
         idOfStudentWithMaxMean = student.getId();
       }
     }
-    if(idOfStudentWithMaxMean != null){
+    if (idOfStudentWithMaxMean != null) {
       return Optional.of(new Pair<>(idOfStudentWithMaxMean, maximumMean));
     } else {
       return Optional.empty();
     }
-
   }
 
   /**
    * Returns the id of the lab problem which was assigned the most often
-   * @return an {@code Optional} containing a null if no student is in the repository otherwise
-   *   an {@code Optional} containing a {@code Pair} of Long and Long, for the ID and the number of assignments
+   *
+   * @return an {@code Optional} containing a null if no student is in the repository otherwise an
+   *     {@code Optional} containing a {@code Pair} of Long and Long, for the ID and the number of
+   *     assignments
    */
-  public Optional<Pair<Long, Long>> idOfLabProblemMostAssigned(){
+  public Optional<Pair<Long, Long>> idOfLabProblemMostAssigned() {
     Iterable<Assignment> assignmentIterable = repository.findAll();
-    Set<Assignment> assignments = StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
+    Set<Assignment> assignments =
+        StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
     Long idOfLabProblemMostAssigned = null;
     long maximumNumberOfAssignments = -1L;
-    for(LabProblem labProblem : labProblemService.getAllLabProblems()){
-      long count = assignments.stream()
-          .filter(assignment -> assignment.getLabProblemId().equals(labProblem.getId()))
-          .count();
-      if(count > maximumNumberOfAssignments){
+    for (LabProblem labProblem : labProblemService.getAllLabProblems()) {
+      long count =
+          assignments.stream()
+              .filter(assignment -> assignment.getLabProblemId().equals(labProblem.getId()))
+              .count();
+      if (count > maximumNumberOfAssignments) {
         idOfLabProblemMostAssigned = labProblem.getId();
         maximumNumberOfAssignments = count;
       }
     }
-    if(idOfLabProblemMostAssigned != null){
+    if (idOfLabProblemMostAssigned != null) {
       return Optional.of(new Pair<>(idOfLabProblemMostAssigned, maximumNumberOfAssignments));
     } else {
       return Optional.empty();
@@ -157,16 +165,16 @@ public class AssignmentService {
 
   /**
    * Returns the average grade of all the groups
-   * @return an {@code Optional} containing a null if no student is in the repository otherwise
-   *   a {@code Double} which represents the average grade
+   *
+   * @return an {@code Optional} containing a null if no student is in the repository otherwise a
+   *     {@code Double} which represents the average grade
    */
-  public Optional<Double> averageGrade(){
+  public Optional<Double> averageGrade() {
     Iterable<Assignment> assignmentIterable = repository.findAll();
-    Set<Assignment> assignments = StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
-    int gradesSum = assignments.stream()
-        .map(Assignment::getGrade)
-        .reduce(0, Integer::sum);
-    if(assignments.size() > 0){
+    Set<Assignment> assignments =
+        StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
+    int gradesSum = assignments.stream().map(Assignment::getGrade).reduce(0, Integer::sum);
+    if (assignments.size() > 0) {
       return Optional.of((double) gradesSum / (double) assignments.size());
     } else {
       return Optional.empty();
@@ -175,13 +183,15 @@ public class AssignmentService {
 
   /**
    * Returns the group number with the greatest mean grade
-   * @return an {@code Optional} containing a null if no student is in the repository otherwise
-   *   an {@code Optional} containing a {@code Pair} of Integer and Double, for the group number and the average grade
+   *
+   * @return an {@code Optional} containing a null if no student is in the repository otherwise an
+   *     {@code Optional} containing a {@code Pair} of Integer and Double, for the group number and
+   *     the average grade
    */
-  public Optional<Pair<Integer, Double>> groupWithGreatestMean(){
+  public Optional<Pair<Integer, Double>> groupWithGreatestMean() {
     Map<Integer, List<Student>> groups = new HashMap<>();
-    for(Student student : studentService.getAllStudents()){
-      if(groups.containsKey(student.getGroup())){
+    for (Student student : studentService.getAllStudents()) {
+      if (groups.containsKey(student.getGroup())) {
         groups.get(student.getGroup()).add(student);
       } else {
         List<Student> tempStudentList = new ArrayList<>();
@@ -193,12 +203,12 @@ public class AssignmentService {
     for (Map.Entry<Integer, List<Student>> entry : groups.entrySet()) {
       groupMeans.put(entry.getKey(), meanOfStudentsGrades(entry.getValue()));
     }
-    Optional<Map.Entry<Integer, Double>> maximumMeanGroup = groupMeans.entrySet().stream().max(Map.Entry.comparingByValue());
+    Optional<Map.Entry<Integer, Double>> maximumMeanGroup =
+        groupMeans.entrySet().stream().max(Map.Entry.comparingByValue());
     return maximumMeanGroup.map(entry -> new Pair<>(entry.getKey(), entry.getValue()));
   }
 
-
-  private double meanOfStudentsGrades(Iterable<Student> students){
+  private double meanOfStudentsGrades(Iterable<Student> students) {
     long gradesCount = -1, gradesSum = 0;
     double meansSum = 0;
     double studentMean = 0;
@@ -214,9 +224,9 @@ public class AssignmentService {
               .count();
       studentMean = (double) gradesSum / (double) gradesCount;
       meansSum += studentMean;
-      }
-    if (students.spliterator().getExactSizeIfKnown() != 0) return (double) meansSum / (double) students.spliterator().getExactSizeIfKnown();
+    }
+    if (students.spliterator().getExactSizeIfKnown() != 0)
+      return (double) meansSum / (double) students.spliterator().getExactSizeIfKnown();
     else return 0;
   }
-
-  }
+}

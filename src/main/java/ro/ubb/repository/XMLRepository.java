@@ -27,8 +27,8 @@ import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
 
 /**
- * Non-volatile generic data ro.ubb.repository holding everything in a XML-file specified in the constructor
- * if the filename is empty it generates a default file
+ * Non-volatile generic data ro.ubb.repository holding everything in a XML-file specified in the
+ * constructor if the filename is empty it generates a default file
  *
  * @param <ID> type of the id of given entity to store
  * @param <T> type of entity to store
@@ -192,8 +192,7 @@ public class XMLRepository<ID, T extends BaseEntity<ID>> implements Repository<I
           .filter(node -> node instanceof Element)
           .filter(
               element -> ((Element) element).getAttribute("Id").equals(entity.getId().toString()))
-          .forEach(element -> root.replaceChild(entity.objectToXMLNode(xmlFileDocument),element));
-
+          .forEach(element -> root.replaceChild(entity.objectToXMLNode(xmlFileDocument), element));
 
       Transformer transformer = TransformerFactory.newInstance().newTransformer();
       transformer.transform(new DOMSource(xmlFileDocument), new StreamResult(new File(filename)));
