@@ -165,7 +165,7 @@ public class Console {
     } catch (IOException | NumberFormatException ex) {
       System.out.println("Invalid input!");
     } catch (RepositoryException ex) {
-      System.out.println("Invalid assignment");
+      System.out.println("Invalid assignment, wrong student or lab problem ID");
     }
   }
 
@@ -255,7 +255,10 @@ public class Console {
       System.out.println("Invalid input!");
       return;
     }
-    labProblemService.deleteLabProblem(id);
+    if(labProblemService.deleteLabProblem(id).isEmpty())
+      System.out.println("Delete failed");
+    else
+      System.out.println("Delete successful");
   }
   /** ro.ubb.UI method filters lab problems by problem number */
   private void filterLabProblemsByProblemNumber() {
@@ -310,7 +313,11 @@ public class Console {
       System.out.println("Invalid input!");
       return;
     }
-    studentService.deleteStudent(id);
+    if(studentService.deleteStudent(id).isEmpty())
+    System.out.println("Delete failed");
+    else
+    System.out.println("Delete successful");
+
   }
   /** ro.ubb.UI method filters students by group number */
   private void filterStudentsByGroup() {
@@ -344,8 +351,12 @@ public class Console {
       if (assignmentService.updateAssignment(id, studentId, labProblemId, grade).isEmpty())
         System.out.println("Assignment updated");
       else System.out.println("Assignment not updated");
-    } catch (IOException e) {
-      System.err.println("bad input");
+    } catch (ValidatorException e) {
+      System.err.println(e.getMessage());
+    } catch (IOException | NumberFormatException ex) {
+      System.out.println("Invalid input!");
+    } catch (RepositoryException ex) {
+      System.out.println("Invalid assignment, wrong student or lab problem ID");
     }
   }
 
@@ -355,8 +366,12 @@ public class Console {
     try {
       System.out.println("Enter id: ");
       id = Long.parseLong(input.readLine().strip());
-      assignmentService.deleteAssignment(id);
-    } catch (IOException e) {
+      if(assignmentService.deleteAssignment(id).isEmpty())
+        System.out.println("Delete failed");
+      else
+        System.out.println("Delete successful");
+
+    } catch (IOException | NumberFormatException e) {
       System.err.println("bad input");
     }
   }

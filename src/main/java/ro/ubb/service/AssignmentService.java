@@ -4,7 +4,6 @@ import javafx.util.Pair;
 import ro.ubb.domain.Assignment;
 import ro.ubb.domain.LabProblem;
 import ro.ubb.domain.Student;
-import ro.ubb.domain.exceptions.RepositoryException;
 import ro.ubb.domain.exceptions.ValidatorException;
 import ro.ubb.domain.validators.Validator;
 import ro.ubb.repository.Repository;
@@ -33,15 +32,15 @@ public class AssignmentService {
 
   public Optional<Assignment> addAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException {
+    Assignment assignment = new Assignment(studentID, labProblemID, grade);
+    assignment.setId(id);
+    assignmentValidator.validate(assignment);
 
     if (studentService.getStudentById(studentID).isPresent()
         && labProblemService.getLabProblemById(labProblemID).isPresent()) {
-      Assignment assignment = new Assignment(studentID, labProblemID, grade);
-      assignment.setId(id);
-      assignmentValidator.validate(assignment);
       return repository.save(assignment);
     }
-    throw new RepositoryException("Invalid assignment");
+    return Optional.of(assignment);
   }
 
   public Set<Assignment> getAllAssignments() {
@@ -87,16 +86,22 @@ public class AssignmentService {
    */
   public Optional<Assignment> updateAssignment(
       Long id, Long studentID, Long labProblemID, int grade) throws ValidatorException {
+    Assignment assignment = new Assignment(studentID, labProblemID, grade);
+    assignment.setId(id);
+
     if (studentService.getStudentById(studentID).isPresent()
         && labProblemService.getLabProblemById(labProblemID).isPresent()) {
-      Assignment assignment = new Assignment(studentID, labProblemID, grade);
-      assignment.setId(id);
       assignmentValidator.validate(assignment);
       return repository.update(assignment);
     }
-    throw new RepositoryException("Invalid assignment");
+    return Optional.of(assignment);
   }
 
+  /**
+   * Returns the student id who has the biggest mean of grades
+   * @return an {@code Optional} containing a null if no student is in the repository otherwise
+   *   an {@code Optional} containing a {@code Pair} of Long and Double, for the ID and the grade average
+   */
   public Optional<Pair<Long, Double>> greatestMean(){
     Iterable<Assignment> assignmentIterable = repository.findAll();
     Set<Assignment> assignments = StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
@@ -104,11 +109,11 @@ public class AssignmentService {
     Long idOfStudentWithMaxMean = null;
     for(Student student : studentService.getAllStudents()){
       int gradesSum = assignments.stream()
-          .filter(assignment -> assignment.getStudentId() == student.getId())
+          .filter(assignment -> assignment.getStudentId().equals(student.getId()))
           .map(Assignment::getGrade)
           .reduce(0, Integer::sum);
       long gradesCount = assignments.stream()
-          .filter(assignment -> assignment.getStudentId() == student.getId())
+          .filter(assignment -> assignment.getStudentId().equals(student.getId()))
           .count();
       double studentMean = (double) gradesSum / (double) gradesCount;
       if(studentMean > maximumMean){
@@ -124,6 +129,11 @@ public class AssignmentService {
 
   }
 
+  /**
+   * Returns the id of the lab problem which was assigned the most often
+   * @return an {@code Optional} containing a null if no student is in the repository otherwise
+   *   an {@code Optional} containing a {@code Pair} of Long and Long, for the ID and the number of assignments
+   */
   public Optional<Pair<Long, Long>> idOfLabProblemMostAssigned(){
     Iterable<Assignment> assignmentIterable = repository.findAll();
     Set<Assignment> assignments = StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
@@ -131,7 +141,7 @@ public class AssignmentService {
     long maximumNumberOfAssignments = -1L;
     for(LabProblem labProblem : labProblemService.getAllLabProblems()){
       long count = assignments.stream()
-          .filter(assignment -> assignment.getLabProblemId() == labProblem.getId())
+          .filter(assignment -> assignment.getLabProblemId().equals(labProblem.getId()))
           .count();
       if(count > maximumNumberOfAssignments){
         idOfLabProblemMostAssigned = labProblem.getId();
@@ -145,6 +155,11 @@ public class AssignmentService {
     }
   }
 
+  /**
+   * Returns the average grade of all the groups
+   * @return an {@code Optional} containing a null if no student is in the repository otherwise
+   *   a {@code Double} which represents the average grade
+   */
   public Optional<Double> averageGrade(){
     Iterable<Assignment> assignmentIterable = repository.findAll();
     Set<Assignment> assignments = StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
@@ -158,6 +173,11 @@ public class AssignmentService {
     }
   }
 
+  /**
+   * Returns the group number with the greatest mean grade
+   * @return an {@code Optional} containing a null if no student is in the repository otherwise
+   *   an {@code Optional} containing a {@code Pair} of Integer and Double, for the group number and the average grade
+   */
   public Optional<Pair<Integer, Double>> groupWithGreatestMean(){
     Map<Integer, List<Student>> groups = new HashMap<>();
     for(Student student : studentService.getAllStudents()){
@@ -185,12 +205,12 @@ public class AssignmentService {
     for (Student student : students) {
       gradesSum =
           getAllAssignments().stream()
-              .filter(assignment -> assignment.getStudentId() == student.getId())
+              .filter(assignment -> assignment.getStudentId().equals(student.getId()))
               .map(Assignment::getGrade)
               .reduce(0, Integer::sum);
       gradesCount =
           getAllAssignments().stream()
-              .filter(assignment -> assignment.getStudentId() == student.getId())
+              .filter(assignment -> assignment.getStudentId().equals(student.getId()))
               .count();
       studentMean = (double) gradesSum / (double) gradesCount;
       meansSum += studentMean;
