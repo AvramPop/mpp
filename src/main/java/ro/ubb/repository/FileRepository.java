@@ -147,8 +147,7 @@ public class FileRepository<ID, T extends BaseEntity<ID>> implements Repository<
     HashSet<T> newEntities = new HashSet<>();
     try {
       Files.lines(path)
-          .forEach(
-              line -> newEntities.add(converterFunction.convert(line, delimiter)));
+          .forEach(line -> newEntities.add(converterFunction.convert(line, delimiter)));
     } catch (IOException e) {
       e.printStackTrace();
     }

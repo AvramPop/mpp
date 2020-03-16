@@ -269,7 +269,7 @@ public class Console {
       System.out.println("Invalid input!");
       return;
     }
-    if (labProblemService.deleteLabProblem(id).isEmpty()) System.out.println("Delete failed");
+    if (assignmentService.deleteLabProblem(id).isEmpty()) System.out.println("Delete failed");
     else System.out.println("Delete successful");
   }
   /** ro.ubb.UI method filters lab problems by problem number */
@@ -325,7 +325,7 @@ public class Console {
       System.out.println("Invalid input!");
       return;
     }
-    if (studentService.deleteStudent(id).isEmpty()) System.out.println("Delete failed");
+    if (assignmentService.deleteStudent(id).isEmpty()) System.out.println("Delete failed");
     else System.out.println("Delete successful");
   }
   /** ro.ubb.UI method filters students by group number */

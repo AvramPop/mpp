@@ -77,6 +77,49 @@ public class AssignmentService {
   }
 
   /**
+   * Deletes a student from the ro.ubb.repository and also deletes all assignments corresponding to
+   * that lab problem
+   *
+   * @param id the id of the student to be deleted
+   * @return * @return an {@code Optional} containing a null if successfully deleted otherwise the
+   *     entity passed to the repository
+   */
+  public Optional<Student> deleteStudent(Long id) {
+    if (id == null || id < 0) throw new IllegalArgumentException("Invalid id!");
+
+    if (studentService.getStudentById(id).isEmpty()) return Optional.empty();
+
+    Set<Assignment> allAssignments = this.getAllAssignments();
+
+    allAssignments.stream()
+        .filter(entity -> entity.getStudentId().equals(id))
+        .forEach(entity -> this.deleteAssignment(entity.getId()));
+
+    return studentService.deleteStudent(id);
+  }
+  /**
+   * Deletes a lab problem from the ro.ubb.repository and also deletes all assignments corresponding
+   * to that student
+   *
+   * @param id the id of the lab problem to be deleted
+   * @return an {@code Optional} containing a null if successfully deleted otherwise the entity
+   *     passed to the repository
+   */
+  public Optional<LabProblem> deleteLabProblem(Long id) {
+    if (id == null || id < 0) throw new IllegalArgumentException("Invalid id!");
+
+    if (labProblemService.getLabProblemById(id).isEmpty()) return Optional.empty();
+
+    Set<Assignment> allAssignments = this.getAllAssignments();
+
+    allAssignments.stream()
+        .filter(entity -> entity.getLabProblemId().equals(id))
+        .forEach(entity -> this.deleteAssignment(entity.getId()));
+
+    return labProblemService.deleteLabProblem(id);
+  }
+
+  /**
    * Updates an assignment inside the ro.ubb.repository
    *
    * @param id id number of entity to be updated
