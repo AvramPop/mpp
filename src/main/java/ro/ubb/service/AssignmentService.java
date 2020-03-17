@@ -290,4 +290,6 @@ public class AssignmentService {
       return (double) meansSum / (double) students.spliterator().getExactSizeIfKnown();
     else return 0;
   }
+
+
 }

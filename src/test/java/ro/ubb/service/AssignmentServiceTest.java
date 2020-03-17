@@ -566,5 +566,19 @@ class AssignmentServiceTest {
     Assertions.assertThrows(IllegalArgumentException.class ,()->assignmentService.deleteLabProblem(null));
   }
 
+  @Test
+  void Given_RepositoryWithOneEntity_When_GeneratinReportForAllEntites_Then_TheStudentHasProblemsAssignedToItEmptyProblemsAreDisregarded(){
+    labProblemService.addLabProblem(IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
+    labProblemService.addLabProblem(NEW_IDLABPROBLEM, PROBLEM_NUMBERLABPROBLEM, DESCRIPTIONLABPROBLEM);
+    studentService.addStudent(IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
+    studentService.addStudent(NEW_IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
+    assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
+    assignmentService.addAssignment(NEW_IDASSIGNMENT, NEW_IDSTUDENT, NEW_IDASSIGNMENT, GRADE);
+    Assertions.assertEquals(assignmentService.studentAssignedProblems().get().size(), 2);
+  }
+  @Test
+  void Given_EmptyRepository_When_GeneratinReportForAllEntites_Then_ThenReturnedOptionalIsEmpty(){
+    Assertions.assertTrue(assignmentService.studentAssignedProblems().isEmpty());
+  }
 
 }
