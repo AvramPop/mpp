@@ -15,9 +15,7 @@ import ro.ubb.domain.validators.AssignmentValidator;
 import ro.ubb.domain.validators.LabProblemValidator;
 import ro.ubb.domain.validators.StudentValidator;
 import ro.ubb.domain.validators.Validator;
-import ro.ubb.repository.Repository;
-import ro.ubb.repository.XMLElementToEntityFactory;
-import ro.ubb.repository.XMLRepository;
+import ro.ubb.repository.*;
 import ro.ubb.service.AssignmentService;
 import ro.ubb.service.LabProblemService;
 import ro.ubb.service.StudentService;
@@ -27,6 +25,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.stream.StreamSupport;
 
 public class Main {
   public static void main(String[] args) {
@@ -63,19 +62,19 @@ public class Main {
       }
 
       /*
-      Repository<Long, Student> studentRepository =
+      Repository<Long, Student> studentRepositoryFile =
           new FileRepository<>(
               repoPathTextFile("students"),
               ";",
               FileLineEntityFactory.studentFromFileLine());
 
-      Repository<Long, LabProblem> labProblemRepository =
+      Repository<Long, LabProblem> labProblemRepositoryFile =
           new FileRepository<>(
               repoPathTextFile("labProblems"),
               ";",
                   FileLineEntityFactory.labProblemFromFileLine());
 
-      Repository<Long, Assignment> assignmentRepository =
+      Repository<Long, Assignment> assignmentRepositoryFile =
               new FileRepository<>(
                       repoPathTextFile("assignments"),
                       ";",
@@ -93,6 +92,7 @@ public class Main {
           new XMLRepository<>(
               repoPathXMLFile("assignments"),
               XMLElementToEntityFactory.assignmentObjectFromXMLFile());
+
 
       StudentService studentService = new StudentService(studentRepository, studentValidator);
       LabProblemService labProblemService =

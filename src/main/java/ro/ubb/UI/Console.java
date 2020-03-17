@@ -52,7 +52,7 @@ public class Console {
     dictionaryOfCommands.put("delete assignment", this::deleteAssignment);
     dictionaryOfCommands.put("update assignment", this::updateAssignment);
     dictionaryOfCommands.put("max mean student", this::greatestMeanOfStudent);
-    dictionaryOfCommands.put("max mean group", this::greatestMeanOfGroup);
+    //dictionaryOfCommands.put("max mean group", this::greatestMeanOfGroup);
     dictionaryOfCommands.put("lab problem most", this::labProblemMostAssigned);
     dictionaryOfCommands.put("avg grade", this::averageGrade);
     dictionaryOfCommands.put("student problems", this::studentProblems);
@@ -79,6 +79,7 @@ public class Console {
       studentsLabProblems.get().get(emptyStudent).forEach(System.out::println);
     }
   }
+  /*
   private void greatestMeanOfGroup() {
     Optional<Pair<Integer, Double>> greatestMean = assignmentService.groupWithGreatestMean();
     if (greatestMean.isPresent()) {
@@ -91,7 +92,7 @@ public class Console {
       System.err.println("no students or assignments");
     }
   }
-
+  */
   private void averageGrade() {
     Optional<Double> mean = assignmentService.averageGrade();
     if (mean.isPresent()) {
@@ -147,7 +148,6 @@ public class Console {
     System.out.println("- update assignment");
     System.out.println("- delete assignment");
     System.out.println("- max mean student");
-    System.out.println("- max mean group");
     System.out.println("- lab problem most");
     System.out.println("- avg grade");
     System.out.println("- student problems");

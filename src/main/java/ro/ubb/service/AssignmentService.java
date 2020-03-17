@@ -10,6 +10,7 @@ import ro.ubb.repository.Repository;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class AssignmentService {
@@ -151,29 +152,27 @@ public class AssignmentService {
     Iterable<Assignment> assignmentIterable = repository.findAll();
     Set<Assignment> assignments =
         StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
-    Double maximumMean = (double) -1;
-    Long idOfStudentWithMaxMean = null;
-    for (Student student : studentService.getAllStudents()) {
-      int gradesSum =
-          assignments.stream()
-              .filter(assignment -> assignment.getStudentId().equals(student.getId()))
-              .map(Assignment::getGrade)
-              .reduce(0, Integer::sum);
-      long gradesCount =
-          assignments.stream()
-              .filter(assignment -> assignment.getStudentId().equals(student.getId()))
-              .count();
-      double studentMean = (double) gradesSum / (double) gradesCount;
-      if (studentMean > maximumMean) {
-        maximumMean = studentMean;
-        idOfStudentWithMaxMean = student.getId();
-      }
-    }
-    if (idOfStudentWithMaxMean != null) {
-      return Optional.of(new Pair<>(idOfStudentWithMaxMean, maximumMean));
-    } else {
-      return Optional.empty();
-    }
+
+    return studentService.getAllStudents().stream()
+        .filter(
+            student ->
+                    assignments.stream().anyMatch(assignment -> assignment.getStudentId().equals(student.getId())))
+        .map(
+            student ->
+                new Pair<Long, Double>(
+                    student.getId(),
+                    (double)
+                            assignments.stream()
+                                .filter(
+                                    assignment -> assignment.getStudentId().equals(student.getId()))
+                                .map(Assignment::getGrade)
+                                .reduce(0, Integer::sum)
+                        / (double)
+                            assignments.stream()
+                                .filter(
+                                    assignment -> assignment.getStudentId().equals(student.getId()))
+                                .count()))
+        .max((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue()));
   }
 
   /**
@@ -187,23 +186,17 @@ public class AssignmentService {
     Iterable<Assignment> assignmentIterable = repository.findAll();
     Set<Assignment> assignments =
         StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
-    Long idOfLabProblemMostAssigned = null;
-    long maximumNumberOfAssignments = -1L;
-    for (LabProblem labProblem : labProblemService.getAllLabProblems()) {
-      long count =
-          assignments.stream()
-              .filter(assignment -> assignment.getLabProblemId().equals(labProblem.getId()))
-              .count();
-      if (count > maximumNumberOfAssignments) {
-        idOfLabProblemMostAssigned = labProblem.getId();
-        maximumNumberOfAssignments = count;
-      }
-    }
-    if (idOfLabProblemMostAssigned != null) {
-      return Optional.of(new Pair<>(idOfLabProblemMostAssigned, maximumNumberOfAssignments));
-    } else {
-      return Optional.empty();
-    }
+
+    return labProblemService.getAllLabProblems().stream()
+        .map(
+            labProblem ->
+                new Pair<Long, Long>(
+                    labProblem.getId(),
+                    assignments.stream()
+                        .filter(
+                            assignment -> assignment.getLabProblemId().equals(labProblem.getId()))
+                        .count()))
+        .max(((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue())));
   }
 
   /**
@@ -217,6 +210,7 @@ public class AssignmentService {
     Set<Assignment> assignments =
         StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
     int gradesSum = assignments.stream().map(Assignment::getGrade).reduce(0, Integer::sum);
+
     if (assignments.size() > 0) {
       return Optional.of((double) gradesSum / (double) assignments.size());
     } else {
@@ -231,6 +225,7 @@ public class AssignmentService {
    *     {@code Optional} containing a {@code Pair} of Integer and Double, for the group number and
    *     the average grade
    */
+   /*
   public Optional<Pair<Integer, Double>> groupWithGreatestMean() {
     Map<Integer, List<Student>> groups = new HashMap<>();
     for (Student student : studentService.getAllStudents()) {
@@ -250,50 +245,51 @@ public class AssignmentService {
         groupMeans.entrySet().stream().max(Map.Entry.comparingByValue());
     return maximumMeanGroup.map(entry -> new Pair<>(entry.getKey(), entry.getValue()));
   }
+  */
   /**
    * Return a mapping of every Student and a list of it's assigned LabProblems.
-   * @return the sought Student - List of LabProblems. If student has no assignment,
-   * map to an empty list.
+   *
+   * @return the sought Student - List of LabProblems. If student has no assignment, map to an empty
+   *     list.
    */
   public Optional<Map<Student, List<LabProblem>>> studentAssignedProblems() {
-    Map<Student, List<LabProblem>> studentProblemsDictionary = new HashMap<>();
-    for(Student student : studentService.getAllStudents()){
-      List<LabProblem> studentsProblems = new ArrayList<>();
-      for(Assignment assignment : repository.findAll()){
-        if(assignment.getStudentId().equals(student.getId())){
-          studentsProblems.add(labProblemService.getLabProblemById(assignment.getLabProblemId()).get());
-        }
-      }
-      if (!studentsProblems.isEmpty()){
-        studentProblemsDictionary.put(student, studentsProblems);
-      } else {
-        studentProblemsDictionary.put(student, new ArrayList<>());
-      }
-    }
+
+
+    Map<Student,List<LabProblem>> result = studentService.getAllStudents().stream().collect(Collectors.toMap(
+            student -> student,
+            student -> getAllLabProblemsForAStudent(student)
+    ));
+    return Optional.ofNullable(result);
+
+
+    /*
     Student emptyStudent = new Student();
     List<LabProblem> unusedProblems = new ArrayList<>();
-    for(LabProblem labProblem: labProblemService.getAllLabProblems())
-    {
+    for (LabProblem labProblem : labProblemService.getAllLabProblems()) {
       boolean found = false;
-      for(Assignment assignment : repository.findAll()){
+      for (Assignment assignment : repository.findAll()) {
         if (assignment.getLabProblemId().equals(labProblem.getId())) {
           found = true;
           break;
-          }
+        }
       }
-      if(!found){
+      if (!found) {
         unusedProblems.add(labProblem);
       }
     }
 
-    studentProblemsDictionary.put(emptyStudent,unusedProblems);
+    studentProblemsDictionary.put(emptyStudent, unusedProblems);
+    */
 
-    if(!studentProblemsDictionary.isEmpty()) {
-      return Optional.of(studentProblemsDictionary);
-    } else {
-      return Optional.empty();
-    }
   }
+
+  private List<LabProblem> getAllLabProblemsForAStudent(Student student) {
+    return StreamSupport.stream(repository.findAll().spliterator(),false)
+            .filter(assignment -> assignment.getStudentId().equals(student.getId()))
+            .map(assignment -> labProblemService.getLabProblemById(assignment.getLabProblemId()).get())
+            .collect(Collectors.toList());
+  }
+  /*
   private double meanOfStudentsGrades(Iterable<Student> students) {
     long gradesCount = -1, gradesSum = 0;
     double meansSum = 0;
@@ -316,5 +312,5 @@ public class AssignmentService {
     else return 0;
   }
 
-
+   */
 }
