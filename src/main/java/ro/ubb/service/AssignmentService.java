@@ -250,25 +250,50 @@ public class AssignmentService {
         groupMeans.entrySet().stream().max(Map.Entry.comparingByValue());
     return maximumMeanGroup.map(entry -> new Pair<>(entry.getKey(), entry.getValue()));
   }
-
+  /**
+   * Return a mapping of every Student and a list of it's assigned LabProblems.
+   * @return the sought Student - List of LabProblems. If student has no assignment,
+   * map to an empty list.
+   */
   public Optional<Map<Student, List<LabProblem>>> studentAssignedProblems() {
     Map<Student, List<LabProblem>> studentProblemsDictionary = new HashMap<>();
     for(Student student : studentService.getAllStudents()){
       List<LabProblem> studentsProblems = new ArrayList<>();
-      for(Assignment assignment : getAllAssignments()){
+      for(Assignment assignment : repository.findAll()){
         if(assignment.getStudentId().equals(student.getId())){
           studentsProblems.add(labProblemService.getLabProblemById(assignment.getLabProblemId()).get());
         }
       }
-      studentProblemsDictionary.put(student, studentsProblems);
+      if (!studentsProblems.isEmpty()){
+        studentProblemsDictionary.put(student, studentsProblems);
+      } else {
+        studentProblemsDictionary.put(student, new ArrayList<>());
+      }
     }
+    Student emptyStudent = new Student();
+    List<LabProblem> unusedProblems = new ArrayList<>();
+    for(LabProblem labProblem: labProblemService.getAllLabProblems())
+    {
+      boolean found = false;
+      for(Assignment assignment : repository.findAll()){
+        if (assignment.getLabProblemId().equals(labProblem.getId())) {
+          found = true;
+          break;
+          }
+      }
+      if(!found){
+        unusedProblems.add(labProblem);
+      }
+    }
+
+    studentProblemsDictionary.put(emptyStudent,unusedProblems);
+
     if(!studentProblemsDictionary.isEmpty()) {
       return Optional.of(studentProblemsDictionary);
     } else {
       return Optional.empty();
     }
   }
-
   private double meanOfStudentsGrades(Iterable<Student> students) {
     long gradesCount = -1, gradesSum = 0;
     double meansSum = 0;
