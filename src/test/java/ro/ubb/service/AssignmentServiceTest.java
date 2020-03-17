@@ -574,7 +574,7 @@ class AssignmentServiceTest {
     studentService.addStudent(NEW_IDSTUDENT, SERIAL_NUMBERSTUDENT, NAMESTUDENT, GROUPSTUDENT);
     assignmentService.addAssignment(IDASSIGNMENT, IDSTUDENT, IDLABPROBLEM, GRADE);
     assignmentService.addAssignment(NEW_IDASSIGNMENT, NEW_IDSTUDENT, NEW_IDASSIGNMENT, GRADE);
-    Assertions.assertEquals(assignmentService.studentAssignedProblems().get().size(), 2);
+    Assertions.assertEquals(assignmentService.studentAssignedProblems().get().size(), 3);
   }
   @Test
   void Given_EmptyRepository_When_GeneratinReportForAllEntites_Then_ThenReturnedOptionalIsEmpty(){
