@@ -251,6 +251,24 @@ public class AssignmentService {
     return maximumMeanGroup.map(entry -> new Pair<>(entry.getKey(), entry.getValue()));
   }
 
+  public Optional<Map<Student, List<LabProblem>>> studentAssignedProblems() {
+    Map<Student, List<LabProblem>> studentProblemsDictionary = new HashMap<>();
+    for(Student student : studentService.getAllStudents()){
+      List<LabProblem> studentsProblems = new ArrayList<>();
+      for(Assignment assignment : getAllAssignments()){
+        if(assignment.getStudentId().equals(student.getId())){
+          studentsProblems.add(labProblemService.getLabProblemById(assignment.getLabProblemId()).get());
+        }
+      }
+      studentProblemsDictionary.put(student, studentsProblems);
+    }
+    if(!studentProblemsDictionary.isEmpty()) {
+      return Optional.of(studentProblemsDictionary);
+    } else {
+      return Optional.empty();
+    }
+  }
+
   private double meanOfStudentsGrades(Iterable<Student> students) {
     long gradesCount = -1, gradesSum = 0;
     double meansSum = 0;
