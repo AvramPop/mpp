@@ -1,4 +1,304 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <assignments>
 
+    <assignment Id="123">
+        <studentId>6</studentId>
+        <labProblemId>1</labProblemId>
+        <grade>1</grade>
+    </assignment>
+    <assignment Id="161">
+        <studentId>8</studentId>
+        <labProblemId>1</labProblemId>
+        <grade>1</grade>
+    </assignment>
+    <assignment Id="383">
+        <studentId>19</studentId>
+        <labProblemId>19</labProblemId>
+        <grade>8</grade>
+    </assignment>
+    <assignment Id="283">
+        <studentId>14</studentId>
+        <labProblemId>9</labProblemId>
+        <grade>6</grade>
+    </assignment>
+    <assignment Id="341">
+        <studentId>17</studentId>
+        <labProblemId>11</labProblemId>
+        <grade>5</grade>
+    </assignment>
+    <assignment Id="281">
+        <studentId>14</studentId>
+        <labProblemId>9</labProblemId>
+        <grade>7</grade>
+    </assignment>
+    <assignment Id="323">
+        <studentId>16</studentId>
+        <labProblemId>9</labProblemId>
+        <grade>5</grade>
+    </assignment>
+    <assignment Id="202">
+        <studentId>10</studentId>
+        <labProblemId>1</labProblemId>
+        <grade>4</grade>
+    </assignment>
+    <assignment Id="62">
+        <studentId>3</studentId>
+        <labProblemId>20</labProblemId>
+        <grade>6</grade>
+    </assignment>
+    <assignment Id="361">
+        <studentId>18</studentId>
+        <labProblemId>1</labProblemId>
+        <grade>5</grade>
+    </assignment>
+    <assignment Id="43">
+        <studentId>2</studentId>
+        <labProblemId>18</labProblemId>
+        <grade>8</grade>
+    </assignment>
+    <assignment Id="82">
+        <studentId>4</studentId>
+        <labProblemId>18</labProblemId>
+        <grade>8</grade>
+    </assignment>
+    <assignment Id="23">
+        <studentId>1</studentId>
+        <labProblemId>12</labProblemId>
+        <grade>9</grade>
+    </assignment>
+    <assignment Id="181">
+        <studentId>9</studentId>
+        <labProblemId>8</labProblemId>
+        <grade>3</grade>
+    </assignment>
+    <assignment Id="223">
+        <studentId>11</studentId>
+        <labProblemId>8</labProblemId>
+        <grade>2</grade>
+    </assignment>
+    <assignment Id="41">
+        <studentId>2</studentId>
+        <labProblemId>2</labProblemId>
+        <grade>7</grade>
+    </assignment>
+    <assignment Id="141">
+        <studentId>7</studentId>
+        <labProblemId>4</labProblemId>
+        <grade>4</grade>
+    </assignment>
+    <assignment Id="381">
+        <studentId>19</studentId>
+        <labProblemId>20</labProblemId>
+        <grade>8</grade>
+    </assignment>
+    <assignment Id="263">
+        <studentId>13</studentId>
+        <labProblemId>4</labProblemId>
+        <grade>4</grade>
+    </assignment>
+    <assignment Id="162">
+        <studentId>8</studentId>
+        <labProblemId>2</labProblemId>
+        <grade>9</grade>
+    </assignment>
+    <assignment Id="303">
+        <studentId>15</studentId>
+        <labProblemId>8</labProblemId>
+        <grade>9</grade>
+    </assignment>
+    <assignment Id="102">
+        <studentId>5</studentId>
+        <labProblemId>17</labProblemId>
+        <grade>3</grade>
+    </assignment>
+    <assignment Id="403">
+        <studentId>20</studentId>
+        <labProblemId>2</labProblemId>
+        <grade>9</grade>
+    </assignment>
+    <assignment Id="22">
+        <studentId>1</studentId>
+        <labProblemId>5</labProblemId>
+        <grade>1</grade>
+    </assignment>
+    <assignment Id="143">
+        <studentId>7</studentId>
+        <labProblemId>13</labProblemId>
+        <grade>3</grade>
+    </assignment>
+    <assignment Id="302">
+        <studentId>15</studentId>
+        <labProblemId>17</labProblemId>
+        <grade>1</grade>
+    </assignment>
+    <assignment Id="103">
+        <studentId>5</studentId>
+        <labProblemId>9</labProblemId>
+        <grade>6</grade>
+    </assignment>
+    <assignment Id="63">
+        <studentId>3</studentId>
+        <labProblemId>5</labProblemId>
+        <grade>5</grade>
+    </assignment>
+    <assignment Id="183">
+        <studentId>9</studentId>
+        <labProblemId>13</labProblemId>
+        <grade>7</grade>
+    </assignment>
+    <assignment Id="322">
+        <studentId>16</studentId>
+        <labProblemId>15</labProblemId>
+        <grade>4</grade>
+    </assignment>
+    <assignment Id="221">
+        <studentId>11</studentId>
+        <labProblemId>5</labProblemId>
+        <grade>1</grade>
+    </assignment>
+    <assignment Id="321">
+        <studentId>16</studentId>
+        <labProblemId>15</labProblemId>
+        <grade>8</grade>
+    </assignment>
+    <assignment Id="402">
+        <studentId>20</studentId>
+        <labProblemId>15</labProblemId>
+        <grade>6</grade>
+    </assignment>
+    <assignment Id="201">
+        <studentId>10</studentId>
+        <labProblemId>7</labProblemId>
+        <grade>9</grade>
+    </assignment>
+    <assignment Id="242">
+        <studentId>12</studentId>
+        <labProblemId>7</labProblemId>
+        <grade>10</grade>
+    </assignment>
+    <assignment Id="61">
+        <studentId>3</studentId>
+        <labProblemId>18</labProblemId>
+        <grade>2</grade>
+    </assignment>
+    <assignment Id="83">
+        <studentId>4</studentId>
+        <labProblemId>20</labProblemId>
+        <grade>3</grade>
+    </assignment>
+    <assignment Id="222">
+        <studentId>11</studentId>
+        <labProblemId>1</labProblemId>
+        <grade>10</grade>
+    </assignment>
+    <assignment Id="101">
+        <studentId>5</studentId>
+        <labProblemId>18</labProblemId>
+        <grade>2</grade>
+    </assignment>
+    <assignment Id="121">
+        <studentId>6</studentId>
+        <labProblemId>20</labProblemId>
+        <grade>3</grade>
+    </assignment>
+    <assignment Id="401">
+        <studentId>20</studentId>
+        <labProblemId>7</labProblemId>
+        <grade>10</grade>
+    </assignment>
+    <assignment Id="42">
+        <studentId>2</studentId>
+        <labProblemId>4</labProblemId>
+        <grade>2</grade>
+    </assignment>
+    <assignment Id="182">
+        <studentId>9</studentId>
+        <labProblemId>14</labProblemId>
+        <grade>5</grade>
+    </assignment>
+    <assignment Id="21">
+        <studentId>1</studentId>
+        <labProblemId>6</labProblemId>
+        <grade>6</grade>
+    </assignment>
+    <assignment Id="142">
+        <studentId>7</studentId>
+        <labProblemId>14</labProblemId>
+        <grade>8</grade>
+    </assignment>
+    <assignment Id="122">
+        <studentId>6</studentId>
+        <labProblemId>8</labProblemId>
+        <grade>4</grade>
+    </assignment>
+    <assignment Id="282">
+        <studentId>14</studentId>
+        <labProblemId>16</labProblemId>
+        <grade>7</grade>
+    </assignment>
+    <assignment Id="342">
+        <studentId>17</studentId>
+        <labProblemId>18</labProblemId>
+        <grade>7</grade>
+    </assignment>
+    <assignment Id="363">
+        <studentId>18</studentId>
+        <labProblemId>16</labProblemId>
+        <grade>5</grade>
+    </assignment>
+    <assignment Id="203">
+        <studentId>10</studentId>
+        <labProblemId>4</labProblemId>
+        <grade>3</grade>
+    </assignment>
+    <assignment Id="241">
+        <studentId>12</studentId>
+        <labProblemId>4</labProblemId>
+        <grade>3</grade>
+    </assignment>
+    <assignment Id="362">
+        <studentId>18</studentId>
+        <labProblemId>16</labProblemId>
+        <grade>10</grade>
+    </assignment>
+    <assignment Id="243">
+        <studentId>12</studentId>
+        <labProblemId>4</labProblemId>
+        <grade>6</grade>
+    </assignment>
+    <assignment Id="261">
+        <studentId>13</studentId>
+        <labProblemId>2</labProblemId>
+        <grade>4</grade>
+    </assignment>
+    <assignment Id="301">
+        <studentId>15</studentId>
+        <labProblemId>6</labProblemId>
+        <grade>6</grade>
+    </assignment>
+    <assignment Id="262">
+        <studentId>13</studentId>
+        <labProblemId>6</labProblemId>
+        <grade>9</grade>
+    </assignment>
+    <assignment Id="343">
+        <studentId>17</studentId>
+        <labProblemId>6</labProblemId>
+        <grade>8</grade>
+    </assignment>
+    <assignment Id="382">
+        <studentId>19</studentId>
+        <labProblemId>2</labProblemId>
+        <grade>2</grade>
+    </assignment>
+    <assignment Id="163">
+        <studentId>8</studentId>
+        <labProblemId>17</labProblemId>
+        <grade>2</grade>
+    </assignment>
+    <assignment Id="81">
+        <studentId>4</studentId>
+        <labProblemId>13</labProblemId>
+        <grade>4</grade>
+    </assignment>
 </assignments>
