@@ -8,8 +8,8 @@ import ro.ubb.domain.LabProblem;
 import ro.ubb.domain.exceptions.ValidatorException;
 import ro.ubb.domain.validators.LabProblemValidator;
 import ro.ubb.domain.validators.Validator;
-import ro.ubb.repository.InMemoryRepository;
 import ro.ubb.repository.Repository;
+import ro.ubb.repository.inmemory.InMemoryRepository;
 
 class LabProblemServiceTest {
   private static final Long ID = 1L;

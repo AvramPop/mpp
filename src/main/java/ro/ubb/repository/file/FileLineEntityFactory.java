@@ -1,4 +1,4 @@
-package ro.ubb.repository;
+package ro.ubb.repository.file;
 
 import ro.ubb.domain.Assignment;
 import ro.ubb.domain.LabProblem;

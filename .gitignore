@@ -81,7 +81,7 @@ $RECYCLE.BIN/
 ### Java template
 # Compiled class file
 *.class
-
+*.data
 # Log file
 *.log
 

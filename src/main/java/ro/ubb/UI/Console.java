@@ -59,11 +59,12 @@ public class Console {
     dictionaryOfCommands.put("exit", () -> System.exit(0));
   }
 
-  private void studentProblems(){
-    Optional<Map<Student, List<LabProblem>>> studentsLabProblems = assignmentService.studentAssignedProblems();
+  private void studentProblems() {
+    Optional<Map<Student, List<LabProblem>>> studentsLabProblems =
+        assignmentService.studentAssignedProblems();
     Student emptyStudent = new Student();
-    if(studentsLabProblems.isPresent()){
-      for(Map.Entry<Student, List<LabProblem>> entry : studentsLabProblems.get().entrySet()){
+    if (studentsLabProblems.isPresent()) {
+      for (Map.Entry<Student, List<LabProblem>> entry : studentsLabProblems.get().entrySet()) {
         if (!entry.getKey().getSerialNumber().equals("")) {
           System.out.println(entry.getKey().toString());
           System.out.println("Problems:");
@@ -79,6 +80,7 @@ public class Console {
       studentsLabProblems.get().get(emptyStudent).forEach(System.out::println);
     }
   }
+
   private void greatestMeanOfGroup() {
     Optional<Pair<Integer, Double>> greatestMean = assignmentService.groupWithGreatestMean();
     if (greatestMean.isPresent()) {

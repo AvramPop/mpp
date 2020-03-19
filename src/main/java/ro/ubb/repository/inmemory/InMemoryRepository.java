@@ -1,7 +1,8 @@
-package ro.ubb.repository;
+package ro.ubb.repository.inmemory;
 
 import ro.ubb.domain.BaseEntity;
 import ro.ubb.domain.exceptions.ValidatorException;
+import ro.ubb.repository.Repository;
 
 import java.util.HashMap;
 import java.util.HashSet;

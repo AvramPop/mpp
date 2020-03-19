@@ -1,4 +1,4 @@
-package ro.ubb.repository;
+package ro.ubb.repository.xml;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -8,6 +8,7 @@ import org.xml.sax.SAXException;
 import ro.ubb.domain.BaseEntity;
 import ro.ubb.domain.ObjectFromXMLFile;
 import ro.ubb.domain.exceptions.ValidatorException;
+import ro.ubb.repository.Repository;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;

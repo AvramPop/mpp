@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ro.ubb.domain.LabProblem;
+import ro.ubb.repository.xml.XMLElementToEntityFactory;
+import ro.ubb.repository.xml.XMLRepository;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;

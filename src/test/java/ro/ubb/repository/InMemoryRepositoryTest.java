@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ro.ubb.domain.Student;
+import ro.ubb.repository.inmemory.InMemoryRepository;
 
 import java.util.HashSet;
 import java.util.Optional;

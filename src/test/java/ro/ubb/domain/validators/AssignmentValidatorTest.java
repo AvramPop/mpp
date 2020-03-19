@@ -34,27 +34,21 @@ class AssignmentValidatorTest {
   void
       Given_AssignmentValidator_When_ValidatingAssignmentWithNullId_Then_ThrowsValidatorException() {
     assignment.setId(null);
-    Assertions.assertThrows(
-        ValidatorException.class,
-        () -> validator.validate(assignment));
+    Assertions.assertThrows(ValidatorException.class, () -> validator.validate(assignment));
   }
 
   @Test
   void
       Given_AssignmentValidator_When_ValidatingAssignmentWithNegativeId_Then_ThrowsValidatorException() {
     assignment.setId(-1L);
-    Assertions.assertThrows(
-        ValidatorException.class,
-        () -> validator.validate(assignment));
+    Assertions.assertThrows(ValidatorException.class, () -> validator.validate(assignment));
   }
 
   @Test
   void
       Given_AssignmentValidator_When_ValidatingAssignmentWithNullStudentId_Then_ThrowsValidatorException() {
     assignment.setStudentId(null);
-    Assertions.assertThrows(
-        ValidatorException.class,
-        () -> validator.validate(assignment));
+    Assertions.assertThrows(ValidatorException.class, () -> validator.validate(assignment));
   }
 
   @Test
@@ -72,30 +66,22 @@ class AssignmentValidatorTest {
   void
       Given_AssignmentValidator_When_ValidatingAssignmentWithNullLabProblemId_Then_ThrowsValidatorException() {
     assignment.setLabProblemId(null);
-    Assertions.assertThrows(
-        ValidatorException.class,
-        () -> validator.validate(assignment));
+    Assertions.assertThrows(ValidatorException.class, () -> validator.validate(assignment));
   }
 
   @Test
   void
       Given_AssignmentValidator_When_ValidatingAssignmentWithNegativeLabProblemId_Then_ThrowsValidatorException() {
     assignment.setLabProblemId(-1l);
-    Assertions.assertThrows(
-        ValidatorException.class,
-        () -> validator.validate(assignment));
+    Assertions.assertThrows(ValidatorException.class, () -> validator.validate(assignment));
   }
 
   @Test
   void
       Given_AssignmentValidator_When_ValidatingAssignmentWithInvalidGrade_Then_ThrowsValidatorException() {
     assignment.setGrade(-1);
-    Assertions.assertThrows(
-        ValidatorException.class,
-        () -> validator.validate(assignment));
+    Assertions.assertThrows(ValidatorException.class, () -> validator.validate(assignment));
     assignment.setGrade(11);
-    Assertions.assertThrows(
-        ValidatorException.class,
-        () -> validator.validate(assignment));
+    Assertions.assertThrows(ValidatorException.class, () -> validator.validate(assignment));
   }
 }
