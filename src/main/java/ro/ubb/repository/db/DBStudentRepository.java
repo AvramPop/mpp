@@ -12,30 +12,29 @@ import java.util.List;
 import java.util.Optional;
 
 public class DBStudentRepository extends DBRepository<Long, Student> {
-  public DBStudentRepository(String dbCredentialsFilename){
+  public DBStudentRepository(String dbCredentialsFilename) {
     super(dbCredentialsFilename);
   }
 
-
   @Override
-  public Iterable<Student> findAll(Sort sort){
+  public Iterable<Student> findAll(Sort sort) {
     return null;
   }
 
   @Override
-  public Optional<Student> findOne(Optional<Long> aLong){
+  public Optional<Student> findOne(Optional<Long> aLong) {
     return Optional.empty();
   }
 
   @Override
-  public Iterable<Student> findAll(){
+  public Iterable<Student> findAll() {
     List<Student> result = new ArrayList<>();
 
     try (Connection conn = dbConnection();
-         Statement stm = conn.createStatement();
-         ResultSet rs =
-             stm.executeQuery(
-                 "select student_id, serial_number, group_number, name from public.\"Students\"") ) {
+        Statement stm = conn.createStatement();
+        ResultSet rs =
+            stm.executeQuery(
+                "select student_id, serial_number, group_number, name from public.\"Students\"")) {
 
       while (rs.next()) {
         Student st = new Student();
@@ -54,17 +53,17 @@ public class DBStudentRepository extends DBRepository<Long, Student> {
   }
 
   @Override
-  public Optional<Student> save(Optional<Student> entity) throws ValidatorException{
+  public Optional<Student> save(Optional<Student> entity) throws ValidatorException {
     return Optional.empty();
   }
 
   @Override
-  public Optional<Student> delete(Optional<Long> aLong){
+  public Optional<Student> delete(Optional<Long> aLong) {
     return Optional.empty();
   }
 
   @Override
-  public Optional<Student> update(Optional<Student> entity) throws ValidatorException{
+  public Optional<Student> update(Optional<Student> entity) throws ValidatorException {
     return Optional.empty();
   }
 }

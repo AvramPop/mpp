@@ -13,7 +13,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class DBRepository<ID extends Serializable, T extends BaseEntity<ID>> implements SortingRepository<ID, T>{
+public abstract class DBRepository<ID extends Serializable, T extends BaseEntity<ID>>
+    implements SortingRepository<ID, T> {
   private String dbType;
   private String dbHost;
   private String dbPort;

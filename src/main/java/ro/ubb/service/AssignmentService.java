@@ -8,9 +8,11 @@ import ro.ubb.domain.exceptions.ValidatorException;
 import ro.ubb.domain.validators.Validator;
 import ro.ubb.repository.Repository;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class AssignmentService {
@@ -156,7 +158,8 @@ public class AssignmentService {
     return studentService.getAllStudents().stream()
         .filter(
             student ->
-                    assignments.stream().anyMatch(assignment -> assignment.getStudentId().equals(student.getId())))
+                assignments.stream()
+                    .anyMatch(assignment -> assignment.getStudentId().equals(student.getId())))
         .map(
             student ->
                 new Pair<Long, Double>(
@@ -225,7 +228,7 @@ public class AssignmentService {
    *     {@code Optional} containing a {@code Pair} of Integer and Double, for the group number and
    *     the average grade
    */
-   /*
+  /*
   public Optional<Pair<Integer, Double>> groupWithGreatestMean() {
     Map<Integer, List<Student>> groups = new HashMap<>();
     for (Student student : studentService.getAllStudents()) {
@@ -254,13 +257,12 @@ public class AssignmentService {
    */
   public Optional<Map<Student, List<LabProblem>>> studentAssignedProblems() {
 
-
-    Map<Student,List<LabProblem>> result = studentService.getAllStudents().stream().collect(Collectors.toMap(
-            student -> student,
-            student -> getAllLabProblemsForAStudent(student)
-    ));
+    Map<Student, List<LabProblem>> result =
+        studentService.getAllStudents().stream()
+            .collect(
+                Collectors.toMap(
+                    student -> student, student -> getAllLabProblemsForAStudent(student)));
     return Optional.ofNullable(result);
-
 
     /*
     Student emptyStudent = new Student();
@@ -284,10 +286,10 @@ public class AssignmentService {
   }
 
   private List<LabProblem> getAllLabProblemsForAStudent(Student student) {
-    return StreamSupport.stream(repository.findAll().spliterator(),false)
-            .filter(assignment -> assignment.getStudentId().equals(student.getId()))
-            .map(assignment -> labProblemService.getLabProblemById(assignment.getLabProblemId()).get())
-            .collect(Collectors.toList());
+    return StreamSupport.stream(repository.findAll().spliterator(), false)
+        .filter(assignment -> assignment.getStudentId().equals(student.getId()))
+        .map(assignment -> labProblemService.getLabProblemById(assignment.getLabProblemId()).get())
+        .collect(Collectors.toList());
   }
   /*
   private double meanOfStudentsGrades(Iterable<Student> students) {

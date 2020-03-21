@@ -10,6 +10,4 @@ public interface SortingRepository<ID extends Serializable, T extends BaseEntity
     extends CrudRepository<ID, T> {
 
   Iterable<T> findAll(Sort sort);
-
-  // TODO: insert sorting-related code here
 }
