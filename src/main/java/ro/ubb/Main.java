@@ -17,6 +17,7 @@ import ro.ubb.domain.validators.StudentValidator;
 import ro.ubb.domain.validators.Validator;
 import ro.ubb.repository.Repository;
 import ro.ubb.repository.db.DBAssignmentsRepository;
+import ro.ubb.repository.db.DBLabProblemRepository;
 import ro.ubb.repository.db.DBStudentRepository;
 import ro.ubb.repository.xml.XMLElementToEntityFactory;
 import ro.ubb.repository.xml.XMLRepository;
@@ -108,6 +109,9 @@ public class Main {
         } catch (IOException ex) {
           System.out.println("Can't create files\nTerminating...");
         }
+    DBLabProblemRepository labProblemRepository =
+            new DBLabProblemRepository(
+                    "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data");
     DBStudentRepository studentRepository =
         new DBStudentRepository(
             "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data");

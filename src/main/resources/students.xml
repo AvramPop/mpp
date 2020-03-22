@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<students>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><students>
 
     <student Id="3">
         <serialNumber>sn3</serialNumber>
@@ -61,11 +60,7 @@
         <name>name1</name>
         <group>1</group>
     </student>
-    <student Id="4">
-        <serialNumber>sn4</serialNumber>
-        <name>name4</name>
-        <group>1</group>
-    </student>
+    
     <student Id="7">
         <serialNumber>sn7</serialNumber>
         <name>name7</name>
