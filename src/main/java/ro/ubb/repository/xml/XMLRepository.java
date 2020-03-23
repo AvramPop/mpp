@@ -21,7 +21,10 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
@@ -33,7 +36,8 @@ import java.util.stream.StreamSupport;
  * @param <ID> type of the id of given entity to store
  * @param <T> type of entity to store
  */
-public class XMLRepository<ID extends Serializable, T extends BaseEntity<ID>> implements SortingRepository<ID, T> {
+public class XMLRepository<ID extends Serializable, T extends BaseEntity<ID>>
+    implements SortingRepository<ID, T> {
 
   private String filename;
   private ObjectFromXMLFile<T> converterFunction;
@@ -68,8 +72,11 @@ public class XMLRepository<ID extends Serializable, T extends BaseEntity<ID>> im
   public Iterable<T> findAll() {
     return StreamSupport.stream(loadData().spliterator(), false).collect(Collectors.toSet());
   }
+  /**
+   * Return all entities sorted by the sort criterie.
+   */
   @Override
-  public Iterable<T> findAll(Sort sort){
+  public Iterable<T> findAll(Sort sort) {
     Iterable<T> unsorted = findAll();
     Iterable<T> sorted = sort.sort(unsorted);
     return sorted;

@@ -57,6 +57,9 @@ public class StudentService {
     return StreamSupport.stream(students.spliterator(), false).collect(Collectors.toSet());
   }
 
+  /**
+   * Return all Students sorted by the sort criteria.
+   */
   public List<Student> getAllStudentsSorted(Sort sort) {
     Iterable<Student> students = repository.findAll(sort);
     return StreamSupport.stream(students.spliterator(), false).collect(Collectors.toList());

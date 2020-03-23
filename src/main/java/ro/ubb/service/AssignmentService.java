@@ -1,19 +1,14 @@
 package ro.ubb.service;
 
-import javafx.util.Pair;
 import ro.ubb.domain.Assignment;
 import ro.ubb.domain.LabProblem;
 import ro.ubb.domain.Student;
 import ro.ubb.domain.exceptions.ValidatorException;
 import ro.ubb.domain.validators.Validator;
-import ro.ubb.repository.Repository;
 import ro.ubb.repository.SortingRepository;
 import ro.ubb.repository.db.sort.Sort;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -53,6 +48,9 @@ public class AssignmentService {
     return StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toSet());
   }
 
+  /**
+   * Return all Assignments sorted by the sort criteria.
+   */
   public List<Assignment> getAllAssignmentsSorted(Sort sort) {
     Iterable<Assignment> problems = repository.findAll(sort);
     return StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toList());
@@ -157,7 +155,7 @@ public class AssignmentService {
    *     {@code Optional} containing a {@code Pair} of Long and Double, for the ID and the grade
    *     average
    */
-  public Optional<Pair<Long, Double>> greatestMean() {
+  public Optional<AbstractMap.SimpleEntry<Long, Double>> greatestMean() {
     Iterable<Assignment> assignmentIterable = repository.findAll();
     Set<Assignment> assignments =
         StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
@@ -169,7 +167,7 @@ public class AssignmentService {
                     .anyMatch(assignment -> assignment.getStudentId().equals(student.getId())))
         .map(
             student ->
-                new Pair<Long, Double>(
+                new AbstractMap.SimpleEntry<Long, Double>(
                     student.getId(),
                     (double)
                             assignments.stream()
@@ -192,7 +190,7 @@ public class AssignmentService {
    *     {@code Optional} containing a {@code Pair} of Long and Long, for the ID and the number of
    *     assignments
    */
-  public Optional<Pair<Long, Long>> idOfLabProblemMostAssigned() {
+  public Optional<AbstractMap.SimpleEntry<Long, Long>> idOfLabProblemMostAssigned() {
     Iterable<Assignment> assignmentIterable = repository.findAll();
     Set<Assignment> assignments =
         StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
@@ -200,7 +198,7 @@ public class AssignmentService {
     return labProblemService.getAllLabProblems().stream()
         .map(
             labProblem ->
-                new Pair<Long, Long>(
+                new AbstractMap.SimpleEntry<Long, Long>(
                     labProblem.getId(),
                     assignments.stream()
                         .filter(
@@ -236,7 +234,7 @@ public class AssignmentService {
    *     the average grade
    */
   /*
-  public Optional<Pair<Integer, Double>> groupWithGreatestMean() {
+  public Optional<AbstractMap.SimpleEntry<Integer, Double>> groupWithGreatestMean() {
     Map<Integer, List<Student>> groups = new HashMap<>();
     for (Student student : studentService.getAllStudents()) {
       if (groups.containsKey(student.getGroup())) {
@@ -253,7 +251,7 @@ public class AssignmentService {
     }
     Optional<Map.Entry<Integer, Double>> maximumMeanGroup =
         groupMeans.entrySet().stream().max(Map.Entry.comparingByValue());
-    return maximumMeanGroup.map(entry -> new Pair<>(entry.getKey(), entry.getValue()));
+    return maximumMeanGroup.map(entry -> new AbstractMap.SimpleEntry<>(entry.getKey(), entry.getValue()));
   }
   */
   /**

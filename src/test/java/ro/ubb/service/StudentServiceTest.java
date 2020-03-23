@@ -8,7 +8,7 @@ import ro.ubb.domain.Student;
 import ro.ubb.domain.exceptions.ValidatorException;
 import ro.ubb.domain.validators.StudentValidator;
 import ro.ubb.domain.validators.Validator;
-import ro.ubb.repository.Repository;
+import ro.ubb.repository.SortingRepository;
 import ro.ubb.repository.inmemory.InMemoryRepository;
 
 class StudentServiceTest {
@@ -22,7 +22,7 @@ class StudentServiceTest {
   private static final int NEW_GROUP = 999;
   private Student student;
   private StudentService studentService;
-  private Repository<Long, Student> studentRepository;
+  private SortingRepository<Long, Student> studentRepository;
   private Validator<Student> studentValidator;
 
   @BeforeEach

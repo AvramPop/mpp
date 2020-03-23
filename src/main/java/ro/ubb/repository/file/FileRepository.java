@@ -23,7 +23,8 @@ import java.util.stream.StreamSupport;
  * @param <ID> type of the id of given entity to store
  * @param <T> type of entity to store
  */
-public class FileRepository<ID extends Serializable, T extends BaseEntity<ID>> implements SortingRepository<ID, T> {
+public class FileRepository<ID extends Serializable, T extends BaseEntity<ID>>
+    implements SortingRepository<ID, T> {
 
   private String filename;
   private String delimiter;
@@ -61,8 +62,12 @@ public class FileRepository<ID extends Serializable, T extends BaseEntity<ID>> i
   public Iterable<T> findAll() {
     return StreamSupport.stream(loadData().spliterator(), false).collect(Collectors.toSet());
   }
+
+  /**
+   * Return all entities sorted by the sort criterie.
+   */
   @Override
-  public Iterable<T> findAll(Sort sort){
+  public Iterable<T> findAll(Sort sort) {
     Iterable<T> unsorted = findAll();
     Iterable<T> sorted = sort.sort(unsorted);
     return sorted;

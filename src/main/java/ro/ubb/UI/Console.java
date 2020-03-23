@@ -1,6 +1,5 @@
 package ro.ubb.UI;
 
-import javafx.util.Pair;
 import ro.ubb.domain.Assignment;
 import ro.ubb.domain.LabProblem;
 import ro.ubb.domain.Student;
@@ -63,7 +62,7 @@ public class Console {
     dictionaryOfCommands.put("exit", () -> System.exit(0));
   }
 
-  private void printLabProblemsSorted(){
+  private void printLabProblemsSorted() {
     System.out.println("Sort by criteria: <order {ASC/ DESC} column-name>. 'done' when done");
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     Sort sort = null;
@@ -71,11 +70,11 @@ public class Console {
       while (true) {
         System.out.println("order: ");
         String order = input.readLine().strip();
-        if(order.equals("done")) break;
+        if (order.equals("done")) break;
         Sort.Direction sortingDirection;
-        if(order.equals("ASC")){
+        if (order.equals("ASC")) {
           sortingDirection = Sort.Direction.ASC;
-        } else if(order.equals("DESC")){
+        } else if (order.equals("DESC")) {
           sortingDirection = Sort.Direction.DESC;
         } else {
           System.err.println("wrong input!");
@@ -83,24 +82,23 @@ public class Console {
         }
         System.out.println("column-name:");
         String columnName = input.readLine().strip();
-        if(sort == null){
+        if (sort == null) {
           sort = new Sort(sortingDirection, columnName);
           sort.setClassName("LabProblem");
         } else {
           sort = sort.and(new Sort(sortingDirection, columnName));
         }
-
       }
       List<LabProblem> labProblems = labProblemService.getAllLabProblemsSorted(sort);
       labProblems.forEach(System.out::println);
-    }catch (IOException e) {
+    } catch (IOException e) {
       System.out.println("Invalid input!");
-    } catch(ClassReflectionException e) {
+    } catch (ClassReflectionException e) {
       System.err.println(e.getMessage());
     }
   }
 
-  private void printAssignmentsSorted(){
+  private void printAssignmentsSorted() {
     System.out.println("Sort by criteria: <order {ASC/ DESC} column-name>. 'done' when done");
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     Sort sort = null;
@@ -108,11 +106,11 @@ public class Console {
       while (true) {
         System.out.println("order: ");
         String order = input.readLine().strip();
-        if(order.equals("done")) break;
+        if (order.equals("done")) break;
         Sort.Direction sortingDirection;
-        if(order.equals("ASC")){
+        if (order.equals("ASC")) {
           sortingDirection = Sort.Direction.ASC;
-        } else if(order.equals("DESC")){
+        } else if (order.equals("DESC")) {
           sortingDirection = Sort.Direction.DESC;
         } else {
           System.err.println("wrong input!");
@@ -120,24 +118,23 @@ public class Console {
         }
         System.out.println("column-name:");
         String columnName = input.readLine().strip();
-        if(sort == null){
+        if (sort == null) {
           sort = new Sort(sortingDirection, columnName);
           sort.setClassName("Assignment");
         } else {
           sort = sort.and(new Sort(sortingDirection, columnName));
         }
-
       }
       List<Assignment> assignments = assignmentService.getAllAssignmentsSorted(sort);
       assignments.forEach(System.out::println);
-    }catch (IOException e) {
+    } catch (IOException e) {
       System.out.println("Invalid input!");
-    } catch(ClassReflectionException e) {
+    } catch (ClassReflectionException e) {
       System.err.println(e.getMessage());
     }
   }
 
-  private void printStudentsSorted(){
+  private void printStudentsSorted() {
     System.out.println("Sort by criteria: <order {ASC/ DESC} column-name>. 'done' when done");
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     Sort sort = null;
@@ -145,11 +142,11 @@ public class Console {
       while (true) {
         System.out.println("order: ");
         String order = input.readLine().strip();
-        if(order.equals("done")) break;
+        if (order.equals("done")) break;
         Sort.Direction sortingDirection;
-        if(order.equals("ASC")){
+        if (order.equals("ASC")) {
           sortingDirection = Sort.Direction.ASC;
-        } else if(order.equals("DESC")){
+        } else if (order.equals("DESC")) {
           sortingDirection = Sort.Direction.DESC;
         } else {
           System.err.println("wrong input!");
@@ -157,19 +154,18 @@ public class Console {
         }
         System.out.println("column-name:");
         String columnName = input.readLine().strip();
-        if(sort == null){
+        if (sort == null) {
           sort = new Sort(sortingDirection, columnName);
           sort.setClassName("Student");
         } else {
           sort = sort.and(new Sort(sortingDirection, columnName));
         }
-
       }
       List<Student> students = studentService.getAllStudentsSorted(sort);
       students.forEach(System.out::println);
-    }catch (IOException e) {
+    } catch (IOException e) {
       System.out.println("Invalid input!");
-    } catch(ClassReflectionException e) {
+    } catch (ClassReflectionException e) {
       System.err.println(e.getMessage());
     }
   }
@@ -197,7 +193,7 @@ public class Console {
   }
   /*
   private void greatestMeanOfGroup() {
-    Optional<Pair<Integer, Double>> greatestMean = assignmentService.groupWithGreatestMean();
+    Optional<AbstractMap.SimpleEntry<Integer, Double>> greatestMean = assignmentService.groupWithGreatestMean();
     if (greatestMean.isPresent()) {
       System.out.println(
           "The greatest mean is of group id = "
@@ -219,7 +215,7 @@ public class Console {
   }
 
   private void labProblemMostAssigned() {
-    Optional<Pair<Long, Long>> idOfLabProblemMostAssigned =
+    Optional<AbstractMap.SimpleEntry<Long, Long>> idOfLabProblemMostAssigned =
         assignmentService.idOfLabProblemMostAssigned();
     if (idOfLabProblemMostAssigned.isPresent()) {
       System.out.println(
@@ -234,7 +230,7 @@ public class Console {
   }
 
   private void greatestMeanOfStudent() {
-    Optional<Pair<Long, Double>> greatestMean = assignmentService.greatestMean();
+    Optional<AbstractMap.SimpleEntry<Long, Double>> greatestMean = assignmentService.greatestMean();
     if (greatestMean.isPresent()) {
       System.out.println(
           "The greatest mean is of student id = "

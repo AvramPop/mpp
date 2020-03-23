@@ -1,5 +1,9 @@
 package ro.ubb.domain.exceptions;
 
+/**
+ * ClassReflectionException wraps RuntimeException and is used for exceptions being thrown when
+ * using Reflection.
+ */
 public class ClassReflectionException extends RuntimeException {
   public ClassReflectionException(String message) {
     super(message);

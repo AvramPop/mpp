@@ -14,6 +14,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Generic abstract class to provide DB connection and other jdbc-related logic.
+ */
 public abstract class DBRepository<ID extends Serializable, T extends BaseEntity<ID>>
     implements SortingRepository<ID, T> {
   private String dbType;
@@ -23,11 +26,15 @@ public abstract class DBRepository<ID extends Serializable, T extends BaseEntity
   private String dbUser;
   private String dbPassword;
   protected String tableName;
+
   public DBRepository(String dbCredentialsFilename, String tableName) {
     loadDBConfiguration(dbCredentialsFilename);
     this.tableName = tableName;
   }
 
+  /**
+   * Load configuration from the given config file.
+   */
   private void loadDBConfiguration(String dbCredentialsFilename) {
     Path path = Paths.get(dbCredentialsFilename);
     List<String> inputData = new ArrayList<>();
@@ -44,6 +51,9 @@ public abstract class DBRepository<ID extends Serializable, T extends BaseEntity
     dbPassword = inputData.get(5);
   }
 
+  /**
+   * Load JDBC driver
+   */
   private void loadDriver() {
     try {
       Class.forName("org.postgresql.Driver");
@@ -52,24 +62,27 @@ public abstract class DBRepository<ID extends Serializable, T extends BaseEntity
     }
   }
 
+  /**
+   * Get connection to DB to query on.
+   */
   protected Connection dbConnection() {
 
     loadDriver();
     DriverManager.setLoginTimeout(60);
     try {
       String url =
-              "jdbc:" +
-                      this.dbType +
-                      "://" +
-                      this.dbHost +
-                      ":" +
-                      this.dbPort +
-                      "/" +
-                      dbName +
-                      "?user=" +
-                      this.dbUser +
-                      "&password=" +
-                      this.dbPassword;
+          "jdbc:"
+              + this.dbType
+              + "://"
+              + this.dbHost
+              + ":"
+              + this.dbPort
+              + "/"
+              + dbName
+              + "?user="
+              + this.dbUser
+              + "&password="
+              + this.dbPassword;
       return DriverManager.getConnection(url);
     } catch (SQLException e) {
       System.err.println("Cannot connect to the database: " + e.getMessage());

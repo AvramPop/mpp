@@ -17,7 +17,8 @@ import java.util.Optional;
  * @param <ID> type of the id of given entity to store
  * @param <T> type of entity to store
  */
-public class InMemoryRepository<ID extends Serializable, T extends BaseEntity<ID>> implements SortingRepository<ID, T> {
+public class InMemoryRepository<ID extends Serializable, T extends BaseEntity<ID>>
+    implements SortingRepository<ID, T> {
 
   private Map<ID, T> entities;
 
@@ -97,10 +98,11 @@ public class InMemoryRepository<ID extends Serializable, T extends BaseEntity<ID
     return Optional.ofNullable(
         entities.computeIfPresent(entity.getId(), (k, v) -> entity) == null ? entity : null);
   }
-
-
+  /**
+   * Return all entities sorted by the sort criterie.
+   */
   @Override
-  public Iterable<T> findAll(Sort sort){
+  public Iterable<T> findAll(Sort sort) {
     Iterable<T> unsorted = findAll();
     Iterable<T> sorted = sort.sort(unsorted);
     return sorted;

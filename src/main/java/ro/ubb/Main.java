@@ -30,91 +30,93 @@ import java.nio.file.Paths;
 
 public class Main {
   public static void main(String[] args) {
-        try {
-          Validator<Student> studentValidator = new StudentValidator();
-          Validator<LabProblem> labProblemValidator = new LabProblemValidator();
-          Validator<Assignment> assignmentValidator = new AssignmentValidator();
-          // Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
-          // Repository<Long, LabProblem> labProblemRepository =
-          // new InMemoryRepository<>(labProblemValidator);
-          try { // TODO probably should use try-with-resources
-            Files.createFile(Paths.get(repoPathTextFile("labProblems")));
-          } catch (FileAlreadyExistsException ignored) {
-          }
-          try { // TODO probably should use try-with-resources
-            Files.createFile(Paths.get(repoPathTextFile("assignments")));
-          } catch (FileAlreadyExistsException ignored) {
-          }
-          try { // TODO probably should use try-with-resources
-            Files.createFile(Paths.get(repoPathTextFile("students")));
-          } catch (FileAlreadyExistsException ignored) {
-          }
-          try { // TODO probably should use try-with-resources
-            Files.createFile(Paths.get(repoPathXMLFile("labProblems")));
-          } catch (FileAlreadyExistsException ignored) {
-          }
-          try { // TODO probably should use try-with-resources
-            Files.createFile(Paths.get(repoPathXMLFile("assignments")));
-          } catch (FileAlreadyExistsException ignored) {
-          }
-          try { // TODO probably should use try-with-resources
-            Files.createFile(Paths.get(repoPathXMLFile("students")));
-          } catch (FileAlreadyExistsException ignored) {
-          }
+    try {
+      Validator<Student> studentValidator = new StudentValidator();
+      Validator<LabProblem> labProblemValidator = new LabProblemValidator();
+      Validator<Assignment> assignmentValidator = new AssignmentValidator();
+      // Repository<Long, Student> studentRepository = new InMemoryRepository<>(studentValidator);
+      // Repository<Long, LabProblem> labProblemRepository =
+      // new InMemoryRepository<>(labProblemValidator);
+      try { // TODO probably should use try-with-resources
+        Files.createFile(Paths.get(repoPathTextFile("labProblems")));
+      } catch (FileAlreadyExistsException ignored) {
+      }
+      try { // TODO probably should use try-with-resources
+        Files.createFile(Paths.get(repoPathTextFile("assignments")));
+      } catch (FileAlreadyExistsException ignored) {
+      }
+      try { // TODO probably should use try-with-resources
+        Files.createFile(Paths.get(repoPathTextFile("students")));
+      } catch (FileAlreadyExistsException ignored) {
+      }
+      try { // TODO probably should use try-with-resources
+        Files.createFile(Paths.get(repoPathXMLFile("labProblems")));
+      } catch (FileAlreadyExistsException ignored) {
+      }
+      try { // TODO probably should use try-with-resources
+        Files.createFile(Paths.get(repoPathXMLFile("assignments")));
+      } catch (FileAlreadyExistsException ignored) {
+      }
+      try { // TODO probably should use try-with-resources
+        Files.createFile(Paths.get(repoPathXMLFile("students")));
+      } catch (FileAlreadyExistsException ignored) {
+      }
 
-          /*
-          SortingRepository<Long, Student> studentRepository =
+      /*
+      SortingRepository<Long, Student> studentRepository =
+          new FileRepository<>(
+              repoPathTextFile("students"),
+              ";",
+              FileLineEntityFactory.studentFromFileLine());
+
+      SortingRepository<Long, LabProblem> labProblemRepository =
+          new FileRepository<>(
+              repoPathTextFile("labProblems"),
+              ";",
+                  FileLineEntityFactory.labProblemFromFileLine());
+
+      SortingRepository<Long, Assignment> assignmentRepository =
               new FileRepository<>(
-                  repoPathTextFile("students"),
-                  ";",
-                  FileLineEntityFactory.studentFromFileLine());
+                      repoPathTextFile("assignments"),
+                      ";",
+                      FileLineEntityFactory.assignmentObjectFromFileLine());
 
-          SortingRepository<Long, LabProblem> labProblemRepository =
-              new FileRepository<>(
-                  repoPathTextFile("labProblems"),
-                  ";",
-                      FileLineEntityFactory.labProblemFromFileLine());
+      */
+      SortingRepository<Long, Student> studentRepository =
+          new XMLRepository<>(
+              repoPathXMLFile("students"), XMLElementToEntityFactory.studentObjectFromXMLFile());
+      SortingRepository<Long, LabProblem> labProblemRepository =
+          new XMLRepository<>(
+              repoPathXMLFile("labProblems"),
+              XMLElementToEntityFactory.labProblemObjectFromXMLFile());
+      SortingRepository<Long, Assignment> assignmentRepository =
+          new XMLRepository<>(
+              repoPathXMLFile("assignments"),
+              XMLElementToEntityFactory.assignmentObjectFromXMLFile());
 
-          SortingRepository<Long, Assignment> assignmentRepository =
-                  new FileRepository<>(
-                          repoPathTextFile("assignments"),
-                          ";",
-                          FileLineEntityFactory.assignmentObjectFromFileLine());
-
-          */
-          SortingRepository<Long, Student> studentRepository =
-              new XMLRepository<>(
-                  repoPathXMLFile("students"),
-     XMLElementToEntityFactory.studentObjectFromXMLFile());
-          SortingRepository<Long, LabProblem> labProblemRepository =
-              new XMLRepository<>(
-                  repoPathXMLFile("labProblems"),
-                  XMLElementToEntityFactory.labProblemObjectFromXMLFile());
-          SortingRepository<Long, Assignment> assignmentRepository =
-              new XMLRepository<>(
-                  repoPathXMLFile("assignments"),
-                  XMLElementToEntityFactory.assignmentObjectFromXMLFile());
-
-          StudentService studentService = new StudentService(studentRepository, studentValidator);
-          LabProblemService labProblemService =
-              new LabProblemService(labProblemRepository, labProblemValidator);
-          AssignmentService assignmentService =
-              new AssignmentService(
-                  assignmentRepository, labProblemService, studentService, assignmentValidator);
-          Console console = new Console(studentService, labProblemService, assignmentService);
-          console.run();
-        } catch (IOException ex) {
-          System.out.println("Can't create files\nTerminating...");
-        }
-//    DBLabProblemRepository labProblemRepository =
-//            new DBLabProblemRepository(
-//                    "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data");
-//    DBStudentRepository studentRepository =
-//        new DBStudentRepository(
-//            "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data");
-//    DBAssignmentsRepository assignmentsRepository =
-//        new DBAssignmentsRepository(
-//            "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data");
+      StudentService studentService = new StudentService(studentRepository, studentValidator);
+      LabProblemService labProblemService =
+          new LabProblemService(labProblemRepository, labProblemValidator);
+      AssignmentService assignmentService =
+          new AssignmentService(
+              assignmentRepository, labProblemService, studentService, assignmentValidator);
+      Console console = new Console(studentService, labProblemService, assignmentService);
+      console.run();
+    } catch (IOException ex) {
+      System.out.println("Can't create files\nTerminating...");
+    }
+    //    DBLabProblemRepository labProblemRepository =
+    //            new DBLabProblemRepository(
+    //                    "configuration" + FileSystems.getDefault().getSeparator() +
+    // "db-credentials.data");
+    //    DBStudentRepository studentRepository =
+    //        new DBStudentRepository(
+    //            "configuration" + FileSystems.getDefault().getSeparator() +
+    // "db-credentials.data");
+    //    DBAssignmentsRepository assignmentsRepository =
+    //        new DBAssignmentsRepository(
+    //            "configuration" + FileSystems.getDefault().getSeparator() +
+    // "db-credentials.data");
 
   }
 

@@ -8,7 +8,7 @@ import ro.ubb.domain.LabProblem;
 import ro.ubb.domain.exceptions.ValidatorException;
 import ro.ubb.domain.validators.LabProblemValidator;
 import ro.ubb.domain.validators.Validator;
-import ro.ubb.repository.Repository;
+import ro.ubb.repository.SortingRepository;
 import ro.ubb.repository.inmemory.InMemoryRepository;
 
 class LabProblemServiceTest {
@@ -21,7 +21,7 @@ class LabProblemServiceTest {
   private LabProblem labProblem;
   private LabProblemService labProblemService;
   private Validator<LabProblem> labProblemValidator;
-  private Repository<Long, LabProblem> labProblemRepository;
+  private SortingRepository<Long, LabProblem> labProblemRepository;
 
   @BeforeEach
   void setUp() {

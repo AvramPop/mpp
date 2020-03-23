@@ -2,7 +2,10 @@ package ro.ubb.domain.validators;
 
 import ro.ubb.domain.Assignment;
 import ro.ubb.domain.exceptions.ValidatorException;
-
+/**
+ * AssignmentValidator has it's sole purpose to check out whether an instance of Assignment complies
+ * to the requirements for such objects.
+ */
 public class AssignmentValidator implements Validator<Assignment> {
   /**
    * @param entity the entity to be validated

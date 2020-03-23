@@ -12,8 +12,8 @@ import ro.ubb.domain.validators.AssignmentValidator;
 import ro.ubb.domain.validators.LabProblemValidator;
 import ro.ubb.domain.validators.StudentValidator;
 import ro.ubb.domain.validators.Validator;
+import ro.ubb.repository.SortingRepository;
 import ro.ubb.repository.inmemory.InMemoryRepository;
-import ro.ubb.repository.Repository;
 
 class AssignmentServiceTest {
 
@@ -26,7 +26,7 @@ class AssignmentServiceTest {
   private LabProblem labProblem;
   private LabProblemService labProblemService;
   private Validator<LabProblem> labProblemValidator;
-  private Repository<Long, LabProblem> labProblemRepository;
+  private SortingRepository<Long, LabProblem> labProblemRepository;
 
   private static final Long IDSTUDENT = 1L;
   private static final Long NEW_IDSTUDENT = 2L;
@@ -38,7 +38,7 @@ class AssignmentServiceTest {
   private static final int NEW_GROUPSTUDENT = 999;
   private Student student;
   private StudentService studentService;
-  private Repository<Long, Student> studentRepository;
+  private SortingRepository<Long, Student> studentRepository;
   private Validator<Student> studentValidator;
 
   private static final Long IDASSIGNMENT = 1L;
@@ -46,7 +46,7 @@ class AssignmentServiceTest {
   private static final int GRADE = 10;
   private Assignment assignment;
   private AssignmentService assignmentService;
-  private Repository<Long, Assignment> assignmentRepository;
+  private SortingRepository<Long, Assignment> assignmentRepository;
   private Validator<Assignment> assignmentValidator;
 
   @BeforeEach

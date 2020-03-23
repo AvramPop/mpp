@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><assignments>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<assignments>
 
     <assignment Id="123">
         <studentId>6</studentId>
@@ -55,7 +56,7 @@
         <labProblemId>18</labProblemId>
         <grade>8</grade>
     </assignment>
-    
+
     <assignment Id="23">
         <studentId>1</studentId>
         <labProblemId>12</labProblemId>
@@ -176,7 +177,7 @@
         <labProblemId>18</labProblemId>
         <grade>2</grade>
     </assignment>
-    
+
     <assignment Id="222">
         <studentId>11</studentId>
         <labProblemId>1</labProblemId>
@@ -282,6 +283,6 @@
         <labProblemId>2</labProblemId>
         <grade>2</grade>
     </assignment>
-    
-    
+
+
 </assignments>

@@ -54,6 +54,9 @@ public class LabProblemService {
     return StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toSet());
   }
 
+  /**
+   * Return all Lab problems sorted by the sort criteria.
+   */
   public List<LabProblem> getAllLabProblemsSorted(Sort sort) {
     Iterable<LabProblem> problems = repository.findAll(sort);
     return StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toList());

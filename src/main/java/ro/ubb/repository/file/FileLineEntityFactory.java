@@ -9,7 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * A factory creating lambda functions for creating a new entity from a file line with a given delimiter
+ * A factory creating lambda functions for creating a new entity from a file line with a given
+ * delimiter
  */
 public class FileLineEntityFactory {
   public static ObjectFromFileLine<LabProblem> labProblemFromFileLine() {
