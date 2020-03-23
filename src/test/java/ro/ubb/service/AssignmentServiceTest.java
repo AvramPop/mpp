@@ -12,7 +12,7 @@ import ro.ubb.domain.validators.AssignmentValidator;
 import ro.ubb.domain.validators.LabProblemValidator;
 import ro.ubb.domain.validators.StudentValidator;
 import ro.ubb.domain.validators.Validator;
-import ro.ubb.repository.InMemoryRepository;
+import ro.ubb.repository.inmemory.InMemoryRepository;
 import ro.ubb.repository.Repository;
 
 class AssignmentServiceTest {

@@ -21,9 +21,10 @@ public abstract class DBRepository<ID extends Serializable, T extends BaseEntity
   private String dbName;
   private String dbUser;
   private String dbPassword;
-
-  public DBRepository(String dbCredentialsFilename) {
+  protected String tableName;
+  public DBRepository(String dbCredentialsFilename, String tableName) {
     loadDBConfiguration(dbCredentialsFilename);
+    this.tableName = tableName;
   }
 
   private void loadDBConfiguration(String dbCredentialsFilename) {
@@ -56,20 +57,18 @@ public abstract class DBRepository<ID extends Serializable, T extends BaseEntity
     DriverManager.setLoginTimeout(60);
     try {
       String url =
-          new StringBuilder()
-              .append("jdbc:")
-              .append(this.dbType)
-              .append("://")
-              .append(this.dbHost)
-              .append(":")
-              .append(this.dbPort)
-              .append("/")
-              .append(dbName)
-              .append("?user=")
-              .append(this.dbUser)
-              .append("&password=")
-              .append(this.dbPassword)
-              .toString();
+              "jdbc:" +
+                      this.dbType +
+                      "://" +
+                      this.dbHost +
+                      ":" +
+                      this.dbPort +
+                      "/" +
+                      dbName +
+                      "?user=" +
+                      this.dbUser +
+                      "&password=" +
+                      this.dbPassword;
       return DriverManager.getConnection(url);
     } catch (SQLException e) {
       System.err.println("Cannot connect to the database: " + e.getMessage());

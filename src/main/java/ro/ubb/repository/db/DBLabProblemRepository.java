@@ -1,6 +1,5 @@
 package ro.ubb.repository.db;
 
-import ro.ubb.domain.Assignment;
 import ro.ubb.domain.LabProblem;
 import ro.ubb.domain.exceptions.ValidatorException;
 
@@ -8,15 +7,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class DBLabProblemRepository extends DBRepository<Long, LabProblem> {
     public DBLabProblemRepository(String dbCredentialsFilename) {
-        super(dbCredentialsFilename);
+    this(dbCredentialsFilename, "public.\"LabProblems\"");
     }
-
+    public DBLabProblemRepository(String dbCredentialsFilename, String tableName) {
+        super(dbCredentialsFilename,tableName);
+    }
+    /** @return all entities. Sorted by the Sort entity */
     @Override
     public Iterable<LabProblem> findAll(Sort sort) {
         return sort.sort(this.findAll());
@@ -33,7 +33,7 @@ public class DBLabProblemRepository extends DBRepository<Long, LabProblem> {
     public Optional<LabProblem> findOne(Long aLong) {
         if(aLong == null) throw new IllegalArgumentException("ID must not be null");
         String query =
-                "select lab_problem_id, description, lab_problem_number  from public.\"LabProblems\" where lab_problem_id = "
+                "select lab_problem_id, description, lab_problem_number  from "+ this.tableName + " where lab_problem_id = "
                         + aLong;
 
         try (Connection connection = dbConnection()) {
@@ -41,7 +41,7 @@ public class DBLabProblemRepository extends DBRepository<Long, LabProblem> {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 LabProblem newLabProblem = new LabProblem();
-                newLabProblem.setId(resultSet.getLong("assignment_id"));
+                newLabProblem.setId(resultSet.getLong("lab_problem_id"));
                 newLabProblem.setProblemNumber(resultSet.getInt("lab_problem_number"));
                 newLabProblem.setDescription(resultSet.getString("description"));
 
@@ -62,15 +62,15 @@ public class DBLabProblemRepository extends DBRepository<Long, LabProblem> {
     @Override
     public Iterable<LabProblem> findAll() {
         String query =
-                "select lab_problem_id, description, lab_problem_number  from public.\"LabProblems\"";
-        List<LabProblem> result = new ArrayList<>();
+                "select lab_problem_id, description, lab_problem_number  from "+ this.tableName;
+        Set<LabProblem> result = new HashSet<>();
 
         try (Connection connection = dbConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 LabProblem newLabProblem = new LabProblem();
-                newLabProblem.setId(resultSet.getLong("assignment_id"));
+                newLabProblem.setId(resultSet.getLong("lab_problem_id"));
                 newLabProblem.setProblemNumber(resultSet.getInt("lab_problem_number"));
                 newLabProblem.setDescription(resultSet.getString("description"));
                 result.add(newLabProblem);
@@ -96,7 +96,7 @@ public class DBLabProblemRepository extends DBRepository<Long, LabProblem> {
         if (entity == null) {
             throw new IllegalArgumentException("entity must not be null");
         }
-        String query = "insert into public.\"LabProblems\" values (?, ?, ?)";
+        String query = "insert into "+ this.tableName +" values (?, ?, ?)";
 
         try(Connection connection = dbConnection()){
             PreparedStatement statement = connection.prepareStatement(query);
@@ -127,21 +127,21 @@ public class DBLabProblemRepository extends DBRepository<Long, LabProblem> {
             throw new IllegalArgumentException("Id must not be null!");
         }
         String selectQuery =
-                "select lab_problem_id, description, lab_problem_number  from public.\"LabProblems\" where lab_problem_id = "
+                "select lab_problem_id, description, lab_problem_number  from "+ this.tableName +"where lab_problem_id = "
                         + aLong;
-        String deleteQuery = "delete from public.\"LabProblems\" where lab_problem_id = ?";
+        String deleteQuery = "delete from "+ this.tableName +" where lab_problem_id = ?";
         try (Connection connection = dbConnection()) {
             PreparedStatement selectStatement = connection.prepareStatement(selectQuery);
             ResultSet selectResultSet = selectStatement.executeQuery();
             if (selectResultSet.next()) {
-                LabProblem deletedAssignment = new LabProblem();
-                deletedAssignment.setId(selectResultSet.getLong("assignment_id"));
-                deletedAssignment.setDescription(selectResultSet.getString("description"));
-                deletedAssignment.setProblemNumber(selectResultSet.getInt("lab_problem_number"));
+                LabProblem deletedLabProblem = new LabProblem();
+                deletedLabProblem.setId(selectResultSet.getLong("lab_problem_id"));
+                deletedLabProblem.setDescription(selectResultSet.getString("description"));
+                deletedLabProblem.setProblemNumber(selectResultSet.getInt("lab_problem_number"));
                 PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery);
                 deleteStatement.setLong(1, aLong);
                 deleteStatement.executeUpdate();
-                return Optional.of(deletedAssignment);
+                return Optional.of(deletedLabProblem);
             } else {
                 return Optional.empty();
             }
@@ -166,15 +166,17 @@ public class DBLabProblemRepository extends DBRepository<Long, LabProblem> {
             throw new IllegalArgumentException("entity must not be null!");
         }
 
-        String query = "update public.\"LabProblems\" set description = ?, lab_problem_number = ? where lab_problem_id = ?";
+        String query = "update "+ this.tableName +" set description = ?, lab_problem_number = ? where lab_problem_id = ?";
         try (Connection connection = dbConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setLong(4, entity.getId());
+            statement.setLong(3, entity.getId());
             statement.setString(1, entity.getDescription());
             statement.setLong(2, entity.getProblemNumber());
-            statement.executeUpdate();
+            if(statement.executeUpdate() == 0)
+                return Optional.of(entity);
             return Optional.empty();
         } catch (SQLException e) {
+            e.printStackTrace();
             return Optional.of(entity);
         }
     }

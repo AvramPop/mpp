@@ -7,25 +7,35 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class DBAssignmentsRepository extends DBRepository<Long, Assignment> {
   public DBAssignmentsRepository(String dbCredentialsFilename) {
-    super(dbCredentialsFilename);
-  }
 
+    super(dbCredentialsFilename, "public.\"Assignments\"");
+  }
+  public DBAssignmentsRepository(String dbCredentialsFilename, String tableName) {
+
+    super(dbCredentialsFilename,tableName);
+  }
+  /** @return all entities. Sorted by the Sort entity */
   @Override
   public Iterable<Assignment> findAll(Sort sort) {
     return sort.sort(findAll());
   }
+  /**
+   * Find the entity with the given {@code id}.
+   *
+   * @param aLong must be not null.
+   * @return an {@code Optional} encapsulating the entity with the given id.
+   * @throws IllegalArgumentException if the given id is null.
+   */
 
   @Override
   public Optional<Assignment> findOne(Long aLong) {
-    if(aLong == null) throw new NullPointerException();
+    if(aLong == null) throw new IllegalArgumentException();
     String query =
-        "select assignment_id, student_id, lab_problem_id, grade from public.\"Assignments\" where assignment_id = "
+        "select assignment_id, student_id, lab_problem_id, grade from "+ this.tableName +" where assignment_id = "
             + aLong;
 
     try (Connection connection = dbConnection()) {
@@ -47,10 +57,13 @@ public class DBAssignmentsRepository extends DBRepository<Long, Assignment> {
     return Optional.empty();
   }
 
+  /**
+   * @return all entities.
+   */
   @Override
   public Iterable<Assignment> findAll() {
-    List<Assignment> result = new ArrayList<>();
-    String query = "select assignment_id, student_id, lab_problem_id, grade from public.\"Assignments\"";
+    Set<Assignment> result = new HashSet<>();
+    String query = "select assignment_id, student_id, lab_problem_id, grade from "+ this.tableName;
 
     try (Connection connection = dbConnection()) {
       PreparedStatement statement = connection.prepareStatement(query);
@@ -68,10 +81,21 @@ public class DBAssignmentsRepository extends DBRepository<Long, Assignment> {
     }
     return result;
   }
+  /**
+   * Saves the given entity.
+   *
+   * @param entity must not be null.
+   * @return an {@code Optional} - null if the entity was saved otherwise (e.g. id already exists)
+   * returns the entity.
+   * @throws IllegalArgumentException if the given entity is null.
+   * @throws ValidatorException       if the entity is not valid.
+   */
 
   @Override
   public Optional<Assignment> save(Assignment entity) throws ValidatorException {
-    String query = "insert into public.\"Assignments\" values (?, ?, ?, ?)";
+    if(entity == null)
+      throw new IllegalArgumentException("entity must not be null");
+    String query = "insert into "+ this.tableName +" values (?, ?, ?, ?)";
     try (Connection connection = dbConnection()) {
       PreparedStatement statement = connection.prepareStatement(query);
       statement.setLong(1, entity.getId());
@@ -81,9 +105,17 @@ public class DBAssignmentsRepository extends DBRepository<Long, Assignment> {
       statement.executeUpdate();
       return Optional.empty();
     } catch (SQLException e) {
-      return Optional.ofNullable(entity);
+      return Optional.of(entity);
     }
   }
+  /**
+   * Removes the entity with the given id.
+   *
+   * @param aLong must not be null.
+   * @return an {@code Optional} - null if there is no entity with the given id, otherwise the
+   * removed entity.
+   * @throws IllegalArgumentException if the given id is null.
+   */
 
   @Override
   public Optional<Assignment> delete(Long aLong) {
@@ -91,9 +123,9 @@ public class DBAssignmentsRepository extends DBRepository<Long, Assignment> {
       throw new IllegalArgumentException("Id must not be null!");
     }
     String selectQuery =
-            "select assignment_id, student_id, lab_problem_id, grade from public.\"Assignments\" where assignment_id = "
-                + aLong;
-    String deleteQuery = "delete from public.\"Assignments\" where assignment_id = ?";
+        "select assignment_id, student_id, lab_problem_id, grade from "+ this.tableName +" where assignment_id = "
+            + aLong;
+    String deleteQuery = "delete from "+ this.tableName +" where assignment_id = ?";
     try (Connection connection = dbConnection()) {
       PreparedStatement selectStatement = connection.prepareStatement(selectQuery);
       ResultSet selectResultSet = selectStatement.executeQuery();
@@ -114,17 +146,29 @@ public class DBAssignmentsRepository extends DBRepository<Long, Assignment> {
       return Optional.empty();
     }
   }
+  /**
+   * Updates the given entity.
+   *
+   * @param entity must not be null.
+   * @return an {@code Optional} - null if the entity was updated otherwise (e.g. id does not exist)
+   * returns the entity.
+   * @throws IllegalArgumentException if the given entity is null.
+   * @throws ValidatorException       if the entity is not valid.
+   */
 
   @Override
   public Optional<Assignment> update(Assignment entity) throws ValidatorException {
-  String query = "update public.\"Assignments\" set student_id = ?, lab_problem_id = ?, grade = ? where assignment_id = ?";
+    if(entity == null)
+      throw new IllegalArgumentException("entity must not be null");
+  String query = "update "+ this.tableName + "set student_id = ?, lab_problem_id = ?, grade = ? where assignment_id = ?";
     try (Connection connection = dbConnection()) {
       PreparedStatement statement = connection.prepareStatement(query);
       statement.setLong(4, entity.getId());
       statement.setLong(1, entity.getStudentId());
       statement.setLong(2, entity.getLabProblemId());
       statement.setLong(3, entity.getGrade());
-      statement.executeUpdate();
+      if(statement.executeUpdate() == 0)
+        return Optional.of(entity);
       return Optional.empty();
     } catch (SQLException e) {
       return Optional.of(entity);

@@ -85,6 +85,7 @@ public class Main {
                           FileLineEntityFactory.assignmentObjectFromFileLine());
 
           */
+          /*
           Repository<Long, Student> studentRepository =
               new XMLRepository<>(
                   repoPathXMLFile("students"),
@@ -98,6 +99,18 @@ public class Main {
                   repoPathXMLFile("assignments"),
                   XMLElementToEntityFactory.assignmentObjectFromXMLFile());
 
+           */
+          DBLabProblemRepository labProblemRepository =
+                  new DBLabProblemRepository(
+                          "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data");
+          DBStudentRepository studentRepository =
+                  new DBStudentRepository(
+                          "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data");
+          DBAssignmentsRepository assignmentRepository =
+                  new DBAssignmentsRepository(
+                          "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data");
+          assignmentRepository.findAll().forEach(a -> System.out.println(a.toString()));
+
           StudentService studentService = new StudentService(studentRepository, studentValidator);
           LabProblemService labProblemService =
               new LabProblemService(labProblemRepository, labProblemValidator);
@@ -109,16 +122,6 @@ public class Main {
         } catch (IOException ex) {
           System.out.println("Can't create files\nTerminating...");
         }
-    DBLabProblemRepository labProblemRepository =
-            new DBLabProblemRepository(
-                    "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data");
-    DBStudentRepository studentRepository =
-        new DBStudentRepository(
-            "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data");
-    DBAssignmentsRepository assignmentsRepository =
-        new DBAssignmentsRepository(
-            "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data");
-    assignmentsRepository.findAll().forEach(a -> System.out.println(a.toString()));
   }
 
   private static String repoPathTextFile(String repoName) {
