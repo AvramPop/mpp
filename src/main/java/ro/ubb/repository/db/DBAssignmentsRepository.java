@@ -2,6 +2,7 @@ package ro.ubb.repository.db;
 
 import ro.ubb.domain.Assignment;
 import ro.ubb.domain.exceptions.ValidatorException;
+import ro.ubb.repository.db.sort.Sort;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,8 +21,10 @@ public class DBAssignmentsRepository extends DBRepository<Long, Assignment> {
   }
   /** @return all entities. Sorted by the Sort entity */
   @Override
-  public Iterable<Assignment> findAll(Sort sort) {
-    return sort.sort(findAll());
+  public Iterable<Assignment> findAll(Sort sort){
+    Iterable<Assignment> unsorted = findAll();
+    Iterable<Assignment> sorted = sort.sort(unsorted);
+    return sorted;
   }
   /**
    * Find the entity with the given {@code id}.

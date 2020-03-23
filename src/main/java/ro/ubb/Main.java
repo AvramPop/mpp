@@ -15,10 +15,7 @@ import ro.ubb.domain.validators.AssignmentValidator;
 import ro.ubb.domain.validators.LabProblemValidator;
 import ro.ubb.domain.validators.StudentValidator;
 import ro.ubb.domain.validators.Validator;
-import ro.ubb.repository.Repository;
-import ro.ubb.repository.db.DBAssignmentsRepository;
-import ro.ubb.repository.db.DBLabProblemRepository;
-import ro.ubb.repository.db.DBStudentRepository;
+import ro.ubb.repository.SortingRepository;
 import ro.ubb.repository.xml.XMLElementToEntityFactory;
 import ro.ubb.repository.xml.XMLRepository;
 import ro.ubb.service.AssignmentService;
@@ -66,50 +63,37 @@ public class Main {
           }
 
           /*
-          Repository<Long, Student> studentRepository =
+          SortingRepository<Long, Student> studentRepository =
               new FileRepository<>(
                   repoPathTextFile("students"),
                   ";",
                   FileLineEntityFactory.studentFromFileLine());
 
-          Repository<Long, LabProblem> labProblemRepository =
+          SortingRepository<Long, LabProblem> labProblemRepository =
               new FileRepository<>(
                   repoPathTextFile("labProblems"),
                   ";",
                       FileLineEntityFactory.labProblemFromFileLine());
 
-          Repository<Long, Assignment> assignmentRepository =
+          SortingRepository<Long, Assignment> assignmentRepository =
                   new FileRepository<>(
                           repoPathTextFile("assignments"),
                           ";",
                           FileLineEntityFactory.assignmentObjectFromFileLine());
 
           */
-          /*
-          Repository<Long, Student> studentRepository =
+          SortingRepository<Long, Student> studentRepository =
               new XMLRepository<>(
                   repoPathXMLFile("students"),
      XMLElementToEntityFactory.studentObjectFromXMLFile());
-          Repository<Long, LabProblem> labProblemRepository =
+          SortingRepository<Long, LabProblem> labProblemRepository =
               new XMLRepository<>(
                   repoPathXMLFile("labProblems"),
                   XMLElementToEntityFactory.labProblemObjectFromXMLFile());
-          Repository<Long, Assignment> assignmentRepository =
+          SortingRepository<Long, Assignment> assignmentRepository =
               new XMLRepository<>(
                   repoPathXMLFile("assignments"),
                   XMLElementToEntityFactory.assignmentObjectFromXMLFile());
-
-           */
-          DBLabProblemRepository labProblemRepository =
-                  new DBLabProblemRepository(
-                          "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data");
-          DBStudentRepository studentRepository =
-                  new DBStudentRepository(
-                          "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data");
-          DBAssignmentsRepository assignmentRepository =
-                  new DBAssignmentsRepository(
-                          "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data");
-          assignmentRepository.findAll().forEach(a -> System.out.println(a.toString()));
 
           StudentService studentService = new StudentService(studentRepository, studentValidator);
           LabProblemService labProblemService =
@@ -122,6 +106,16 @@ public class Main {
         } catch (IOException ex) {
           System.out.println("Can't create files\nTerminating...");
         }
+//    DBLabProblemRepository labProblemRepository =
+//            new DBLabProblemRepository(
+//                    "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data");
+//    DBStudentRepository studentRepository =
+//        new DBStudentRepository(
+//            "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data");
+//    DBAssignmentsRepository assignmentsRepository =
+//        new DBAssignmentsRepository(
+//            "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data");
+
   }
 
   private static String repoPathTextFile(String repoName) {

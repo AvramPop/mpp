@@ -2,8 +2,10 @@ package ro.ubb.repository.inmemory;
 
 import ro.ubb.domain.BaseEntity;
 import ro.ubb.domain.exceptions.ValidatorException;
-import ro.ubb.repository.Repository;
+import ro.ubb.repository.SortingRepository;
+import ro.ubb.repository.db.sort.Sort;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -15,7 +17,7 @@ import java.util.Optional;
  * @param <ID> type of the id of given entity to store
  * @param <T> type of entity to store
  */
-public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Repository<ID, T> {
+public class InMemoryRepository<ID extends Serializable, T extends BaseEntity<ID>> implements SortingRepository<ID, T> {
 
   private Map<ID, T> entities;
 
@@ -94,5 +96,13 @@ public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Reposit
 
     return Optional.ofNullable(
         entities.computeIfPresent(entity.getId(), (k, v) -> entity) == null ? entity : null);
+  }
+
+
+  @Override
+  public Iterable<T> findAll(Sort sort){
+    Iterable<T> unsorted = findAll();
+    Iterable<T> sorted = sort.sort(unsorted);
+    return sorted;
   }
 }

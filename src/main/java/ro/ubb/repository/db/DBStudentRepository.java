@@ -2,6 +2,7 @@ package ro.ubb.repository.db;
 
 import ro.ubb.domain.Student;
 import ro.ubb.domain.exceptions.ValidatorException;
+import ro.ubb.repository.db.sort.Sort;
 
 import java.sql.*;
 import java.util.*;
@@ -17,8 +18,10 @@ public class DBStudentRepository extends DBRepository<Long, Student> {
   }
 
   @Override
-  public Iterable<Student> findAll(Sort sort) {
-    return sort.sort(this.findAll());
+  public Iterable<Student> findAll(Sort sort){
+    Iterable<Student> unsorted = findAll();
+    Iterable<Student> sorted = sort.sort(unsorted);
+    return sorted;
   }
   /**
    * Find the entity with the given {@code id}.

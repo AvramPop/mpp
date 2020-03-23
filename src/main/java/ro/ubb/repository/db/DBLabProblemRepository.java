@@ -2,6 +2,7 @@ package ro.ubb.repository.db;
 
 import ro.ubb.domain.LabProblem;
 import ro.ubb.domain.exceptions.ValidatorException;
+import ro.ubb.repository.db.sort.Sort;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,8 +19,10 @@ public class DBLabProblemRepository extends DBRepository<Long, LabProblem> {
     }
     /** @return all entities. Sorted by the Sort entity */
     @Override
-    public Iterable<LabProblem> findAll(Sort sort) {
-        return sort.sort(this.findAll());
+    public Iterable<LabProblem> findAll(Sort sort){
+        Iterable<LabProblem> unsorted = findAll();
+        Iterable<LabProblem> sorted = sort.sort(unsorted);
+        return sorted;
     }
 
     /**

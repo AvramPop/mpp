@@ -7,6 +7,8 @@ import ro.ubb.domain.Student;
 import ro.ubb.domain.exceptions.ValidatorException;
 import ro.ubb.domain.validators.Validator;
 import ro.ubb.repository.Repository;
+import ro.ubb.repository.SortingRepository;
+import ro.ubb.repository.db.sort.Sort;
 
 import java.util.List;
 import java.util.Map;
@@ -17,13 +19,13 @@ import java.util.stream.StreamSupport;
 
 public class AssignmentService {
 
-  private Repository<Long, Assignment> repository;
+  private SortingRepository<Long, Assignment> repository;
   private LabProblemService labProblemService;
   private StudentService studentService;
   private Validator<Assignment> assignmentValidator;
 
   public AssignmentService(
-      Repository<Long, Assignment> repository,
+      SortingRepository<Long, Assignment> repository,
       LabProblemService labProblemService,
       StudentService studentService,
       Validator<Assignment> assignmentValidator) {
@@ -49,6 +51,11 @@ public class AssignmentService {
   public Set<Assignment> getAllAssignments() {
     Iterable<Assignment> problems = repository.findAll();
     return StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toSet());
+  }
+
+  public List<Assignment> getAllAssignmentsSorted(Sort sort) {
+    Iterable<Assignment> problems = repository.findAll(sort);
+    return StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toList());
   }
 
   /**

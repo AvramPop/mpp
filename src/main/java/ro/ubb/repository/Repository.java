@@ -3,6 +3,7 @@ package ro.ubb.repository;
 import ro.ubb.domain.BaseEntity;
 import ro.ubb.domain.exceptions.ValidatorException;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Optional;
  *
  * @author radu.
  */
-public interface Repository<ID, T extends BaseEntity<ID>> {
+public interface Repository<ID extends Serializable, T extends BaseEntity<ID>> {
   /**
    * Find the entity with the given {@code id}.
    *

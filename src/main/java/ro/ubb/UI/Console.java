@@ -4,8 +4,10 @@ import javafx.util.Pair;
 import ro.ubb.domain.Assignment;
 import ro.ubb.domain.LabProblem;
 import ro.ubb.domain.Student;
+import ro.ubb.domain.exceptions.ClassReflectionException;
 import ro.ubb.domain.exceptions.RepositoryException;
 import ro.ubb.domain.exceptions.ValidatorException;
+import ro.ubb.repository.db.sort.Sort;
 import ro.ubb.service.AssignmentService;
 import ro.ubb.service.LabProblemService;
 import ro.ubb.service.StudentService;
@@ -39,6 +41,9 @@ public class Console {
     dictionaryOfCommands = new HashMap<>();
     dictionaryOfCommands.put("add student", this::addStudent);
     dictionaryOfCommands.put("print students", this::printStudents);
+    dictionaryOfCommands.put("print students sorted", this::printStudentsSorted);
+    dictionaryOfCommands.put("print assignments sorted", this::printAssignmentsSorted);
+    dictionaryOfCommands.put("print lab problems sorted", this::printLabProblemsSorted);
     dictionaryOfCommands.put("add lab problem", this::addLabProblem);
     dictionaryOfCommands.put("print lab problems", this::printLabProblems);
     dictionaryOfCommands.put("update lab problem", this::updateLabProblem);
@@ -52,11 +57,121 @@ public class Console {
     dictionaryOfCommands.put("delete assignment", this::deleteAssignment);
     dictionaryOfCommands.put("update assignment", this::updateAssignment);
     dictionaryOfCommands.put("max mean student", this::greatestMeanOfStudent);
-    // dictionaryOfCommands.put("max mean group", this::greatestMeanOfGroup);
     dictionaryOfCommands.put("lab problem most", this::labProblemMostAssigned);
     dictionaryOfCommands.put("avg grade", this::averageGrade);
     dictionaryOfCommands.put("student problems", this::studentProblems);
     dictionaryOfCommands.put("exit", () -> System.exit(0));
+  }
+
+  private void printLabProblemsSorted(){
+    System.out.println("Sort by criteria: <order {ASC/ DESC} column-name>. 'done' when done");
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    Sort sort = null;
+    try {
+      while (true) {
+        System.out.println("order: ");
+        String order = input.readLine().strip();
+        if(order.equals("done")) break;
+        Sort.Direction sortingDirection;
+        if(order.equals("ASC")){
+          sortingDirection = Sort.Direction.ASC;
+        } else if(order.equals("DESC")){
+          sortingDirection = Sort.Direction.DESC;
+        } else {
+          System.err.println("wrong input!");
+          break;
+        }
+        System.out.println("column-name:");
+        String columnName = input.readLine().strip();
+        if(sort == null){
+          sort = new Sort(sortingDirection, columnName);
+          sort.setClassName("LabProblem");
+        } else {
+          sort = sort.and(new Sort(sortingDirection, columnName));
+        }
+
+      }
+      List<LabProblem> labProblems = labProblemService.getAllLabProblemsSorted(sort);
+      labProblems.forEach(System.out::println);
+    }catch (IOException e) {
+      System.out.println("Invalid input!");
+    } catch(ClassReflectionException e) {
+      System.err.println(e.getMessage());
+    }
+  }
+
+  private void printAssignmentsSorted(){
+    System.out.println("Sort by criteria: <order {ASC/ DESC} column-name>. 'done' when done");
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    Sort sort = null;
+    try {
+      while (true) {
+        System.out.println("order: ");
+        String order = input.readLine().strip();
+        if(order.equals("done")) break;
+        Sort.Direction sortingDirection;
+        if(order.equals("ASC")){
+          sortingDirection = Sort.Direction.ASC;
+        } else if(order.equals("DESC")){
+          sortingDirection = Sort.Direction.DESC;
+        } else {
+          System.err.println("wrong input!");
+          break;
+        }
+        System.out.println("column-name:");
+        String columnName = input.readLine().strip();
+        if(sort == null){
+          sort = new Sort(sortingDirection, columnName);
+          sort.setClassName("Assignment");
+        } else {
+          sort = sort.and(new Sort(sortingDirection, columnName));
+        }
+
+      }
+      List<Assignment> assignments = assignmentService.getAllAssignmentsSorted(sort);
+      assignments.forEach(System.out::println);
+    }catch (IOException e) {
+      System.out.println("Invalid input!");
+    } catch(ClassReflectionException e) {
+      System.err.println(e.getMessage());
+    }
+  }
+
+  private void printStudentsSorted(){
+    System.out.println("Sort by criteria: <order {ASC/ DESC} column-name>. 'done' when done");
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    Sort sort = null;
+    try {
+      while (true) {
+        System.out.println("order: ");
+        String order = input.readLine().strip();
+        if(order.equals("done")) break;
+        Sort.Direction sortingDirection;
+        if(order.equals("ASC")){
+          sortingDirection = Sort.Direction.ASC;
+        } else if(order.equals("DESC")){
+          sortingDirection = Sort.Direction.DESC;
+        } else {
+          System.err.println("wrong input!");
+          break;
+        }
+        System.out.println("column-name:");
+        String columnName = input.readLine().strip();
+        if(sort == null){
+          sort = new Sort(sortingDirection, columnName);
+          sort.setClassName("Student");
+        } else {
+          sort = sort.and(new Sort(sortingDirection, columnName));
+        }
+
+      }
+      List<Student> students = studentService.getAllStudentsSorted(sort);
+      students.forEach(System.out::println);
+    }catch (IOException e) {
+      System.out.println("Invalid input!");
+    } catch(ClassReflectionException e) {
+      System.err.println(e.getMessage());
+    }
   }
 
   private void studentProblems() {
@@ -152,6 +267,9 @@ public class Console {
     System.out.println("- lab problem most");
     System.out.println("- avg grade");
     System.out.println("- student problems");
+    System.out.println("- print students sorted");
+    System.out.println("- print assignments sorted");
+    System.out.println("- print lab problems sorted");
     System.out.println("- exit");
   }
 

@@ -8,7 +8,8 @@ import org.xml.sax.SAXException;
 import ro.ubb.domain.BaseEntity;
 import ro.ubb.domain.ObjectFromXMLFile;
 import ro.ubb.domain.exceptions.ValidatorException;
-import ro.ubb.repository.Repository;
+import ro.ubb.repository.SortingRepository;
+import ro.ubb.repository.db.sort.Sort;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,10 +20,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Optional;
+import java.io.Serializable;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
@@ -34,7 +33,7 @@ import java.util.stream.StreamSupport;
  * @param <ID> type of the id of given entity to store
  * @param <T> type of entity to store
  */
-public class XMLRepository<ID, T extends BaseEntity<ID>> implements Repository<ID, T> {
+public class XMLRepository<ID extends Serializable, T extends BaseEntity<ID>> implements SortingRepository<ID, T> {
 
   private String filename;
   private ObjectFromXMLFile<T> converterFunction;
@@ -69,7 +68,12 @@ public class XMLRepository<ID, T extends BaseEntity<ID>> implements Repository<I
   public Iterable<T> findAll() {
     return StreamSupport.stream(loadData().spliterator(), false).collect(Collectors.toSet());
   }
-
+  @Override
+  public Iterable<T> findAll(Sort sort){
+    Iterable<T> unsorted = findAll();
+    Iterable<T> sorted = sort.sort(unsorted);
+    return sorted;
+  }
   /**
    * Saves the given entity.
    *

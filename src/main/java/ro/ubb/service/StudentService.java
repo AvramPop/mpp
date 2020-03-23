@@ -3,9 +3,11 @@ package ro.ubb.service;
 import ro.ubb.domain.Student;
 import ro.ubb.domain.exceptions.ValidatorException;
 import ro.ubb.domain.validators.Validator;
-import ro.ubb.repository.Repository;
+import ro.ubb.repository.SortingRepository;
+import ro.ubb.repository.db.sort.Sort;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,10 +18,10 @@ import java.util.stream.StreamSupport;
  *     are performed on these entities
  */
 public class StudentService {
-  private Repository<Long, Student> repository;
+  private SortingRepository<Long, Student> repository;
   private Validator<Student> validator;
 
-  public StudentService(Repository<Long, Student> repository, Validator<Student> validator) {
+  public StudentService(SortingRepository<Long, Student> repository, Validator<Student> validator) {
     this.repository = repository;
     this.validator = validator;
   }
@@ -53,6 +55,11 @@ public class StudentService {
   public Set<Student> getAllStudents() {
     Iterable<Student> students = repository.findAll();
     return StreamSupport.stream(students.spliterator(), false).collect(Collectors.toSet());
+  }
+
+  public List<Student> getAllStudentsSorted(Sort sort) {
+    Iterable<Student> students = repository.findAll(sort);
+    return StreamSupport.stream(students.spliterator(), false).collect(Collectors.toList());
   }
 
   /**

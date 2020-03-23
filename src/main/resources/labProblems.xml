@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<labProblems>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><labProblems>
 
     <labProblem Id="16">
         <problemNumber>16</problemNumber>
@@ -81,4 +80,4 @@
         <problemNumber>5</problemNumber>
         <description>lab problem 5 description</description>
     </labProblem>
-</labProblems>
+<labProblem Id="100"><problemNumber>9</problemNumber><description>abc</description></labProblem></labProblems>

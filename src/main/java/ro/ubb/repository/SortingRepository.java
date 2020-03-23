@@ -1,7 +1,7 @@
-package ro.ubb.repository.db;
+package ro.ubb.repository;
 
 import ro.ubb.domain.BaseEntity;
-import ro.ubb.repository.Repository;
+import ro.ubb.repository.db.sort.Sort;
 
 import java.io.Serializable;
 

@@ -1,6 +1,7 @@
 package ro.ubb.repository.db;
 
 import ro.ubb.domain.BaseEntity;
+import ro.ubb.repository.SortingRepository;
 
 import java.io.IOException;
 import java.io.Serializable;

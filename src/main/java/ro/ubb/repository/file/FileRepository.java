@@ -3,9 +3,11 @@ package ro.ubb.repository.file;
 import ro.ubb.domain.BaseEntity;
 import ro.ubb.domain.ObjectFromFileLine;
 import ro.ubb.domain.exceptions.ValidatorException;
-import ro.ubb.repository.Repository;
+import ro.ubb.repository.SortingRepository;
+import ro.ubb.repository.db.sort.Sort;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,7 +23,7 @@ import java.util.stream.StreamSupport;
  * @param <ID> type of the id of given entity to store
  * @param <T> type of entity to store
  */
-public class FileRepository<ID, T extends BaseEntity<ID>> implements Repository<ID, T> {
+public class FileRepository<ID extends Serializable, T extends BaseEntity<ID>> implements SortingRepository<ID, T> {
 
   private String filename;
   private String delimiter;
@@ -59,7 +61,12 @@ public class FileRepository<ID, T extends BaseEntity<ID>> implements Repository<
   public Iterable<T> findAll() {
     return StreamSupport.stream(loadData().spliterator(), false).collect(Collectors.toSet());
   }
-
+  @Override
+  public Iterable<T> findAll(Sort sort){
+    Iterable<T> unsorted = findAll();
+    Iterable<T> sorted = sort.sort(unsorted);
+    return sorted;
+  }
   /**
    * Saves the given entity.
    *

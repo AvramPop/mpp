@@ -3,9 +3,11 @@ package ro.ubb.service;
 import ro.ubb.domain.LabProblem;
 import ro.ubb.domain.exceptions.ValidatorException;
 import ro.ubb.domain.validators.Validator;
-import ro.ubb.repository.Repository;
+import ro.ubb.repository.SortingRepository;
+import ro.ubb.repository.db.sort.Sort;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -13,11 +15,11 @@ import java.util.stream.StreamSupport;
 
 public class LabProblemService {
 
-  private Repository<Long, LabProblem> repository;
+  private SortingRepository<Long, LabProblem> repository;
   private Validator<LabProblem> labProblemValidator;
 
   public LabProblemService(
-      Repository<Long, LabProblem> repository, Validator<LabProblem> labProblemValidator) {
+      SortingRepository<Long, LabProblem> repository, Validator<LabProblem> labProblemValidator) {
     this.repository = repository;
     this.labProblemValidator = labProblemValidator;
   }
@@ -50,6 +52,11 @@ public class LabProblemService {
   public Set<LabProblem> getAllLabProblems() {
     Iterable<LabProblem> problems = repository.findAll();
     return StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toSet());
+  }
+
+  public List<LabProblem> getAllLabProblemsSorted(Sort sort) {
+    Iterable<LabProblem> problems = repository.findAll(sort);
+    return StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toList());
   }
 
   /**
