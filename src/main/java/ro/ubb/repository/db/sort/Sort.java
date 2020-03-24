@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
@@ -27,7 +28,7 @@ public class Sort {
    * Sort given Iterable by the previously given criteria.
    */
   public <T> Iterable<T> sort(Iterable<T> iterableToSort) {
-    if (className == null) throw new IllegalStateException("class name not specified!");
+    if (className == null || className.equals("")) throw new IllegalStateException("class name not specified!");
     return StreamSupport.stream(iterableToSort.spliterator(), false)
         .sorted(new SortComparator())
         .collect(Collectors.toList());
@@ -36,9 +37,9 @@ public class Sort {
   public Sort(Direction direction, String... fieldsToSortBy) {
     sortingChain = new ArrayList<>();
     if (fieldsToSortBy.length == 0) throw new IllegalArgumentException();
-    for (String field : fieldsToSortBy) {
-      sortingChain.add(new AbstractMap.SimpleEntry<>(direction, field));
-    }
+
+    Stream.of(fieldsToSortBy).forEach(field ->sortingChain.add(new AbstractMap.SimpleEntry<>(direction, field)));
+
   }
 
   public Sort(String... fieldsToSortBy) {
@@ -73,6 +74,7 @@ public class Sort {
     /**
      * Create compare function chaining class criteria for sorting.
      */
+    @Override
     public int compare(Object first, Object second) {
       return sortingChain.stream()
           .map(sortingCriteria -> compareObjectsByGivenCriteria(first, second, sortingCriteria))
@@ -86,7 +88,7 @@ public class Sort {
      */
     private int compareObjectsByGivenCriteria(
         Object first, Object second, Map.Entry<Direction, String> sortingCriteria) {
-      int result = -1;
+      int result;
       try {
         Object firstValue = getValueByFieldName(first, sortingCriteria.getValue());
         Object secondValue = getValueByFieldName(second, sortingCriteria.getValue());
