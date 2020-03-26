@@ -72,4 +72,15 @@ public class Assignment extends BaseEntity<Long> {
     this.grade = grade;
   }
 
+  @Override
+  public String objectToFileLine(String delimiter) {
+    return this.getId()
+        + delimiter
+        + this.studentId
+        + delimiter
+        + this.labProblemId
+        + delimiter
+        + grade;
+  }
+
 }

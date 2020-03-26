@@ -59,7 +59,16 @@ public class Student extends BaseEntity<Long> {
         + group
         + '}';
   }
-
+  @Override
+  public String objectToFileLine(String delimiter) {
+    return this.getId()
+        + delimiter
+        + this.serialNumber
+        + delimiter
+        + this.name
+        + delimiter
+        + this.group;
+  }
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

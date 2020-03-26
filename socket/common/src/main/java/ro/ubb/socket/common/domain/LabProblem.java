@@ -56,6 +56,11 @@ public class LabProblem extends BaseEntity<Long> {
   }
 
   @Override
+  public String objectToFileLine(String delimiter) {
+    return this.getId() + delimiter + this.problemNumber + delimiter + this.description;
+  }
+
+  @Override
   public int hashCode() {
     return Objects.hash(problemNumber, description);
   }
