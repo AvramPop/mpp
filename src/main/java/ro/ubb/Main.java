@@ -16,6 +16,9 @@ import ro.ubb.domain.validators.LabProblemValidator;
 import ro.ubb.domain.validators.StudentValidator;
 import ro.ubb.domain.validators.Validator;
 import ro.ubb.repository.SortingRepository;
+import ro.ubb.repository.db.DBAssignmentsRepository;
+import ro.ubb.repository.db.DBLabProblemRepository;
+import ro.ubb.repository.db.DBStudentRepository;
 import ro.ubb.repository.xml.XMLElementToEntityFactory;
 import ro.ubb.repository.xml.XMLRepository;
 import ro.ubb.service.AssignmentService;
@@ -82,6 +85,7 @@ public class Main {
                       FileLineEntityFactory.assignmentObjectFromFileLine());
 
       */
+      /*
       SortingRepository<Long, Student> studentRepository =
           new XMLRepository<>(
               repoPathXMLFile("students"), XMLElementToEntityFactory.studentObjectFromXMLFile());
@@ -93,6 +97,19 @@ public class Main {
           new XMLRepository<>(
               repoPathXMLFile("assignments"),
               XMLElementToEntityFactory.assignmentObjectFromXMLFile());
+      */
+      DBLabProblemRepository labProblemRepository =
+              new DBLabProblemRepository(
+                      "configuration" + FileSystems.getDefault().getSeparator() +
+                              "db-credentials.data");
+      DBStudentRepository studentRepository =
+              new DBStudentRepository(
+                      "configuration" + FileSystems.getDefault().getSeparator() +
+                              "db-credentials.data");
+      DBAssignmentsRepository assignmentRepository =
+              new DBAssignmentsRepository(
+                      "configuration" + FileSystems.getDefault().getSeparator() +
+                              "db-credentials.data");
 
       StudentService studentService = new StudentService(studentRepository, studentValidator);
       LabProblemService labProblemService =
