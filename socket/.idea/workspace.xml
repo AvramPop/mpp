@@ -2,37 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="360f55ac-27f7-47da-84b7-d68c574823a7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/google-java-format.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/main/java/ro/ubb/socket/client/infrastructure/TCPClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/main/java/ro/ubb/socket/client/service/AssignmentClientService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/main/java/ro/ubb/socket/client/service/LabProblemClientService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/main/java/ro/ubb/socket/client/service/StudentClientService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/domain/Assignment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/domain/BaseEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/domain/LabProblem.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/domain/Student.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/domain/exceptions/ClassReflectionException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/domain/exceptions/RepositoryException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/domain/exceptions/ServiceException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/domain/exceptions/ValidatorException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/infrastructure/Message.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/service/AssignmentService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/service/LabProblemService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/service/StudentService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/service/sort/Sort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/infrastructure/MessageHeader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/ro/ubb/socket/client/ClientApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ro/ubb/socket/client/ClientApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/ro/ubb/socket/client/service/HelloServiceClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/ro/ubb/socket/client/tcp/TcpClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/ro/ubb/socket/client/ui/Console.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/ro/ubb/socket/client/ui/Console.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/HelloService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/HelloServiceException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/Message.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/ro/ubb/socket/server/ServerApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/ro/ubb/socket/server/ServerApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/ro/ubb/socket/server/service/HelloServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/ro/ubb/socket/server/tcp/TcpServer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/ro/ubb/socket/server/infrastructure/TCPServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/ro/ubb/socket/server/infrastructure/TCPServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +25,7 @@
       <list>
         <option value="Interface" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -88,16 +62,16 @@
     <property name="settings.editor.selected.configurable" value="configurable.group.build.tools" />
   </component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="ro.ubb.socket.server.tcp" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/server/src/main/java/ro/ubb/socket/server" />
       <recent name="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common" />
       <recent name="$PROJECT_DIR$/client/src/main/java/ro/ubb/socket/client" />
     </key>
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="ro.ubb.socket.server.tcp" />
-    </key>
   </component>
-  <component name="RunManager" selected="Application.ClientApp">
+  <component name="RunManager" selected="Application.ServerApp">
     <configuration name="ClientApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ro.ubb.socket.client.ClientApp" />
       <module name="socket.client.main" />
@@ -150,12 +124,25 @@
       <workItem from="1585034902863" duration="29000" />
       <workItem from="1585034990856" duration="1867000" />
       <workItem from="1585039253564" duration="599000" />
-      <workItem from="1585234059817" duration="267000" />
+      <workItem from="1585234059817" duration="521000" />
+      <workItem from="1585241907468" duration="1347000" />
     </task>
+    <task id="LOCAL-00001" summary="added our code on the teacher's skeleton">
+      <created>1585234492248</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1585234492248</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added our code on the teacher's skeleton" />
+    <option name="LAST_COMMIT_MESSAGE" value="added our code on the teacher's skeleton" />
   </component>
   <component name="WindowStateProjectService">
     <state x="512" y="115" width="544" height="562" key="#com.intellij.ide.util.MemberChooser" timestamp="1584965603382">
@@ -166,30 +153,54 @@
       <screen x="1366" y="0" width="1920" height="1080" />
     </state>
     <state x="2059" y="289" width="524" height="495" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585234203000" />
+    <state x="1822" y="136" width="997" height="801" key="CommitChangelistDialog2" timestamp="1585234492056">
+      <screen x="1366" y="0" width="1920" height="1080" />
+    </state>
+    <state x="1822" y="136" width="997" height="801" key="CommitChangelistDialog2/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585234492056" />
     <state x="487" y="154" width="424" height="484" key="FileChooserDialogImpl" timestamp="1585037605432">
       <screen x="43" y="27" width="1323" height="741" />
     </state>
     <state x="487" y="154" width="424" height="484" key="FileChooserDialogImpl/43.27.1323.741@43.27.1323.741" timestamp="1585037605432" />
-    <state width="1878" height="173" key="GridCell.Tab.0.bottom" timestamp="1585234460172">
+    <state width="1878" height="173" key="GridCell.Tab.0.bottom" timestamp="1585243250450">
       <screen x="1366" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="173" key="GridCell.Tab.0.bottom/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585234460172" />
+    <state width="1878" height="173" key="GridCell.Tab.0.bottom/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585243250450" />
     <state width="1277" height="175" key="GridCell.Tab.0.bottom/43.27.1323.741@43.27.1323.741" timestamp="1585037613522" />
-    <state width="1878" height="173" key="GridCell.Tab.0.center" timestamp="1585234460171">
+    <state width="1878" height="173" key="GridCell.Tab.0.center" timestamp="1585243250450">
       <screen x="1366" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="173" key="GridCell.Tab.0.center/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585234460171" />
+    <state width="1878" height="173" key="GridCell.Tab.0.center/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585243250450" />
     <state width="1277" height="175" key="GridCell.Tab.0.center/43.27.1323.741@43.27.1323.741" timestamp="1585037613520" />
-    <state width="1878" height="173" key="GridCell.Tab.0.left" timestamp="1585234460171">
+    <state width="1878" height="173" key="GridCell.Tab.0.left" timestamp="1585243250450">
       <screen x="1366" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="173" key="GridCell.Tab.0.left/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585234460171" />
+    <state width="1878" height="173" key="GridCell.Tab.0.left/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585243250450" />
     <state width="1277" height="175" key="GridCell.Tab.0.left/43.27.1323.741@43.27.1323.741" timestamp="1585037613519" />
-    <state width="1878" height="173" key="GridCell.Tab.0.right" timestamp="1585234460171">
+    <state width="1878" height="173" key="GridCell.Tab.0.right" timestamp="1585243250450">
       <screen x="1366" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="173" key="GridCell.Tab.0.right/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585234460171" />
+    <state width="1878" height="173" key="GridCell.Tab.0.right/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585243250450" />
     <state width="1277" height="175" key="GridCell.Tab.0.right/43.27.1323.741@43.27.1323.741" timestamp="1585037613520" />
+    <state width="1878" height="357" key="GridCell.Tab.1.bottom" timestamp="1585242984163">
+      <screen x="1366" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1878" height="357" key="GridCell.Tab.1.bottom/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585242984163" />
+    <state width="1878" height="357" key="GridCell.Tab.1.center" timestamp="1585242984162">
+      <screen x="1366" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1878" height="357" key="GridCell.Tab.1.center/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585242984162" />
+    <state width="1878" height="357" key="GridCell.Tab.1.left" timestamp="1585242984162">
+      <screen x="1366" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1878" height="357" key="GridCell.Tab.1.left/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585242984162" />
+    <state width="1878" height="357" key="GridCell.Tab.1.right" timestamp="1585242984162">
+      <screen x="1366" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1878" height="357" key="GridCell.Tab.1.right/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585242984162" />
+    <state x="1921" y="275" width="800" height="523" key="Vcs.Push.Dialog.v2" timestamp="1585234498270">
+      <screen x="1366" y="0" width="1920" height="1080" />
+    </state>
+    <state x="1921" y="275" width="800" height="523" key="Vcs.Push.Dialog.v2/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585234498270" />
     <state x="360" y="224" key="com.intellij.ide.util.TipDialog" timestamp="1585036345125">
       <screen x="43" y="27" width="1323" height="741" />
     </state>

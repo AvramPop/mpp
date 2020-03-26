@@ -3,6 +3,7 @@ package ro.ubb.socket.server.infrastructure;
 
 import ro.ubb.socket.common.domain.exceptions.ServiceException;
 import ro.ubb.socket.common.infrastructure.Message;
+import ro.ubb.socket.common.infrastructure.MessageHeader;
 
 import java.io.IOException;
 import java.io.InputStream;
