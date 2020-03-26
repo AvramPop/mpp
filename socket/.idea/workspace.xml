@@ -2,16 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="360f55ac-27f7-47da-84b7-d68c574823a7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/domain/FileLineEntityFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/domain/ObjectFromFileLine.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/infrastructure/Stringifier.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/infrastructure/MessageHeader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/domain/Assignment.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/domain/Assignment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/domain/BaseEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/domain/BaseEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/domain/LabProblem.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/domain/LabProblem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/domain/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/domain/Student.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/infrastructure/MessageHeader.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/ro/ubb/socket/common/infrastructure/MessageHeader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/ro/ubb/socket/server/ServerApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/ro/ubb/socket/server/ServerApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/ro/ubb/socket/server/infrastructure/TCPServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/ro/ubb/socket/server/infrastructure/TCPServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,9 +23,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Enum" />
         <option value="Interface" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -131,7 +125,7 @@
       <workItem from="1585034990856" duration="1867000" />
       <workItem from="1585039253564" duration="599000" />
       <workItem from="1585234059817" duration="521000" />
-      <workItem from="1585241907468" duration="2350000" />
+      <workItem from="1585241907468" duration="1347000" />
     </task>
     <task id="LOCAL-00001" summary="added our code on the teacher's skeleton">
       <created>1585234492248</created>
@@ -140,14 +134,7 @@
       <option name="project" value="LOCAL" />
       <updated>1585234492248</updated>
     </task>
-    <task id="LOCAL-00002" summary="added message headers list">
-      <created>1585243280031</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1585243280031</updated>
-    </task>
-    <option name="localTasksCounter" value="3" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -155,8 +142,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added our code on the teacher's skeleton" />
-    <MESSAGE value="added message headers list" />
-    <option name="LAST_COMMIT_MESSAGE" value="added message headers list" />
+    <option name="LAST_COMMIT_MESSAGE" value="added our code on the teacher's skeleton" />
   </component>
   <component name="WindowStateProjectService">
     <state x="512" y="115" width="544" height="562" key="#com.intellij.ide.util.MemberChooser" timestamp="1584965603382">
@@ -167,10 +153,10 @@
       <screen x="1366" y="0" width="1920" height="1080" />
     </state>
     <state x="2059" y="289" width="524" height="495" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585234203000" />
-    <state x="1822" y="136" width="997" height="801" key="CommitChangelistDialog2" timestamp="1585243279816">
+    <state x="1822" y="136" width="997" height="801" key="CommitChangelistDialog2" timestamp="1585234492056">
       <screen x="1366" y="0" width="1920" height="1080" />
     </state>
-    <state x="1822" y="136" width="997" height="801" key="CommitChangelistDialog2/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585243279816" />
+    <state x="1822" y="136" width="997" height="801" key="CommitChangelistDialog2/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585234492056" />
     <state x="487" y="154" width="424" height="484" key="FileChooserDialogImpl" timestamp="1585037605432">
       <screen x="43" y="27" width="1323" height="741" />
     </state>
@@ -211,10 +197,10 @@
       <screen x="1366" y="0" width="1920" height="1080" />
     </state>
     <state width="1878" height="357" key="GridCell.Tab.1.right/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585242984162" />
-    <state x="1921" y="275" width="800" height="523" key="Vcs.Push.Dialog.v2" timestamp="1585243281855">
+    <state x="1921" y="275" width="800" height="523" key="Vcs.Push.Dialog.v2" timestamp="1585234498270">
       <screen x="1366" y="0" width="1920" height="1080" />
     </state>
-    <state x="1921" y="275" width="800" height="523" key="Vcs.Push.Dialog.v2/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585243281855" />
+    <state x="1921" y="275" width="800" height="523" key="Vcs.Push.Dialog.v2/0.357.1366.768/1366.0.1920.1080@1366.0.1920.1080" timestamp="1585234498270" />
     <state x="360" y="224" key="com.intellij.ide.util.TipDialog" timestamp="1585036345125">
       <screen x="43" y="27" width="1323" height="741" />
     </state>
