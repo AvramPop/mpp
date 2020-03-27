@@ -14,6 +14,7 @@ import ro.ubb.socket.server.service.validators.StudentValidator;
 import ro.ubb.socket.server.service.validators.Validator;
 
 import java.nio.file.FileSystems;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -45,7 +46,19 @@ public class ServerApp {
                     return new Message(MessageHeader.OK_REQUEST, StringEntityFactory.entityToMessage(result));
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
-                    return new Message(MessageHeader.ERROR_REQUEST, e.getMessage());
+                    return new Message(MessageHeader.BAD_REQUEST, e.getMessage());
+                }
+
+            });
+
+            tcpServer.addHandler(MessageHeader.STUDENT_ALL, (request) -> {
+                Future<Set<Student>> future = studentService.getAllStudents();
+                try {
+                    Set<Student> result = future.get();
+                    return new Message(MessageHeader.OK_REQUEST, StringEntityFactory.collectionToMessageBody(result));
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                    return new Message(MessageHeader.BAD_REQUEST, e.getMessage());
                 }
 
             });

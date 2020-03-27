@@ -13,15 +13,15 @@ import java.net.Socket;
  */
 public class ClientApp {
     public static void main(String[] args) {
-        Message request = new Message(MessageHeader.STUDENT_BY_ID, "1");
+        Message request = new Message(MessageHeader.STUDENT_ALL, "");
         try (var socket = new Socket(Message.HOST, Message.PORT);
              var is = socket.getInputStream();
              var os = socket.getOutputStream()
         ) {
-            System.out.println("sendAndReceive - sending request: " + request);
+            System.out.println("client - sending request: " + request);
             request.writeTo(os);
 
-            System.out.println("sendAndReceive - received response: ");
+            System.out.println("client - received response: ");
             Message response = new Message();
             response.readFrom(is);
             System.out.println(response);

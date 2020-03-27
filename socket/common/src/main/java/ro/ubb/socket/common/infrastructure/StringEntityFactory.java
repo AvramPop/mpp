@@ -6,14 +6,17 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class StringEntityFactory {
   public static <T extends BaseEntity<Long>> String collectionToMessageBody(Collection<T> collectionToConvert){
-    return null;
+    return collectionToConvert.stream()
+        .map(BaseEntity::objectToFileLine)
+        .collect(Collectors.joining("\n"));
   }
 
   public static <T extends BaseEntity<Long>> String entityToMessage(T entity){
-    return entity.objectToFileLine(",");
+    return entity.objectToFileLine();
   }
 
   public static Student studentFromMessageLine(String messageLine){

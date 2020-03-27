@@ -52,19 +52,18 @@ public class TCPServer {
            OutputStream os = socket.getOutputStream()) {
         Message request = new Message();
         request.readFrom(is);
-        System.out.println("received request: " + request);
+        System.out.println("server received request from client: " + request);
 
-//                System.out.println(request.getHeader());
-//                System.out.println(request.getBody());
+        System.out.println(request.getHeader());
+        System.out.println(request.getBody());
 
-        //given the request header? (method name) and body (method args),
+        // given the request header? (method name) and body (method args),
         // execute a handler and get the result of the method execution (of type message)
-
         Message response = methodHandlers.get(request.getHeader())
             .apply(request);
 //                Message response = new Message();
         response.writeTo(os);
-
+        System.out.println("server sending back: " + response);
       } catch (IOException e) {
         throw new ServiceException("error processing client", e);
       }

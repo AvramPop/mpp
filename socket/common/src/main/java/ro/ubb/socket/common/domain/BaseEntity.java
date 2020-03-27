@@ -20,5 +20,5 @@ public abstract class BaseEntity<ID> {
   public String toString() {
     return "BaseEntity{" + "id=" + id + '}';
   }
-  public abstract String objectToFileLine(String delimiter);
+  public abstract String objectToFileLine();
 }
