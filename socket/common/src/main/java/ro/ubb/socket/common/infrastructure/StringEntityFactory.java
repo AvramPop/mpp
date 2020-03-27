@@ -24,6 +24,8 @@ public class StringEntityFactory {
 
   public static Student studentFromMessageLine(String messageLine) {
     List<String> params = Arrays.asList(messageLine.split(","));
+    System.out.println(messageLine+"messageLine");
+    params.forEach(System.out::println);
     Student student = new Student(params.get(1), params.get(2), Integer.parseInt(params.get(3)));
     student.setId(Long.parseLong(params.get(0)));
     return student;
@@ -40,7 +42,7 @@ public class StringEntityFactory {
     return assignment;
   }
 
-  public LabProblem labProblemFromMessageLine(String messageLine) {
+  public static LabProblem labProblemFromMessageLine(String messageLine) {
     List<String> params = Arrays.asList(messageLine.split(","));
     LabProblem labProblem = new LabProblem(Integer.parseInt(params.get(1)), params.get(2));
     labProblem.setId(Long.parseLong(params.get(0)));

@@ -34,8 +34,8 @@ public interface AssignmentService {
    * Deletes an assignment from the ro.ubb.repository
    *
    * @param id the id of the assignment to be deleted
-   * @return an {@code Optional} containing a null if successfully deleted otherwise the entity
-   *     passed to the repository
+   * @return an {@code Future} - null if there is no entity with the given id, otherwise the
+   *     removed entity.
    */
   Future<Assignment> deleteAssignment(Long id);
 
@@ -44,8 +44,8 @@ public interface AssignmentService {
    * that lab problem
    *
    * @param id the id of the student to be deleted
-   * @return * @return an {@code Optional} containing a null if successfully deleted otherwise the
-   *     entity passed to the repository
+   * @return an {@code Future} - null if there is no entity with the given id, otherwise the
+   *     removed entity.
    */
   Future<Student> deleteStudent(Long id);
   /**
@@ -53,8 +53,8 @@ public interface AssignmentService {
    * to that student
    *
    * @param id the id of the lab problem to be deleted
-   * @return an {@code Optional} containing a null if successfully deleted otherwise the entity
-   *     passed to the repository
+   * @return an {@code Future} - null if there is no entity with the given id, otherwise the
+   *     removed entity.
    */
   Future<LabProblem> deleteLabProblem(Long id);
 
