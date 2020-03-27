@@ -9,9 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-/**
- * Sorting provider for iterables using reflection to lookup fields to sort by.
- */
+/** Sorting provider for iterables using reflection to lookup fields to sort by. */
 public class Sort {
   private List<Map.Entry<Direction, String>> sortingChain;
   private String className = null;
@@ -20,15 +18,14 @@ public class Sort {
     this.className = className;
   }
 
-  public void setSortingChain(List<Map.Entry<Direction, String>> sortingChain){
+  public void setSortingChain(List<Map.Entry<Direction, String>> sortingChain) {
     this.sortingChain = sortingChain;
   }
 
-  /**
-   * Sort given Iterable by the previously given criteria.
-   */
+  /** Sort given Iterable by the previously given criteria. */
   public <T> Iterable<T> sort(Iterable<T> iterableToSort) {
-    if (className == null || className.equals("")) throw new IllegalStateException("class name not specified!");
+    if (className == null || className.equals(""))
+      throw new IllegalStateException("class name not specified!");
     return StreamSupport.stream(iterableToSort.spliterator(), false)
         .sorted(new SortComparator())
         .collect(Collectors.toList());
@@ -38,17 +35,15 @@ public class Sort {
     sortingChain = new ArrayList<>();
     if (fieldsToSortBy.length == 0) throw new IllegalArgumentException();
 
-    Stream.of(fieldsToSortBy).forEach(field ->sortingChain.add(new AbstractMap.SimpleEntry<>(direction, field)));
-
+    Stream.of(fieldsToSortBy)
+        .forEach(field -> sortingChain.add(new AbstractMap.SimpleEntry<>(direction, field)));
   }
 
   public Sort(String... fieldsToSortBy) {
     this(Direction.ASC, fieldsToSortBy);
   }
 
-  /**
-   * Obtain the value of field named fieldName of object objectToInvokeOn
-   */
+  /** Obtain the value of field named fieldName of object objectToInvokeOn */
   private Object getValueByFieldName(Object objectToInvokeOn, String fieldName)
       throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException,
           IllegalAccessException {
@@ -67,13 +62,9 @@ public class Sort {
     return "ro.ubb.domain." + className;
   }
 
-  /**
-   * Inner class to provide sorting logic for the criteria of current instance.
-   */
+  /** Inner class to provide sorting logic for the criteria of current instance. */
   private class SortComparator implements Comparator<Object> {
-    /**
-     * Create compare function chaining class criteria for sorting.
-     */
+    /** Create compare function chaining class criteria for sorting. */
     @Override
     public int compare(Object first, Object second) {
       return sortingChain.stream()
@@ -83,9 +74,7 @@ public class Sort {
           .orElse(0);
     }
 
-    /**
-     * Compare given objects by given criteria.
-     */
+    /** Compare given objects by given criteria. */
     private int compareObjectsByGivenCriteria(
         Object first, Object second, Map.Entry<Direction, String> sortingCriteria) {
       int result;
@@ -106,9 +95,7 @@ public class Sort {
     }
   }
 
-  /**
-   * Chain sorting criteria.
-   */
+  /** Chain sorting criteria. */
   public Sort and(Sort sort) {
     this.sortingChain.addAll(sort.sortingChain);
     return this;
@@ -130,9 +117,7 @@ public class Sort {
     return result.toString();
   }
 
-  /**
-   * Sorting directions for a given field.
-   */
+  /** Sorting directions for a given field. */
   public enum Direction {
     ASC,
     DESC

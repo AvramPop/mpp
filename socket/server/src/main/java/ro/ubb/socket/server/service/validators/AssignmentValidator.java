@@ -13,7 +13,7 @@ public class AssignmentValidator implements Validator<Assignment> {
    * @throws ValidatorException in case of invalid instance of entity an exception is thrown
    */
   @Override
-  public void validate(Assignment entity) throws ValidatorException{
+  public void validate(Assignment entity) throws ValidatorException {
     StringBuilder errorMessage = new StringBuilder();
     if (entity.getId() == null) errorMessage.append("Id is null");
     else if (entity.getId() < 0) errorMessage.append("Invalid id! ");

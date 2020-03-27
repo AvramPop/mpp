@@ -83,5 +83,4 @@ public class Assignment extends BaseEntity<Long> {
         + delimiter
         + grade;
   }
-
 }

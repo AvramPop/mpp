@@ -17,7 +17,7 @@ public class LabProblemValidator implements Validator<LabProblem> {
    *     violated
    */
   @Override
-  public void validate(LabProblem entity) throws ValidatorException{
+  public void validate(LabProblem entity) throws ValidatorException {
     StringBuilder errorMessage = new StringBuilder();
     if (entity.getId() == null) errorMessage.append("Id is null");
     else if (entity.getId() < 0) errorMessage.append("Invalid id! ");

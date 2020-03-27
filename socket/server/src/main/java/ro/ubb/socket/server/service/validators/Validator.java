@@ -1,6 +1,5 @@
 package ro.ubb.socket.server.service.validators;
 
-
 import ro.ubb.socket.common.domain.exceptions.ValidatorException;
 
 /**

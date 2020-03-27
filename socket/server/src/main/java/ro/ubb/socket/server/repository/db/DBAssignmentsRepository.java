@@ -1,6 +1,5 @@
 package ro.ubb.socket.server.repository.db;
 
-
 import ro.ubb.socket.common.domain.Assignment;
 import ro.ubb.socket.common.domain.exceptions.ValidatorException;
 import ro.ubb.socket.common.service.sort.Sort;
@@ -97,7 +96,7 @@ public class DBAssignmentsRepository extends DBRepository<Long, Assignment> {
    * @throws ValidatorException if the entity is not valid.
    */
   @Override
-  public Optional<Assignment> save(Assignment entity) throws ValidatorException{
+  public Optional<Assignment> save(Assignment entity) throws ValidatorException {
     if (entity == null) throw new IllegalArgumentException("entity must not be null");
     String query = "insert into " + this.tableName + " values (?, ?, ?, ?)";
     try (Connection connection = dbConnection()) {

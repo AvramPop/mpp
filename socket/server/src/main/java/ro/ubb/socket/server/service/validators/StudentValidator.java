@@ -16,7 +16,7 @@ public class StudentValidator implements Validator<Student> {
    * @throws ValidatorException if at least one of the criteria for creating the Student is violated
    */
   @Override
-  public void validate(Student entity) throws ValidatorException{
+  public void validate(Student entity) throws ValidatorException {
     StringBuilder errorMessage = new StringBuilder();
     if (entity.getId() == null) errorMessage.append("Id is null");
     else if (entity.getId() < 0) errorMessage.append("Invalid id! ");

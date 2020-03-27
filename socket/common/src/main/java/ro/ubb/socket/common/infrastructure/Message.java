@@ -1,7 +1,6 @@
 package ro.ubb.socket.common.infrastructure;
 
 import java.io.*;
-import java.util.stream.Collectors;
 
 public class Message {
   public static final int PORT = 1234;
@@ -10,8 +9,7 @@ public class Message {
   private String header;
   private String body;
 
-  public Message() {
-  }
+  public Message() {}
 
   public Message(String header, String body) {
     this.header = header;
@@ -34,16 +32,15 @@ public class Message {
     this.body = body;
   }
 
-  public void writeTo(OutputStream os) throws IOException{
+  public void writeTo(OutputStream os) throws IOException {
     String messageToPrint = header + System.lineSeparator() + body + System.lineSeparator();
-    //System.out.println(messageToPrint);
+    // System.out.println(messageToPrint);
     os.write(messageToPrint.getBytes());
   }
 
   public void readFrom(InputStream is) throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(is));
     String bufferMessage = "";
-    System.out.println("reading");
     do {
       System.out.println(bufferMessage);
       bufferMessage += br.readLine();
@@ -60,9 +57,6 @@ public class Message {
 
   @Override
   public String toString() {
-    return "Message{" +
-        "header='" + header + '\'' +
-        ", body='" + body + '\'' +
-        '}';
+    return "Message{" + "header='" + header + '\'' + ", body='" + body + '\'' + '}';
   }
 }

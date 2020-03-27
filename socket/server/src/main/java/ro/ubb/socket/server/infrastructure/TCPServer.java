@@ -1,9 +1,7 @@
 package ro.ubb.socket.server.infrastructure;
 
-
 import ro.ubb.socket.common.domain.exceptions.ServiceException;
 import ro.ubb.socket.common.infrastructure.Message;
-import ro.ubb.socket.common.infrastructure.MessageHeader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,7 +47,7 @@ public class TCPServer {
     @Override
     public void run() {
       try (InputStream is = socket.getInputStream();
-           OutputStream os = socket.getOutputStream()) {
+          OutputStream os = socket.getOutputStream()) {
         Message request = new Message();
         request.readFrom(is);
         System.out.println("server received request from client: " + request);
@@ -59,9 +57,8 @@ public class TCPServer {
 
         // given the request header? (method name) and body (method args),
         // execute a handler and get the result of the method execution (of type message)
-        Message response = methodHandlers.get(request.getHeader())
-            .apply(request);
-//                Message response = new Message();
+        Message response = methodHandlers.get(request.getHeader()).apply(request);
+        //                Message response = new Message();
         response.writeTo(os);
         System.out.println("server sending back: " + response);
       } catch (IOException e) {

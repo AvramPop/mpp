@@ -1,7 +1,5 @@
 package ro.ubb.socket.server.repository.db;
 
-
-
 import ro.ubb.socket.common.domain.LabProblem;
 import ro.ubb.socket.common.domain.exceptions.ValidatorException;
 import ro.ubb.socket.common.service.sort.Sort;
@@ -97,7 +95,7 @@ public class DBLabProblemRepository extends DBRepository<Long, LabProblem> {
    * @throws ValidatorException if the entity is not valid.
    */
   @Override
-  public Optional<LabProblem> save(LabProblem entity) throws ValidatorException{
+  public Optional<LabProblem> save(LabProblem entity) throws ValidatorException {
     if (entity == null) {
       throw new IllegalArgumentException("entity must not be null");
     }

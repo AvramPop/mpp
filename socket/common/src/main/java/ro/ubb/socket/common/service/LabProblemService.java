@@ -1,11 +1,11 @@
 package ro.ubb.socket.common.service;
 
-
 import ro.ubb.socket.common.domain.LabProblem;
 import ro.ubb.socket.common.domain.exceptions.ValidatorException;
 import ro.ubb.socket.common.service.sort.Sort;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Future;
 
@@ -15,9 +15,7 @@ public interface LabProblemService {
 
   Future<Set<LabProblem>> getAllLabProblems();
 
-  /**
-   * Return all LabProblems sorted by the sort criteria.
-   */
+  /** Return all LabProblems sorted by the sort criteria. */
   Future<List<LabProblem>> getAllLabProblemsSorted(Sort sort);
 
   /**
@@ -37,5 +35,8 @@ public interface LabProblemService {
    *     the ro.ubb.repository
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
-  Future<LabProblem> updateLabProblem(Long id, int problemNumber, String description) throws ValidatorException;
+  Future<LabProblem> updateLabProblem(Long id, int problemNumber, String description)
+      throws ValidatorException;
+
+  Optional<LabProblem> deleteLabProblem(Long id);
 }

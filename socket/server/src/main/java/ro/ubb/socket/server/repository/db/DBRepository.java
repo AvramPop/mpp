@@ -1,7 +1,5 @@
 package ro.ubb.socket.server.repository.db;
 
-
-
 import ro.ubb.socket.common.domain.BaseEntity;
 import ro.ubb.socket.server.repository.SortingRepository;
 
@@ -16,9 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Generic abstract class to provide DB connection and other jdbc-related logic.
- */
+/** Generic abstract class to provide DB connection and other jdbc-related logic. */
 public abstract class DBRepository<ID extends Serializable, T extends BaseEntity<ID>>
     implements SortingRepository<ID, T> {
   private String dbType;
@@ -34,9 +30,7 @@ public abstract class DBRepository<ID extends Serializable, T extends BaseEntity
     this.tableName = tableName;
   }
 
-  /**
-   * Load configuration from the given config file.
-   */
+  /** Load configuration from the given config file. */
   private void loadDBConfiguration(String dbCredentialsFilename) {
     Path path = Paths.get(dbCredentialsFilename);
     List<String> inputData = new ArrayList<>();
@@ -53,9 +47,7 @@ public abstract class DBRepository<ID extends Serializable, T extends BaseEntity
     dbPassword = inputData.get(5);
   }
 
-  /**
-   * Load JDBC driver
-   */
+  /** Load JDBC driver */
   private void loadDriver() {
     try {
       Class.forName("org.postgresql.Driver");
@@ -64,9 +56,7 @@ public abstract class DBRepository<ID extends Serializable, T extends BaseEntity
     }
   }
 
-  /**
-   * Get connection to DB to query on.
-   */
+  /** Get connection to DB to query on. */
   protected Connection dbConnection() {
 
     loadDriver();

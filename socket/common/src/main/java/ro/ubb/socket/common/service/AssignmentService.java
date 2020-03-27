@@ -1,13 +1,15 @@
 package ro.ubb.socket.common.service;
 
-
 import ro.ubb.socket.common.domain.Assignment;
 import ro.ubb.socket.common.domain.LabProblem;
 import ro.ubb.socket.common.domain.Student;
 import ro.ubb.socket.common.domain.exceptions.ValidatorException;
 import ro.ubb.socket.common.service.sort.Sort;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Future;
 
 public interface AssignmentService {
@@ -16,9 +18,7 @@ public interface AssignmentService {
 
   Future<Set<Assignment>> getAllAssignments();
 
-  /**
-   * Return all Assignments sorted by the sort criteria.
-   */
+  /** Return all Assignments sorted by the sort criteria. */
   Future<List<Assignment>> getAllAssignmentsSorted(Sort sort);
 
   /**
@@ -66,8 +66,8 @@ public interface AssignmentService {
    *     the ro.ubb.repository
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
-  Future<Assignment> updateAssignment(
-      Long id, Long studentID, Long labProblemID, int grade) throws ValidatorException;
+  Future<Assignment> updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
+      throws ValidatorException;
 
   /**
    * Returns the student id who has the biggest mean of grades
@@ -101,5 +101,4 @@ public interface AssignmentService {
    *     list.
    */
   Future<Map<Student, List<LabProblem>>> studentAssignedProblems();
-
 }
