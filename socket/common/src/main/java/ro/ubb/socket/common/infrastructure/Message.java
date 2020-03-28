@@ -47,7 +47,7 @@ public class Message {
       bufferMessage += br.readLine();
       bufferMessage += System.lineSeparator();
     } while (br.ready());
-    bufferMessage = bufferMessage.substring(0, bufferMessage.length() - 1);
+    bufferMessage = bufferMessage.substring(0, bufferMessage.length() - System.lineSeparator().length());
     String[] inputParsed = bufferMessage.split(System.lineSeparator(), 2);//fixme: it splits the data badly, so conversion crashes
                                                                                 // for some reason when it splits the rows it splits the last \n off leaving \r at the end which crashes the converison
     header = inputParsed[0];                                                    // try print students for client

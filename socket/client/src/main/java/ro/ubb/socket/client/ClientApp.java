@@ -22,7 +22,7 @@ public class ClientApp {
     StudentClientService studentClientService = new StudentClientService(executorService,tcpClient);
     LabProblemClientService labProblemClientService = new LabProblemClientService(executorService,tcpClient);
     AssignmentClientService assignmentClientService = new AssignmentClientService(executorService,tcpClient);
-    Console console = new Console(studentClientService,labProblemClientService,assignmentClientService);
+    Console console = new Console(studentClientService,labProblemClientService,assignmentClientService,executorService);
     console.run();
     executorService.shutdown();
 
