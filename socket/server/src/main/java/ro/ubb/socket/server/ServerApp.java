@@ -9,6 +9,7 @@ import ro.ubb.socket.common.infrastructure.StringEntityFactory;
 import ro.ubb.socket.common.service.AssignmentService;
 import ro.ubb.socket.common.service.LabProblemService;
 import ro.ubb.socket.common.service.StudentService;
+import ro.ubb.socket.server.infrastructure.HandlerManager;
 import ro.ubb.socket.server.infrastructure.TCPServer;
 import ro.ubb.socket.server.repository.db.DBAssignmentsRepository;
 import ro.ubb.socket.server.repository.db.DBLabProblemRepository;
@@ -43,111 +44,25 @@ public class ServerApp {
     DBAssignmentsRepository assignmentsRepository =
         new DBAssignmentsRepository(
             "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data");
+    System.out.println("server started");
+    ExecutorService executorService =
+        Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+    StudentService studentService =
+        new StudentServerService(studentRepository, studentValidator, executorService);
+    LabProblemService labProblemService =
+        new LabProblemServerService(labProblemRepository, labProblemValidator, executorService);
+    AssignmentService assignmentService =
+        new AssignmentServerService(
+            assignmentsRepository,
+            assignmentValidator,
+            executorService,
+            labProblemService,
+            studentService);
     try {
-      System.out.println("server started");
-      ExecutorService executorService =
-          Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-      StudentService studentService =
-          new StudentServerService(studentRepository, studentValidator, executorService);
-      LabProblemService labProblemService =
-          new LabProblemServerService(labProblemRepository, labProblemValidator, executorService);
-      AssignmentService assignmentService =
-          new AssignmentServerService(
-              assignmentsRepository,
-              assignmentValidator,
-              executorService,
-              labProblemService,
-              studentService);
       TCPServer tcpServer = new TCPServer(executorService);
-
-      tcpServer.addHandler(
-          MessageHeader.STUDENT_BY_ID,
-          (request) -> {
-            Future<Student> future =
-                studentService.getStudentById(Long.parseLong(request.getBody()));
-            try {
-              Student result = future.get();
-              return new Message(
-                  MessageHeader.OK_REQUEST, StringEntityFactory.entityToMessage(result));
-            } catch (InterruptedException | ExecutionException e) {
-              e.printStackTrace();
-              return new Message(MessageHeader.BAD_REQUEST, e.getMessage());
-            }
-          });
-
-      tcpServer.addHandler(
-          MessageHeader.STUDENT_ALL,
-          (request) -> {
-            Future<Set<Student>> future = studentService.getAllStudents();
-            try {
-              Set<Student> result = future.get();
-              return new Message(
-                  MessageHeader.OK_REQUEST, StringEntityFactory.collectionToMessageBody(result));
-            } catch (InterruptedException | ExecutionException e) {
-              e.printStackTrace();
-              return new Message(MessageHeader.BAD_REQUEST, e.getMessage());
-            }
-          });
-
-      tcpServer.addHandler(
-          MessageHeader.STUDENT_ADD,
-          (request) -> {
-            String[] parsedRequest = request.getBody().split(", ");
-            for (int i = 0; i < parsedRequest.length; i++) {
-              System.out.println(parsedRequest[i]);
-            }
-            studentService.addStudent(
-                Long.parseLong(parsedRequest[0]),
-                parsedRequest[1],
-                parsedRequest[2],
-                Integer.parseInt(parsedRequest[3]));
-            return new Message(MessageHeader.OK_REQUEST, "");
-          });
-
-      tcpServer.addHandler(
-          MessageHeader.STUDENT_UPDATE,
-          (request) -> {
-            String[] parsedRequest = request.getBody().split(", ");
-            for (int i = 0; i < parsedRequest.length; i++) {
-              System.out.println(parsedRequest[i]);
-            }
-            studentService.updateStudent(
-                Long.parseLong(parsedRequest[0]),
-                parsedRequest[1],
-                parsedRequest[2],
-                Integer.parseInt(parsedRequest[3]));
-            return new Message(MessageHeader.OK_REQUEST, "");
-          });
-
-      tcpServer.addHandler(
-          MessageHeader.STUDENT_DELETE,
-          (request) -> {
-            Future<Student> future =
-                assignmentService.deleteStudent(Long.parseLong(request.getBody()));
-            try {
-              Student result = future.get();
-              return new Message(MessageHeader.OK_REQUEST, result.objectToFileLine());
-            } catch (InterruptedException | ExecutionException e) {
-              e.printStackTrace();
-              return new Message(MessageHeader.BAD_REQUEST, e.getMessage());
-            }
-          });
-      //
-      //            tcpServer.addHandler(MessageHeader.STUDENT_ALL, (request) -> {
-      //                Future<Set<Student>> future = studentService.getAllStudents();
-      //                try {
-      //                    Set<Student> result = future.get();
-      //                    return new Message(MessageHeader.OK_REQUEST,
-      // StringEntityFactory.collectionToMessageBody(result));
-      //                } catch (InterruptedException | ExecutionException e) {
-      //                    e.printStackTrace();
-      //                    return new Message(MessageHeader.BAD_REQUEST, e.getMessage());
-      //                }
-      //
-      //            });
-
+      HandlerManager handlerManager = new HandlerManager(tcpServer, studentService, labProblemService, assignmentService);
+      handlerManager.addHandlers();
       tcpServer.startServer();
-
       executorService.shutdown();
     } catch (RuntimeException ex) {
       ex.printStackTrace();

@@ -36,7 +36,13 @@ public class AssignmentServerService implements AssignmentService {
   @Override
   public Future<Assignment> addAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException {
-    return null;
+    Assignment newAssignment = new Assignment(studentID, labProblemID, grade);
+    newAssignment.setId(id);
+
+    validator.validate(newAssignment);
+
+    return executorService.submit(() -> repository.save(newAssignment).get());
+
   }
 
   @Override
@@ -47,12 +53,19 @@ public class AssignmentServerService implements AssignmentService {
 
   @Override
   public Future<List<Assignment>> getAllAssignmentsSorted(Sort sort) {
-    return null;
+    Iterable<Assignment> assignments = repository.findAll(sort);
+    return executorService.submit(
+        () -> StreamSupport.stream(assignments.spliterator(), false).collect(Collectors.toList()));
+
   }
 
   @Override
   public Future<Assignment> getAssignmentById(Long id) {
-    return null;
+    if (id == null || id < 0) {
+      throw new IllegalArgumentException("invalid id!");
+    }
+    return executorService.submit(() -> repository.findOne(id).get());
+
   }
 
   @Override
@@ -72,7 +85,27 @@ public class AssignmentServerService implements AssignmentService {
     } catch(InterruptedException | ExecutionException e){
       System.err.println("exception while getting student");
     }
-    System.out.println("here1");
+    Set<Assignment> allAssignments = null;
+    try{
+      allAssignments = this.getAllAssignments().get();
+    } catch(InterruptedException | ExecutionException e){
+      System.err.println("exception while getting assignments");
+    }
+    allAssignments.stream()
+        .filter(entity -> entity.getStudentId().equals(id))
+        .forEach(entity -> this.deleteAssignment(entity.getId()));
+    return executorService.submit(() -> studentService.deleteStudent(id).get());
+  }
+
+  @Override
+  public Future<LabProblem> deleteLabProblem(Long id) {
+    if (id == null || id < 0) throw new IllegalArgumentException("Invalid id!");
+
+    try{
+      if (labProblemService.getLabProblemById(id).get() == null) return executorService.submit(() -> null);
+    } catch(InterruptedException | ExecutionException e){
+      System.err.println("exception while getting lab problem");
+    }
     Set<Assignment> allAssignments = null;
     try{
       allAssignments = this.getAllAssignments().get();
@@ -81,41 +114,121 @@ public class AssignmentServerService implements AssignmentService {
     }
     System.out.println("here2");
     allAssignments.stream()
-        .filter(entity -> entity.getStudentId().equals(id))
+        .filter(entity -> entity.getLabProblemId().equals(id))
         .forEach(entity -> this.deleteAssignment(entity.getId()));
-    System.out.println("here3");
-    return executorService.submit(() -> studentService.deleteStudent(id).get());
-  }
-
-  @Override
-  public Future<LabProblem> deleteLabProblem(Long id) {
-    return null;
+    return executorService.submit(() -> labProblemService.deleteLabProblem(id).get());
   }
 
   @Override
   public Future<Assignment> updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException {
-    return null;
+    Assignment assignment = new Assignment(studentID, labProblemID, grade);
+    assignment.setId(id);
+    validator.validate(assignment);
+    return executorService.submit(() -> repository.update(assignment).get());
+
   }
 
   @Override
   public Future<AbstractMap.SimpleEntry<Long, Double>> greatestMean() {
+    Iterable<Assignment> assignmentIterable = repository.findAll();
+    Set<Assignment> assignments =
+        StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
+    try{
+      AbstractMap.SimpleEntry<Long, Double> result = studentService.getAllStudents().get()
+          .stream()
+          .filter(
+              student ->
+                  assignments.stream()
+                      .anyMatch(assignment -> assignment.getStudentId().equals(student.getId())))
+          .map(
+              student ->
+                  new AbstractMap.SimpleEntry<Long, Double>(
+                      student.getId(),
+                      (double)
+                          assignments.stream()
+                              .filter(
+                                  assignment -> assignment.getStudentId().equals(student.getId()))
+                              .map(Assignment::getGrade)
+                              .reduce(0, Integer::sum)
+                          / (double)
+                          assignments.stream()
+                              .filter(
+                                  assignment -> assignment.getStudentId().equals(student.getId()))
+                              .count()))
+          .max((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue())).get();
+      return executorService.submit(() -> result);
+    } catch(InterruptedException | ExecutionException e){
+      e.printStackTrace();
+    }
     return null;
   }
 
   @Override
   public Future<AbstractMap.SimpleEntry<Long, Long>> idOfLabProblemMostAssigned() {
+    Iterable<Assignment> assignmentIterable = repository.findAll();
+    Set<Assignment> assignments =
+        StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
+
+    try{
+      AbstractMap.SimpleEntry<Long, Long> result = labProblemService.getAllLabProblems().get()
+          .stream()
+          .map(
+              labProblem ->
+                  new AbstractMap.SimpleEntry<Long, Long>(
+                      labProblem.getId(),
+                      assignments.stream()
+                          .filter(
+                              assignment -> assignment.getLabProblemId().equals(labProblem.getId()))
+                          .count()))
+          .max(((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue()))).get();
+      return executorService.submit(() -> result);
+    } catch(InterruptedException | ExecutionException e){
+      e.printStackTrace();
+    }
     return null;
   }
 
   @Override
   public Future<Double> averageGrade() {
-    return null;
+    Iterable<Assignment> assignmentIterable = repository.findAll();
+    Set<Assignment> assignments =
+        StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
+    int gradesSum = assignments.stream().map(Assignment::getGrade).reduce(0, Integer::sum);
+
+    if (assignments.size() > 0) {
+      return executorService.submit(() -> (double) gradesSum / (double) assignments.size());
+    } else {
+      return null;
+    }
   }
 
   @Override
   public Future<Map<Student, List<LabProblem>>> studentAssignedProblems() {
+    try{
+      Map<Student, List<LabProblem>> result =
+          studentService.getAllStudents().get().stream()
+              .collect(
+                  Collectors.toMap(
+                      student -> student, this::getAllLabProblemsForAStudent));
+      return executorService.submit(() -> result);
+    } catch(InterruptedException | ExecutionException e){
+      e.printStackTrace();
+    }
     return null;
   }
 
+  private List<LabProblem> getAllLabProblemsForAStudent(Student student) {
+    return StreamSupport.stream(repository.findAll().spliterator(), false)
+    .filter(assignment -> assignment.getStudentId().equals(student.getId()))
+    .map(assignment -> {
+      try{
+        return labProblemService.getLabProblemById(assignment.getLabProblemId()).get();
+      } catch(InterruptedException | ExecutionException e){
+        e.printStackTrace();
+      }
+      return null;
+    })
+    .collect(Collectors.toList());
+  }
 }

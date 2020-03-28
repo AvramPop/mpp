@@ -13,6 +13,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class LabProblemServerService implements LabProblemService {
   private SortingRepository<Long, LabProblem> repository;
@@ -28,18 +30,30 @@ public class LabProblemServerService implements LabProblemService {
   @Override
   public Future<LabProblem> addLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException {
-    return null;
+    LabProblem newLabProblem = new LabProblem(problemNumber, description);
+    newLabProblem.setId(id);
+
+    validator.validate(newLabProblem);
+
+    return executorService.submit(() -> repository.save(newLabProblem).get());
   }
 
   @Override
   public Future<Set<LabProblem>> getAllLabProblems() {
-    return null;
+    Iterable<LabProblem> labProblems = repository.findAll();
+    return executorService.submit(
+        () -> StreamSupport.stream(labProblems.spliterator(), false).collect(Collectors.toSet()));
+
   }
 
   @Override
   public Future<List<LabProblem>> getAllLabProblemsSorted(Sort sort) {
-    return null;
+    Iterable<LabProblem> labProblems = repository.findAll(sort);
+    return executorService.submit(
+        () -> StreamSupport.stream(labProblems.spliterator(), false).collect(Collectors.toList()));
+
   }
+
   public Optional<LabProblem> deleteLabProblem(Long id) {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("Invalid id!");
@@ -48,13 +62,21 @@ public class LabProblemServerService implements LabProblemService {
   }
   @Override
   public Future<LabProblem> getLabProblemById(Long id) {
-    return null;
+    if (id == null || id < 0) {
+      throw new IllegalArgumentException("invalid id!");
+    }
+    return executorService.submit(() -> repository.findOne(id).get());
+
   }
 
   @Override
   public Future<LabProblem> updateLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException {
-    return null;
+    LabProblem labProblem = new LabProblem(problemNumber, description);
+    labProblem.setId(id);
+    validator.validate(labProblem);
+    return executorService.submit(() -> repository.update(labProblem).get());
+
   }
 
 }
