@@ -28,16 +28,25 @@ public class LabProblemServerService implements LabProblemService {
   }
 
   @Override
-  public Future<LabProblem> addLabProblem(Long id, int problemNumber, String description)
+  public Future<Boolean> addLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException {
     LabProblem newLabProblem = new LabProblem(problemNumber, description);
     newLabProblem.setId(id);
 
     validator.validate(newLabProblem);
 
-    return executorService.submit(() -> repository.save(newLabProblem).get());
+    return executorService.submit(() -> repository.save(newLabProblem).isEmpty());
   }
 
+  @Override
+  public Future<Boolean> updateLabProblem(Long id, int problemNumber, String description)
+      throws ValidatorException {
+    LabProblem labProblem = new LabProblem(problemNumber, description);
+    labProblem.setId(id);
+    validator.validate(labProblem);
+    return executorService.submit(() -> repository.update(labProblem).isEmpty());
+
+  }
   @Override
   public Future<Set<LabProblem>> getAllLabProblems() {
     Iterable<LabProblem> labProblems = repository.findAll();
@@ -69,14 +78,6 @@ public class LabProblemServerService implements LabProblemService {
 
   }
 
-  @Override
-  public Future<LabProblem> updateLabProblem(Long id, int problemNumber, String description)
-      throws ValidatorException {
-    LabProblem labProblem = new LabProblem(problemNumber, description);
-    labProblem.setId(id);
-    validator.validate(labProblem);
-    return executorService.submit(() -> repository.update(labProblem).get());
 
-  }
 
 }

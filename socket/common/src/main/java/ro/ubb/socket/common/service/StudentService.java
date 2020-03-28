@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.concurrent.Future;
 
 public interface StudentService {
-  Future<Student> addStudent(Long id, String serialNumber, String name, int group)
+  Future<Boolean> addStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException;
 
   Future<Set<Student>> getAllStudents();
@@ -35,7 +35,7 @@ public interface StudentService {
    *     the ro.ubb.repository
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
-  Future<Student> updateStudent(Long id, String serialNumber, String name, int group)
+  Future<Boolean> updateStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException;
 
   Optional<Student> deleteStudent(Long id);

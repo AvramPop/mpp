@@ -1,5 +1,6 @@
 package ro.ubb.socket.common.service.sort;
 
+import ro.ubb.socket.common.domain.Student;
 import ro.ubb.socket.common.domain.exceptions.ClassReflectionException;
 
 import java.lang.reflect.InvocationTargetException;
@@ -63,7 +64,13 @@ public class Sort {
   }
 
   private String getClassWithPackages(String className) {
-    return "ro.ubb.domain." + className;
+    Student s1 = new Student();
+    System.out.println("----------------");
+    System.out.println(
+    s1.getClass().getName());
+    System.out.println("-----------------");
+    String res = "ro.ubb.socket.common.domain." + className;
+    return res;
   }
 
   /** Inner class to provide sorting logic for the criteria of current instance. */

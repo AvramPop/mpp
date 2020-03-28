@@ -1,5 +1,6 @@
 package ro.ubb.socket.server.infrastructure;
 
+import jdk.swing.interop.SwingInterOpUtils;
 import ro.ubb.socket.common.domain.Assignment;
 import ro.ubb.socket.common.domain.LabProblem;
 import ro.ubb.socket.common.domain.Student;
@@ -61,7 +62,8 @@ public class HandlerManager {
   private void serverShutdownHandler(){
     server.addHandler(
         MessageHeader.SERVER_SHUTDOWN,
-        (request) -> null);
+        (request) -> new Message(
+        MessageHeader.OK_REQUEST, ""));
   }
 
   private void studentAssignedProblemsHandler(){
@@ -136,15 +138,16 @@ public class HandlerManager {
     server.addHandler(
         MessageHeader.ASSIGNMENT_DELETE,
         (request) -> {
-          Future<Assignment> future =
-              assignmentService.deleteAssignment(Long.parseLong(request.getBody()));
-          try {
-            Assignment result = future.get();
-            return new Message(MessageHeader.OK_REQUEST, result.objectToFileLine());
-          } catch (InterruptedException | ExecutionException e) {
+          try{
+            if(assignmentService.deleteAssignment(Long.parseLong(request.getBody())).get()){
+              return new Message(MessageHeader.OK_REQUEST, "");
+            } else {
+              return new Message(MessageHeader.BAD_REQUEST, "");
+            }
+          } catch(InterruptedException | ExecutionException e){
             e.printStackTrace();
-            return new Message(MessageHeader.BAD_REQUEST, e.getMessage());
           }
+          return null;
         });
   }
 
@@ -153,12 +156,27 @@ public class HandlerManager {
         MessageHeader.ASSIGNMENT_UPDATE,
         (request) -> {
           String[] parsedRequest = request.getBody().split(", ");
-          assignmentService.addAssignment(
-              Long.parseLong(parsedRequest[0]),
-              Long.parseLong(parsedRequest[1]),
-              Long.parseLong(parsedRequest[2]),
-              Integer.parseInt(parsedRequest[3]));
-          return new Message(MessageHeader.OK_REQUEST, "");
+          System.out.println("-*----------------");
+          for (String s : parsedRequest) {
+            System.out.println(s);
+          }
+          System.out.println("---------------");
+          try{
+            if (assignmentService
+                .updateAssignment(
+                    Long.parseLong(parsedRequest[0]),
+                    Long.parseLong(parsedRequest[1]),
+                    Long.parseLong(parsedRequest[2]),
+                    Integer.parseInt(parsedRequest[3]))
+                .get()) {
+              return new Message(MessageHeader.OK_REQUEST, "");
+            } else {
+              return new Message(MessageHeader.BAD_REQUEST, "");
+            }
+          } catch(InterruptedException | ExecutionException e){
+            e.printStackTrace();
+          }
+          return null;
         });
   }
 
@@ -167,12 +185,21 @@ public class HandlerManager {
         MessageHeader.ASSIGNMENT_ADD,
         (request) -> {
           String[] parsedRequest = request.getBody().split(", ");
-          assignmentService.addAssignment(
-              Long.parseLong(parsedRequest[0]),
-              Long.parseLong(parsedRequest[1]),
-              Long.parseLong(parsedRequest[2]),
-              Integer.parseInt(parsedRequest[3]));
-          return new Message(MessageHeader.OK_REQUEST, "");
+          try{
+            if(assignmentService.addAssignment(
+                Long.parseLong(parsedRequest[0]),
+                Long.parseLong(parsedRequest[1]),
+                Long.parseLong(parsedRequest[2]),
+                Integer.parseInt(parsedRequest[3])).get()){
+
+              return new Message(MessageHeader.OK_REQUEST, "");
+            } else {
+              return new Message(MessageHeader.BAD_REQUEST, "");
+            }
+          } catch(InterruptedException | ExecutionException e){
+            e.printStackTrace();
+          }
+          return null;
         });
   }
 
@@ -180,7 +207,7 @@ public class HandlerManager {
     server.addHandler(
         MessageHeader.ASSIGNMENT_SORTED,
         (request) -> {
-          Future<List<Assignment>> future = assignmentService.getAllAssignmentsSorted(getSortFromRequestBody(request));
+          Future<List<Assignment>> future = assignmentService.getAllAssignmentsSorted(getSortFromRequestBody(request, "Assignment"));
           try {
             List<Assignment> result = future.get();
             return new Message(
@@ -229,15 +256,16 @@ public class HandlerManager {
     server.addHandler(
         MessageHeader.LABPROBLEM_DELETE,
         (request) -> {
-          Future<LabProblem> future =
-              assignmentService.deleteLabProblem(Long.parseLong(request.getBody()));
           try {
-            LabProblem result = future.get();
-            return new Message(MessageHeader.OK_REQUEST, result.objectToFileLine());
+            if (assignmentService.deleteLabProblem(Long.parseLong(request.getBody())).get()) {
+              return new Message(MessageHeader.OK_REQUEST, "");
+            } else {
+              return new Message(MessageHeader.BAD_REQUEST, "");
+            }
           } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
-            return new Message(MessageHeader.BAD_REQUEST, e.getMessage());
           }
+          return null;
         });
   }
 
@@ -246,11 +274,21 @@ public class HandlerManager {
         MessageHeader.LABPROBLEM_UPDATE,
         (request) -> {
           String[] parsedRequest = request.getBody().split(", ");
-          labProblemService.updateLabProblem(
-              Long.parseLong(parsedRequest[0]),
-              Integer.parseInt(parsedRequest[1]),
-              parsedRequest[2]);
-          return new Message(MessageHeader.OK_REQUEST, "");
+          try{
+            if (labProblemService
+                .updateLabProblem(
+                    Long.parseLong(parsedRequest[0]),
+                    Integer.parseInt(parsedRequest[1]),
+                    parsedRequest[2])
+                .get()) {
+              return new Message(MessageHeader.OK_REQUEST, "");
+            } else {
+              return new Message(MessageHeader.BAD_REQUEST, "");
+            }
+          } catch(InterruptedException | ExecutionException e){
+            e.printStackTrace();
+          }
+          return null;
         });
   }
 
@@ -259,11 +297,21 @@ public class HandlerManager {
         MessageHeader.LABPROBLEM_ADD,
         (request) -> {
           String[] parsedRequest = request.getBody().split(", ");
-          labProblemService.addLabProblem(
-              Long.parseLong(parsedRequest[0]),
-              Integer.parseInt(parsedRequest[1]),
-              parsedRequest[2]);
-          return new Message(MessageHeader.OK_REQUEST, "");
+          try{
+            if (labProblemService
+                .addLabProblem(
+                    Long.parseLong(parsedRequest[0]),
+                    Integer.parseInt(parsedRequest[1]),
+                    parsedRequest[2])
+                .get()) {
+              return new Message(MessageHeader.OK_REQUEST, "");
+            } else {
+              return new Message(MessageHeader.BAD_REQUEST, "");
+            }
+          } catch(InterruptedException | ExecutionException e){
+            e.printStackTrace();
+          }
+          return null;
         });
   }
 
@@ -271,7 +319,7 @@ public class HandlerManager {
     server.addHandler(
         MessageHeader.LABPROBLEM_SORTED,
         (request) -> {
-          Future<List<LabProblem>> future = labProblemService.getAllLabProblemsSorted(getSortFromRequestBody(request));
+          Future<List<LabProblem>> future = labProblemService.getAllLabProblemsSorted(getSortFromRequestBody(request, "LabProblem"));
           try {
             List<LabProblem> result = future.get();
             return new Message(
@@ -283,7 +331,7 @@ public class HandlerManager {
         });
   }
 
-  private Sort getSortFromRequestBody(Message request){
+  private Sort getSortFromRequestBody(Message request, String className){
     var wrapper = new Object() {
       Sort sort = null;};
     request.getBody()
@@ -291,7 +339,9 @@ public class HandlerManager {
         .forEach(line -> {
           String temp[] = line.split(" ");
           if(wrapper.sort == null){
-            wrapper.sort = new Sort(temp[0], temp[1]);
+            Sort tempSort = new Sort(temp[0], temp[1]);
+            tempSort.setClassName(className);
+            wrapper.sort = tempSort;
           } else {
             wrapper.sort.and(new Sort(temp[0], temp[1]));
           }
@@ -336,7 +386,7 @@ public class HandlerManager {
     server.addHandler(
         MessageHeader.STUDENT_SORTED,
         (request) -> {
-          Future<List<Student>> future = studentService.getAllStudentsSorted(getSortFromRequestBody(request));
+          Future<List<Student>> future = studentService.getAllStudentsSorted(getSortFromRequestBody(request, "Student"));
           try {
             List<Student> result = future.get();
             return new Message(
@@ -352,15 +402,16 @@ public class HandlerManager {
     server.addHandler(
         MessageHeader.STUDENT_DELETE,
         (request) -> {
-          Future<Student> future =
-              assignmentService.deleteStudent(Long.parseLong(request.getBody()));
           try {
-            Student result = future.get();
-            return new Message(MessageHeader.OK_REQUEST, result.objectToFileLine());
+            if (assignmentService.deleteStudent(Long.parseLong(request.getBody())).get()) {
+              return new Message(MessageHeader.OK_REQUEST, "");
+            } else {
+              return new Message(MessageHeader.BAD_REQUEST, "");
+            }
           } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
-            return new Message(MessageHeader.BAD_REQUEST, e.getMessage());
           }
+          return null;
         });
   }
 
@@ -369,12 +420,23 @@ public class HandlerManager {
         MessageHeader.STUDENT_UPDATE,
         (request) -> {
           String[] parsedRequest = request.getBody().split(", ");
-          studentService.updateStudent(
-              Long.parseLong(parsedRequest[0]),
-              parsedRequest[1],
-              parsedRequest[2],
-              Integer.parseInt(parsedRequest[3]));
-          return new Message(MessageHeader.OK_REQUEST, "");
+
+          try {
+            if (studentService
+                .updateStudent(
+                    Long.parseLong(parsedRequest[0]),
+                    parsedRequest[1],
+                    parsedRequest[2],
+                    Integer.parseInt(parsedRequest[3]))
+                .get()) {
+              return new Message(MessageHeader.OK_REQUEST, "");
+            } else {
+              return new Message(MessageHeader.BAD_REQUEST, "");
+            }
+          } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+          }
+          return null;
         });
   }
 
@@ -383,12 +445,22 @@ public class HandlerManager {
         MessageHeader.STUDENT_ADD,
         (request) -> {
           String[] parsedRequest = request.getBody().split(", ");
-          studentService.addStudent(
-              Long.parseLong(parsedRequest[0]),
-              parsedRequest[1],
-              parsedRequest[2],
-              Integer.parseInt(parsedRequest[3]));
-          return new Message(MessageHeader.OK_REQUEST, "");
+          try{
+            if (studentService
+                .addStudent(
+                    Long.parseLong(parsedRequest[0]),
+                    parsedRequest[1],
+                    parsedRequest[2],
+                    Integer.parseInt(parsedRequest[3]))
+                .get()) {
+              return new Message(MessageHeader.OK_REQUEST, "");
+            } else {
+              return new Message(MessageHeader.BAD_REQUEST, "");
+            }
+          } catch(InterruptedException | ExecutionException e){
+            e.printStackTrace();
+          }
+          return null;
         });
   }
 

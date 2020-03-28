@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.concurrent.Future;
 
 public interface LabProblemService {
-  Future<LabProblem> addLabProblem(Long id, int problemNumber, String description)
+  Future<Boolean> addLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException;
 
   Future<Set<LabProblem>> getAllLabProblems();
@@ -35,7 +35,7 @@ public interface LabProblemService {
    *     the ro.ubb.repository
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
-  Future<LabProblem> updateLabProblem(Long id, int problemNumber, String description)
+  Future<Boolean> updateLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException;
 
   Optional<LabProblem> deleteLabProblem(Long id);

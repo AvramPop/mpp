@@ -39,14 +39,23 @@ public class StudentServerService implements StudentService {
   }
 
   @Override
-  public Future<Student> addStudent(Long id, String serialNumber, String name, int group)
+  public Future<Boolean> addStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException {
     Student newStudent = new Student(serialNumber, name, group);
     newStudent.setId(id);
 
     validator.validate(newStudent);
 
-    return executorService.submit(() -> repository.save(newStudent).get());
+    return executorService.submit(() -> repository.save(newStudent).isEmpty());
+  }
+
+  @Override
+  public Future<Boolean> updateStudent(Long id, String serialNumber, String name, int group)
+      throws ValidatorException {
+    Student student = new Student(serialNumber, name, group);
+    student.setId(id);
+    validator.validate(student);
+    return executorService.submit(() -> repository.update(student).isEmpty());
   }
 
   @Override
@@ -71,12 +80,5 @@ public class StudentServerService implements StudentService {
     return executorService.submit(() -> repository.findOne(id).get());
   }
 
-  @Override
-  public Future<Student> updateStudent(Long id, String serialNumber, String name, int group)
-      throws ValidatorException {
-    Student student = new Student(serialNumber, name, group);
-    student.setId(id);
-    validator.validate(student);
-    return executorService.submit(() -> repository.update(student).get());
-  }
+
 }

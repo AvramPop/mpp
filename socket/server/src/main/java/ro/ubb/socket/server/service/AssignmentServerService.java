@@ -34,16 +34,79 @@ public class AssignmentServerService implements AssignmentService {
   }
 
   @Override
-  public Future<Assignment> addAssignment(Long id, Long studentID, Long labProblemID, int grade)
+  public Future<Boolean> addAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException {
     Assignment newAssignment = new Assignment(studentID, labProblemID, grade);
     newAssignment.setId(id);
 
     validator.validate(newAssignment);
 
-    return executorService.submit(() -> repository.save(newAssignment).get());
+    return executorService.submit(() -> repository.save(newAssignment).isEmpty());
 
   }
+
+  @Override
+  public Future<Boolean> updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
+      throws ValidatorException {
+    Assignment assignment = new Assignment(studentID, labProblemID, grade);
+    assignment.setId(id);
+    validator.validate(assignment);
+    return executorService.submit(() -> repository.update(assignment).isEmpty());
+
+  }
+
+
+  @Override
+  public Future<Boolean> deleteAssignment(Long id) {
+    if (id == null || id < 0) {
+      throw new IllegalArgumentException("Invalid id!");
+    }
+    return executorService.submit(() -> repository.delete(id).isPresent());
+  }
+
+  @Override
+  public Future<Boolean> deleteStudent(Long id) {
+    if (id == null || id < 0) throw new IllegalArgumentException("Invalid id!");
+
+    try{
+      if (studentService.getStudentById(id).get() == null) return executorService.submit(() -> null);
+    } catch(InterruptedException | ExecutionException e){
+      System.err.println("exception while getting student");
+    }
+    Set<Assignment> allAssignments = null;
+    try{
+      allAssignments = this.getAllAssignments().get();
+    } catch(InterruptedException | ExecutionException e){
+      System.err.println("exception while getting assignments");
+    }
+    allAssignments.stream()
+        .filter(entity -> entity.getStudentId().equals(id))
+        .forEach(entity -> this.deleteAssignment(entity.getId()));
+    return executorService.submit(() -> studentService.deleteStudent(id).isPresent());
+  }
+
+  @Override
+  public Future<Boolean> deleteLabProblem(Long id) {
+    if (id == null || id < 0) throw new IllegalArgumentException("Invalid id!");
+
+    try{
+      if (labProblemService.getLabProblemById(id).get() == null) return executorService.submit(() -> null);
+    } catch(InterruptedException | ExecutionException e){
+      System.err.println("exception while getting lab problem");
+    }
+    Set<Assignment> allAssignments = null;
+    try{
+      allAssignments = this.getAllAssignments().get();
+    } catch(InterruptedException | ExecutionException e){
+      System.err.println("exception while getting assignments");
+    }
+    System.out.println("here2");
+    allAssignments.stream()
+        .filter(entity -> entity.getLabProblemId().equals(id))
+        .forEach(entity -> this.deleteAssignment(entity.getId()));
+    return executorService.submit(() -> labProblemService.deleteLabProblem(id).isPresent());
+  }
+
 
   @Override
   public Future<Set<Assignment>> getAllAssignments()    {
@@ -68,66 +131,7 @@ public class AssignmentServerService implements AssignmentService {
 
   }
 
-  @Override
-  public Future<Assignment> deleteAssignment(Long id) {
-    if (id == null || id < 0) {
-      throw new IllegalArgumentException("Invalid id!");
-    }
-    return executorService.submit(() -> repository.delete(id).get());
-  }
 
-  @Override
-  public Future<Student> deleteStudent(Long id) {
-    if (id == null || id < 0) throw new IllegalArgumentException("Invalid id!");
-
-    try{
-      if (studentService.getStudentById(id).get() == null) return executorService.submit(() -> null);
-    } catch(InterruptedException | ExecutionException e){
-      System.err.println("exception while getting student");
-    }
-    Set<Assignment> allAssignments = null;
-    try{
-      allAssignments = this.getAllAssignments().get();
-    } catch(InterruptedException | ExecutionException e){
-      System.err.println("exception while getting assignments");
-    }
-    allAssignments.stream()
-        .filter(entity -> entity.getStudentId().equals(id))
-        .forEach(entity -> this.deleteAssignment(entity.getId()));
-    return executorService.submit(() -> studentService.deleteStudent(id).get());
-  }
-
-  @Override
-  public Future<LabProblem> deleteLabProblem(Long id) {
-    if (id == null || id < 0) throw new IllegalArgumentException("Invalid id!");
-
-    try{
-      if (labProblemService.getLabProblemById(id).get() == null) return executorService.submit(() -> null);
-    } catch(InterruptedException | ExecutionException e){
-      System.err.println("exception while getting lab problem");
-    }
-    Set<Assignment> allAssignments = null;
-    try{
-      allAssignments = this.getAllAssignments().get();
-    } catch(InterruptedException | ExecutionException e){
-      System.err.println("exception while getting assignments");
-    }
-    System.out.println("here2");
-    allAssignments.stream()
-        .filter(entity -> entity.getLabProblemId().equals(id))
-        .forEach(entity -> this.deleteAssignment(entity.getId()));
-    return executorService.submit(() -> labProblemService.deleteLabProblem(id).get());
-  }
-
-  @Override
-  public Future<Assignment> updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
-      throws ValidatorException {
-    Assignment assignment = new Assignment(studentID, labProblemID, grade);
-    assignment.setId(id);
-    validator.validate(assignment);
-    return executorService.submit(() -> repository.update(assignment).get());
-
-  }
 
   @Override
   public Future<AbstractMap.SimpleEntry<Long, Double>> greatestMean() {

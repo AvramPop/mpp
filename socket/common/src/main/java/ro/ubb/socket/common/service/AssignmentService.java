@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.concurrent.Future;
 
 public interface AssignmentService {
-  Future<Assignment> addAssignment(Long id, Long studentID, Long labProblemID, int grade)
+  Future<Boolean> addAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException;
 
   Future<Set<Assignment>> getAllAssignments();
@@ -37,7 +37,7 @@ public interface AssignmentService {
    * @return an {@code Future} - null if there is no entity with the given id, otherwise the
    *     removed entity.
    */
-  Future<Assignment> deleteAssignment(Long id);
+  Future<Boolean> deleteAssignment(Long id);
 
   /**
    * Deletes a student from the ro.ubb.repository and also deletes all assignments corresponding to
@@ -47,7 +47,7 @@ public interface AssignmentService {
    * @return an {@code Future} - null if there is no entity with the given id, otherwise the
    *     removed entity.
    */
-  Future<Student> deleteStudent(Long id);
+  Future<Boolean> deleteStudent(Long id);
   /**
    * Deletes a lab problem from the ro.ubb.repository and also deletes all assignments corresponding
    * to that student
@@ -56,7 +56,7 @@ public interface AssignmentService {
    * @return an {@code Future} - null if there is no entity with the given id, otherwise the
    *     removed entity.
    */
-  Future<LabProblem> deleteLabProblem(Long id);
+  Future<Boolean> deleteLabProblem(Long id);
 
   /**
    * Updates an assignment inside the ro.ubb.repository
@@ -66,7 +66,7 @@ public interface AssignmentService {
    *     the ro.ubb.repository
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
-  Future<Assignment> updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
+  Future<Boolean> updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException;
 
   /**
