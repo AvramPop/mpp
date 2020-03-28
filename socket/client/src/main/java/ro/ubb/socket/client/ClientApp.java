@@ -25,21 +25,6 @@ public class ClientApp {
     Console console = new Console(studentClientService,labProblemClientService,assignmentClientService);
     console.run();
     executorService.shutdown();
-    /*
-    Message request = new Message(MessageHeader.STUDENT_DELETE, "1000");
-    try (var socket = new Socket(Message.HOST, Message.PORT);
-        var is = socket.getInputStream();
-        var os = socket.getOutputStream()) {
-      System.out.println("client - sending request: " + request);
-      request.writeTo(os);
 
-      System.out.println("client - received response: ");
-      Message response = new Message();
-      response.readFrom(is);
-      System.out.println(response);
-    } catch (IOException e) {
-      throw new ServiceException("error connection to server " + e.getMessage(), e);
-    }
-    */
   }
 }

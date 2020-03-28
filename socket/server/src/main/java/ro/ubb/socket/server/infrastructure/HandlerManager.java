@@ -54,6 +54,14 @@ public class HandlerManager {
     idOfLabProblemMostAssignedHandler();
     averageGradeHandler();
     studentAssignedProblemsHandler();
+
+    serverShutdownHandler();
+  }
+
+  private void serverShutdownHandler(){
+    server.addHandler(
+        MessageHeader.SERVER_SHUTDOWN,
+        (request) -> null);
   }
 
   private void studentAssignedProblemsHandler(){

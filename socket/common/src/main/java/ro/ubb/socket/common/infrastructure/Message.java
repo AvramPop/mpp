@@ -4,6 +4,7 @@ import java.io.*;
 
 public class Message {
   public static final int PORT = 1234;
+  public static final int TEST_PORT = 1235;
   public static final String HOST = "localhost";
 
   private String header;
