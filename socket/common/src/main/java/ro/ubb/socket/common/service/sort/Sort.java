@@ -14,6 +14,10 @@ public class Sort {
   private List<Map.Entry<Direction, String>> sortingChain;
   private String className = null;
 
+  public List<Map.Entry<Direction, String>> getSortingChain() {
+    return sortingChain;
+  }
+
   public void setClassName(String className) {
     this.className = className;
   }
