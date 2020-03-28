@@ -43,7 +43,7 @@ public class LabProblemClientService implements LabProblemService {
           if (response.getHeader().equals(MessageHeader.BAD_REQUEST))
             throw new BadRequestException("Addition failed, entity already in repository");
 
-          return StringEntityFactory.labProblemFromMessageLine(response.getBody());
+          return null;
         });
   }
 

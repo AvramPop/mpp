@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 /** Console based user interface */
@@ -23,14 +24,16 @@ public class Console {
     private LabProblemClientService labProblemService;
     private AssignmentClientService assignmentService;
     private HashMap<String, Runnable> dictionaryOfCommands;
-
+    private ExecutorService executorService;
     public Console(
             StudentClientService studentService,
             LabProblemClientService labProblemService,
-            AssignmentClientService assignmentService) {
+            AssignmentClientService assignmentService,
+            ExecutorService executorService) {
       this.studentService = studentService;
       this.labProblemService = labProblemService;
       this.assignmentService = assignmentService;
+      this.executorService = executorService;
       // I use lambda methods with a hash table to not to make if statements
       // if the thing fails it gets a null pointer exception
       // which means not a valid command
@@ -89,13 +92,18 @@ public class Console {
           }
         }
         Future<List<LabProblem>> labProblems = labProblemService.getAllLabProblemsSorted(sort);
-        labProblems.get().forEach(System.out::println);
+        executorService.submit(()->{
+          try {
+            labProblems.get().forEach(System.out::println);
+          } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+          }
+
+        });
       } catch (IOException e) {
         System.out.println("Invalid input!");
       } catch (ClassReflectionException e) {
         System.err.println(e.getMessage());
-      } catch (InterruptedException | ExecutionException e) {
-          e.printStackTrace();
       }
     }
 
@@ -127,13 +135,18 @@ public class Console {
           }
         }
         Future<List<Assignment>> assignments = assignmentService.getAllAssignmentsSorted(sort);
-        assignments.get().forEach(System.out::println);
+      executorService.submit(
+          () -> {
+            try {
+              assignments.get().forEach(System.out::println);
+            } catch (InterruptedException | ExecutionException e) {
+              System.out.println(e.getMessage());
+            }
+          });
       } catch (IOException e) {
         System.out.println("Invalid input!");
       } catch (ClassReflectionException e) {
         System.err.println(e.getMessage());
-      } catch (InterruptedException | ExecutionException e) {
-          e.printStackTrace();
       }
     }
 
@@ -165,81 +178,96 @@ public class Console {
           }
         }
         Future<List<Student>> students = studentService.getAllStudentsSorted(sort);
-        students.get().forEach(System.out::println);
+
+      executorService.submit(
+          () -> {
+            try {
+              students.get().forEach(System.out::println);
+            } catch (InterruptedException | ExecutionException e) {
+              System.out.println(e.getMessage());
+            }
+          });
+
       } catch (IOException e) {
         System.out.println("Invalid input!");
       } catch (ClassReflectionException e) {
         System.err.println(e.getMessage());
-      } catch (InterruptedException | ExecutionException e) {
-          e.printStackTrace();
       }
-      catch (BadRequestException ex){
-        System.out.println(ex.getMessage());
-      }
+
     }
 
     private void studentProblems() {
       Future<Map<Student, List<LabProblem>>> studentsLabProblems =
           assignmentService.studentAssignedProblems();
-      Student emptyStudent = new Student();
-      try{
-        for (Map.Entry<Student, List<LabProblem>> entry : studentsLabProblems.get().entrySet()) {
-          if (!entry.getKey().getSerialNumber().equals("")) {
-            System.out.println(entry.getKey().toString());
-            System.out.println("Problems:");
-            entry
-                .getValue()
-                .forEach(
-                    labProblem -> System.out.println(labProblem.toString()));
+
+    executorService.submit(
+        () -> {
+          Student emptyStudent = new Student();
+          try {
+            for (Map.Entry<Student, List<LabProblem>> entry :
+                studentsLabProblems.get().entrySet()) {
+              if (!entry.getKey().getSerialNumber().equals("")) {
+                System.out.println(entry.getKey().toString());
+                System.out.println("Problems:");
+                entry.getValue().forEach(labProblem -> System.out.println(labProblem.toString()));
+              }
+            }
+            System.out.println("Unused problems:");
+            studentsLabProblems.get().get(emptyStudent).forEach(System.out::println);
+          } catch (InterruptedException | ExecutionException e) {
+            System.out.println(e.getMessage());
           }
-        }
-        System.out.println("Unused problems:");
-        studentsLabProblems.get().get(emptyStudent).forEach(System.out::println);
-      } catch (InterruptedException | ExecutionException e) {
-          e.printStackTrace();
-      }
+        });
     }
 
     private void averageGrade() {
       Future<Double> mean = assignmentService.averageGrade();
-      try {
-        System.out.println("The mean of all assignments is " + mean.get());
-      }  catch (InterruptedException | ExecutionException e) {
-          e.printStackTrace();
+      executorService.submit(()->{
+        try {
+          System.out.println("The mean of all assignments is " + mean.get());
+        }  catch (InterruptedException | ExecutionException e) {
+          System.err.println(e.getMessage());
           System.err.println("assignments");
-      }
+        }
+      });
     }
 
     private void labProblemMostAssigned() {
       Future<AbstractMap.SimpleEntry<Long, Long>> idOfLabProblemMostAssigned =
           assignmentService.idOfLabProblemMostAssigned();
-      try {
-        System.out.println(
-            "lab problem most assigned id: "
-                + idOfLabProblemMostAssigned.get().getKey()
-                + " - "
-                + idOfLabProblemMostAssigned.get().getValue()
-                + "times");
-      } catch (InterruptedException | ExecutionException e) {
-        e.printStackTrace();
-        System.err.println("no lab problems assigned");
-
-      }
+    executorService.submit(
+        () -> {
+          try {
+            System.out.println(
+                "lab problem most assigned id: "
+                    + idOfLabProblemMostAssigned.get().getKey()
+                    + " - "
+                    + idOfLabProblemMostAssigned.get().getValue()
+                    + "times");
+          } catch (InterruptedException | ExecutionException e) {
+            System.out.println(e.getMessage());
+            System.err.println("no lab problems assigned");
+          }
+        });
     }
 
     private void greatestMeanOfStudent() {
       Future<AbstractMap.SimpleEntry<Long, Double>> greatestMean =
    assignmentService.greatestMean();
-      try {
-        System.out.println(
-            "The greatest mean is of student id = "
-                + greatestMean.get().getKey()
-                + ": "
-                + greatestMean.get().getValue());
-      }  catch (InterruptedException | ExecutionException e) {
-          e.printStackTrace();
-          System.err.println("no students or assignments");
-      }
+
+    executorService.submit(
+        () -> {
+          try {
+            System.out.println(
+                "The greatest mean is of student id = "
+                    + greatestMean.get().getKey()
+                    + ": "
+                    + greatestMean.get().getValue());
+          } catch (InterruptedException | ExecutionException e) {
+            System.out.println(e.getMessage());
+            System.err.println("no students or assignments");
+          }
+        });
     }
 
     /** ro.ubb.UI method for printing the console menu */
@@ -295,11 +323,14 @@ public class Console {
     private void printAssignments() {
 
       Future<Set<Assignment>> students = assignmentService.getAllAssignments();
-        try {
-            students.get().forEach(System.out::println);
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
+      executorService.submit(
+          () -> {
+            try {
+              students.get().forEach(System.out::println);
+            } catch (InterruptedException | ExecutionException e) {
+              System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ")+1));
+            }
+          });
     }
 
     private void addAssignment() {
@@ -314,17 +345,24 @@ public class Console {
         long labProblemId = Long.parseLong(input.readLine().strip());
         System.out.println("Enter grade: ");
         int grade = Integer.parseInt(input.readLine().strip());
-        assignmentService.addAssignment(id, studentId, labProblemId, grade).get();
-        System.out.println("Assignment added");
+        Future result = assignmentService.addAssignment(id, studentId, labProblemId, grade);
+        executorService.submit(
+            () -> {
+              try {
+                result.get();
+                System.out.println("Assignment added");
+              } catch (InterruptedException | ExecutionException e) {
+                System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ")+1));
+                System.out.println("Assignment not added");
+              }
+            });
+
       } catch (ValidatorException e) {
         System.err.println(e.getMessage());
       } catch (IOException | NumberFormatException ex) {
         System.out.println("Invalid input!");
       } catch (RepositoryException ex) {
         System.out.println("Invalid assignment, wrong student or lab problem ID");
-      } catch (InterruptedException | ExecutionException e) {
-          e.printStackTrace();
-          System.out.println("Assignment not added!");
       }
     }
 
@@ -341,28 +379,37 @@ public class Console {
         String name = input.readLine().strip();
         System.out.println("Enter group: ");
         int group = Integer.parseInt(input.readLine().strip());
-        studentService.addStudent(id, serialNumber, name, group).get();
-        System.out.println("Student added");
+        Future<Student> studentFuture = studentService.addStudent(id, serialNumber, name, group);
+
+        executorService.submit(
+                () -> {
+                  try {
+                    studentFuture.get();
+                    System.out.println("Student added");
+                  } catch (InterruptedException | ExecutionException e) {
+                    System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ")+1));
+                    System.out.println("Student not added");
+                  }
+                });
 
       } catch (ValidatorException ex) {
         System.out.println(ex.getMessage());
       } catch (IOException | NumberFormatException e) {
         //      e.printStackTrace();
         System.out.println("invalid input");
-      } catch (InterruptedException | ExecutionException e) {
-          e.printStackTrace();
-          System.out.println("Student not added!");
-
       }
     }
     /** ro.ubb.UI method for printing all students */
     private void printStudents() {
       Future<Set<Student>> students = studentService.getAllStudents();
-        try {
+    executorService.submit(
+        () -> {
+          try {
             students.get().forEach(System.out::println);
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
+          } catch (InterruptedException | ExecutionException e) {
+            System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ")+1));
+          }
+        });
     }
     /** ro.ubb.UI method for adding a lab problem */
     private void addLabProblem() {
@@ -375,25 +422,35 @@ public class Console {
         int problemNumber = Integer.parseInt(input.readLine().strip());
         System.out.println("Enter description: ");
         String description = input.readLine().strip();
-        labProblemService.addLabProblem(id, problemNumber, description).get();
-        System.out.println("Lab Problem added");
+        Future<LabProblem>  labProblemFuture = labProblemService.addLabProblem(id, problemNumber, description);
+        executorService.submit(
+                () -> {
+                  try {
+                    labProblemFuture.get();
+                    System.out.println("Lab problem added");
+                  } catch (InterruptedException | ExecutionException e) {
+                    System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ")+1));
+                    System.out.println("Lab problem not added");
+                  }
+                });
+
       } catch (ValidatorException e) {
         System.err.println(e.getMessage());
       } catch (IOException | NumberFormatException ex) {
         System.out.println("Invalid input!");
-      } catch (InterruptedException | ExecutionException e) {
-          e.printStackTrace();
-          System.out.println("Problem not added!");
       }
     }
     /** ro.ubb.UI method for printing all lab problems */
     private void printLabProblems() {
-      Future<Set<LabProblem>> students = labProblemService.getAllLabProblems();
-        try {
-            students.get().forEach(System.out::println);
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
+      Future<Set<LabProblem>> labProblems = labProblemService.getAllLabProblems();
+      executorService.submit(
+              () -> {
+                try {
+                  labProblems.get().forEach(System.out::println);
+                } catch (InterruptedException | ExecutionException e) {
+                  System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ")+1));
+                }
+              });
     }
     /** ro.ubb.UI method update a lab problem */
     private void updateLabProblem() {
@@ -406,14 +463,23 @@ public class Console {
         int problemNumber = Integer.parseInt(input.readLine().strip());
         System.out.println("Enter description: ");
         String description = input.readLine().strip();
-        labProblemService.updateLabProblem(id, problemNumber, description).get();
-        System.out.println("Lab Problem updated");
+        Future<LabProblem> labProblemFuture = labProblemService.updateLabProblem(id, problemNumber, description);
+
+        executorService.submit(
+                () -> {
+                  try {
+                    labProblemFuture.get();
+                    System.out.println("Lab Problem updated");
+                  } catch (InterruptedException | ExecutionException e) {
+                    System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ")+1));
+                    System.out.println("Lab Problem not updated");
+                  }
+                });
+
       } catch (ValidatorException e) {
         System.err.println(e.getMessage());
       } catch (IOException | NumberFormatException ex) {
         System.out.println("Invalid input!");
-      } catch (InterruptedException | ExecutionException e) {
-          e.printStackTrace();
       }
     }
     /** ro.ubb.UI method deletes a lab problem */
@@ -424,16 +490,24 @@ public class Console {
         System.out.println("Enter id: ");
         id = Long.parseLong(input.readLine().strip());
 
-      assignmentService.deleteLabProblem(id).get();
-      System.out.println("Delete successful");
+        Future<LabProblem> labProblemDeleteFuture = assignmentService.deleteLabProblem(id);
+        executorService.submit(
+                () -> {
+                  try {
+                    labProblemDeleteFuture.get();
+                    System.out.println("Delete successful");
+                  } catch (InterruptedException | ExecutionException e) {
+                    System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ")+1));
+                    System.out.println("Delete failed");
+
+                  }
+
+
+                });
+
       } catch (IOException | NumberFormatException ex) {
           System.out.println("Invalid input!");
-          return;
-      } catch (InterruptedException | ExecutionException e) {
-          e.printStackTrace();
-          System.out.println("Delete failed");
       }
-
     }
 //    /** ro.ubb.UI method filters lab problems by problem number */
 //    private void filterLabProblemsByProblemNumber() {
@@ -465,9 +539,20 @@ public class Console {
         String name = input.readLine().strip();
         System.out.println("Enter group: ");
         int group = Integer.parseInt(input.readLine().strip());
-        if (studentService.updateStudent(id, serialNumber, name, group) == null)
-          System.out.println("Student updated");
-        else System.out.println("Student not updated");
+
+        Future<Student> labProblemFuture = studentService.updateStudent(id, serialNumber, name, group);
+        executorService.submit(
+                () -> {
+                  try {
+                    labProblemFuture.get();
+                    System.out.println("Student updated");
+                  } catch (InterruptedException | ExecutionException e) {
+                    System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ")+1));
+                    System.out.println("Student not updated");
+
+                  }
+
+                });
       } catch (ValidatorException ex) {
         // ex.printStackTrace();
         System.out.println(ex.getMessage());
@@ -484,12 +569,20 @@ public class Console {
         System.out.println("Enter id: ");
         id = Long.parseLong(input.readLine().strip());
 
-      assignmentService.deleteStudent(id).get();
-      System.out.println("Delete successful");
+      Future<Student> studentFuture = assignmentService.deleteStudent(id);
+      executorService.submit(
+          () -> {
+            try {
+              studentFuture.get();
+              System.out.println("Delete successful");
+            } catch (InterruptedException | ExecutionException e) {
+              System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
+              System.out.println("Delete failed!");
+            }
+          });
+
       } catch (IOException | NumberFormatException ex) {
         System.out.println("Invalid input!");
-      } catch (InterruptedException | ExecutionException e) {
-        e.printStackTrace();
       }
 
     }
@@ -522,9 +615,18 @@ public class Console {
         long labProblemId = Long.parseLong(input.readLine().strip());
         System.out.println("Enter grade: ");
         int grade = Integer.parseInt(input.readLine().strip());
-        if(assignmentService.updateAssignment(id, studentId, labProblemId, grade)==null)
-          System.out.println("Assignment updated");
-        else System.out.println("Assignment not updated");
+        Future<Assignment> assignmentFuture = assignmentService.updateAssignment(id, studentId, labProblemId, grade);
+
+        executorService.submit(()->{
+            try{
+              assignmentFuture.get();
+              System.out.println("Assignment updated");
+            }catch (InterruptedException | ExecutionException e) {
+              System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
+              System.out.println("Assignment not updated");
+            }
+
+        });
       } catch (ValidatorException e) {
         System.err.println(e.getMessage());
       } catch (IOException | NumberFormatException ex) {
@@ -540,13 +642,19 @@ public class Console {
       try {
         System.out.println("Enter id: ");
         id = Long.parseLong(input.readLine().strip());
-        if (assignmentService.deleteAssignment(id).get()==null) System.out.println("Delete failed");
-        else System.out.println("Delete successful");
+        Future<Assignment> assignmentFuture = assignmentService.deleteAssignment(id);
+        executorService.submit(()->{
+          try{
+            assignmentFuture.get();
+            System.out.println("Assignment deleted");
+          }catch (InterruptedException | ExecutionException e) {
+            System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
+            System.out.println("Assignment not deleted");
+          }
 
+        });
       } catch (IOException | NumberFormatException e) {
         System.err.println("bad input");
-      } catch (InterruptedException | ExecutionException e) {
-        e.printStackTrace();
       }
     }
 }

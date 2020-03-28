@@ -64,7 +64,7 @@ public class StringEntityFactory {
         .replaceFirst(".$", ""); // removes last semicolon
   }
 
-  public LabProblem labProblemFromMessageLine(String messageLine) {
+  public static LabProblem labProblemFromMessageLine(String messageLine) {
     List<String> params = Arrays.asList(messageLine.split(","));
     LabProblem labProblem = new LabProblem(Integer.parseInt(params.get(1)), params.get(2));
     labProblem.setId(Long.parseLong(params.get(0)));

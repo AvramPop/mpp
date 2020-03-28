@@ -41,7 +41,7 @@ public class StudentClientService implements StudentService {
         if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
           throw new BadRequestException("Addition failed, entity already in repository");
 
-          return StringEntityFactory.studentFromMessageLine(response.getBody());
+          return null;
 
         }
       );
@@ -60,6 +60,8 @@ public class StudentClientService implements StudentService {
           return Arrays.stream(lines)
               .map(StringEntityFactory::studentFromMessageLine)
               .collect(Collectors.toSet());
+
+
         });
   }
 
