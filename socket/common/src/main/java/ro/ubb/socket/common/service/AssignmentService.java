@@ -39,24 +39,6 @@ public interface AssignmentService {
    */
   Future<Boolean> deleteAssignment(Long id);
 
-  /**
-   * Deletes a student from the ro.ubb.repository and also deletes all assignments corresponding to
-   * that lab problem
-   *
-   * @param id the id of the student to be deleted
-   * @return an {@code Future} - null if there is no entity with the given id, otherwise the
-   *     removed entity.
-   */
-  Future<Boolean> deleteStudent(Long id);
-  /**
-   * Deletes a lab problem from the ro.ubb.repository and also deletes all assignments corresponding
-   * to that student
-   *
-   * @param id the id of the lab problem to be deleted
-   * @return an {@code Future} - null if there is no entity with the given id, otherwise the
-   *     removed entity.
-   */
-  Future<Boolean> deleteLabProblem(Long id);
 
   /**
    * Updates an assignment inside the ro.ubb.repository

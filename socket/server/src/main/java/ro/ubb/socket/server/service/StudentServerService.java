@@ -33,9 +33,13 @@ public class StudentServerService implements StudentService {
     this.executorService = executorService;
   }
 
-  public Optional<Student> deleteStudent(Long id) {
-    if (id == null || id < 0) throw new IllegalArgumentException("Invalid id!");
-    return repository.delete(id);
+  @Override
+  public Future<Boolean> deleteStudent(Long id) {
+
+    if (id == null || id < 0) {
+      throw new IllegalArgumentException("Invalid id!");
+    }
+    return executorService.submit(() -> repository.delete(id).isPresent());
   }
 
   @Override

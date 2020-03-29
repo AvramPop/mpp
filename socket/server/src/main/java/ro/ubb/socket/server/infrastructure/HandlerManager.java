@@ -1,6 +1,5 @@
 package ro.ubb.socket.server.infrastructure;
 
-import jdk.swing.interop.SwingInterOpUtils;
 import ro.ubb.socket.common.domain.Assignment;
 import ro.ubb.socket.common.domain.LabProblem;
 import ro.ubb.socket.common.domain.Student;
@@ -257,7 +256,7 @@ public class HandlerManager {
         MessageHeader.LABPROBLEM_DELETE,
         (request) -> {
           try {
-            if (assignmentService.deleteLabProblem(Long.parseLong(request.getBody())).get()) {
+            if (labProblemService.deleteLabProblem(Long.parseLong(request.getBody())).get()) {
               return new Message(MessageHeader.OK_REQUEST, "");
             } else {
               return new Message(MessageHeader.BAD_REQUEST, "");
@@ -337,7 +336,7 @@ public class HandlerManager {
     request.getBody()
         .lines()
         .forEach(line -> {
-          String temp[] = line.split(" ");
+          String[] temp = line.split(" ");
           if(wrapper.sort == null){
             Sort tempSort = new Sort(temp[0], temp[1]);
             tempSort.setClassName(className);
@@ -403,7 +402,7 @@ public class HandlerManager {
         MessageHeader.STUDENT_DELETE,
         (request) -> {
           try {
-            if (assignmentService.deleteStudent(Long.parseLong(request.getBody())).get()) {
+            if (studentService.deleteStudent(Long.parseLong(request.getBody())).get()) {
               return new Message(MessageHeader.OK_REQUEST, "");
             } else {
               return new Message(MessageHeader.BAD_REQUEST, "");

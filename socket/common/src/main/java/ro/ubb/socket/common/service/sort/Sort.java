@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import static ro.ubb.socket.common.service.sort.Sort.Direction.*;
+
 /** Sorting provider for iterables using reflection to lookup fields to sort by. */
 public class Sort {
   private List<Map.Entry<Direction, String>> sortingChain;
@@ -45,7 +47,7 @@ public class Sort {
   }
 
   public Sort(String... fieldsToSortBy) {
-    this(Direction.ASC, fieldsToSortBy);
+    this(ASC, fieldsToSortBy);
   }
 
   /** Obtain the value of field named fieldName of object objectToInvokeOn */
@@ -93,7 +95,7 @@ public class Sort {
         Object firstValue = getValueByFieldName(first, sortingCriteria.getValue());
         Object secondValue = getValueByFieldName(second, sortingCriteria.getValue());
         result = ((Comparable) firstValue).compareTo(secondValue);
-        if (sortingCriteria.getKey() == Direction.DESC) {
+        if (sortingCriteria.getKey() == DESC) {
           result *= -1; // change ascending to descending
         }
       } catch (ClassNotFoundException

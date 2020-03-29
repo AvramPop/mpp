@@ -6,7 +6,10 @@ import ro.ubb.socket.client.service.StudentClientService;
 import ro.ubb.socket.common.domain.Assignment;
 import ro.ubb.socket.common.domain.LabProblem;
 import ro.ubb.socket.common.domain.Student;
-import ro.ubb.socket.common.domain.exceptions.*;
+import ro.ubb.socket.common.domain.exceptions.ClassReflectionException;
+import ro.ubb.socket.common.domain.exceptions.RepositoryException;
+import ro.ubb.socket.common.domain.exceptions.ServiceException;
+import ro.ubb.socket.common.domain.exceptions.ValidatorException;
 import ro.ubb.socket.common.service.sort.Sort;
 
 import java.io.BufferedReader;
@@ -61,7 +64,13 @@ public class Console {
       dictionaryOfCommands.put("lab problem most", this::labProblemMostAssigned);
       dictionaryOfCommands.put("avg grade", this::averageGrade);
       dictionaryOfCommands.put("student problems", this::studentProblems);
+      dictionaryOfCommands.put("shutdown server", this::shutDownServer);
       dictionaryOfCommands.put("exit", () -> System.exit(0));
+    }
+
+    private void shutDownServer() {
+        assignmentService.shutDownServer();
+        System.exit(0);
     }
 
     private void printLabProblemsSorted() {
@@ -379,7 +388,7 @@ public class Console {
         String name = input.readLine().strip();
         System.out.println("Enter group: ");
         int group = Integer.parseInt(input.readLine().strip());
-        Future<Student> studentFuture = studentService.addStudent(id, serialNumber, name, group);
+        Future<Boolean> studentFuture = studentService.addStudent(id, serialNumber, name, group);
 
         executorService.submit(
                 () -> {
@@ -422,7 +431,7 @@ public class Console {
         int problemNumber = Integer.parseInt(input.readLine().strip());
         System.out.println("Enter description: ");
         String description = input.readLine().strip();
-        Future<LabProblem>  labProblemFuture = labProblemService.addLabProblem(id, problemNumber, description);
+        Future<Boolean>  labProblemFuture = labProblemService.addLabProblem(id, problemNumber, description);
         executorService.submit(
                 () -> {
                   try {
@@ -463,7 +472,7 @@ public class Console {
         int problemNumber = Integer.parseInt(input.readLine().strip());
         System.out.println("Enter description: ");
         String description = input.readLine().strip();
-        Future<LabProblem> labProblemFuture = labProblemService.updateLabProblem(id, problemNumber, description);
+        Future<Boolean> labProblemFuture = labProblemService.updateLabProblem(id, problemNumber, description);
 
         executorService.submit(
                 () -> {
@@ -490,7 +499,7 @@ public class Console {
         System.out.println("Enter id: ");
         id = Long.parseLong(input.readLine().strip());
 
-        Future<LabProblem> labProblemDeleteFuture = assignmentService.deleteLabProblem(id);
+        Future<Boolean> labProblemDeleteFuture = labProblemService.deleteLabProblem(id);
         executorService.submit(
                 () -> {
                   try {
@@ -540,7 +549,7 @@ public class Console {
         System.out.println("Enter group: ");
         int group = Integer.parseInt(input.readLine().strip());
 
-        Future<Student> labProblemFuture = studentService.updateStudent(id, serialNumber, name, group);
+        Future<Boolean> labProblemFuture = studentService.updateStudent(id, serialNumber, name, group);
         executorService.submit(
                 () -> {
                   try {
@@ -569,7 +578,7 @@ public class Console {
         System.out.println("Enter id: ");
         id = Long.parseLong(input.readLine().strip());
 
-      Future<Student> studentFuture = assignmentService.deleteStudent(id);
+      Future<Boolean> studentFuture = studentService.deleteStudent(id);
       executorService.submit(
           () -> {
             try {
@@ -615,7 +624,7 @@ public class Console {
         long labProblemId = Long.parseLong(input.readLine().strip());
         System.out.println("Enter grade: ");
         int grade = Integer.parseInt(input.readLine().strip());
-        Future<Assignment> assignmentFuture = assignmentService.updateAssignment(id, studentId, labProblemId, grade);
+        Future<Boolean> assignmentFuture = assignmentService.updateAssignment(id, studentId, labProblemId, grade);
 
         executorService.submit(()->{
             try{
@@ -642,7 +651,7 @@ public class Console {
       try {
         System.out.println("Enter id: ");
         id = Long.parseLong(input.readLine().strip());
-        Future<Assignment> assignmentFuture = assignmentService.deleteAssignment(id);
+        Future<Boolean> assignmentFuture = assignmentService.deleteAssignment(id);
         executorService.submit(()->{
           try{
             assignmentFuture.get();

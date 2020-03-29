@@ -29,7 +29,7 @@ public class StudentClientService implements StudentService {
   }
 
   @Override
-  public Future<Student> addStudent(Long id, String serialNumber, String name, int group)
+  public Future<Boolean> addStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException {
     Student newStudent = new Student(serialNumber, name, group);
     newStudent.setId(id);
@@ -96,7 +96,7 @@ public class StudentClientService implements StudentService {
   }
 
   @Override
-  public Future<Student> updateStudent(Long id, String serialNumber, String name, int group)
+  public Future<Boolean> updateStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException {
     Student newStudent = new Student(serialNumber, name, group);
     newStudent.setId(id);
@@ -106,12 +106,20 @@ public class StudentClientService implements StudentService {
         Message response = tcpClient.sendAndReceive(request);
         if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
           throw new BadRequestException(response.getBody());
-        return null;
+        return true;
     });
   }
 
-  @Override
-  public Optional<Student> deleteStudent(Long id){ // this is not needed here but necessary for interface contract
-    return Optional.empty();
-  }
+    @Override
+    public Future<Boolean> deleteStudent(Long id) {
+
+        return executorService.submit(()->{
+            Message request = new Message(MessageHeader.STUDENT_DELETE,id.toString());
+            Message response = tcpClient.sendAndReceive(request);
+            if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
+                throw new BadRequestException(response.getBody());
+            return true;
+        });
+
+    }
 }

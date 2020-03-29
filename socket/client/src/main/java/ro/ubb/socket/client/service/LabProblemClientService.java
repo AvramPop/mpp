@@ -29,7 +29,7 @@ public class LabProblemClientService implements LabProblemService {
   }
 
   @Override
-  public Future<LabProblem> addLabProblem(Long id, int problemNumber, String description)
+  public Future<Boolean> addLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException {
     LabProblem newLabProblem = new LabProblem(problemNumber, description);
     newLabProblem.setId(id);
@@ -43,7 +43,7 @@ public class LabProblemClientService implements LabProblemService {
           if (response.getHeader().equals(MessageHeader.BAD_REQUEST))
             throw new BadRequestException("Addition failed, entity already in repository");
 
-          return null;
+          return true;
         });
   }
 
@@ -98,7 +98,7 @@ public class LabProblemClientService implements LabProblemService {
   }
 
   @Override
-  public Future<LabProblem> updateLabProblem(Long id, int problemNumber, String description)
+  public Future<Boolean> updateLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException {
     LabProblem newStudent = new LabProblem(problemNumber, description);
     newStudent.setId(id);
@@ -108,12 +108,18 @@ public class LabProblemClientService implements LabProblemService {
       Message response = tcpClient.sendAndReceive(request);
       if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
         throw new BadRequestException(response.getBody());
-      return null;
+      return true;
     });
   }
 
   @Override
-  public Optional<LabProblem> deleteLabProblem(Long id){ // this is not needed here but necessary for interface contract
-    return Optional.empty();
+  public Future<Boolean> deleteLabProblem(Long id){ // this is not needed here but necessary for interface contract
+      return executorService.submit(()->{
+          Message request = new Message(MessageHeader.LABPROBLEM_DELETE,id.toString());
+          Message response = tcpClient.sendAndReceive(request);
+          if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
+              throw new BadRequestException(response.getBody());
+          return true;
+      });
   }
 }

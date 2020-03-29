@@ -38,5 +38,13 @@ public interface LabProblemService {
   Future<Boolean> updateLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException;
 
-  Optional<LabProblem> deleteLabProblem(Long id);
+  /**
+   * Deletes a lab problem from the ro.ubb.repository and also deletes all assignments corresponding
+   * to that student
+   *
+   * @param id the id of the lab problem to be deleted
+   * @return an {@code Future} - null if there is no entity with the given id, otherwise the
+   *     removed entity.
+   */
+  Future<Boolean> deleteLabProblem(Long id);
 }

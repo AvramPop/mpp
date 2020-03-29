@@ -64,49 +64,6 @@ public class AssignmentServerService implements AssignmentService {
     return executorService.submit(() -> repository.delete(id).isPresent());
   }
 
-  @Override
-  public Future<Boolean> deleteStudent(Long id) {
-    if (id == null || id < 0) throw new IllegalArgumentException("Invalid id!");
-
-    try{
-      if (studentService.getStudentById(id).get() == null) return executorService.submit(() -> null);
-    } catch(InterruptedException | ExecutionException e){
-      System.err.println("exception while getting student");
-    }
-    Set<Assignment> allAssignments = null;
-    try{
-      allAssignments = this.getAllAssignments().get();
-    } catch(InterruptedException | ExecutionException e){
-      System.err.println("exception while getting assignments");
-    }
-    allAssignments.stream()
-        .filter(entity -> entity.getStudentId().equals(id))
-        .forEach(entity -> this.deleteAssignment(entity.getId()));
-    return executorService.submit(() -> studentService.deleteStudent(id).isPresent());
-  }
-
-  @Override
-  public Future<Boolean> deleteLabProblem(Long id) {
-    if (id == null || id < 0) throw new IllegalArgumentException("Invalid id!");
-
-    try{
-      if (labProblemService.getLabProblemById(id).get() == null) return executorService.submit(() -> null);
-    } catch(InterruptedException | ExecutionException e){
-      System.err.println("exception while getting lab problem");
-    }
-    Set<Assignment> allAssignments = null;
-    try{
-      allAssignments = this.getAllAssignments().get();
-    } catch(InterruptedException | ExecutionException e){
-      System.err.println("exception while getting assignments");
-    }
-    System.out.println("here2");
-    allAssignments.stream()
-        .filter(entity -> entity.getLabProblemId().equals(id))
-        .forEach(entity -> this.deleteAssignment(entity.getId()));
-    return executorService.submit(() -> labProblemService.deleteLabProblem(id).isPresent());
-  }
-
 
   @Override
   public Future<Set<Assignment>> getAllAssignments()    {
@@ -147,7 +104,7 @@ public class AssignmentServerService implements AssignmentService {
                       .anyMatch(assignment -> assignment.getStudentId().equals(student.getId())))
           .map(
               student ->
-                  new AbstractMap.SimpleEntry<Long, Double>(
+                  new AbstractMap.SimpleEntry<>(
                       student.getId(),
                       (double)
                           assignments.stream()
@@ -179,7 +136,7 @@ public class AssignmentServerService implements AssignmentService {
           .stream()
           .map(
               labProblem ->
-                  new AbstractMap.SimpleEntry<Long, Long>(
+                  new AbstractMap.SimpleEntry<>(
                       labProblem.getId(),
                       assignments.stream()
                           .filter(

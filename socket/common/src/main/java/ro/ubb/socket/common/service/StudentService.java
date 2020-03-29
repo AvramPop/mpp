@@ -38,6 +38,15 @@ public interface StudentService {
   Future<Boolean> updateStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException;
 
-  Optional<Student> deleteStudent(Long id);
+  /**
+   * Deletes a student from the ro.ubb.repository and also deletes all assignments corresponding to
+   * that lab problem
+   *
+   * @param id the id of the student to be deleted
+   * @return an {@code Future} - null if there is no entity with the given id, otherwise the
+   *     removed entity.
+   */
+  Future<Boolean> deleteStudent(Long id);
+
 
 }

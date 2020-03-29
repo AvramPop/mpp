@@ -6,8 +6,6 @@ import ro.ubb.socket.client.service.LabProblemClientService;
 import ro.ubb.socket.client.service.StudentClientService;
 import ro.ubb.socket.client.ui.Console;
 import ro.ubb.socket.common.domain.exceptions.ServiceException;
-import ro.ubb.socket.common.infrastructure.Message;
-import ro.ubb.socket.common.infrastructure.MessageHeader;
 
 import java.io.IOException;
 import java.net.Socket;

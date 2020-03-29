@@ -64,6 +64,9 @@ public class TCPServer {
         System.out.println("server received request from client: " + request);
 
         if(request.getHeader().equals(MessageHeader.SERVER_SHUTDOWN)){
+          Message response = new Message(MessageHeader.SERVER_SHUTDOWN,"");
+          response.writeTo(os);
+          System.out.println("Shutting down");
           return false;
         }
 

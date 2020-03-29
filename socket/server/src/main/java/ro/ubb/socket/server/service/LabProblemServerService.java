@@ -63,11 +63,12 @@ public class LabProblemServerService implements LabProblemService {
 
   }
 
-  public Optional<LabProblem> deleteLabProblem(Long id) {
+  @Override
+  public Future<Boolean> deleteLabProblem(Long id) {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("Invalid id!");
     }
-    return repository.delete(id);
+    return executorService.submit(() -> repository.delete(id).isPresent());
   }
   @Override
   public Future<LabProblem> getLabProblemById(Long id) {

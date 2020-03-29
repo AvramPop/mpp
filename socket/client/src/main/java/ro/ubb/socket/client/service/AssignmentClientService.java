@@ -30,7 +30,7 @@ public class AssignmentClientService implements AssignmentService {
 
 
   @Override
-  public Future<Assignment> addAssignment(Long id, Long studentID, Long labProblemID, int grade)
+  public Future<Boolean> addAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException {
     Assignment newAssignment = new Assignment(studentID, labProblemID, grade);
     newAssignment.setId(id);
@@ -42,8 +42,7 @@ public class AssignmentClientService implements AssignmentService {
               if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
                 throw new BadRequestException("Addition failed, entity already in repository");
 
-              return StringEntityFactory.assignmentFromMessageLine(response.getBody());
-
+              return  true;
             }
     );
   }
@@ -100,44 +99,19 @@ public class AssignmentClientService implements AssignmentService {
   }
 
   @Override
-  public Future<Assignment> deleteAssignment(Long id) {
+  public Future<Boolean> deleteAssignment(Long id) {
 
     return executorService.submit(()->{
       Message request = new Message(MessageHeader.ASSIGNMENT_DELETE,id.toString());
       Message response = tcpClient.sendAndReceive(request);
       if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
         throw new BadRequestException(response.getBody());
-      return StringEntityFactory.assignmentFromMessageLine(response.getBody());
+      return true;
     });
   }
 
   @Override
-  public Future<Student> deleteStudent(Long id) {
-
-    return executorService.submit(()->{
-      Message request = new Message(MessageHeader.STUDENT_DELETE,id.toString());
-      Message response = tcpClient.sendAndReceive(request);
-      if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
-        throw new BadRequestException(response.getBody());
-      return StringEntityFactory.studentFromMessageLine(response.getBody());
-    });
-
-  }
-
-  @Override
-  public Future<LabProblem> deleteLabProblem(Long id) {
-    return executorService.submit(()->{
-      Message request = new Message(MessageHeader.LABPROBLEM_DELETE,id.toString());
-      Message response = tcpClient.sendAndReceive(request);
-      if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
-        throw new BadRequestException(response.getBody());
-      return StringEntityFactory.labProblemFromMessageLine(response.getBody());
-    });
-
-  }
-
-  @Override
-  public Future<Assignment> updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
+  public Future<Boolean> updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException {
     Assignment newAssignment = new Assignment(studentID, labProblemID,grade);
     newAssignment.setId(id);
@@ -147,7 +121,7 @@ public class AssignmentClientService implements AssignmentService {
       Message response = tcpClient.sendAndReceive(request);
       if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
         throw new BadRequestException(response.getBody());
-      return null;
+      return true;
     });
   }
 
@@ -159,7 +133,7 @@ public class AssignmentClientService implements AssignmentService {
       if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
         throw new BadRequestException(response.getBody());
         String[] params = response.getBody().split(",");
-        return new AbstractMap.SimpleEntry<Long, Double>(Long.parseLong(params[0]),Double.parseDouble(params[1]));
+        return new AbstractMap.SimpleEntry<>(Long.parseLong(params[0]),Double.parseDouble(params[1]));
     });
 
 
@@ -174,7 +148,7 @@ public class AssignmentClientService implements AssignmentService {
       if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
         throw new BadRequestException(response.getBody());
       String[] params = response.getBody().split(",");
-      return new AbstractMap.SimpleEntry<Long, Long>(Long.parseLong(params[0]),Long.parseLong(params[1]));
+      return new AbstractMap.SimpleEntry<>(Long.parseLong(params[0]),Long.parseLong(params[1]));
     });
 
   }
@@ -218,4 +192,9 @@ public class AssignmentClientService implements AssignmentService {
     });
 
   }
+
+  public void shutDownServer(){
+    tcpClient.sendAndReceive(new Message(MessageHeader.SERVER_SHUTDOWN,""));
+  }
+
 }
