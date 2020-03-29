@@ -41,14 +41,14 @@ public class Message {
 
   public void readFrom(InputStream is) throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(is));
-    String bufferMessage = "";
+    StringBuilder bufferMessage = new StringBuilder();
     do {
-      System.out.println(bufferMessage);
-      bufferMessage += br.readLine();
-      bufferMessage += System.lineSeparator();
+      //System.out.println(bufferMessage);
+      bufferMessage.append(br.readLine());
+      bufferMessage.append(System.lineSeparator());
     } while (br.ready());
-    bufferMessage = bufferMessage.substring(0, bufferMessage.length() - System.lineSeparator().length());
-    String[] inputParsed = bufferMessage.split(System.lineSeparator(), 2);//fixme: it splits the data badly, so conversion crashes
+    bufferMessage = new StringBuilder(bufferMessage.substring(0, bufferMessage.length() - System.lineSeparator().length()));
+    String[] inputParsed = bufferMessage.toString().split(System.lineSeparator(), 2);//fixed: it splits the data badly, so conversion crashes
                                                                                 // for some reason when it splits the rows it splits the last \n off leaving \r at the end which crashes the converison
     header = inputParsed[0];                                                    // try print students for client
     if (inputParsed.length > 1) {
