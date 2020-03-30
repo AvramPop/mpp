@@ -5,9 +5,14 @@ import ro.ubb.socket.common.service.sort.Sort;
 
 import java.io.Serializable;
 
-/** Created by radu. */
+/** Repository which returns the elements sorted */
 public interface SortingRepository<ID extends Serializable, T extends BaseEntity<ID>>
     extends Repository<ID, T> {
-
+  /**
+   * The sorting entity used for sorting
+   *
+   * @param sort the sorting entity
+   * @return the resulting iterable collection
+   */
   Iterable<T> findAll(Sort sort);
 }

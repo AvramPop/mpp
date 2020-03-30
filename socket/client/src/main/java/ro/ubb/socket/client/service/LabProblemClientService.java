@@ -17,9 +17,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
-/**
- * Client service to handle LabProblem specific data communicated via socket.
- */
+/** Client service to handle LabProblem specific data communicated via socket. */
 public class LabProblemClientService implements LabProblemService {
   private ExecutorService executorService;
   private TCPClient tcpClient;
@@ -31,7 +29,7 @@ public class LabProblemClientService implements LabProblemService {
   }
   /**
    * Make server-call to add LabProblem with data specified in params.
-
+   *
    * @return Future containing the truth value of the success of the operation
    * @throws Exception if data given is invalid or call fails
    */
@@ -54,7 +52,7 @@ public class LabProblemClientService implements LabProblemService {
   }
   /**
    * Make server-call to get all LabProblems.
-
+   *
    * @return Future containing a Set of all LabProblems.
    * @throws Exception if call fails
    */
@@ -105,7 +103,7 @@ public class LabProblemClientService implements LabProblemService {
   }
   /**
    * Make server-call to get LabProblem specified by given id.
-
+   *
    * @return Future containing the sought LabProblem.
    * @throws Exception if data given is invalid or call fails
    */
@@ -123,7 +121,7 @@ public class LabProblemClientService implements LabProblemService {
   }
   /**
    * Make server-call to update LabProblem with given data.
-
+   *
    * @return Future containing the truth value of the success of the operation
    * @throws Exception if data given is invalid or call fails
    */
@@ -145,7 +143,7 @@ public class LabProblemClientService implements LabProblemService {
   }
   /**
    * Make server-call to delete LabProblem specified by given id.
-
+   *
    * @return Future containing the truth value of the success of the operation
    * @throws Exception if data given is invalid or call fails
    */

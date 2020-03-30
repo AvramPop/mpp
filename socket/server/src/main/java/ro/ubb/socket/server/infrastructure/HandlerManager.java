@@ -36,6 +36,7 @@ public class HandlerManager {
     this.assignmentService = assignmentService;
   }
 
+  /** Initializes the handlers of the TCP server, Suggested to do before starting the server */
   public void addHandlers() {
     studentByIdHandler();
     allStudentsHandler();
@@ -65,12 +66,12 @@ public class HandlerManager {
 
     serverShutdownHandler();
   }
-
+  /** Adds the servers shutdown handler */
   private void serverShutdownHandler() {
     server.addHandler(
         MessageHeader.SERVER_SHUTDOWN, (request) -> new Message(MessageHeader.OK_REQUEST, ""));
   }
-
+  /** Adds the student assigned problems handler */
   private void studentAssignedProblemsHandler() {
     server.addHandler(
         MessageHeader.ASSIGNMENT_PROBLEM_MAPPING,
@@ -86,7 +87,7 @@ public class HandlerManager {
           }
         });
   }
-
+  /** Adds the average grade handler */
   private void averageGradeHandler() {
     server.addHandler(
         MessageHeader.ASSIGNMENT_AVERAGE_GRADE,
@@ -102,7 +103,7 @@ public class HandlerManager {
           }
         });
   }
-
+  /** Adds the id of most assigned handler */
   private void idOfLabProblemMostAssignedHandler() {
     server.addHandler(
         MessageHeader.ASSIGNMENT_PROBLEM_MOST_ASSIGNED,
@@ -118,7 +119,7 @@ public class HandlerManager {
           }
         });
   }
-
+  /** Adds the greatest mean handler */
   private void greatestMeanHandler() {
     server.addHandler(
         MessageHeader.ASSIGNMENT_GREATEST_MEAN,
@@ -133,7 +134,7 @@ public class HandlerManager {
           }
         });
   }
-
+  /** Adds the delete assignment handler */
   private void deleteAssignmentHandler() {
     server.addHandler(
         MessageHeader.ASSIGNMENT_DELETE,
@@ -152,7 +153,7 @@ public class HandlerManager {
           return null;
         });
   }
-
+  /** Adds the handler for that functionality */
   private void updateAssignmentHandler() {
     server.addHandler(
         MessageHeader.ASSIGNMENT_UPDATE,
@@ -178,7 +179,7 @@ public class HandlerManager {
           return null;
         });
   }
-
+  /** Adds the handler for that functionality */
   private void addAssignmentsHandler() {
     server.addHandler(
         MessageHeader.ASSIGNMENT_ADD,
@@ -205,7 +206,7 @@ public class HandlerManager {
           return null;
         });
   }
-
+  /** Adds the handler for that functionality */
   private void allAssignmentsSortedHandler() {
     server.addHandler(
         MessageHeader.ASSIGNMENT_SORTED,
@@ -223,7 +224,7 @@ public class HandlerManager {
           }
         });
   }
-
+  /** Adds the handler for that functionality */
   private void allAssignmentsHandler() {
     server.addHandler(
         MessageHeader.ASSIGNMENT_ALL,
@@ -239,7 +240,7 @@ public class HandlerManager {
           }
         });
   }
-
+  /** Adds the handler for that functionality */
   private void assignmentByIdHandler() {
     server.addHandler(
         MessageHeader.ASSIGNMENT_BY_ID,
@@ -256,7 +257,7 @@ public class HandlerManager {
           }
         });
   }
-
+  /** Adds the handler for that functionality */
   private void deleteLabProblemHandler() {
     server.addHandler(
         MessageHeader.LABPROBLEM_DELETE,
@@ -275,7 +276,7 @@ public class HandlerManager {
           return null;
         });
   }
-
+  /** Adds the handler for that functionality */
   private void updateLabProblemHandler() {
     server.addHandler(
         MessageHeader.LABPROBLEM_UPDATE,
@@ -300,7 +301,7 @@ public class HandlerManager {
           return null;
         });
   }
-
+  /** Adds the handler for that functionality */
   private void addLabProblemHandler() {
     server.addHandler(
         MessageHeader.LABPROBLEM_ADD,
@@ -325,7 +326,7 @@ public class HandlerManager {
           return null;
         });
   }
-
+  /** Adds the handler for that functionality */
   private void allLabProblemsSortedHandler() {
     server.addHandler(
         MessageHeader.LABPROBLEM_SORTED,
@@ -343,7 +344,7 @@ public class HandlerManager {
           }
         });
   }
-
+  /** Adds the handler for that functionality */
   private Sort getSortFromRequestBody(Message request, String className) {
     var wrapper =
         new Object() {
@@ -371,7 +372,7 @@ public class HandlerManager {
             });
     return wrapper.sort;
   }
-
+  /** Adds the handler for that functionality */
   private void allLabProblemsHandler() {
     server.addHandler(
         MessageHeader.LABPROBLEM_ALL,
@@ -387,7 +388,7 @@ public class HandlerManager {
           }
         });
   }
-
+  /** Adds the handler for that functionality */
   private void labProblemByIdHandler() {
     server.addHandler(
         MessageHeader.LABPROBLEM_BY_ID,
@@ -404,7 +405,7 @@ public class HandlerManager {
           }
         });
   }
-
+  /** Adds the handler for that functionality */
   private void allStudentsSortedHandler() {
     server.addHandler(
         MessageHeader.STUDENT_SORTED,
@@ -421,7 +422,7 @@ public class HandlerManager {
           }
         });
   }
-
+  /** Adds the handler for that functionality */
   private void deleteStudentHandler() {
     server.addHandler(
         MessageHeader.STUDENT_DELETE,
@@ -440,7 +441,7 @@ public class HandlerManager {
           return null;
         });
   }
-
+  /** Adds the handler for that functionality */
   private void updateStudentHandler() {
     server.addHandler(
         MessageHeader.STUDENT_UPDATE,
@@ -467,7 +468,7 @@ public class HandlerManager {
           return null;
         });
   }
-
+  /** Adds the handler for that functionality */
   private void addStudentHandler() {
     server.addHandler(
         MessageHeader.STUDENT_ADD,
@@ -493,7 +494,7 @@ public class HandlerManager {
           return null;
         });
   }
-
+  /** Adds the handler for that functionality */
   private void allStudentsHandler() {
     server.addHandler(
         MessageHeader.STUDENT_ALL,
@@ -509,7 +510,7 @@ public class HandlerManager {
           }
         });
   }
-
+  /** Adds the handler for that functionality */
   private void studentByIdHandler() {
     server.addHandler(
         MessageHeader.STUDENT_BY_ID,

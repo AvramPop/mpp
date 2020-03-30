@@ -12,14 +12,11 @@ import ro.ubb.socket.common.service.sort.Sort;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
-/**
- * Client service to handle Student specific data communicated via socket.
- */
+/** Client service to handle Student specific data communicated via socket. */
 public class StudentClientService implements StudentService {
   private ExecutorService executorService;
   private TCPClient tcpClient;
@@ -31,7 +28,7 @@ public class StudentClientService implements StudentService {
   }
   /**
    * Make server-call to add Student with data specified in params.
-
+   *
    * @return Future containing the truth value of the success of the operation
    * @throws Exception if data given is invalid or call fails
    */
@@ -53,7 +50,7 @@ public class StudentClientService implements StudentService {
   }
   /**
    * Make server-call to get all Students.
-
+   *
    * @return Future containing a Set of all Students.
    * @throws Exception if call fails
    */
@@ -102,7 +99,7 @@ public class StudentClientService implements StudentService {
   }
   /**
    * Make server-call to get Student specified by given id.
-
+   *
    * @return Future containing the sought Student.
    * @throws Exception if data given is invalid or call fails
    */
@@ -119,7 +116,7 @@ public class StudentClientService implements StudentService {
   }
   /**
    * Make server-call to update Student with given data.
-
+   *
    * @return Future containing the truth value of the success of the operation
    * @throws Exception if data given is invalid or call fails
    */
@@ -141,7 +138,7 @@ public class StudentClientService implements StudentService {
   }
   /**
    * Make server-call to delete Student specified by given id.
-
+   *
    * @return Future containing the truth value of the success of the operation
    * @throws Exception if data given is invalid or call fails
    */

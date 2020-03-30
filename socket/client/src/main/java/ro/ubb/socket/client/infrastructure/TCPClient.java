@@ -8,12 +8,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-/**
- * TCP-connection communication provider via socket streams.
- */
+/** TCP-connection communication provider via socket streams. */
 public class TCPClient {
   /**
    * Receives Message as result of sent request.
+   *
    * @param request the client request as message.
    * @return the server's response
    */

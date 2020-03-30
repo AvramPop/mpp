@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
+/** Server service to handle Assignment specific data communicated via socket. */
 public class AssignmentServerService implements AssignmentService {
   private SortingRepository<Long, Assignment> repository;
   private Validator<Assignment> validator;
@@ -37,7 +37,12 @@ public class AssignmentServerService implements AssignmentService {
     this.labProblemService = labProblemService;
     this.studentService = studentService;
   }
-
+  /**
+   * Performs the saving of the new entity to the database
+   *
+   * @return Future containing the truth value of the success of the operation
+   * @throws ValidatorException if the given parameters are invalid
+   */
   @Override
   public Future<Boolean> addAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException {
@@ -48,7 +53,12 @@ public class AssignmentServerService implements AssignmentService {
 
     return executorService.submit(() -> repository.save(newAssignment).isEmpty());
   }
-
+  /**
+   * Performs the update of an assignment entity in the database
+   *
+   * @return Future containing the truth value of the success of the operation
+   * @throws ValidatorException if the given parameters are invalid
+   */
   @Override
   public Future<Boolean> updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException {
@@ -57,7 +67,12 @@ public class AssignmentServerService implements AssignmentService {
     validator.validate(assignment);
     return executorService.submit(() -> repository.update(assignment).isEmpty());
   }
-
+  /**
+   * Deletes the assignment with the id from the database
+   *
+   * @param id the id of the student to be deleted
+   * @return a future containing true if the operation is successfull otherwise false
+   */
   @Override
   public Future<Boolean> deleteAssignment(Long id) {
     if (id == null || id < 0) {
@@ -65,21 +80,34 @@ public class AssignmentServerService implements AssignmentService {
     }
     return executorService.submit(() -> repository.delete(id).isPresent());
   }
-
+  /**
+   * Returns all assignments from the database
+   *
+   * @return a future containing a set of elements
+   */
   @Override
   public Future<Set<Assignment>> getAllAssignments() {
     Iterable<Assignment> problems = repository.findAll();
     return executorService.submit(
         () -> StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toSet()));
   }
-
+  /**
+   * Returns all lab problems from the database sorted by the sort entity
+   *
+   * @return a future containing a set of elements sorted
+   */
   @Override
   public Future<List<Assignment>> getAllAssignmentsSorted(Sort sort) {
     Iterable<Assignment> assignments = repository.findAll(sort);
     return executorService.submit(
         () -> StreamSupport.stream(assignments.spliterator(), false).collect(Collectors.toList()));
   }
-
+  /**
+   * Returns an assignment given by the id
+   *
+   * @param id to find student by
+   * @return a Future containing the entity, or null of the entity doesn't exist
+   */
   @Override
   public Future<Assignment> getAssignmentById(Long id) {
     if (id == null || id < 0) {
@@ -87,7 +115,13 @@ public class AssignmentServerService implements AssignmentService {
     }
     return executorService.submit(() -> repository.findOne(id).get());
   }
-
+  /**
+   * Returns the student id who has the biggest mean of grades from the database
+   *
+   * @return a {@code Future} containing a null if no student is in the repository otherwise an
+   *     {@code Optional} containing a {@code Pair} of Long and Double, for the ID and the grade
+   *     average
+   */
   @Override
   public Future<AbstractMap.SimpleEntry<Long, Double>> greatestMean() {
     Iterable<Assignment> assignmentIterable = repository.findAll();
@@ -126,7 +160,13 @@ public class AssignmentServerService implements AssignmentService {
     }
     return null;
   }
-
+  /**
+   * Returns the id of the lab problem which was assigned the most often from the database
+   *
+   * @return a {@code Future} containing a null if no student is in the repository otherwise an
+   *     {@code Optional} containing a {@code Pair} of Long and Long, for the ID and the number of
+   *     assignments
+   */
   @Override
   public Future<AbstractMap.SimpleEntry<Long, Long>> idOfLabProblemMostAssigned() {
     Iterable<Assignment> assignmentIterable = repository.findAll();
@@ -153,7 +193,12 @@ public class AssignmentServerService implements AssignmentService {
     }
     return null;
   }
-
+  /**
+   * Returns the average grade of all the groups from the database
+   *
+   * @return a {@code Future} containing a null if no student is in the repository otherwise a
+   *     {@code Double} which represents the average grade
+   */
   @Override
   public Future<Double> averageGrade() {
     Iterable<Assignment> assignmentIterable = repository.findAll();
@@ -167,7 +212,12 @@ public class AssignmentServerService implements AssignmentService {
       return null;
     }
   }
-
+  /**
+   * Return a mapping of every Student and a list of it's assigned LabProblems from the database
+   *
+   * @return a {@code Future} containing the sought Student - List of LabProblems. If student has no
+   *     assignment, map to an empty list.
+   */
   @Override
   public Future<Map<Student, List<LabProblem>>> studentAssignedProblems() {
     try {
@@ -181,6 +231,12 @@ public class AssignmentServerService implements AssignmentService {
     return null;
   }
 
+  /**
+   * Returns all the lab problem assigned to a student
+   *
+   * @param student the student for which to find the lab problems
+   * @return a {@code List} containing the lab problem entities
+   */
   private List<LabProblem> getAllLabProblemsForAStudent(Student student) {
     return StreamSupport.stream(repository.findAll().spliterator(), false)
         .filter(assignment -> assignment.getStudentId().equals(student.getId()))

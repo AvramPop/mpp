@@ -17,9 +17,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
-/**
- * Client service to handle Assignment specific data communicated via socket.
- */
+/** Client service to handle Assignment specific data communicated via socket. */
 public class AssignmentClientService implements AssignmentService {
 
   private ExecutorService executorService;
@@ -33,7 +31,7 @@ public class AssignmentClientService implements AssignmentService {
 
   /**
    * Make server-call to add Assignment with data specified in params.
-
+   *
    * @return Future containing the truth value of the success of the operation
    * @throws Exception if data given is invalid or call fails
    */
@@ -57,7 +55,7 @@ public class AssignmentClientService implements AssignmentService {
 
   /**
    * Make server-call to get all Assignments.
-
+   *
    * @return Future containing a Set of all Assignments.
    * @throws Exception if call fails
    */
@@ -76,7 +74,6 @@ public class AssignmentClientService implements AssignmentService {
               .collect(Collectors.toSet());
         });
   }
-
 
   /**
    * Make server-call to get all Assignments sorted by given Sort.
@@ -109,7 +106,7 @@ public class AssignmentClientService implements AssignmentService {
 
   /**
    * Make server-call to get Assignment specified by given id.
-
+   *
    * @return Future containing the sought Assignment.
    * @throws Exception if data given is invalid or call fails
    */
@@ -128,7 +125,7 @@ public class AssignmentClientService implements AssignmentService {
 
   /**
    * Make server-call to delete Assignment specified by given id.
-
+   *
    * @return Future containing the truth value of the success of the operation
    * @throws Exception if data given is invalid or call fails
    */
@@ -146,7 +143,7 @@ public class AssignmentClientService implements AssignmentService {
   }
   /**
    * Make server-call to update Assignment with given data.
-
+   *
    * @return Future containing the truth value of the success of the operation
    * @throws Exception if data given is invalid or call fails
    */
@@ -169,7 +166,7 @@ public class AssignmentClientService implements AssignmentService {
 
   /**
    * Make server-call to get the Student with the greatest mean and his mean.
-
+   *
    * @return Future containing a Pair between the id of the student and his mean.
    * @throws Exception if call fails
    */
@@ -189,7 +186,7 @@ public class AssignmentClientService implements AssignmentService {
 
   /**
    * Make server-call to get the id of the problem most assigned and the times it got assigned.
-
+   *
    * @return Future containing a Pair between the id of the problem and times assigned.
    * @throws Exception if call fails
    */
@@ -210,7 +207,7 @@ public class AssignmentClientService implements AssignmentService {
 
   /**
    * Make server-call to get the average grade of all assignments.
-
+   *
    * @return Future containing the average grade
    * @throws Exception if call fails
    */
@@ -228,7 +225,7 @@ public class AssignmentClientService implements AssignmentService {
   }
   /**
    * Make server-call to get a map between each student and the problems assigned to him.
-
+   *
    * @return Future containing the sought map
    * @throws Exception if call fails
    */
@@ -249,7 +246,7 @@ public class AssignmentClientService implements AssignmentService {
               .collect(
                   Collectors.toMap(
                       elem -> StringEntityFactory.studentFromMessageLine(elem.split("\\?")[0]),
-                      elem -> convertLineToLabProblemList(elem)));
+                          this::convertLineToLabProblemList));
         });
   }
 
@@ -263,9 +260,7 @@ public class AssignmentClientService implements AssignmentService {
     }
   }
 
-  /**
-   * Shutdown server call.
-   */
+  /** Shutdown server call. */
   public void shutDownServer() {
     tcpClient.sendAndReceive(new Message(MessageHeader.SERVER_SHUTDOWN, ""));
   }

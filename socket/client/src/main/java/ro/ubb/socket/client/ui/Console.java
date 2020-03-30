@@ -43,9 +43,7 @@ public class Console {
     // which means not a valid command
     initDictionaryOfCommands();
   }
-  /**
-   * Print the console menu
-   * */
+  /** Print the console menu */
   private void printMenu() {
     String menu = "";
     menu += "Menu options:" + System.lineSeparator();
@@ -129,9 +127,7 @@ public class Console {
     dictionaryOfCommands.put("exit", () -> System.exit(0));
   }
 
-  /**
-   * Take specific user input and print server's answer to the call getAssignmentById call.
-   */
+  /** Take specific user input and print server's answer to the call getAssignmentById call. */
   private void getAssignmentById() {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     long id;
@@ -155,9 +151,7 @@ public class Console {
     }
   }
 
-  /**
-   * Take specific user input and print server's answer to the call getLabProblemById call.
-   */
+  /** Take specific user input and print server's answer to the call getLabProblemById call. */
   private void getLabProblemById() {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     long id;
@@ -180,9 +174,7 @@ public class Console {
       System.out.println("Invalid input!");
     }
   }
-  /**
-   * Take specific user input and print server's answer to the call getStudentById call.
-   */
+  /** Take specific user input and print server's answer to the call getStudentById call. */
   private void getStudentById() {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     long id;
@@ -205,16 +197,12 @@ public class Console {
       System.out.println("Invalid input!");
     }
   }
-  /**
-   * Take specific user input and print server's answer to the call getLabProblemById call.
-   */
+  /** Take specific user input and print server's answer to the call getLabProblemById call. */
   private void shutDownServer() {
     assignmentService.shutDownServer();
     System.exit(0);
   }
-  /**
-   * Take specific user input and print server's answer to the call printLabProblemsSorted call.
-   */
+  /** Take specific user input and print server's answer to the call printLabProblemsSorted call. */
   private void printLabProblemsSorted() {
     System.out.println("Sort by criteria: <order {ASC/ DESC} column-name>. 'done' when done");
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -257,9 +245,7 @@ public class Console {
       System.err.println(e.getMessage());
     }
   }
-  /**
-   * Take specific user input and print server's answer to the call printAssignmentsSorted call.
-   */
+  /** Take specific user input and print server's answer to the call printAssignmentsSorted call. */
   private void printAssignmentsSorted() {
     System.out.println("Sort by criteria: <order {ASC/ DESC} column-name>. 'done' when done");
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -302,9 +288,7 @@ public class Console {
       System.err.println(e.getMessage());
     }
   }
-  /**
-   * Take specific user input and print server's answer to the call printStudentsSorted call.
-   */
+  /** Take specific user input and print server's answer to the call printStudentsSorted call. */
   private void printStudentsSorted() {
     System.out.println("Sort by criteria: <order {ASC/ DESC} column-name>. 'done' when done");
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -349,9 +333,7 @@ public class Console {
       System.err.println(e.getMessage());
     }
   }
-  /**
-   * Take specific user input and print server's answer to the call studentProblems call.
-   */
+  /** Take specific user input and print server's answer to the call studentProblems call. */
   private void studentProblems() {
     Future<Map<Student, List<LabProblem>>> studentsLabProblems =
         assignmentService.studentAssignedProblems();
@@ -375,9 +357,7 @@ public class Console {
           }
         });
   }
-  /**
-   * Take specific user input and print server's answer to the call averageGrade call.
-   */
+  /** Take specific user input and print server's answer to the call averageGrade call. */
   private void averageGrade() {
     Future<Double> mean = assignmentService.averageGrade();
     executorService.submit(
@@ -390,9 +370,7 @@ public class Console {
           }
         });
   }
-  /**
-   * Take specific user input and print server's answer to the call labProblemMostAssigned call.
-   */
+  /** Take specific user input and print server's answer to the call labProblemMostAssigned call. */
   private void labProblemMostAssigned() {
     Future<AbstractMap.SimpleEntry<Long, Long>> idOfLabProblemMostAssigned =
         assignmentService.idOfLabProblemMostAssigned();
@@ -411,9 +389,7 @@ public class Console {
           }
         });
   }
-  /**
-   * Take specific user input and print server's answer to the call greatestMeanOfStudent call.
-   */
+  /** Take specific user input and print server's answer to the call greatestMeanOfStudent call. */
   private void greatestMeanOfStudent() {
     Future<AbstractMap.SimpleEntry<Long, Double>> greatestMean = assignmentService.greatestMean();
 
@@ -452,9 +428,7 @@ public class Console {
       }
     }
   }
-  /**
-   * Take specific user input and print server's answer to the call printAssignments call.
-   */
+  /** Take specific user input and print server's answer to the call printAssignments call. */
   private void printAssignments() {
 
     Future<Set<Assignment>> students = assignmentService.getAllAssignments();
@@ -467,9 +441,7 @@ public class Console {
           }
         });
   }
-  /**
-   * Take specific user input and print server's answer to the call addAssignment call.
-   */
+  /** Take specific user input and print server's answer to the call addAssignment call. */
   private void addAssignment() {
     System.out.println("Read assignment {id, studentId, labProblemId. grade}");
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -503,9 +475,7 @@ public class Console {
     }
   }
 
-  /**
-   * Take specific user input and print server's answer to the call addStudent call.
-   */
+  /** Take specific user input and print server's answer to the call addStudent call. */
   private void addStudent() {
     System.out.println("Read student {id,serialNumber, name, group}");
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -538,9 +508,7 @@ public class Console {
       System.out.println("invalid input");
     }
   }
-  /**
-   * Take specific user input and print server's answer to the call printStudents call.
-   */
+  /** Take specific user input and print server's answer to the call printStudents call. */
   private void printStudents() {
     Future<Set<Student>> students = studentService.getAllStudents();
     executorService.submit(
@@ -552,9 +520,7 @@ public class Console {
           }
         });
   }
-  /**
-   * Take specific user input and print server's answer to the call addLabProblem call.
-   */
+  /** Take specific user input and print server's answer to the call addLabProblem call. */
   private void addLabProblem() {
     System.out.println("Read lab problem {id, problem number, description}");
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -584,9 +550,7 @@ public class Console {
       System.out.println("Invalid input!");
     }
   }
-  /**
-   * Take specific user input and print server's answer to the call printLabProblems call.
-   */
+  /** Take specific user input and print server's answer to the call printLabProblems call. */
   private void printLabProblems() {
     Future<Set<LabProblem>> labProblems = labProblemService.getAllLabProblems();
     executorService.submit(
@@ -598,9 +562,7 @@ public class Console {
           }
         });
   }
-  /**
-   * Take specific user input and print server's answer to the call updateLabProblem call.
-   */
+  /** Take specific user input and print server's answer to the call updateLabProblem call. */
   private void updateLabProblem() {
     System.out.println("Read lab problem {id, problem number, description}");
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -631,9 +593,7 @@ public class Console {
       System.out.println("Invalid input!");
     }
   }
-  /**
-   * Take specific user input and print server's answer to the call deleteLabProblem call.
-   */
+  /** Take specific user input and print server's answer to the call deleteLabProblem call. */
   private void deleteLabProblem() {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     long id;
@@ -674,9 +634,7 @@ public class Console {
   //      labProblems.forEach(System.out::println);
   //    }
 
-  /**
-   * Take specific user input and print server's answer to the call updateStudent call.
-   */
+  /** Take specific user input and print server's answer to the call updateStudent call. */
   private void updateStudent() {
     System.out.println("Update student {id,serialNumber, name, group}");
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -710,9 +668,7 @@ public class Console {
       System.err.println("invalid input");
     }
   }
-  /**
-   * Take specific user input and print server's answer to the call deleteStudent call.
-   */
+  /** Take specific user input and print server's answer to the call deleteStudent call. */
   private void deleteStudent() {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     long id;
@@ -752,9 +708,7 @@ public class Console {
   //      Set<Student> students = studentService.filterByGroup(groupNumber);
   //      students.forEach(System.out::println);
   //    }
-  /**
-   * Take specific user input and print server's answer to the call updateAssignment call.
-   */
+  /** Take specific user input and print server's answer to the call updateAssignment call. */
   private void updateAssignment() {
     System.out.println("Update assignment {id, studentId, labProblemId, grade}");
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -788,9 +742,7 @@ public class Console {
       System.out.println("Invalid assignment, wrong student or lab problem ID");
     }
   }
-  /**
-   * Take specific user input and print server's answer to the call deleteAssignment call.
-   */
+  /** Take specific user input and print server's answer to the call deleteAssignment call. */
   private void deleteAssignment() {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     long id;

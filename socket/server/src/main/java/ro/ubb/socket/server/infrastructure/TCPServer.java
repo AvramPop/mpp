@@ -31,6 +31,12 @@ public class TCPServer {
     this(executorService, Message.PORT);
   }
 
+  /**
+   * Adds a new handler to the server handlers list
+   *
+   * @param methodName the name of the handler
+   * @param handler the body of the handler
+   */
   public void addHandler(String methodName, UnaryOperator<Message> handler) {
     methodHandlers.put(methodName, handler);
   }
@@ -55,6 +61,11 @@ public class TCPServer {
       this.socket = client;
     }
 
+    /**
+     * Performs the unary operation stored by the handler
+     *
+     * @return true if the operation succeeds, false otherwise
+     */
     @Override
     public Boolean call() {
       try (InputStream is = socket.getInputStream();
