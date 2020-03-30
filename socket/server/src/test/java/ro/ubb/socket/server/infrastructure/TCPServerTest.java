@@ -117,7 +117,7 @@ public class TCPServerTest {
     serverResponse.readFrom(clientInputStream);
     executorService.shutdown();
     clientSocket.close();
-
+   // Thread.sleep(4000);
     student = null;
     assignment = null;
     labProblem = null;
@@ -384,7 +384,7 @@ public class TCPServerTest {
     Assignment assignment1 = new Assignment(2L, 1L, 2);
     assignment1.setId(2L);
     Assignment assignment2 = new Assignment(2L, 2L, 2);
-    assignment1.setId(3L);
+    assignment2.setId(3L);
     studentRepository.save(student2);
     labProblemRepository.save(labProblem2);
     assignmentsRepository.save(assignment1);
@@ -396,14 +396,14 @@ public class TCPServerTest {
     serverResponse = new Message();
     serverResponse.readFrom(clientInputStream);
     Assert.assertEquals(MessageHeader.OK_REQUEST, serverResponse.getHeader());
-    Assert.assertEquals("1,sn1,studentName,1?1,11,description\n2,sn2,name2,2?1,11,description;2,2,descr2", serverResponse.getBody());
+    Assert.assertEquals("1,sn1,studentName,1?1,11,description\n2,sn2,name2,2?2,2,descr2;1,11,description", serverResponse.getBody());
     assignmentsRepository.delete(2L);
     assignmentsRepository.delete(3L);
     labProblemRepository.delete(2L);
     studentRepository.delete(2L);
   }
   @Test
-  public void assignmentsSorted() throws IOException{ // TODO fix reflection issue due to different folder positioning
+  public void assignmentsSorted() throws IOException{
     Assignment assignment1 = new Assignment(1L, 1L, 2);
     assignment1.setId(2L);
     assignmentsRepository.save(assignment1);
@@ -419,7 +419,7 @@ public class TCPServerTest {
   }
 
   @Test
-  public void studentsSorted() throws IOException{   // TODO fix reflection issue due to different folder positioning
+  public void studentsSorted() throws IOException{
     Student student1 = new Student("sn2", "name", 2);
     student1.setId(2L);
     studentRepository.save(student1);
@@ -435,7 +435,7 @@ public class TCPServerTest {
   }
 
   @Test
-  public void labProblemsSorted() throws IOException{  // TODO fix reflection issue due to different folder positioning
+  public void labProblemsSorted() throws IOException{
     LabProblem labProblem1 = new LabProblem(2, "descr");
     labProblem1.setId(2L);
     labProblemRepository.save(labProblem1);
@@ -446,7 +446,7 @@ public class TCPServerTest {
     serverResponse = new Message();
     serverResponse.readFrom(clientInputStream);
     Assert.assertEquals(MessageHeader.OK_REQUEST, serverResponse.getHeader());
-    Assert.assertEquals("2,2,descr\n1,1,description", serverResponse.getBody());
+    Assert.assertEquals("2,2,descr\n1,11,description", serverResponse.getBody());
     studentRepository.delete(2L);
   }
 }

@@ -155,11 +155,6 @@ public class HandlerManager {
         MessageHeader.ASSIGNMENT_UPDATE,
         (request) -> {
           String[] parsedRequest = request.getBody().split(", ");
-          System.out.println("-*----------------");
-          for (String s : parsedRequest) {
-            System.out.println(s);
-          }
-          System.out.println("---------------");
           try{
             if (assignmentService
                 .updateAssignment(
@@ -337,12 +332,18 @@ public class HandlerManager {
         .lines()
         .forEach(line -> {
           String[] temp = line.split(" ");
+          Sort.Direction sortingDirection = null;
+          if (temp[0].equals("ASC")) {
+            sortingDirection = Sort.Direction.ASC;
+          } else if (temp[0].equals("DESC")) {
+            sortingDirection = Sort.Direction.DESC;
+          }
           if(wrapper.sort == null){
-            Sort tempSort = new Sort(temp[0], temp[1]);
+            Sort tempSort = new Sort(sortingDirection, temp[1]);
             tempSort.setClassName(className);
             wrapper.sort = tempSort;
           } else {
-            wrapper.sort.and(new Sort(temp[0], temp[1]));
+            wrapper.sort.and(new Sort(sortingDirection, temp[1]));
           }
         });
     return wrapper.sort;
