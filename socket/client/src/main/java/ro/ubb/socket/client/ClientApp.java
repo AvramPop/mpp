@@ -9,7 +9,6 @@ import ro.ubb.socket.client.ui.Console;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/** Created by radu. */
 public class ClientApp {
   public static void main(String[] args) {
     ExecutorService executorService =

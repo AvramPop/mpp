@@ -17,7 +17,9 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
-
+/**
+ * Client service to handle LabProblem specific data communicated via socket.
+ */
 public class LabProblemClientService implements LabProblemService {
   private ExecutorService executorService;
   private TCPClient tcpClient;
@@ -27,7 +29,12 @@ public class LabProblemClientService implements LabProblemService {
     this.tcpClient = tcpClient;
     // this.validator = validator;
   }
+  /**
+   * Make server-call to add LabProblem with data specified in params.
 
+   * @return Future containing the truth value of the success of the operation
+   * @throws Exception if data given is invalid or call fails
+   */
   @Override
   public Future<Boolean> addLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException {
@@ -45,7 +52,12 @@ public class LabProblemClientService implements LabProblemService {
           return true;
         });
   }
+  /**
+   * Make server-call to get all LabProblems.
 
+   * @return Future containing a Set of all LabProblems.
+   * @throws Exception if call fails
+   */
   @Override
   public Future<Set<LabProblem>> getAllLabProblems() {
 
@@ -63,6 +75,12 @@ public class LabProblemClientService implements LabProblemService {
         });
   }
 
+  /**
+   * Make server-call to get all LabProblems sorted by given Sort.
+   *
+   * @return Future containing the LabProblems sorted by Sort criteria
+   * @throws Exception if call fails
+   */
   @Override
   public Future<List<LabProblem>> getAllLabProblemsSorted(Sort sort) {
 
@@ -85,7 +103,12 @@ public class LabProblemClientService implements LabProblemService {
               .collect(Collectors.toList());
         });
   }
+  /**
+   * Make server-call to get LabProblem specified by given id.
 
+   * @return Future containing the sought LabProblem.
+   * @throws Exception if data given is invalid or call fails
+   */
   @Override
   public Future<LabProblem> getLabProblemById(Long id) {
 
@@ -98,7 +121,12 @@ public class LabProblemClientService implements LabProblemService {
           return StringEntityFactory.labProblemFromMessageLine(response.getBody());
         });
   }
+  /**
+   * Make server-call to update LabProblem with given data.
 
+   * @return Future containing the truth value of the success of the operation
+   * @throws Exception if data given is invalid or call fails
+   */
   @Override
   public Future<Boolean> updateLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException {
@@ -115,7 +143,12 @@ public class LabProblemClientService implements LabProblemService {
           return true;
         });
   }
+  /**
+   * Make server-call to delete LabProblem specified by given id.
 
+   * @return Future containing the truth value of the success of the operation
+   * @throws Exception if data given is invalid or call fails
+   */
   @Override
   public Future<Boolean> deleteLabProblem(
       Long id) { // this is not needed here but necessary for interface contract

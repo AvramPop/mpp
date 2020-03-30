@@ -17,7 +17,9 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
-
+/**
+ * Client service to handle Student specific data communicated via socket.
+ */
 public class StudentClientService implements StudentService {
   private ExecutorService executorService;
   private TCPClient tcpClient;
@@ -27,7 +29,12 @@ public class StudentClientService implements StudentService {
     this.tcpClient = tcpClient;
     // this.validator = validator;
   }
+  /**
+   * Make server-call to add Student with data specified in params.
 
+   * @return Future containing the truth value of the success of the operation
+   * @throws Exception if data given is invalid or call fails
+   */
   @Override
   public Future<Boolean> addStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException {
@@ -44,7 +51,12 @@ public class StudentClientService implements StudentService {
           return null;
         });
   }
+  /**
+   * Make server-call to get all Students.
 
+   * @return Future containing a Set of all Students.
+   * @throws Exception if call fails
+   */
   @Override
   public Future<Set<Student>> getAllStudents() {
     return executorService.submit(
@@ -60,7 +72,12 @@ public class StudentClientService implements StudentService {
               .collect(Collectors.toSet());
         });
   }
-
+  /**
+   * Make server-call to get all Students sorted by given Sort.
+   *
+   * @return Future containing the Students sorted by Sort criteria
+   * @throws Exception if call fails
+   */
   @Override
   public Future<List<Student>> getAllStudentsSorted(Sort sort) {
 
@@ -83,7 +100,12 @@ public class StudentClientService implements StudentService {
               .collect(Collectors.toList());
         });
   }
+  /**
+   * Make server-call to get Student specified by given id.
 
+   * @return Future containing the sought Student.
+   * @throws Exception if data given is invalid or call fails
+   */
   @Override
   public Future<Student> getStudentById(Long id) {
     return executorService.submit(
@@ -95,7 +117,12 @@ public class StudentClientService implements StudentService {
           return StringEntityFactory.studentFromMessageLine(response.getBody());
         });
   }
+  /**
+   * Make server-call to update Student with given data.
 
+   * @return Future containing the truth value of the success of the operation
+   * @throws Exception if data given is invalid or call fails
+   */
   @Override
   public Future<Boolean> updateStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException {
@@ -112,7 +139,12 @@ public class StudentClientService implements StudentService {
           return true;
         });
   }
+  /**
+   * Make server-call to delete Student specified by given id.
 
+   * @return Future containing the truth value of the success of the operation
+   * @throws Exception if data given is invalid or call fails
+   */
   @Override
   public Future<Boolean> deleteStudent(Long id) {
 

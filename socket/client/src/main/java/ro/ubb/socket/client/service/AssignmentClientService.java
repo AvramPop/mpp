@@ -17,6 +17,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
+/**
+ * Client service to handle Assignment specific data communicated via socket.
+ */
 public class AssignmentClientService implements AssignmentService {
 
   private ExecutorService executorService;
@@ -28,6 +31,12 @@ public class AssignmentClientService implements AssignmentService {
     // this.validator = validator;
   }
 
+  /**
+   * Make server-call to add Assignment with data specified in params.
+
+   * @return Future containing the truth value of the success of the operation
+   * @throws Exception if data given is invalid or call fails
+   */
   @Override
   public Future<Boolean> addAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException {
@@ -46,6 +55,12 @@ public class AssignmentClientService implements AssignmentService {
         });
   }
 
+  /**
+   * Make server-call to get all Assignments.
+
+   * @return Future containing a Set of all Assignments.
+   * @throws Exception if call fails
+   */
   @Override
   public Future<Set<Assignment>> getAllAssignments() {
     return executorService.submit(
@@ -62,6 +77,13 @@ public class AssignmentClientService implements AssignmentService {
         });
   }
 
+
+  /**
+   * Make server-call to get all Assignments sorted by given Sort.
+   *
+   * @return Future containing the Assignments sorted by Sort criteria
+   * @throws Exception if call fails
+   */
   @Override
   public Future<List<Assignment>> getAllAssignmentsSorted(Sort sort) {
 
@@ -85,6 +107,12 @@ public class AssignmentClientService implements AssignmentService {
         });
   }
 
+  /**
+   * Make server-call to get Assignment specified by given id.
+
+   * @return Future containing the sought Assignment.
+   * @throws Exception if data given is invalid or call fails
+   */
   @Override
   public Future<Assignment> getAssignmentById(Long id) {
 
@@ -98,6 +126,12 @@ public class AssignmentClientService implements AssignmentService {
         });
   }
 
+  /**
+   * Make server-call to delete Assignment specified by given id.
+
+   * @return Future containing the truth value of the success of the operation
+   * @throws Exception if data given is invalid or call fails
+   */
   @Override
   public Future<Boolean> deleteAssignment(Long id) {
 
@@ -110,7 +144,12 @@ public class AssignmentClientService implements AssignmentService {
           return true;
         });
   }
+  /**
+   * Make server-call to update Assignment with given data.
 
+   * @return Future containing the truth value of the success of the operation
+   * @throws Exception if data given is invalid or call fails
+   */
   @Override
   public Future<Boolean> updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException {
@@ -128,6 +167,12 @@ public class AssignmentClientService implements AssignmentService {
         });
   }
 
+  /**
+   * Make server-call to get the Student with the greatest mean and his mean.
+
+   * @return Future containing a Pair between the id of the student and his mean.
+   * @throws Exception if call fails
+   */
   @Override
   public Future<AbstractMap.SimpleEntry<Long, Double>> greatestMean() {
     return executorService.submit(
@@ -142,6 +187,12 @@ public class AssignmentClientService implements AssignmentService {
         });
   }
 
+  /**
+   * Make server-call to get the id of the problem most assigned and the times it got assigned.
+
+   * @return Future containing a Pair between the id of the problem and times assigned.
+   * @throws Exception if call fails
+   */
   @Override
   public Future<AbstractMap.SimpleEntry<Long, Long>> idOfLabProblemMostAssigned() {
 
@@ -157,6 +208,12 @@ public class AssignmentClientService implements AssignmentService {
         });
   }
 
+  /**
+   * Make server-call to get the average grade of all assignments.
+
+   * @return Future containing the average grade
+   * @throws Exception if call fails
+   */
   @Override
   public Future<Double> averageGrade() {
 
@@ -169,7 +226,12 @@ public class AssignmentClientService implements AssignmentService {
           return Double.parseDouble(response.getBody());
         });
   }
+  /**
+   * Make server-call to get a map between each student and the problems assigned to him.
 
+   * @return Future containing the sought map
+   * @throws Exception if call fails
+   */
   @Override
   public Future<Map<Student, List<LabProblem>>> studentAssignedProblems() {
     // fixme: java 8 with streams, maybe using different representation
@@ -201,6 +263,9 @@ public class AssignmentClientService implements AssignmentService {
     }
   }
 
+  /**
+   * Shutdown server call.
+   */
   public void shutDownServer() {
     tcpClient.sendAndReceive(new Message(MessageHeader.SERVER_SHUTDOWN, ""));
   }
