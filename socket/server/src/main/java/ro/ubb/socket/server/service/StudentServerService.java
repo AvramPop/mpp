@@ -83,6 +83,4 @@ public class StudentServerService implements StudentService {
     }
     return executorService.submit(() -> repository.findOne(id).get());
   }
-
-
 }

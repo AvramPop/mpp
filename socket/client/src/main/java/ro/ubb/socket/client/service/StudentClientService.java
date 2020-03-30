@@ -21,11 +21,11 @@ import java.util.stream.Collectors;
 public class StudentClientService implements StudentService {
   private ExecutorService executorService;
   private TCPClient tcpClient;
-  //private Validator<Student> validator;
+  // private Validator<Student> validator;
   public StudentClientService(ExecutorService executorService, TCPClient tcpClient) {
     this.executorService = executorService;
     this.tcpClient = tcpClient;
-    //this.validator = validator;
+    // this.validator = validator;
   }
 
   @Override
@@ -34,17 +34,15 @@ public class StudentClientService implements StudentService {
     Student newStudent = new Student(serialNumber, name, group);
     newStudent.setId(id);
 
-
-      return executorService.submit(()->{
-        Message request = new Message(MessageHeader.STUDENT_ADD,newStudent.objectToFileLine());
-        Message response = tcpClient.sendAndReceive(request);
-        if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
-          throw new BadRequestException("Addition failed, entity already in repository");
+    return executorService.submit(
+        () -> {
+          Message request = new Message(MessageHeader.STUDENT_ADD, newStudent.objectToFileLine());
+          Message response = tcpClient.sendAndReceive(request);
+          if (response.getHeader().equals(MessageHeader.BAD_REQUEST))
+            throw new BadRequestException("Addition failed, entity already in repository");
 
           return null;
-
-        }
-      );
+        });
   }
 
   @Override
@@ -60,39 +58,42 @@ public class StudentClientService implements StudentService {
           return Arrays.stream(lines)
               .map(StringEntityFactory::studentFromMessageLine)
               .collect(Collectors.toSet());
-
-
         });
   }
 
   @Override
   public Future<List<Student>> getAllStudentsSorted(Sort sort) {
 
-    return executorService.submit(()->{
-
-          String sortOrder = sort.getSortingChain().stream().map(component -> component.getKey().name() + " " + component.getValue()).
-                  reduce("",(partialString, string) -> partialString + string + System.lineSeparator());
-          Message request = new Message(MessageHeader.STUDENT_SORTED,sortOrder);
+    return executorService.submit(
+        () -> {
+          String sortOrder =
+              sort.getSortingChain().stream()
+                  .map(component -> component.getKey().name() + " " + component.getValue())
+                  .reduce(
+                      "",
+                      (partialString, string) -> partialString + string + System.lineSeparator());
+          Message request = new Message(MessageHeader.STUDENT_SORTED, sortOrder);
           Message response = tcpClient.sendAndReceive(request);
-          if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
+          if (response.getHeader().equals(MessageHeader.BAD_REQUEST))
             throw new BadRequestException(response.getBody());
 
           String[] lines = response.getBody().split(System.lineSeparator());
-          return Arrays.stream(lines).map(StringEntityFactory::studentFromMessageLine).collect(Collectors.toList());
-
-        }
-      );
-    }
+          return Arrays.stream(lines)
+              .map(StringEntityFactory::studentFromMessageLine)
+              .collect(Collectors.toList());
+        });
+  }
 
   @Override
   public Future<Student> getStudentById(Long id) {
-    return executorService.submit(()->{
-        Message request = new Message(MessageHeader.STUDENT_BY_ID,id.toString());
-        Message response = tcpClient.sendAndReceive(request);
-        if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
-          throw new BadRequestException(response.getBody());
-        return StringEntityFactory.studentFromMessageLine(response.getBody());
-    });
+    return executorService.submit(
+        () -> {
+          Message request = new Message(MessageHeader.STUDENT_BY_ID, id.toString());
+          Message response = tcpClient.sendAndReceive(request);
+          if (response.getHeader().equals(MessageHeader.BAD_REQUEST))
+            throw new BadRequestException(response.getBody());
+          return StringEntityFactory.studentFromMessageLine(response.getBody());
+        });
   }
 
   @Override
@@ -101,25 +102,27 @@ public class StudentClientService implements StudentService {
     Student newStudent = new Student(serialNumber, name, group);
     newStudent.setId(id);
 
-    return executorService.submit(()->{
-        Message request = new Message(MessageHeader.STUDENT_UPDATE,newStudent.objectToFileLine());
-        Message response = tcpClient.sendAndReceive(request);
-        if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
-          throw new BadRequestException(response.getBody());
-        return true;
-    });
+    return executorService.submit(
+        () -> {
+          Message request =
+              new Message(MessageHeader.STUDENT_UPDATE, newStudent.objectToFileLine());
+          Message response = tcpClient.sendAndReceive(request);
+          if (response.getHeader().equals(MessageHeader.BAD_REQUEST))
+            throw new BadRequestException(response.getBody());
+          return true;
+        });
   }
 
-    @Override
-    public Future<Boolean> deleteStudent(Long id) {
+  @Override
+  public Future<Boolean> deleteStudent(Long id) {
 
-        return executorService.submit(()->{
-            Message request = new Message(MessageHeader.STUDENT_DELETE,id.toString());
-            Message response = tcpClient.sendAndReceive(request);
-            if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
-                throw new BadRequestException(response.getBody());
-            return true;
+    return executorService.submit(
+        () -> {
+          Message request = new Message(MessageHeader.STUDENT_DELETE, id.toString());
+          Message response = tcpClient.sendAndReceive(request);
+          if (response.getHeader().equals(MessageHeader.BAD_REQUEST))
+            throw new BadRequestException(response.getBody());
+          return true;
         });
-
-    }
+  }
 }

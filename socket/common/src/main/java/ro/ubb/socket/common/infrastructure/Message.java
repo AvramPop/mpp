@@ -43,14 +43,22 @@ public class Message {
     BufferedReader br = new BufferedReader(new InputStreamReader(is));
     StringBuilder bufferMessage = new StringBuilder();
     do {
-      //System.out.println(bufferMessage);
+      // System.out.println(bufferMessage);
       bufferMessage.append(br.readLine());
       bufferMessage.append(System.lineSeparator());
     } while (br.ready());
-    bufferMessage = new StringBuilder(bufferMessage.substring(0, bufferMessage.length() - System.lineSeparator().length()));
-    String[] inputParsed = bufferMessage.toString().split(System.lineSeparator(), 2);//fixed: it splits the data badly, so conversion crashes
-                                                                                // for some reason when it splits the rows it splits the last \n off leaving \r at the end which crashes the converison
-    header = inputParsed[0];                                                    // try print students for client
+    bufferMessage =
+        new StringBuilder(
+            bufferMessage.substring(0, bufferMessage.length() - System.lineSeparator().length()));
+    String[] inputParsed =
+        bufferMessage
+            .toString()
+            .split(
+                System.lineSeparator(),
+                2); // fixed: it splits the data badly, so conversion crashes
+    // for some reason when it splits the rows it splits the last \n off leaving \r at the end which
+    // crashes the converison
+    header = inputParsed[0]; // try print students for client
     if (inputParsed.length > 1) {
       body = inputParsed[1];
     }

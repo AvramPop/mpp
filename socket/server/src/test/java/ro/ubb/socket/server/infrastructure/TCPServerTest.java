@@ -7,7 +7,6 @@ import org.junit.Test;
 import ro.ubb.socket.common.domain.Assignment;
 import ro.ubb.socket.common.domain.LabProblem;
 import ro.ubb.socket.common.domain.Student;
-import ro.ubb.socket.common.domain.exceptions.ServiceException;
 import ro.ubb.socket.common.infrastructure.Message;
 import ro.ubb.socket.common.infrastructure.MessageHeader;
 import ro.ubb.socket.common.service.AssignmentService;
@@ -33,8 +32,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.StreamSupport;
 
-import static org.junit.Assert.*;
-
 public class TCPServerTest {
 
   private Socket clientSocket;
@@ -50,30 +47,46 @@ public class TCPServerTest {
   private DBAssignmentsRepository assignmentsRepository;
   private Message serverResponse;
 
-
   @Before
   public void setUp() throws Exception {
     Validator<Student> studentValidator = new StudentValidator();
-    studentRepository = new DBStudentRepository(
-        ".." + FileSystems.getDefault().getSeparator() + "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data", "public.\"Students_test\"");
+    studentRepository =
+        new DBStudentRepository(
+            ".."
+                + FileSystems.getDefault().getSeparator()
+                + "configuration"
+                + FileSystems.getDefault().getSeparator()
+                + "db-credentials.data",
+            "public.\"Students_test\"");
     student = new Student("sn1", "studentName", 1);
     student.setId(1L);
-   // studentRepository.save(student);
+    // studentRepository.save(student);
     Validator<LabProblem> labProblemValidator = new LabProblemValidator();
 
-    labProblemRepository = new DBLabProblemRepository(
-        ".." + FileSystems.getDefault().getSeparator() + "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data", "public.\"LabProblems_test\"");
+    labProblemRepository =
+        new DBLabProblemRepository(
+            ".."
+                + FileSystems.getDefault().getSeparator()
+                + "configuration"
+                + FileSystems.getDefault().getSeparator()
+                + "db-credentials.data",
+            "public.\"LabProblems_test\"");
     labProblem = new LabProblem(11, "description");
     labProblem.setId(1L);
-//    labProblemRepository.save(labProblem);
+    //    labProblemRepository.save(labProblem);
     Validator<Assignment> assignmentValidator = new AssignmentValidator();
-    assignmentsRepository = new DBAssignmentsRepository(
-        ".." + FileSystems.getDefault().getSeparator() + "configuration" + FileSystems.getDefault().getSeparator() + "db-credentials.data", "public.\"Assignments_test\"");
+    assignmentsRepository =
+        new DBAssignmentsRepository(
+            ".."
+                + FileSystems.getDefault().getSeparator()
+                + "configuration"
+                + FileSystems.getDefault().getSeparator()
+                + "db-credentials.data",
+            "public.\"Assignments_test\"");
     assignment = new Assignment(1L, 1L, 10);
     assignment.setId(1L);
-//    assignmentsRepository.save(assignment);
-    executorService =
-        Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+    //    assignmentsRepository.save(assignment);
+    executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     StudentService studentService =
         new StudentServerService(studentRepository, studentValidator, executorService);
     LabProblemService labProblemService =
@@ -86,7 +99,8 @@ public class TCPServerTest {
             labProblemService,
             studentService);
     tcpServer = new TCPServer(executorService, Message.TEST_PORT);
-    HandlerManager handlerManager = new HandlerManager(tcpServer, studentService, labProblemService, assignmentService);
+    HandlerManager handlerManager =
+        new HandlerManager(tcpServer, studentService, labProblemService, assignmentService);
     handlerManager.addHandlers();
     Thread serverThread = new Thread(() -> tcpServer.startServer());
     serverThread.start();
@@ -96,9 +110,7 @@ public class TCPServerTest {
     labProblemRepository.save(labProblem);
     studentRepository.save(student);
     assignmentsRepository.save(assignment);
-    }
-
-
+  }
 
   @After
   public void tearDown() throws Exception {
@@ -117,7 +129,7 @@ public class TCPServerTest {
     serverResponse.readFrom(clientInputStream);
     executorService.shutdown();
     clientSocket.close();
-   // Thread.sleep(4000);
+    // Thread.sleep(4000);
     student = null;
     assignment = null;
     labProblem = null;
@@ -133,7 +145,7 @@ public class TCPServerTest {
   }
 
   @Test
-  public void getAllLabProblems() throws IOException{
+  public void getAllLabProblems() throws IOException {
     Message clientRequest = new Message(MessageHeader.LABPROBLEM_ALL, "");
     clientInputStream = clientSocket.getInputStream();
     clientOutputStream = clientSocket.getOutputStream();
@@ -145,7 +157,7 @@ public class TCPServerTest {
   }
 
   @Test
-  public void getLabProblemById() throws IOException{
+  public void getLabProblemById() throws IOException {
     Message clientRequest = new Message(MessageHeader.LABPROBLEM_BY_ID, "1");
     clientInputStream = clientSocket.getInputStream();
     clientOutputStream = clientSocket.getOutputStream();
@@ -157,7 +169,7 @@ public class TCPServerTest {
   }
 
   @Test
-  public void getAllStudents() throws IOException{
+  public void getAllStudents() throws IOException {
     Message clientRequest = new Message(MessageHeader.STUDENT_ALL, "");
     clientInputStream = clientSocket.getInputStream();
     clientOutputStream = clientSocket.getOutputStream();
@@ -169,7 +181,7 @@ public class TCPServerTest {
   }
 
   @Test
-  public void getStudentById() throws IOException{
+  public void getStudentById() throws IOException {
     Message clientRequest = new Message(MessageHeader.STUDENT_BY_ID, "1");
     clientInputStream = clientSocket.getInputStream();
     clientOutputStream = clientSocket.getOutputStream();
@@ -181,7 +193,7 @@ public class TCPServerTest {
   }
 
   @Test
-  public void getAllAssignments() throws IOException{
+  public void getAllAssignments() throws IOException {
     Message clientRequest = new Message(MessageHeader.ASSIGNMENT_ALL, "");
     clientInputStream = clientSocket.getInputStream();
     clientOutputStream = clientSocket.getOutputStream();
@@ -193,7 +205,7 @@ public class TCPServerTest {
   }
 
   @Test
-  public void getAssignmentById() throws IOException{
+  public void getAssignmentById() throws IOException {
     Message clientRequest = new Message(MessageHeader.ASSIGNMENT_BY_ID, "1");
     clientInputStream = clientSocket.getInputStream();
     clientOutputStream = clientSocket.getOutputStream();
@@ -205,21 +217,22 @@ public class TCPServerTest {
   }
 
   @Test
-  public void addStudent() throws IOException{
-    Message clientRequest = new Message(MessageHeader.STUDENT_ADD, "2, sn2, name2, 2");
+  public void addStudent() throws IOException {
+    Message clientRequest = new Message(MessageHeader.STUDENT_ADD, "2,sn2,name2,2");
     clientInputStream = clientSocket.getInputStream();
     clientOutputStream = clientSocket.getOutputStream();
     clientRequest.writeTo(clientOutputStream);
     serverResponse = new Message();
     serverResponse.readFrom(clientInputStream);
     Assert.assertEquals(MessageHeader.OK_REQUEST, serverResponse.getHeader());
-    Assert.assertEquals(StreamSupport.stream(studentRepository.findAll().spliterator(), false).count(), 2L);
+    Assert.assertEquals(
+        StreamSupport.stream(studentRepository.findAll().spliterator(), false).count(), 2L);
     studentRepository.delete(2L);
   }
 
   @Test
-  public void updateStudent() throws IOException{
-    Message clientRequest = new Message(MessageHeader.STUDENT_UPDATE, "1, sn1up, name1up, 1");
+  public void updateStudent() throws IOException {
+    Message clientRequest = new Message(MessageHeader.STUDENT_UPDATE, "1,sn1up,name1up,1");
     clientInputStream = clientSocket.getInputStream();
     clientOutputStream = clientSocket.getOutputStream();
     clientRequest.writeTo(clientOutputStream);
@@ -230,21 +243,22 @@ public class TCPServerTest {
   }
 
   @Test
-  public void addLabProblem() throws IOException{
-    Message clientRequest = new Message(MessageHeader.LABPROBLEM_ADD, "2, 2, descr2");
+  public void addLabProblem() throws IOException {
+    Message clientRequest = new Message(MessageHeader.LABPROBLEM_ADD, "2,2,descr2");
     clientInputStream = clientSocket.getInputStream();
     clientOutputStream = clientSocket.getOutputStream();
     clientRequest.writeTo(clientOutputStream);
     serverResponse = new Message();
     serverResponse.readFrom(clientInputStream);
     Assert.assertEquals(MessageHeader.OK_REQUEST, serverResponse.getHeader());
-    Assert.assertEquals(StreamSupport.stream(labProblemRepository.findAll().spliterator(), false).count(), 2L);
+    Assert.assertEquals(
+        StreamSupport.stream(labProblemRepository.findAll().spliterator(), false).count(), 2L);
     labProblemRepository.delete(2L);
   }
 
   @Test
-  public void updateLabProblem() throws IOException{
-    Message clientRequest = new Message(MessageHeader.LABPROBLEM_UPDATE, "1, 2, descrup");
+  public void updateLabProblem() throws IOException {
+    Message clientRequest = new Message(MessageHeader.LABPROBLEM_UPDATE, "1,2,descrup");
     clientInputStream = clientSocket.getInputStream();
     clientOutputStream = clientSocket.getOutputStream();
     clientRequest.writeTo(clientOutputStream);
@@ -255,21 +269,22 @@ public class TCPServerTest {
   }
 
   @Test
-  public void addAssignment() throws IOException{
-    Message clientRequest = new Message(MessageHeader.ASSIGNMENT_ADD, "2, 1, 1, 5");
+  public void addAssignment() throws IOException {
+    Message clientRequest = new Message(MessageHeader.ASSIGNMENT_ADD, "2,1,1,5");
     clientInputStream = clientSocket.getInputStream();
     clientOutputStream = clientSocket.getOutputStream();
     clientRequest.writeTo(clientOutputStream);
     serverResponse = new Message();
     serverResponse.readFrom(clientInputStream);
     Assert.assertEquals(MessageHeader.OK_REQUEST, serverResponse.getHeader());
-    Assert.assertEquals(StreamSupport.stream(assignmentsRepository.findAll().spliterator(), false).count(), 2L);
+    Assert.assertEquals(
+        StreamSupport.stream(assignmentsRepository.findAll().spliterator(), false).count(), 2L);
     assignmentsRepository.delete(2L);
   }
 
   @Test
-  public void updateAssignment() throws IOException{
-    Message clientRequest = new Message(MessageHeader.ASSIGNMENT_UPDATE, "1, 1, 1, 6");
+  public void updateAssignment() throws IOException {
+    Message clientRequest = new Message(MessageHeader.ASSIGNMENT_UPDATE, "1,1,1,6");
     clientInputStream = clientSocket.getInputStream();
     clientOutputStream = clientSocket.getOutputStream();
     clientRequest.writeTo(clientOutputStream);
@@ -280,7 +295,7 @@ public class TCPServerTest {
   }
 
   @Test
-  public void deleteAssignment() throws IOException{
+  public void deleteAssignment() throws IOException {
     Message clientRequest = new Message(MessageHeader.ASSIGNMENT_DELETE, "1");
     clientInputStream = clientSocket.getInputStream();
     clientOutputStream = clientSocket.getOutputStream();
@@ -288,11 +303,12 @@ public class TCPServerTest {
     serverResponse = new Message();
     serverResponse.readFrom(clientInputStream);
     Assert.assertEquals(MessageHeader.OK_REQUEST, serverResponse.getHeader());
-    Assert.assertEquals(StreamSupport.stream(assignmentsRepository.findAll().spliterator(), false).count(), 0);
+    Assert.assertEquals(
+        StreamSupport.stream(assignmentsRepository.findAll().spliterator(), false).count(), 0);
   }
 
   @Test
-  public void deleteLabProblem() throws IOException{
+  public void deleteLabProblem() throws IOException {
     Message clientRequest = new Message(MessageHeader.LABPROBLEM_DELETE, "1");
     clientInputStream = clientSocket.getInputStream();
     clientOutputStream = clientSocket.getOutputStream();
@@ -300,11 +316,12 @@ public class TCPServerTest {
     serverResponse = new Message();
     serverResponse.readFrom(clientInputStream);
     Assert.assertEquals(MessageHeader.OK_REQUEST, serverResponse.getHeader());
-    Assert.assertEquals(StreamSupport.stream(labProblemRepository.findAll().spliterator(), false).count(), 0);
+    Assert.assertEquals(
+        StreamSupport.stream(labProblemRepository.findAll().spliterator(), false).count(), 0);
   }
 
   @Test
-  public void deleteStudent() throws IOException{
+  public void deleteStudent() throws IOException {
     Message clientRequest = new Message(MessageHeader.STUDENT_DELETE, "1");
     clientInputStream = clientSocket.getInputStream();
     clientOutputStream = clientSocket.getOutputStream();
@@ -312,11 +329,12 @@ public class TCPServerTest {
     serverResponse = new Message();
     serverResponse.readFrom(clientInputStream);
     Assert.assertEquals(MessageHeader.OK_REQUEST, serverResponse.getHeader());
-    Assert.assertEquals(StreamSupport.stream(studentRepository.findAll().spliterator(), false).count(), 0);
+    Assert.assertEquals(
+        StreamSupport.stream(studentRepository.findAll().spliterator(), false).count(), 0);
   }
 
   @Test
-  public void averageGrade() throws IOException{
+  public void averageGrade() throws IOException {
     Assignment assignment1 = new Assignment(1L, 1L, 2);
     assignment1.setId(2L);
     Assignment assignment2 = new Assignment(1L, 1L, 6);
@@ -336,7 +354,7 @@ public class TCPServerTest {
   }
 
   @Test
-  public void greatestMean() throws IOException{
+  public void greatestMean() throws IOException {
     Student student2 = new Student("sn2", "name2", 2);
     student2.setId(2L);
     Assignment assignment1 = new Assignment(2L, 1L, 2);
@@ -356,7 +374,7 @@ public class TCPServerTest {
   }
 
   @Test
-  public void labProblemMostAssigned() throws IOException{
+  public void labProblemMostAssigned() throws IOException {
     Student student2 = new Student("sn2", "name2", 2);
     student2.setId(2L);
     Assignment assignment1 = new Assignment(2L, 1L, 2);
@@ -376,7 +394,7 @@ public class TCPServerTest {
   }
 
   @Test
-  public void studentProblems() throws IOException{
+  public void studentProblems() throws IOException {
     Student student2 = new Student("sn2", "name2", 2);
     student2.setId(2L);
     LabProblem labProblem2 = new LabProblem(2, "descr2");
@@ -396,14 +414,17 @@ public class TCPServerTest {
     serverResponse = new Message();
     serverResponse.readFrom(clientInputStream);
     Assert.assertEquals(MessageHeader.OK_REQUEST, serverResponse.getHeader());
-    Assert.assertEquals("1,sn1,studentName,1?1,11,description\n2,sn2,name2,2?2,2,descr2;1,11,description", serverResponse.getBody());
+    Assert.assertEquals(
+        "1,sn1,studentName,1?1,11,description\n2,sn2,name2,2?2,2,descr2;1,11,description",
+        serverResponse.getBody());
     assignmentsRepository.delete(2L);
     assignmentsRepository.delete(3L);
     labProblemRepository.delete(2L);
     studentRepository.delete(2L);
   }
+
   @Test
-  public void assignmentsSorted() throws IOException{
+  public void assignmentsSorted() throws IOException {
     Assignment assignment1 = new Assignment(1L, 1L, 2);
     assignment1.setId(2L);
     assignmentsRepository.save(assignment1);
@@ -419,7 +440,7 @@ public class TCPServerTest {
   }
 
   @Test
-  public void studentsSorted() throws IOException{
+  public void studentsSorted() throws IOException {
     Student student1 = new Student("sn2", "name", 2);
     student1.setId(2L);
     studentRepository.save(student1);
@@ -435,7 +456,7 @@ public class TCPServerTest {
   }
 
   @Test
-  public void labProblemsSorted() throws IOException{
+  public void labProblemsSorted() throws IOException {
     LabProblem labProblem1 = new LabProblem(2, "descr");
     labProblem1.setId(2L);
     labProblemRepository.save(labProblem1);

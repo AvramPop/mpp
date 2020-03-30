@@ -5,7 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import ro.ubb.socket.client.infrastructure.TCPClient;
-import ro.ubb.socket.common.domain.Student;
+import ro.ubb.socket.common.domain.LabProblem;
 import ro.ubb.socket.common.infrastructure.Message;
 import ro.ubb.socket.common.infrastructure.MessageHeader;
 import ro.ubb.socket.common.service.sort.Sort;
@@ -18,54 +18,51 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class StudentClientServiceTest {
+public class LabProblemClientServiceTest {
 
-  private StudentClientService studentClientService;
+  private LabProblemClientService labProblemClientService;
   private ExecutorService executorService;
   private TCPClient tcpClient;
-  private Student student;
-
+  private LabProblem labProblem;
   private static final Long ID = 1L;
   private static final Long NEW_ID = 2L;
-  private static final String SERIAL_NUMBER = "sn01";
-  private static final String NEW_SERIAL_NUMBER = "sn02";
-  private static final String NAME = "studentName";
-  private static final String NEW_NAME = "newStudentName";
-  private static final int GROUP = 123;
-  private static final int NEW_GROUP = 999;
+  private static final String DESCRIPTION = "123123";
+  private static final String NEW_DESCRIPTION = "123";
+  private static final int PROBLEM_NUMBER = 123;
+  private static final int NEW_PROBLEM_NUMBER = 999;
 
   @Before
   public void setUp() {
     executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     tcpClient = new TCPClient();
-    studentClientService = new StudentClientService(executorService, tcpClient);
-    student = new Student(SERIAL_NUMBER, NAME, GROUP);
-    student.setId(ID);
+    labProblemClientService = new LabProblemClientService(executorService, tcpClient);
+    labProblem = new LabProblem(PROBLEM_NUMBER, DESCRIPTION);
+    labProblem.setId(ID);
   }
 
   @After
   public void tearDown() {
-    studentClientService = null;
+    labProblemClientService = null;
     executorService.shutdown();
     executorService = null;
     tcpClient = null;
-    student = null;
+    labProblem = null;
   }
 
   @Test
-  public void getAllStudentsFailNoConnection() {
+  public void getAllLabProblemsFailNoConnection() {
 
     try {
-      studentClientService.getAllStudents().get();
+      labProblemClientService.getAllLabProblems().get();
     } catch (InterruptedException | ExecutionException e) {
       Assert.assertTrue(true);
     }
   }
 
   @Test
-  public void getAllStudentFailResponseBad() {
+  public void getAllLabProblemsFailResponseBad() {
     try (ServerSocket serverSocket = new ServerSocket(Message.PORT)) {
-      var result = studentClientService.getAllStudents();
+      var result = labProblemClientService.getAllLabProblems();
       try (Socket serverResponse = serverSocket.accept();
           OutputStream outputStream = serverResponse.getOutputStream()) {
 
@@ -80,13 +77,13 @@ public class StudentClientServiceTest {
   }
 
   @Test
-  public void getAllStudentSuccess() {
+  public void getAllLabProblemsSuccess() {
     try (ServerSocket serverSocket = new ServerSocket(Message.PORT)) {
-      var result = studentClientService.getAllStudents();
+      var result = labProblemClientService.getAllLabProblems();
       try (Socket serverResponse = serverSocket.accept();
           OutputStream outputStream = serverResponse.getOutputStream()) {
 
-        Message response = new Message(MessageHeader.OK_REQUEST, student.objectToFileLine());
+        Message response = new Message(MessageHeader.OK_REQUEST, "1,1,1");
         response.writeTo(outputStream);
         Assert.assertEquals(result.get().size(), 1);
       }
@@ -96,9 +93,9 @@ public class StudentClientServiceTest {
   }
 
   @Test
-  public void getStudentByIdFails() {
+  public void getLabProblemsByIdFails() {
     try (ServerSocket serverSocket = new ServerSocket(Message.PORT)) {
-      var result = studentClientService.getStudentById(1L);
+      var result = labProblemClientService.getLabProblemById(1L);
       try (Socket serverResponse = serverSocket.accept();
           OutputStream outputStream = serverResponse.getOutputStream()) {
 
@@ -113,15 +110,17 @@ public class StudentClientServiceTest {
   }
 
   @Test
-  public void getStudentByIdSuccess() {
+  public void getLabProblemsByIdSuccess() {
     try (ServerSocket serverSocket = new ServerSocket(Message.PORT)) {
-      var result = studentClientService.getStudentById(1L);
+      var result = labProblemClientService.getLabProblemById(1L);
       try (Socket serverResponse = serverSocket.accept();
           OutputStream outputStream = serverResponse.getOutputStream()) {
 
-        Message response = new Message(MessageHeader.OK_REQUEST, student.objectToFileLine());
+        Message response = new Message(MessageHeader.OK_REQUEST, "1,1,2");
         response.writeTo(outputStream);
-        Assert.assertEquals(result.get(), student);
+        LabProblem expectedResponse = new LabProblem(1, "1");
+        expectedResponse.setId(1L);
+        Assert.assertEquals(result.get(), expectedResponse);
       }
     } catch (IOException | InterruptedException | ExecutionException e) {
       Assert.fail();
@@ -129,9 +128,9 @@ public class StudentClientServiceTest {
   }
 
   @Test
-  public void addStudentFails() {
+  public void addLabProblemsFails() {
     try (ServerSocket serverSocket = new ServerSocket(Message.PORT)) {
-      var result = studentClientService.addStudent(1L, "1", "1", 1);
+      var result = labProblemClientService.addLabProblem(1L, 1, "1");
       try (Socket serverResponse = serverSocket.accept();
           OutputStream outputStream = serverResponse.getOutputStream()) {
 
@@ -146,9 +145,9 @@ public class StudentClientServiceTest {
   }
 
   @Test
-  public void addStudentSuccess() {
+  public void addLabProblemsSuccess() {
     try (ServerSocket serverSocket = new ServerSocket(Message.PORT)) {
-      var result = studentClientService.addStudent(1L, "1", "1", 1);
+      var result = labProblemClientService.addLabProblem(1L, 1, "1");
       try (Socket serverResponse = serverSocket.accept();
           OutputStream outputStream = serverResponse.getOutputStream()) {
 
@@ -162,9 +161,9 @@ public class StudentClientServiceTest {
   }
 
   @Test
-  public void updateStudentFails() {
+  public void updateLabProblemsFails() {
     try (ServerSocket serverSocket = new ServerSocket(Message.PORT)) {
-      var result = studentClientService.updateStudent(1L, "1", "1", 1);
+      var result = labProblemClientService.updateLabProblem(1L, 1, "1");
       try (Socket serverResponse = serverSocket.accept();
           OutputStream outputStream = serverResponse.getOutputStream()) {
 
@@ -179,9 +178,9 @@ public class StudentClientServiceTest {
   }
 
   @Test
-  public void updateStudentSuccess() {
+  public void updateLabProblemsSuccess() {
     try (ServerSocket serverSocket = new ServerSocket(Message.PORT)) {
-      var result = studentClientService.updateStudent(1L, "1", "1", 1);
+      var result = labProblemClientService.updateLabProblem(1L, 1, "1");
       try (Socket serverResponse = serverSocket.accept();
           OutputStream outputStream = serverResponse.getOutputStream()) {
 
@@ -195,9 +194,9 @@ public class StudentClientServiceTest {
   }
 
   @Test
-  public void deleteStudentFails() {
+  public void deleteLabProblemsFails() {
     try (ServerSocket serverSocket = new ServerSocket(Message.PORT)) {
-      var result = studentClientService.deleteStudent(1L);
+      var result = labProblemClientService.deleteLabProblem(1L);
       try (Socket serverResponse = serverSocket.accept();
           OutputStream outputStream = serverResponse.getOutputStream()) {
 
@@ -212,9 +211,9 @@ public class StudentClientServiceTest {
   }
 
   @Test
-  public void deleteStudentSuccess() {
+  public void deleteLabProblemsSuccess() {
     try (ServerSocket serverSocket = new ServerSocket(Message.PORT)) {
-      var result = studentClientService.deleteStudent(1L);
+      var result = labProblemClientService.deleteLabProblem(1L);
       try (Socket serverResponse = serverSocket.accept();
           OutputStream outputStream = serverResponse.getOutputStream()) {
 
@@ -228,9 +227,9 @@ public class StudentClientServiceTest {
   }
 
   @Test
-  public void getAllStudentsSortedFails() {
+  public void getAllLabProblemsSortedFails() {
     try (ServerSocket serverSocket = new ServerSocket(Message.PORT)) {
-      var result = studentClientService.getAllStudentsSorted(new Sort("asd"));
+      var result = labProblemClientService.getAllLabProblemsSorted(new Sort("asd"));
       try (Socket serverResponse = serverSocket.accept();
           OutputStream outputStream = serverResponse.getOutputStream()) {
 
@@ -245,9 +244,9 @@ public class StudentClientServiceTest {
   }
 
   @Test
-  public void getAllStudentsSortedSuccess() {
+  public void getAllLabProblemsSortedSuccess() {
     try (ServerSocket serverSocket = new ServerSocket(Message.PORT)) {
-      var result = studentClientService.getAllStudentsSorted(new Sort("name"));
+      var result = labProblemClientService.getAllLabProblemsSorted(new Sort("description"));
       try (Socket serverResponse = serverSocket.accept();
           OutputStream outputStream = serverResponse.getOutputStream()) {
 

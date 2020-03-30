@@ -34,11 +34,10 @@ public interface AssignmentService {
    * Deletes an assignment from the ro.ubb.repository
    *
    * @param id the id of the assignment to be deleted
-   * @return an {@code Future} - null if there is no entity with the given id, otherwise the
-   *     removed entity.
+   * @return an {@code Future} - null if there is no entity with the given id, otherwise the removed
+   *     entity.
    */
   Future<Boolean> deleteAssignment(Long id);
-
 
   /**
    * Updates an assignment inside the ro.ubb.repository

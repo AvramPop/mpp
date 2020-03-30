@@ -34,25 +34,25 @@ import java.util.concurrent.Future;
 public class ServerApp {
 
   public static void main(String[] args) {
-//    Student s = new Student();
-//    System.out.println(s.getClass().getCanonicalName());
-//    Class<?> clazz = null;
-//    try{
-//      clazz = Class.forName("common.ro.ubb.socket.common.domain.Student");
-//      Constructor<?> ctor = clazz.getConstructor(String.class, String.class, Integer.class);
-//      Object object = ctor.newInstance("a", "a", 1);
-//      System.out.println(clazz.toString());
-//    } catch(ClassNotFoundException e){
-//      System.err.println("nume gresit de clasa");
-//    } catch( NoSuchMethodException e){
-//      System.err.println("1");
-//    } catch( IllegalAccessException e){
-//      System.err.println("2");
-//    } catch( InstantiationException e){
-//      System.err.println("3");
-//    } catch( InvocationTargetException e){
-//      System.err.println("4");
-//    }
+    //    Student s = new Student();
+    //    System.out.println(s.getClass().getCanonicalName());
+    //    Class<?> clazz = null;
+    //    try{
+    //      clazz = Class.forName("common.ro.ubb.socket.common.domain.Student");
+    //      Constructor<?> ctor = clazz.getConstructor(String.class, String.class, Integer.class);
+    //      Object object = ctor.newInstance("a", "a", 1);
+    //      System.out.println(clazz.toString());
+    //    } catch(ClassNotFoundException e){
+    //      System.err.println("nume gresit de clasa");
+    //    } catch( NoSuchMethodException e){
+    //      System.err.println("1");
+    //    } catch( IllegalAccessException e){
+    //      System.err.println("2");
+    //    } catch( InstantiationException e){
+    //      System.err.println("3");
+    //    } catch( InvocationTargetException e){
+    //      System.err.println("4");
+    //    }
     Validator<Student> studentValidator = new StudentValidator();
     DBStudentRepository studentRepository =
         new DBStudentRepository(
@@ -81,7 +81,8 @@ public class ServerApp {
             studentService);
     try {
       TCPServer tcpServer = new TCPServer(executorService);
-      HandlerManager handlerManager = new HandlerManager(tcpServer, studentService, labProblemService, assignmentService);
+      HandlerManager handlerManager =
+          new HandlerManager(tcpServer, studentService, labProblemService, assignmentService);
       handlerManager.addHandlers();
       tcpServer.startServer();
       executorService.shutdown();

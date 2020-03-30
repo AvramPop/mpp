@@ -21,7 +21,10 @@ public class LabProblemServerService implements LabProblemService {
   private Validator<LabProblem> validator;
   private ExecutorService executorService;
 
-  public LabProblemServerService(SortingRepository<Long, LabProblem> repository, Validator<LabProblem> validator, ExecutorService executorService){
+  public LabProblemServerService(
+      SortingRepository<Long, LabProblem> repository,
+      Validator<LabProblem> validator,
+      ExecutorService executorService) {
     this.repository = repository;
     this.validator = validator;
     this.executorService = executorService;
@@ -45,14 +48,13 @@ public class LabProblemServerService implements LabProblemService {
     labProblem.setId(id);
     validator.validate(labProblem);
     return executorService.submit(() -> repository.update(labProblem).isEmpty());
-
   }
+
   @Override
   public Future<Set<LabProblem>> getAllLabProblems() {
     Iterable<LabProblem> labProblems = repository.findAll();
     return executorService.submit(
         () -> StreamSupport.stream(labProblems.spliterator(), false).collect(Collectors.toSet()));
-
   }
 
   @Override
@@ -60,7 +62,6 @@ public class LabProblemServerService implements LabProblemService {
     Iterable<LabProblem> labProblems = repository.findAll(sort);
     return executorService.submit(
         () -> StreamSupport.stream(labProblems.spliterator(), false).collect(Collectors.toList()));
-
   }
 
   @Override
@@ -70,15 +71,12 @@ public class LabProblemServerService implements LabProblemService {
     }
     return executorService.submit(() -> repository.delete(id).isPresent());
   }
+
   @Override
   public Future<LabProblem> getLabProblemById(Long id) {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("invalid id!");
     }
     return executorService.submit(() -> repository.findOne(id).get());
-
   }
-
-
-
 }

@@ -14,13 +14,13 @@ public class TCPClient {
     try (Socket socket = new Socket(Message.HOST, Message.PORT);
         InputStream is = socket.getInputStream();
         OutputStream os = socket.getOutputStream()) {
-      System.out.println("sendAndReceive - sending request: " + request);
+      // System.out.println("sendAndReceive - sending request: " + request);
       request.writeTo(os);
 
-      System.out.println("sendAndReceive - received response: ");
+      // System.out.println("sendAndReceive - received response: ");
       Message response = new Message();
       response.readFrom(is);
-      System.out.println(response);
+      //  System.out.println(response);
 
       return response;
     } catch (IOException e) {

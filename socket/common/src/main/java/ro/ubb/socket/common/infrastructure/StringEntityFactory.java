@@ -38,27 +38,33 @@ public class StringEntityFactory {
     return assignment;
   }
 
-  public static <K, V> String pairToMessage(AbstractMap.SimpleEntry<K, V> pair){
-    return pair.getKey().toString() + ", " + pair.getValue().toString();
+  public static <K, V> String pairToMessage(AbstractMap.SimpleEntry<K, V> pair) {
+    return pair.getKey().toString() + "," + pair.getValue().toString();
   }
 
-  public static <T> String simpleValueToMessage(T value){
+  public static <T> String simpleValueToMessage(T value) {
     return value.toString();
   }
 
-  public static <T extends BaseEntity<Long>, K extends BaseEntity<Long>> String mapToMessage(Map<T, List<K>> map){
+  public static <T extends BaseEntity<Long>, K extends BaseEntity<Long>> String mapToMessage(
+      Map<T, List<K>> map) {
     String result =
-        map.entrySet()
-        .stream()
-        .map(entry -> entry.getKey().objectToFileLine() + "?" + collectionToLine(entry.getValue()) + System.lineSeparator())
-        .reduce("", String::concat);
-    result = result.substring(0, result.length() - System.lineSeparator().length()); // remove last newline
+        map.entrySet().stream()
+            .map(
+                entry ->
+                    entry.getKey().objectToFileLine()
+                        + "?"
+                        + collectionToLine(entry.getValue())
+                        + System.lineSeparator())
+            .reduce("", String::concat);
+    result =
+        result.substring(
+            0, result.length() - System.lineSeparator().length()); // remove last newline
     return result;
   }
 
-  private static <T extends BaseEntity<Long>> String collectionToLine(List<T> list){
-    return list
-        .stream()
+  private static <T extends BaseEntity<Long>> String collectionToLine(List<T> list) {
+    return list.stream()
         .map(problem -> problem.objectToFileLine() + ";")
         .reduce("", String::concat)
         .replaceFirst(".$", ""); // removes last semicolon

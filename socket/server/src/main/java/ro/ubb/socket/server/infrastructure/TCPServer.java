@@ -39,11 +39,11 @@ public class TCPServer {
     try (ServerSocket serverSocket = new ServerSocket(port)) {
       while (true) {
         Socket client = serverSocket.accept();
-        if(!executorService.submit(new ClientHandler(client)).get()) break;
+        if (!executorService.submit(new ClientHandler(client)).get()) break;
       }
     } catch (IOException e) {
       throw new ServiceException("error connecting clients", e);
-    } catch(InterruptedException | ExecutionException e){
+    } catch (InterruptedException | ExecutionException e) {
       throw new ServiceException("error during server run", e);
     }
   }
@@ -63,8 +63,8 @@ public class TCPServer {
         request.readFrom(is);
         System.out.println("server received request from client: " + request);
 
-        if(request.getHeader().equals(MessageHeader.SERVER_SHUTDOWN)){
-          Message response = new Message(MessageHeader.SERVER_SHUTDOWN,"");
+        if (request.getHeader().equals(MessageHeader.SERVER_SHUTDOWN)) {
+          Message response = new Message(MessageHeader.SERVER_SHUTDOWN, "");
           response.writeTo(os);
           System.out.println("Shutting down");
           return false;

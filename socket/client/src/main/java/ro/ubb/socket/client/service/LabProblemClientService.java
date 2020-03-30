@@ -21,11 +21,11 @@ import java.util.stream.Collectors;
 public class LabProblemClientService implements LabProblemService {
   private ExecutorService executorService;
   private TCPClient tcpClient;
-  //private Validator<LabProblem> validator;
+  // private Validator<LabProblem> validator;
   public LabProblemClientService(ExecutorService executorService, TCPClient tcpClient) {
     this.executorService = executorService;
     this.tcpClient = tcpClient;
-    //this.validator = validator;
+    // this.validator = validator;
   }
 
   @Override
@@ -33,7 +33,6 @@ public class LabProblemClientService implements LabProblemService {
       throws ValidatorException {
     LabProblem newLabProblem = new LabProblem(problemNumber, description);
     newLabProblem.setId(id);
-
 
     return executorService.submit(
         () -> {
@@ -50,51 +49,54 @@ public class LabProblemClientService implements LabProblemService {
   @Override
   public Future<Set<LabProblem>> getAllLabProblems() {
 
-    return executorService.submit(()->{
-              Message request = new Message(MessageHeader.LABPROBLEM_ALL,"");
-              Message response = tcpClient.sendAndReceive(request);
-              if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
-                throw new BadRequestException(response.getBody());
+    return executorService.submit(
+        () -> {
+          Message request = new Message(MessageHeader.LABPROBLEM_ALL, "");
+          Message response = tcpClient.sendAndReceive(request);
+          if (response.getHeader().equals(MessageHeader.BAD_REQUEST))
+            throw new BadRequestException(response.getBody());
 
-              String[] lines = response.getBody().split(System.lineSeparator());
-              return Arrays.stream(lines).map(StringEntityFactory::labProblemFromMessageLine).collect(Collectors.toSet());
-
-            }
-    );
-
+          String[] lines = response.getBody().split(System.lineSeparator());
+          return Arrays.stream(lines)
+              .map(StringEntityFactory::labProblemFromMessageLine)
+              .collect(Collectors.toSet());
+        });
   }
 
   @Override
   public Future<List<LabProblem>> getAllLabProblemsSorted(Sort sort) {
 
-    return executorService.submit(()->{
+    return executorService.submit(
+        () -> {
+          String sortOrder =
+              sort.getSortingChain().stream()
+                  .map(component -> component.getKey().name() + " " + component.getValue())
+                  .reduce(
+                      "",
+                      (partialString, string) -> partialString + string + System.lineSeparator());
+          Message request = new Message(MessageHeader.LABPROBLEM_SORTED, sortOrder);
+          Message response = tcpClient.sendAndReceive(request);
+          if (response.getHeader().equals(MessageHeader.BAD_REQUEST))
+            throw new BadRequestException(response.getBody());
 
-              String sortOrder = sort.getSortingChain().stream().map(component -> component.getKey().name() + " " + component.getValue()).
-                      reduce("",(partialString, string) -> partialString + string + System.lineSeparator());
-              Message request = new Message(MessageHeader.LABPROBLEM_SORTED,sortOrder);
-              Message response = tcpClient.sendAndReceive(request);
-              if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
-                throw new BadRequestException(response.getBody());
-
-              String[] lines = response.getBody().split(System.lineSeparator());
-              return Arrays.stream(lines).map(StringEntityFactory::labProblemFromMessageLine).collect(Collectors.toList());
-
-            }
-    );
-
+          String[] lines = response.getBody().split(System.lineSeparator());
+          return Arrays.stream(lines)
+              .map(StringEntityFactory::labProblemFromMessageLine)
+              .collect(Collectors.toList());
+        });
   }
 
   @Override
   public Future<LabProblem> getLabProblemById(Long id) {
 
-    return executorService.submit(()->{
-      Message request = new Message(MessageHeader.LABPROBLEM_BY_ID,id.toString());
-      Message response = tcpClient.sendAndReceive(request);
-      if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
-        throw new BadRequestException(response.getBody());
-      return StringEntityFactory.labProblemFromMessageLine(response.getBody());
-    });
-
+    return executorService.submit(
+        () -> {
+          Message request = new Message(MessageHeader.LABPROBLEM_BY_ID, id.toString());
+          Message response = tcpClient.sendAndReceive(request);
+          if (response.getHeader().equals(MessageHeader.BAD_REQUEST))
+            throw new BadRequestException(response.getBody());
+          return StringEntityFactory.labProblemFromMessageLine(response.getBody());
+        });
   }
 
   @Override
@@ -103,23 +105,27 @@ public class LabProblemClientService implements LabProblemService {
     LabProblem newStudent = new LabProblem(problemNumber, description);
     newStudent.setId(id);
 
-    return executorService.submit(()->{
-      Message request = new Message(MessageHeader.LABPROBLEM_UPDATE,newStudent.objectToFileLine());
-      Message response = tcpClient.sendAndReceive(request);
-      if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
-        throw new BadRequestException(response.getBody());
-      return true;
-    });
+    return executorService.submit(
+        () -> {
+          Message request =
+              new Message(MessageHeader.LABPROBLEM_UPDATE, newStudent.objectToFileLine());
+          Message response = tcpClient.sendAndReceive(request);
+          if (response.getHeader().equals(MessageHeader.BAD_REQUEST))
+            throw new BadRequestException(response.getBody());
+          return true;
+        });
   }
 
   @Override
-  public Future<Boolean> deleteLabProblem(Long id){ // this is not needed here but necessary for interface contract
-      return executorService.submit(()->{
-          Message request = new Message(MessageHeader.LABPROBLEM_DELETE,id.toString());
+  public Future<Boolean> deleteLabProblem(
+      Long id) { // this is not needed here but necessary for interface contract
+    return executorService.submit(
+        () -> {
+          Message request = new Message(MessageHeader.LABPROBLEM_DELETE, id.toString());
           Message response = tcpClient.sendAndReceive(request);
-          if(response.getHeader().equals(MessageHeader.BAD_REQUEST))
-              throw new BadRequestException(response.getBody());
+          if (response.getHeader().equals(MessageHeader.BAD_REQUEST))
+            throw new BadRequestException(response.getBody());
           return true;
-      });
+        });
   }
 }

@@ -68,8 +68,7 @@ public class Sort {
   private String getClassWithPackages(String className) {
     Student s1 = new Student();
     System.out.println("----------------");
-    System.out.println(
-    s1.getClass().getName());
+    System.out.println(s1.getClass().getName());
     System.out.println("-----------------");
     String res = "ro.ubb.socket.common.domain." + className;
     return res;
