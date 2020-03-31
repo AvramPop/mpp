@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -183,6 +184,15 @@ public class Console {
       id = Long.parseLong(input.readLine().strip());
 
       Future<Student> studentFuture = studentService.getStudentById(id);
+      CompletableFuture.runAsync( () -> {
+        try {
+          System.out.println(studentFuture.get());
+        } catch (InterruptedException | ExecutionException e) {
+          System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
+          System.out.println("Failed to obtain");
+        }
+      },executorService);
+
       executorService.submit(
           () -> {
             try {
