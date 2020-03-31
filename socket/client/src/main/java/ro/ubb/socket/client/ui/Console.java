@@ -348,7 +348,7 @@ public class Console {
     Future<Map<Student, List<LabProblem>>> studentsLabProblems =
         assignmentService.studentAssignedProblems();
 
-    executorService.submit(
+    CompletableFuture.runAsync(
         () -> {
           Student emptyStudent = new Student();
           try {
@@ -365,12 +365,12 @@ public class Console {
           } catch (InterruptedException | ExecutionException e) {
             System.out.println(e.getMessage());
           }
-        });
+        }, executorService);
   }
   /** Take specific user input and print server's answer to the call averageGrade call. */
   private void averageGrade() {
     Future<Double> mean = assignmentService.averageGrade();
-    executorService.submit(
+    CompletableFuture.runAsync(
         () -> {
           try {
             System.out.println("The mean of all assignments is " + mean.get());
@@ -378,13 +378,13 @@ public class Console {
             System.err.println(e.getMessage());
             System.err.println("assignments");
           }
-        });
+        }, executorService);
   }
   /** Take specific user input and print server's answer to the call labProblemMostAssigned call. */
   private void labProblemMostAssigned() {
     Future<AbstractMap.SimpleEntry<Long, Long>> idOfLabProblemMostAssigned =
         assignmentService.idOfLabProblemMostAssigned();
-    executorService.submit(
+    CompletableFuture.runAsync(
         () -> {
           try {
             System.out.println(
@@ -397,13 +397,13 @@ public class Console {
             System.out.println(e.getMessage());
             System.err.println("no lab problems assigned");
           }
-        });
+        }, executorService);
   }
   /** Take specific user input and print server's answer to the call greatestMeanOfStudent call. */
   private void greatestMeanOfStudent() {
     Future<AbstractMap.SimpleEntry<Long, Double>> greatestMean = assignmentService.greatestMean();
 
-    executorService.submit(
+    CompletableFuture.runAsync(
         () -> {
           try {
             System.out.println(
@@ -415,7 +415,7 @@ public class Console {
             System.out.println(e.getMessage());
             System.err.println("no students or assignments");
           }
-        });
+        }, executorService);
   }
 
   /** Loop of the user interface */
@@ -442,14 +442,14 @@ public class Console {
   private void printAssignments() {
 
     Future<Set<Assignment>> students = assignmentService.getAllAssignments();
-    executorService.submit(
+    CompletableFuture.runAsync(
         () -> {
           try {
             students.get().forEach(System.out::println);
           } catch (InterruptedException | ExecutionException e) {
             System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
           }
-        });
+        }, executorService);
   }
   /** Take specific user input and print server's answer to the call addAssignment call. */
   private void addAssignment() {
@@ -465,7 +465,7 @@ public class Console {
       System.out.println("Enter grade: ");
       int grade = Integer.parseInt(input.readLine().strip());
       Future result = assignmentService.addAssignment(id, studentId, labProblemId, grade);
-      executorService.submit(
+      CompletableFuture.runAsync(
           () -> {
             try {
               result.get();
@@ -474,7 +474,7 @@ public class Console {
               System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
               System.out.println("Assignment not added");
             }
-          });
+          }, executorService);
 
     } catch (ValidatorException e) {
       System.err.println(e.getMessage());
@@ -612,7 +612,7 @@ public class Console {
       id = Long.parseLong(input.readLine().strip());
 
       Future<Boolean> labProblemDeleteFuture = labProblemService.deleteLabProblem(id);
-      executorService.submit(
+      CompletableFuture.runAsync(
           () -> {
             try {
               labProblemDeleteFuture.get();
@@ -621,7 +621,7 @@ public class Console {
               System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
               System.out.println("Delete failed");
             }
-          });
+          }, executorService);
 
     } catch (IOException | NumberFormatException ex) {
       System.out.println("Invalid input!");
@@ -660,7 +660,7 @@ public class Console {
 
       Future<Boolean> labProblemFuture =
           studentService.updateStudent(id, serialNumber, name, group);
-      executorService.submit(
+      CompletableFuture.runAsync(
           () -> {
             try {
               labProblemFuture.get();
@@ -669,7 +669,7 @@ public class Console {
               System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
               System.out.println("Student not updated");
             }
-          });
+          }, executorService);
     } catch (ValidatorException ex) {
       // ex.printStackTrace();
       System.out.println(ex.getMessage());
@@ -687,7 +687,7 @@ public class Console {
       id = Long.parseLong(input.readLine().strip());
 
       Future<Boolean> studentFuture = studentService.deleteStudent(id);
-      executorService.submit(
+      CompletableFuture.runAsync(
           () -> {
             try {
               studentFuture.get();
@@ -696,7 +696,7 @@ public class Console {
               System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
               System.out.println("Delete failed!");
             }
-          });
+          },executorService);
 
     } catch (IOException | NumberFormatException ex) {
       System.out.println("Invalid input!");
@@ -734,7 +734,7 @@ public class Console {
       Future<Boolean> assignmentFuture =
           assignmentService.updateAssignment(id, studentId, labProblemId, grade);
 
-      executorService.submit(
+      CompletableFuture.runAsync(
           () -> {
             try {
               assignmentFuture.get();
@@ -743,7 +743,7 @@ public class Console {
               System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
               System.out.println("Assignment not updated");
             }
-          });
+          }, executorService);
     } catch (ValidatorException e) {
       System.err.println(e.getMessage());
     } catch (IOException | NumberFormatException ex) {
@@ -760,7 +760,7 @@ public class Console {
       System.out.println("Enter id: ");
       id = Long.parseLong(input.readLine().strip());
       Future<Boolean> assignmentFuture = assignmentService.deleteAssignment(id);
-      executorService.submit(
+      CompletableFuture.runAsync(
           () -> {
             try {
               assignmentFuture.get();
@@ -769,7 +769,7 @@ public class Console {
               System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
               System.out.println("Assignment not deleted");
             }
-          });
+          }, executorService);
     } catch (IOException | NumberFormatException e) {
       System.err.println("bad input");
     }
