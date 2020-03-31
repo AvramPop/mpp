@@ -137,15 +137,15 @@ public class Console {
       id = Long.parseLong(input.readLine().strip());
 
       Future<Assignment> assignmentFuture = assignmentService.getAssignmentById(id);
-      executorService.submit(
-          () -> {
-            try {
-              System.out.println(assignmentFuture.get());
-            } catch (InterruptedException | ExecutionException e) {
-              System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
-              System.out.println("Failed to obtain");
-            }
-          });
+      CompletableFuture.supplyAsync(
+              () -> {
+                try {
+                  return assignmentFuture.get().toString();
+                } catch (InterruptedException | ExecutionException e) {
+                  return e.getMessage().substring(e.getMessage().indexOf(" ") + 1) + "\n" +
+                  "Failed to obtain";
+                }
+              }).thenAccept(System.out::println);
 
     } catch (IOException | NumberFormatException ex) {
       System.out.println("Invalid input!");
@@ -161,15 +161,15 @@ public class Console {
       id = Long.parseLong(input.readLine().strip());
 
       Future<LabProblem> labProblemFuture = labProblemService.getLabProblemById(id);
-      executorService.submit(
+      CompletableFuture.supplyAsync(
           () -> {
             try {
-              System.out.println(labProblemFuture.get());
+              return labProblemFuture.get().toString();
             } catch (InterruptedException | ExecutionException e) {
-              System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
-              System.out.println("Failed to obtain");
+              return e.getMessage().substring(e.getMessage().indexOf(" ") + 1) + "\n" +
+              "Failed to obtain";
             }
-          });
+          }).thenAccept(System.out::println);
 
     } catch (IOException | NumberFormatException ex) {
       System.out.println("Invalid input!");
@@ -184,24 +184,14 @@ public class Console {
       id = Long.parseLong(input.readLine().strip());
 
       Future<Student> studentFuture = studentService.getStudentById(id);
-      CompletableFuture.runAsync( () -> {
+      CompletableFuture.supplyAsync( () -> {
         try {
-          System.out.println(studentFuture.get());
+          return studentFuture.get().toString();
         } catch (InterruptedException | ExecutionException e) {
-          System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
-          System.out.println("Failed to obtain");
+          return e.getMessage().substring(e.getMessage().indexOf(" ") + 1) + "\n"+
+          "Failed to obtain student";
         }
-      },executorService);
-
-      executorService.submit(
-          () -> {
-            try {
-              System.out.println(studentFuture.get());
-            } catch (InterruptedException | ExecutionException e) {
-              System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
-              System.out.println("Failed to obtain");
-            }
-          });
+      }).thenAccept(System.out::println);
 
     } catch (IOException | NumberFormatException ex) {
       System.out.println("Invalid input!");
@@ -241,14 +231,14 @@ public class Console {
         }
       }
       Future<List<LabProblem>> labProblems = labProblemService.getAllLabProblemsSorted(sort);
-      executorService.submit(
+      CompletableFuture.supplyAsync(
           () -> {
             try {
-              labProblems.get().forEach(System.out::println);
+              return labProblems.get().stream().map(LabProblem::toString).reduce("",(s1,s2)->s1+System.lineSeparator()+s2);
             } catch (InterruptedException | ExecutionException e) {
-              e.printStackTrace();
+              return e.getMessage();
             }
-          });
+          }).thenAccept(System.out::println);
     } catch (IOException e) {
       System.out.println("Invalid input!");
     } catch (ClassReflectionException e) {
@@ -284,14 +274,14 @@ public class Console {
         }
       }
       Future<List<Assignment>> assignments = assignmentService.getAllAssignmentsSorted(sort);
-      executorService.submit(
+      CompletableFuture.supplyAsync(
           () -> {
             try {
-              assignments.get().forEach(System.out::println);
+              return assignments.get().stream().map(Assignment::toString).reduce("",(s1,s2)->s1+"\n"+s2);
             } catch (InterruptedException | ExecutionException e) {
-              System.out.println(e.getMessage());
+              return e.getMessage();
             }
-          });
+          }).thenAccept(System.out::println);
     } catch (IOException e) {
       System.out.println("Invalid input!");
     } catch (ClassReflectionException e) {
@@ -328,14 +318,14 @@ public class Console {
       }
       Future<List<Student>> students = studentService.getAllStudentsSorted(sort);
 
-      executorService.submit(
+      CompletableFuture.supplyAsync(
           () -> {
             try {
-              students.get().forEach(System.out::println);
+              return students.get().stream().map(Student::toString).reduce("",(s1,s2)->s1 +"\n"+s2);
             } catch (InterruptedException | ExecutionException e) {
-              System.out.println(e.getMessage());
+              return e.getMessage();
             }
-          });
+          }).thenAccept(System.out::println);
 
     } catch (IOException e) {
       System.out.println("Invalid input!");
@@ -500,35 +490,37 @@ public class Console {
       int group = Integer.parseInt(input.readLine().strip());
       Future<Boolean> studentFuture = studentService.addStudent(id, serialNumber, name, group);
 
-      executorService.submit(
+      CompletableFuture.supplyAsync(
           () -> {
             try {
               studentFuture.get();
-              System.out.println("Student added");
+              return "Student added";
             } catch (InterruptedException | ExecutionException e) {
-              System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
-              System.out.println("Student not added");
+              return e.getMessage().substring(e.getMessage().indexOf(" ") + 1)+"\n"+"Student not added";
             }
-          });
+          }).thenAccept(System.out::println);
 
     } catch (ValidatorException ex) {
       System.out.println(ex.getMessage());
     } catch (IOException | NumberFormatException e) {
-      //      e.printStackTrace();
       System.out.println("invalid input");
     }
   }
   /** Take specific user input and print server's answer to the call printStudents call. */
   private void printStudents() {
     Future<Set<Student>> students = studentService.getAllStudents();
-    executorService.submit(
-        () -> {
-          try {
-            students.get().forEach(System.out::println);
-          } catch (InterruptedException | ExecutionException e) {
-            System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
-          }
-        });
+
+    CompletableFuture.supplyAsync(
+            () -> {
+              try {
+                return students.get().stream()
+                    .map(Student::toString)
+                    .reduce("", (s1, s2) -> s1 + System.lineSeparator() + s2);
+              } catch (InterruptedException | ExecutionException e) {
+                return e.getMessage().substring(e.getMessage().indexOf(" ") + 1);
+              }
+            })
+        .thenAccept(System.out::println);
   }
   /** Take specific user input and print server's answer to the call addLabProblem call. */
   private void addLabProblem() {
@@ -543,16 +535,16 @@ public class Console {
       String description = input.readLine().strip();
       Future<Boolean> labProblemFuture =
           labProblemService.addLabProblem(id, problemNumber, description);
-      executorService.submit(
+      CompletableFuture.supplyAsync(
           () -> {
             try {
               labProblemFuture.get();
-              System.out.println("Lab problem added");
+              return "Lab problem added";
             } catch (InterruptedException | ExecutionException e) {
-              System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
-              System.out.println("Lab problem not added");
+              return e.getMessage().substring(e.getMessage().indexOf(" ") + 1) + System.lineSeparator() +
+              "Lab problem not added";
             }
-          });
+          },executorService);
 
     } catch (ValidatorException e) {
       System.err.println(e.getMessage());
@@ -563,14 +555,14 @@ public class Console {
   /** Take specific user input and print server's answer to the call printLabProblems call. */
   private void printLabProblems() {
     Future<Set<LabProblem>> labProblems = labProblemService.getAllLabProblems();
-    executorService.submit(
+    CompletableFuture.supplyAsync(
         () -> {
           try {
-            labProblems.get().forEach(System.out::println);
+            return labProblems.get().stream().map(LabProblem::toString).reduce("",(s1,s2)->s1+System.lineSeparator()+s2);
           } catch (InterruptedException | ExecutionException e) {
-            System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
+            return e.getMessage().substring(e.getMessage().indexOf(" ") + 1);
           }
-        });
+        }).thenAccept(System.out::println);
   }
   /** Take specific user input and print server's answer to the call updateLabProblem call. */
   private void updateLabProblem() {
@@ -586,16 +578,16 @@ public class Console {
       Future<Boolean> labProblemFuture =
           labProblemService.updateLabProblem(id, problemNumber, description);
 
-      executorService.submit(
+      CompletableFuture.supplyAsync(
           () -> {
             try {
               labProblemFuture.get();
-              System.out.println("Lab Problem updated");
+              return "Lab Problem updated";
             } catch (InterruptedException | ExecutionException e) {
-              System.out.println(e.getMessage().substring(e.getMessage().indexOf(" ") + 1));
-              System.out.println("Lab Problem not updated");
+              return e.getMessage().substring(e.getMessage().indexOf(" ") + 1)+ "\n" +
+              "Lab Problem not updated";
             }
-          });
+          }).thenAccept(System.out::println);
 
     } catch (ValidatorException e) {
       System.err.println(e.getMessage());
