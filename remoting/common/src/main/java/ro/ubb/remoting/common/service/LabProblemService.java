@@ -19,7 +19,7 @@ public interface LabProblemService {
    *     otherwise
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
-   Optional<LabProblem> addLabProblem(Long id, int problemNumber, String description)
+  Optional<LabProblem> addLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException;
 
   /**
@@ -27,12 +27,10 @@ public interface LabProblemService {
    *
    * @return a Set which stores all the lab problems
    */
-   Set<LabProblem> getAllLabProblems();
+  Set<LabProblem> getAllLabProblems();
 
-  /**
-   * Return all Lab problems sorted by the sort criteria.
-   */
-   List<LabProblem> getAllLabProblemsSorted(Sort sort);
+  /** Return all Lab problems sorted by the sort criteria. */
+  List<LabProblem> getAllLabProblemsSorted(Sort sort);
 
   /**
    * Get Optional containing lab problem with given id if there is one in the ro.ubb.repository
@@ -41,7 +39,7 @@ public interface LabProblemService {
    * @param id to find lab problem by
    * @return Optional containing the sought LabProblem or null otherwise
    */
-   Optional<LabProblem> getLabProblemById(Long id);
+  Optional<LabProblem> getLabProblemById(Long id);
 
   /**
    * Deletes a lab problem from the ro.ubb.repository
@@ -50,7 +48,7 @@ public interface LabProblemService {
    * @return an {@code Optional} containing a null if successfully deleted otherwise the entity
    *     passed to the repository
    */
-   Optional<LabProblem> deleteLabProblem(Long id);
+  Optional<LabProblem> deleteLabProblem(Long id);
 
   /**
    * Updates a lab problem inside the ro.ubb.repository
@@ -62,7 +60,7 @@ public interface LabProblemService {
    *     the ro.ubb.repository
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
-   Optional<LabProblem> updateLabProblem(Long id, int problemNumber, String description)
+  Optional<LabProblem> updateLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException;
 
   /**
@@ -71,5 +69,5 @@ public interface LabProblemService {
    * @param problemNumberToFilterBy the problem number to be filtered by
    * @return a {@code Set} - of entities filtered by the given problem number
    */
-   Set<LabProblem> filterByProblemNumber(Integer problemNumberToFilterBy);
+  Set<LabProblem> filterByProblemNumber(Integer problemNumberToFilterBy);
 }

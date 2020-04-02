@@ -49,7 +49,7 @@ public class Sort {
   /** Obtain the value of field named fieldName of object objectToInvokeOn */
   private Object getValueByFieldName(Object objectToInvokeOn, String fieldName)
       throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException,
-      IllegalAccessException {
+          IllegalAccessException {
     String fullClassName;
     if (fieldName.equals("id")) {
       fullClassName = getClassWithPackages("BaseEntity");

@@ -1,6 +1,7 @@
 package ro.ubb.remoting.server.repository;
 
 import ro.ubb.remoting.common.domain.BaseEntity;
+import ro.ubb.remoting.common.domain.exceptions.ValidatorException;
 
 import java.io.Serializable;
 import java.util.Optional;

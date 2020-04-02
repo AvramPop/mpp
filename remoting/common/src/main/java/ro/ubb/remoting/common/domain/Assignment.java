@@ -71,5 +71,4 @@ public class Assignment extends BaseEntity<Long> {
   public void setGrade(int grade) {
     this.grade = grade;
   }
-
 }

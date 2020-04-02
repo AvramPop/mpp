@@ -4,44 +4,85 @@ import ro.ubb.remoting.common.domain.LabProblem;
 import ro.ubb.remoting.common.domain.exceptions.ValidatorException;
 import ro.ubb.remoting.common.service.LabProblemService;
 import ro.ubb.remoting.common.service.sort.Sort;
+import ro.ubb.remoting.server.repository.SortingRepository;
+import ro.ubb.remoting.server.service.validators.Validator;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class LabProblemServiceImpl implements LabProblemService {
-  @Override
-  public Optional<LabProblem> addLabProblem(Long id, int problemNumber, String description) throws ValidatorException{
-    return Optional.empty();
+  private SortingRepository<Long, LabProblem> repository;
+  private Validator<LabProblem> labProblemValidator;
+
+  public LabProblemServiceImpl(
+      SortingRepository<Long, LabProblem> repository, Validator<LabProblem> labProblemValidator) {
+    this.repository = repository;
+    this.labProblemValidator = labProblemValidator;
   }
 
   @Override
-  public Set<LabProblem> getAllLabProblems(){
-    return null;
+  public Optional<LabProblem> addLabProblem(Long id, int problemNumber, String description)
+      throws ValidatorException {
+    LabProblem newLabProblem = new LabProblem(problemNumber, description);
+    newLabProblem.setId(id);
+
+    labProblemValidator.validate(newLabProblem);
+
+    return repository.save(newLabProblem);
   }
 
   @Override
-  public List<LabProblem> getAllLabProblemsSorted(Sort sort){
-    return null;
+  public Set<LabProblem> getAllLabProblems() {
+    Iterable<LabProblem> problems = repository.findAll();
+    return StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toSet());
   }
 
   @Override
-  public Optional<LabProblem> getLabProblemById(Long id){
-    return Optional.empty();
+  public List<LabProblem> getAllLabProblemsSorted(Sort sort) {
+    Iterable<LabProblem> problems = repository.findAll(sort);
+    return StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toList());
   }
 
   @Override
-  public Optional<LabProblem> deleteLabProblem(Long id){
-    return Optional.empty();
+  public Optional<LabProblem> getLabProblemById(Long id) {
+    if (id == null || id < 0) {
+      throw new IllegalArgumentException("invalid id!");
+    }
+    return repository.findOne(id);
   }
 
   @Override
-  public Optional<LabProblem> updateLabProblem(Long id, int problemNumber, String description) throws ValidatorException{
-    return Optional.empty();
+  public Optional<LabProblem> deleteLabProblem(Long id) {
+    if (id == null || id < 0) {
+      throw new IllegalArgumentException("Invalid id!");
+    }
+    return repository.delete(id);
   }
 
   @Override
-  public Set<LabProblem> filterByProblemNumber(Integer problemNumberToFilterBy){
-    return null;
+  public Optional<LabProblem> updateLabProblem(Long id, int problemNumber, String description)
+      throws ValidatorException {
+    LabProblem newLabProblem = new LabProblem(problemNumber, description);
+    newLabProblem.setId(id);
+
+    labProblemValidator.validate(newLabProblem);
+
+    return repository.update(newLabProblem);
+  }
+
+  @Override
+  public Set<LabProblem> filterByProblemNumber(Integer problemNumberToFilterBy) {
+    if (problemNumberToFilterBy < 0) {
+      throw new IllegalArgumentException("problem number negative!");
+    }
+    Iterable<LabProblem> labProblems = repository.findAll();
+    Set<LabProblem> filteredLabProblems = new HashSet<>();
+    labProblems.forEach(filteredLabProblems::add);
+    filteredLabProblems.removeIf(entity -> entity.getProblemNumber() != problemNumberToFilterBy);
+    return filteredLabProblems;
   }
 }

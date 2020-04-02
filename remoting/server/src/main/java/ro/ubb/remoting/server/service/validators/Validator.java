@@ -1,6 +1,6 @@
 package ro.ubb.remoting.server.service.validators;
 
-import sun.security.validator.ValidatorException;
+import ro.ubb.remoting.common.domain.exceptions.ValidatorException;
 
 /**
  * Interface designed to be used for validators
