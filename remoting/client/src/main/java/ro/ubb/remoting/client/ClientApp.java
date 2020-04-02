@@ -11,10 +11,9 @@ public class ClientApp {
   public static void main(String[] args) {
     AnnotationConfigApplicationContext context =
         new AnnotationConfigApplicationContext("ro.ubb.remoting.client.config");
-
+    AssignmentService assignmentService = context.getBean(AssignmentService.class);
     StudentService studentService = context.getBean(StudentService.class);
     LabProblemService labProblemService = context.getBean(LabProblemService.class);
-    AssignmentService assignmentService = context.getBean(AssignmentService.class);
 
     Console console = new Console(studentService, labProblemService, assignmentService);
     console.run();

@@ -17,7 +17,7 @@ public class StudentServiceClient implements StudentService {
   @Override
   public Optional<Student> addStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException {
-    return Optional.empty();
+    return studentService.addStudent(id, serialNumber, name, group);
   }
 
   @Override
@@ -27,27 +27,27 @@ public class StudentServiceClient implements StudentService {
 
   @Override
   public List<Student> getAllStudentsSorted(Sort sort) {
-    return null;
+    return studentService.getAllStudentsSorted(sort);
   }
 
   @Override
   public Optional<Student> deleteStudent(Long id) {
-    return Optional.empty();
+    return studentService.deleteStudent(id);
   }
 
   @Override
   public Optional<Student> updateStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException {
-    return Optional.empty();
+    return studentService.updateStudent(id, serialNumber, name, group);
   }
 
   @Override
   public Set<Student> filterByGroup(Integer group) {
-    return null;
+    return studentService.filterByGroup(group);
   }
 
   @Override
   public Optional<Student> getStudentById(Long id) {
-    return Optional.empty();
+    return studentService.getStudentById(id);
   }
 }

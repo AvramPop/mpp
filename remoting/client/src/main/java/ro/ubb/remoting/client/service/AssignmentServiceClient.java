@@ -11,8 +11,8 @@ import ro.ubb.remoting.common.service.sort.Sort;
 import java.util.*;
 
 public class AssignmentServiceClient implements AssignmentService {
-  @Autowired
-  private AssignmentService assignmentService;
+  @Autowired private AssignmentService assignmentService;
+
   @Override
   public Optional<Assignment> addAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException {
@@ -52,16 +52,16 @@ public class AssignmentServiceClient implements AssignmentService {
 
   @Override
   public Optional<AbstractMap.SimpleEntry<Long, Long>> idOfLabProblemMostAssigned() {
-    return idOfLabProblemMostAssigned();
+    return assignmentService.idOfLabProblemMostAssigned();
   }
 
   @Override
   public Optional<Double> averageGrade() {
-    return averageGrade();
+    return assignmentService.averageGrade();
   }
 
   @Override
   public Optional<Map<Student, List<LabProblem>>> studentAssignedProblems() {
-    return studentAssignedProblems();
+    return assignmentService.studentAssignedProblems();
   }
 }

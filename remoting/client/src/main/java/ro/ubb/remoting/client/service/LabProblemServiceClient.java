@@ -1,5 +1,6 @@
 package ro.ubb.remoting.client.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ro.ubb.remoting.common.domain.LabProblem;
 import ro.ubb.remoting.common.domain.exceptions.ValidatorException;
 import ro.ubb.remoting.common.service.LabProblemService;
@@ -10,40 +11,43 @@ import java.util.Optional;
 import java.util.Set;
 
 public class LabProblemServiceClient implements LabProblemService {
+  @Autowired private LabProblemService labProblemService;
+
   @Override
   public Optional<LabProblem> addLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException {
-    return Optional.empty();
+    return labProblemService.addLabProblem(id, problemNumber, description);
   }
 
   @Override
   public Set<LabProblem> getAllLabProblems() {
-    return null;
+    return labProblemService.getAllLabProblems();
   }
 
   @Override
   public List<LabProblem> getAllLabProblemsSorted(Sort sort) {
-    return null;
+    return labProblemService.getAllLabProblemsSorted(sort);
   }
 
   @Override
   public Optional<LabProblem> getLabProblemById(Long id) {
-    return Optional.empty();
+    return labProblemService.getLabProblemById(id);
   }
 
   @Override
   public Optional<LabProblem> deleteLabProblem(Long id) {
-    return Optional.empty();
+    return labProblemService.deleteLabProblem(id);
   }
 
   @Override
   public Optional<LabProblem> updateLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException {
-    return Optional.empty();
+    return labProblemService.updateLabProblem(id, problemNumber, description);
   }
 
   @Override
   public Set<LabProblem> filterByProblemNumber(Integer problemNumberToFilterBy) {
-    return null;
+
+    return labProblemService.filterByProblemNumber(problemNumberToFilterBy);
   }
 }
