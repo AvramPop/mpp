@@ -145,7 +145,7 @@ public class Console {
                   return e.getMessage().substring(e.getMessage().indexOf(" ") + 1) + "\n" +
                   "Failed to obtain";
                 }
-              }).thenAccept(System.out::println);
+              }).thenAcceptAsync(System.out::println);
 
     } catch (IOException | NumberFormatException ex) {
       System.out.println("Invalid input!");
@@ -169,7 +169,7 @@ public class Console {
               return e.getMessage().substring(e.getMessage().indexOf(" ") + 1) + "\n" +
               "Failed to obtain";
             }
-          }).thenAccept(System.out::println);
+          }).thenAcceptAsync(System.out::println);
 
     } catch (IOException | NumberFormatException ex) {
       System.out.println("Invalid input!");
@@ -191,7 +191,7 @@ public class Console {
           return e.getMessage().substring(e.getMessage().indexOf(" ") + 1) + "\n"+
           "Failed to obtain student";
         }
-      }).thenAccept(System.out::println);
+      }).thenAcceptAsync(System.out::println);
 
     } catch (IOException | NumberFormatException ex) {
       System.out.println("Invalid input!");
@@ -238,7 +238,7 @@ public class Console {
             } catch (InterruptedException | ExecutionException e) {
               return e.getMessage();
             }
-          }).thenAccept(System.out::println);
+          }).thenAcceptAsync(System.out::println);
     } catch (IOException e) {
       System.out.println("Invalid input!");
     } catch (ClassReflectionException e) {
@@ -281,7 +281,7 @@ public class Console {
             } catch (InterruptedException | ExecutionException e) {
               return e.getMessage();
             }
-          }).thenAccept(System.out::println);
+          }).thenAcceptAsync(System.out::println);
     } catch (IOException e) {
       System.out.println("Invalid input!");
     } catch (ClassReflectionException e) {
@@ -325,7 +325,7 @@ public class Console {
             } catch (InterruptedException | ExecutionException e) {
               return e.getMessage();
             }
-          }).thenAccept(System.out::println);
+          }).thenAcceptAsync(System.out::println);
 
     } catch (IOException e) {
       System.out.println("Invalid input!");
@@ -342,6 +342,8 @@ public class Console {
         () -> {
           Student emptyStudent = new Student();
           try {
+              return studentsLabProblems.get().entrySet().stream().map(entry->
+                      entry.getKey() + System.lineSeparator() + entry.getValue().stream().map(LabProblem::toString).reduce((s1,s2)->s1 + System.lineSeparator() +s2).orElse("")).reduce("",(s1, s2)->s1+System.lineSeparator()+s2);
 //            for (Map.Entry<Student, List<LabProblem>> entry :
 //                studentsLabProblems.get().entrySet()) {
 //              if (!entry.getKey().getSerialNumber().equals("")) {
@@ -353,7 +355,7 @@ public class Console {
           } catch (InterruptedException | ExecutionException e) {
             return e.getMessage();
           }
-        }).thenAccept(System.out::println);;
+        }).thenAcceptAsync(System.out::println);
   }
 
   /** Take specific user input and print server's answer to the call averageGrade call. */
@@ -366,7 +368,7 @@ public class Console {
           } catch (InterruptedException | ExecutionException e) {
             return e.getMessage() + " assignments";
           }
-        }).thenAccept(System.out::println);;
+        }).thenAcceptAsync(System.out::println);
   }
   /** Take specific user input and print server's answer to the call labProblemMostAssigned call. */
   private void labProblemMostAssigned() {
@@ -385,12 +387,11 @@ public class Console {
             return e.getMessage() +
             "\nno lab problems assigned";
           }
-        }).thenAccept(System.out::println);;
+        }).thenAcceptAsync(System.out::println);
   }
   /** Take specific user input and print server's answer to the call greatestMeanOfStudent call. */
   private void greatestMeanOfStudent() {
     Future<AbstractMap.SimpleEntry<Long, Double>> greatestMean = assignmentService.greatestMean();
-
     CompletableFuture.supplyAsync(
         () -> {
           try {
@@ -403,7 +404,7 @@ public class Console {
             return e.getMessage()+
             "\nno students or assignments";
           }
-        }).thenAccept(System.out::println);;
+        }).thenAcceptAsync(System.out::println);
   }
 
   /** Loop of the user interface */
@@ -433,11 +434,11 @@ public class Console {
     CompletableFuture.supplyAsync(
         () -> {
           try {
-            return students.get().stream().map(s -> s.toString()).reduce("", (s1, s2) -> s1 + s2);
+            return students.get().stream().map(Assignment::toString).reduce("", (s1, s2) -> s1 + System.lineSeparator()+ s2);
           } catch (InterruptedException | ExecutionException e) {
             return e.getMessage().substring(e.getMessage().indexOf(" ") + 1);
           }
-        }).thenAccept(System.out::println);
+        }).thenAcceptAsync(System.out::println);
   }
   /** Take specific user input and print server's answer to the call addAssignment call. */
   private void addAssignment() {
@@ -462,7 +463,7 @@ public class Console {
               return e.getMessage().substring(e.getMessage().indexOf(" ") + 1) +
               "\nAssignment not added";
             }
-          }).thenAccept(System.out::println);;
+          }).thenAcceptAsync(System.out::println);
 
     } catch (ValidatorException e) {
       System.err.println(e.getMessage());
@@ -496,7 +497,7 @@ public class Console {
             } catch (InterruptedException | ExecutionException e) {
               return e.getMessage().substring(e.getMessage().indexOf(" ") + 1)+"\n"+"Student not added";
             }
-          }).thenAccept(System.out::println);
+          }).thenAcceptAsync(System.out::println);
 
     } catch (ValidatorException ex) {
       System.out.println(ex.getMessage());
@@ -518,7 +519,7 @@ public class Console {
                 return e.getMessage().substring(e.getMessage().indexOf(" ") + 1);
               }
             })
-        .thenAccept(System.out::println);
+        .thenAcceptAsync(System.out::println);
   }
   /** Take specific user input and print server's answer to the call addLabProblem call. */
   private void addLabProblem() {
@@ -560,7 +561,7 @@ public class Console {
           } catch (InterruptedException | ExecutionException e) {
             return e.getMessage().substring(e.getMessage().indexOf(" ") + 1);
           }
-        }).thenAccept(System.out::println);
+        }).thenAcceptAsync(System.out::println);
   }
   /** Take specific user input and print server's answer to the call updateLabProblem call. */
   private void updateLabProblem() {
@@ -585,7 +586,7 @@ public class Console {
               return e.getMessage().substring(e.getMessage().indexOf(" ") + 1)+ "\n" +
               "Lab Problem not updated";
             }
-          }).thenAccept(System.out::println);
+          }).thenAcceptAsync(System.out::println);
 
     } catch (ValidatorException e) {
       System.err.println(e.getMessage());
@@ -611,7 +612,7 @@ public class Console {
               return e.getMessage().substring(e.getMessage().indexOf(" ") + 1) +
               "\nDelete failed";
             }
-          }).thenAccept(System.out::println);
+          }).thenAcceptAsync(System.out::println);
 
     } catch (IOException | NumberFormatException ex) {
       System.out.println("Invalid input!");
@@ -659,7 +660,7 @@ public class Console {
               return e.getMessage().substring(e.getMessage().indexOf(" ") + 1)
               + "\nStudent not updated";
             }
-          }).thenAccept(System.out::println);
+          }).thenAcceptAsync(System.out::println);
     } catch (ValidatorException ex) {
       // ex.printStackTrace();
       System.out.println(ex.getMessage());
@@ -686,7 +687,7 @@ public class Console {
               return e.getMessage().substring(e.getMessage().indexOf(" ") + 1) +
               "\nDelete failed!";
             }
-          }).thenAccept(System.out::println);
+          }).thenAcceptAsync(System.out::println);
 
     } catch (IOException | NumberFormatException ex) {
       System.out.println("Invalid input!");
@@ -733,7 +734,7 @@ public class Console {
               return e.getMessage().substring(e.getMessage().indexOf(" ") + 1) +
               "\nAssignment not updated";
             }
-          }).thenAccept(System.out::println);;
+          }).thenAcceptAsync(System.out::println);
     } catch (ValidatorException e) {
       System.err.println(e.getMessage());
     } catch (IOException | NumberFormatException ex) {
@@ -759,7 +760,7 @@ public class Console {
               return e.getMessage().substring(e.getMessage().indexOf(" ") + 1) +
               "\nAssignment not deleted";
             }
-          }).thenAccept(System.out::println);;
+          }).thenAcceptAsync(System.out::println);
     } catch (IOException | NumberFormatException e) {
       System.err.println("bad input");
     }
