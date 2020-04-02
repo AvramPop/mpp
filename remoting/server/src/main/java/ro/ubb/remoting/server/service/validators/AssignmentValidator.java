@@ -1,7 +1,7 @@
 package ro.ubb.remoting.server.service.validators;
 
 import ro.ubb.remoting.common.domain.Assignment;
-import sun.security.validator.ValidatorException;
+import ro.ubb.remoting.common.domain.exceptions.ValidatorException;
 
 public class AssignmentValidator implements Validator<Assignment> {
   /**
@@ -9,7 +9,7 @@ public class AssignmentValidator implements Validator<Assignment> {
    * @throws ValidatorException in case of invalid instance of entity an exception is thrown
    */
   @Override
-  public void validate(Assignment entity) throws ValidatorException{
+  public void validate(Assignment entity) throws ValidatorException {
     StringBuilder errorMessage = new StringBuilder();
     if (entity.getId() == null) errorMessage.append("Id is null");
     else if (entity.getId() < 0) errorMessage.append("Invalid id! ");

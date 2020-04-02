@@ -22,5 +22,4 @@ public abstract class BaseEntity<ID> implements Serializable {
   public String toString() {
     return "BaseEntity{" + "id=" + id + '}';
   }
-
 }

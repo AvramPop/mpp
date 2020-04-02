@@ -11,62 +11,64 @@ import java.util.*;
 
 public class AssignmentServiceClient implements AssignmentService {
   @Override
-  public Optional<Assignment> addAssignment(Long id, Long studentID, Long labProblemID, int grade) throws ValidatorException{
+  public Optional<Assignment> addAssignment(Long id, Long studentID, Long labProblemID, int grade)
+      throws ValidatorException {
     return Optional.empty();
   }
 
   @Override
-  public Set<Assignment> getAllAssignments(){
+  public Set<Assignment> getAllAssignments() {
     return null;
   }
 
   @Override
-  public List<Assignment> getAllAssignmentsSorted(Sort sort){
+  public List<Assignment> getAllAssignmentsSorted(Sort sort) {
     return null;
   }
 
   @Override
-  public Optional<Assignment> getAssignmentById(Long id){
+  public Optional<Assignment> getAssignmentById(Long id) {
     return Optional.empty();
   }
 
   @Override
-  public Optional<Assignment> deleteAssignment(Long id){
+  public Optional<Assignment> deleteAssignment(Long id) {
     return Optional.empty();
   }
 
   @Override
-  public Optional<Student> deleteStudent(Long id){
+  public Optional<Student> deleteStudent(Long id) {
     return Optional.empty();
   }
 
   @Override
-  public Optional<LabProblem> deleteLabProblem(Long id){
+  public Optional<LabProblem> deleteLabProblem(Long id) {
     return Optional.empty();
   }
 
   @Override
-  public Optional<Assignment> updateAssignment(Long id, Long studentID, Long labProblemID, int grade) throws ValidatorException{
+  public Optional<Assignment> updateAssignment(
+      Long id, Long studentID, Long labProblemID, int grade) throws ValidatorException {
     return Optional.empty();
   }
 
   @Override
-  public Optional<AbstractMap.SimpleEntry<Long, Double>> greatestMean(){
+  public Optional<AbstractMap.SimpleEntry<Long, Double>> greatestMean() {
     return Optional.empty();
   }
 
   @Override
-  public Optional<AbstractMap.SimpleEntry<Long, Long>> idOfLabProblemMostAssigned(){
+  public Optional<AbstractMap.SimpleEntry<Long, Long>> idOfLabProblemMostAssigned() {
     return Optional.empty();
   }
 
   @Override
-  public Optional<Double> averageGrade(){
+  public Optional<Double> averageGrade() {
     return Optional.empty();
   }
 
   @Override
-  public Optional<Map<Student, List<LabProblem>>> studentAssignedProblems(){
+  public Optional<Map<Student, List<LabProblem>>> studentAssignedProblems() {
     return Optional.empty();
   }
 }

@@ -58,5 +58,4 @@ public class LabProblem extends BaseEntity<Long> {
   public int hashCode() {
     return Objects.hash(problemNumber, description);
   }
-
 }

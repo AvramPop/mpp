@@ -1,6 +1,5 @@
 package ro.ubb.remoting.server.config;
 
-
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -11,16 +10,17 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
-
 @Configuration
 @PropertySource("classpath:app.properties")
 public class JDBCConfig {
 
-  @Value( "${url}" )
+  @Value("${url}")
   private String url;
-  @Value( "${username}" )
+
+  @Value("${username}")
   private String username;
-  @Value( "${password}" )
+
+  @Value("${password}")
   private String password;
 
   @Bean
@@ -36,7 +36,7 @@ public class JDBCConfig {
   DataSource dataSource() {
     BasicDataSource basicDataSource = new BasicDataSource();
 
-    //TODO use env props (or property files)
+    // TODO use env props (or property files)
     basicDataSource.setUrl(url);
     basicDataSource.setUsername(username);
     basicDataSource.setPassword(password);

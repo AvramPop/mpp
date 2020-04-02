@@ -16,10 +16,12 @@ public class AppConfig {
   SortingRepository<Long, Student> studentRepository() {
     return new StudentRepository();
   }
+
   @Bean
   SortingRepository<Long, LabProblem> labProblemRepository() {
     return new LabProblemRepository();
   }
+
   @Bean
   SortingRepository<Long, Assignment> assignmentRepository() {
     return new AssignmentRepository();

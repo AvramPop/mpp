@@ -8,17 +8,15 @@ import ro.ubb.remoting.common.service.sort.Sort;
 
 import java.util.*;
 
- public interface AssignmentService {
+public interface AssignmentService {
 
-   Optional<Assignment> addAssignment(Long id, Long studentID, Long labProblemID, int grade)
+  Optional<Assignment> addAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException;
 
-   Set<Assignment> getAllAssignments();
+  Set<Assignment> getAllAssignments();
 
-  /**
-   * Return all Assignments sorted by the sort criteria.
-   */
-   List<Assignment> getAllAssignmentsSorted(Sort sort);
+  /** Return all Assignments sorted by the sort criteria. */
+  List<Assignment> getAllAssignmentsSorted(Sort sort);
 
   /**
    * Get Optional containing assignment with given id if there is one in the ro.ubb.repository
@@ -27,7 +25,7 @@ import java.util.*;
    * @param id to find assignment by
    * @return Optional containing the sought Assignment or null otherwise
    */
-   Optional<Assignment> getAssignmentById(Long id);
+  Optional<Assignment> getAssignmentById(Long id);
 
   /**
    * Deletes an assignment from the ro.ubb.repository
@@ -36,7 +34,7 @@ import java.util.*;
    * @return an {@code Optional} containing a null if successfully deleted otherwise the entity
    *     passed to the repository
    */
-   Optional<Assignment> deleteAssignment(Long id);
+  Optional<Assignment> deleteAssignment(Long id);
 
   /**
    * Deletes a student from the ro.ubb.repository and also deletes all assignments corresponding to
@@ -46,7 +44,7 @@ import java.util.*;
    * @return * @return an {@code Optional} containing a null if successfully deleted otherwise the
    *     entity passed to the repository
    */
-   Optional<Student> deleteStudent(Long id);
+  Optional<Student> deleteStudent(Long id);
   /**
    * Deletes a lab problem from the ro.ubb.repository and also deletes all assignments corresponding
    * to that student
@@ -55,7 +53,7 @@ import java.util.*;
    * @return an {@code Optional} containing a null if successfully deleted otherwise the entity
    *     passed to the repository
    */
-   Optional<LabProblem> deleteLabProblem(Long id);
+  Optional<LabProblem> deleteLabProblem(Long id);
 
   /**
    * Updates an assignment inside the ro.ubb.repository
@@ -65,8 +63,8 @@ import java.util.*;
    *     the ro.ubb.repository
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
-   Optional<Assignment> updateAssignment(
-      Long id, Long studentID, Long labProblemID, int grade) throws ValidatorException;
+  Optional<Assignment> updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
+      throws ValidatorException;
 
   /**
    * Returns the student id who has the biggest mean of grades
@@ -75,7 +73,7 @@ import java.util.*;
    *     {@code Optional} containing a {@code Pair} of Long and Double, for the ID and the grade
    *     average
    */
-   Optional<AbstractMap.SimpleEntry<Long, Double>> greatestMean();
+  Optional<AbstractMap.SimpleEntry<Long, Double>> greatestMean();
 
   /**
    * Returns the id of the lab problem which was assigned the most often
@@ -84,7 +82,7 @@ import java.util.*;
    *     {@code Optional} containing a {@code Pair} of Long and Long, for the ID and the number of
    *     assignments
    */
-   Optional<AbstractMap.SimpleEntry<Long, Long>> idOfLabProblemMostAssigned();
+  Optional<AbstractMap.SimpleEntry<Long, Long>> idOfLabProblemMostAssigned();
 
   /**
    * Returns the average grade of all the groups
@@ -92,7 +90,7 @@ import java.util.*;
    * @return an {@code Optional} containing a null if no student is in the repository otherwise a
    *     {@code Double} which represents the average grade
    */
-   Optional<Double> averageGrade();
+  Optional<Double> averageGrade();
 
   /**
    * Return a mapping of every Student and a list of it's assigned LabProblems.
@@ -100,5 +98,5 @@ import java.util.*;
    * @return the sought Student - List of LabProblems. If student has no assignment, map to an empty
    *     list.
    */
-   Optional<Map<Student, List<LabProblem>>> studentAssignedProblems();
+  Optional<Map<Student, List<LabProblem>>> studentAssignedProblems();
 }

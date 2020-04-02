@@ -1,4 +1,6 @@
 package ro.ubb.remoting.server.config;
 
-public class AssignmentServerConfig {
-}
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class AssignmentServerConfig {}
