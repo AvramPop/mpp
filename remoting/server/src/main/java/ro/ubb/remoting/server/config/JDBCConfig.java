@@ -17,8 +17,8 @@ public class JDBCConfig {
   @Value("${url}")
   private String url;
 
-  @Value("${username}")
-  private String username;
+  @Value("${user_name}")
+  private String user_name;
 
   @Value("${password}")
   private String password;
@@ -35,10 +35,12 @@ public class JDBCConfig {
   @Bean
   DataSource dataSource() {
     BasicDataSource basicDataSource = new BasicDataSource();
-
     // TODO use env props (or property files)
+    System.out.println(url);
+    System.out.println(user_name);
+    System.out.println(password);
     basicDataSource.setUrl(url);
-    basicDataSource.setUsername(username);
+    basicDataSource.setUsername(user_name);
     basicDataSource.setPassword(password);
     basicDataSource.setInitialSize(2);
 
