@@ -1,5 +1,7 @@
-package ro.ubb.remoting.server.repository.containers;
+package ro.ubb.remoting.server.repository;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcOperations;
 import ro.ubb.remoting.common.domain.LabProblem;
 import ro.ubb.remoting.common.service.sort.Sort;
 import sun.security.validator.ValidatorException;
@@ -7,6 +9,8 @@ import sun.security.validator.ValidatorException;
 import java.util.Optional;
 
 public class LabProblemRepository implements SortingRepository<Long, LabProblem>{
+  @Autowired
+  private JdbcOperations jdbcOperations;
   @Override
   public Iterable<LabProblem> findAll(Sort sort){
     return null;

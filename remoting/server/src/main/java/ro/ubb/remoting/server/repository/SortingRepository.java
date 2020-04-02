@@ -1,4 +1,4 @@
-package ro.ubb.remoting.server.repository.containers;
+package ro.ubb.remoting.server.repository;
 
 import ro.ubb.remoting.common.domain.BaseEntity;
 import ro.ubb.remoting.common.service.sort.Sort;

@@ -62,12 +62,8 @@ public class Sort {
   }
 
   private String getClassWithPackages(String className) {
-//    Student s1 = new Student();
-//    System.out.println("----------------");
-//    System.out.println(s1.getClass().getName());
-//    System.out.println("-----------------");
-//    String res = "ro.ubb.socket.common.domain." + className; //fixme proper package name
-    throw new IllegalStateException("+++++++++++++++++++++++++++++CHANGE THIS+++++++++++++++++++++++++++++++++");
+    String res = "ro.ubb.remoting.common.domain." + className;
+    return res;
   }
 
   /** Inner class to provide sorting logic for the criteria of current instance. */

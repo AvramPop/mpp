@@ -5,10 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import ro.ubb.remoting.common.domain.Assignment;
 import ro.ubb.remoting.common.domain.LabProblem;
 import ro.ubb.remoting.common.domain.Student;
-import ro.ubb.remoting.server.repository.containers.AssignmentRepository;
-import ro.ubb.remoting.server.repository.containers.LabProblemRepository;
-import ro.ubb.remoting.server.repository.containers.SortingRepository;
-import ro.ubb.remoting.server.repository.containers.StudentRepository;
+import ro.ubb.remoting.server.repository.AssignmentRepository;
+import ro.ubb.remoting.server.repository.LabProblemRepository;
+import ro.ubb.remoting.server.repository.SortingRepository;
+import ro.ubb.remoting.server.repository.StudentRepository;
 
 @Configuration
 public class AppConfig {
