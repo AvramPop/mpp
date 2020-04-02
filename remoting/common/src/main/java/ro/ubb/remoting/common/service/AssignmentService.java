@@ -36,33 +36,6 @@ public interface AssignmentService {
    */
   Optional<Assignment> deleteAssignment(Long id);
 
-  /**
-   * Deletes a student from the ro.ubb.repository and also deletes all assignments corresponding to
-   * that lab problem
-   *
-   * @param id the id of the student to be deleted
-   * @return * @return an {@code Optional} containing a null if successfully deleted otherwise the
-   *     entity passed to the repository
-   */
-  Optional<Student> deleteStudent(Long id);
-  /**
-   * Deletes a lab problem from the ro.ubb.repository and also deletes all assignments corresponding
-   * to that student
-   *
-   * @param id the id of the lab problem to be deleted
-   * @return an {@code Optional} containing a null if successfully deleted otherwise the entity
-   *     passed to the repository
-   */
-  Optional<LabProblem> deleteLabProblem(Long id);
-
-  /**
-   * Updates an assignment inside the ro.ubb.repository
-   *
-   * @param id id number of entity to be updated
-   * @return an {@code Optional} containing the null if successfully updated or the entity sent to
-   *     the ro.ubb.repository
-   * @throws ValidatorException if the object is incorrectly defined by the user
-   */
   Optional<Assignment> updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException;
 
