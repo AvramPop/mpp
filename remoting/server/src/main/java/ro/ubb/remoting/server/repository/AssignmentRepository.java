@@ -50,7 +50,7 @@ public class AssignmentRepository implements SortingRepository<Long, Assignment>
   }
 
   @Override
-  public Optional<Assignment> save(Assignment entity) throws ValidatorException{
+  public Optional<Assignment> save(Assignment entity){
     if (entity == null) throw new IllegalArgumentException("entity must not be null");
     String sql =
         "insert into public.\"Assignments\" (assignment_id, student_id, lab_problem_id, grade) values (?,?,?,?)";
@@ -80,7 +80,7 @@ public class AssignmentRepository implements SortingRepository<Long, Assignment>
   }
 
   @Override
-  public Optional<Assignment> update(Assignment entity) throws ValidatorException{
+  public Optional<Assignment> update(Assignment entity){
     if (entity == null) throw new IllegalArgumentException("entity must not be null");
     String query =
         "update public.\"Assignments\" set student_id = ?, lab_problem_id = ?, grade = ? where assignment_id = ?";
