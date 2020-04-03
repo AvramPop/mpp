@@ -243,29 +243,33 @@ public class Console {
 
   /** ro.ubb.UI method for printing the console menu */
   private void printMenu() {
-    System.out.println("Menu options:");
-    System.out.println("- add student");
-    System.out.println("- print students");
-    System.out.println("- add lab problem");
-    System.out.println("- print lab problems");
-    System.out.println("- update lab problem");
-    System.out.println("- delete lab problem");
-    System.out.println("- filter lab problems [by number]");
-    System.out.println("- update student");
-    System.out.println("- delete student");
-    System.out.println("- filter students [by group]");
-    System.out.println("- add assignment");
-    System.out.println("- print assignments");
-    System.out.println("- update assignment");
-    System.out.println("- delete assignment");
-    System.out.println("- max mean student");
-    System.out.println("- lab problem most");
-    System.out.println("- avg grade");
-    System.out.println("- student problems");
-    System.out.println("- print students sorted");
-    System.out.println("- print assignments sorted");
-    System.out.println("- print lab problems sorted");
-    System.out.println("- exit");
+    String menu = "";
+    menu += "Menu options:" + System.lineSeparator();
+    menu += "- add student" + System.lineSeparator();
+    menu += "- get student" + System.lineSeparator();
+    menu += "- print students" + System.lineSeparator();
+    menu += "- print students sorted" + System.lineSeparator();
+    menu += "- update student" + System.lineSeparator();
+    menu += "- delete student" + System.lineSeparator();
+    menu += "- add lab problem" + System.lineSeparator();
+    menu += "- get lab problem" + System.lineSeparator();
+    menu += "- print lab problems" + System.lineSeparator();
+    menu += "- print lab problems sorted" + System.lineSeparator();
+    menu += "- update lab problem" + System.lineSeparator();
+    menu += "- delete lab problem" + System.lineSeparator();
+    menu += "- add assignment" + System.lineSeparator();
+    menu += "- get assignment" + System.lineSeparator();
+    menu += "- print assignments" + System.lineSeparator();
+    menu += "- print assignments sorted" + System.lineSeparator();
+    menu += "- update assignment" + System.lineSeparator();
+    menu += "- delete assignment" + System.lineSeparator();
+    menu += "- max mean student" + System.lineSeparator();
+    menu += "- lab problem most" + System.lineSeparator();
+    menu += "- avg grade" + System.lineSeparator();
+    menu += "- student problems" + System.lineSeparator();
+    menu += "- shutdown server" + System.lineSeparator();
+    menu += "- exit" + System.lineSeparator();
+    System.out.println(menu);
   }
 
   /** ro.ubb.Main loop of the user interface */

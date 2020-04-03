@@ -32,7 +32,7 @@ public class LabProblemRepository implements SortingRepository<Long, LabProblem>
 
   @Override
   public Iterable<LabProblem> findAll() {
-    String query = "select * from public.\"LabProblems\"";
+    String query = "SELECT * FROM public.\"LabProblems\"";
     return getLabProblems(query);
   }
 
@@ -81,7 +81,7 @@ public class LabProblemRepository implements SortingRepository<Long, LabProblem>
         (rs, rowNum) -> {
           Long id = rs.getLong("lab_problem_id");
           String description = rs.getString("description");
-          int problemNumber = rs.getInt("grade");
+          int problemNumber = rs.getInt("lab_problem_number");
           LabProblem labProblem = new LabProblem(problemNumber, description);
           labProblem.setId(id);
           return labProblem;
