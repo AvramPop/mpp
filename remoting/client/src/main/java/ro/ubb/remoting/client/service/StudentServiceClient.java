@@ -7,7 +7,6 @@ import ro.ubb.remoting.common.service.StudentService;
 import ro.ubb.remoting.common.service.sort.Sort;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 /** Created by radu. */
@@ -15,7 +14,7 @@ public class StudentServiceClient implements StudentService {
   @Autowired private StudentService studentService;
 
   @Override
-  public Optional<Student> addStudent(Long id, String serialNumber, String name, int group)
+  public Student addStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException {
     return studentService.addStudent(id, serialNumber, name, group);
   }
@@ -31,12 +30,12 @@ public class StudentServiceClient implements StudentService {
   }
 
   @Override
-  public Optional<Student> deleteStudent(Long id) {
+  public Student deleteStudent(Long id) {
     return studentService.deleteStudent(id);
   }
 
   @Override
-  public Optional<Student> updateStudent(Long id, String serialNumber, String name, int group)
+  public Student updateStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException {
     return studentService.updateStudent(id, serialNumber, name, group);
   }
@@ -47,7 +46,7 @@ public class StudentServiceClient implements StudentService {
   }
 
   @Override
-  public Optional<Student> getStudentById(Long id) {
+  public Student getStudentById(Long id) {
     return studentService.getStudentById(id);
   }
 }

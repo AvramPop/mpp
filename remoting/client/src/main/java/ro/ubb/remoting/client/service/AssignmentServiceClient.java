@@ -14,7 +14,7 @@ public class AssignmentServiceClient implements AssignmentService {
   @Autowired private AssignmentService assignmentService;
 
   @Override
-  public Optional<Assignment> addAssignment(Long id, Long studentID, Long labProblemID, int grade)
+  public Assignment addAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException {
     return assignmentService.addAssignment(id, studentID, labProblemID, grade);
   }
@@ -30,38 +30,38 @@ public class AssignmentServiceClient implements AssignmentService {
   }
 
   @Override
-  public Optional<Assignment> getAssignmentById(Long id) {
+  public Assignment getAssignmentById(Long id) {
     return assignmentService.getAssignmentById(id);
   }
 
   @Override
-  public Optional<Assignment> deleteAssignment(Long id) {
+  public Assignment deleteAssignment(Long id) {
     return assignmentService.deleteAssignment(id);
   }
 
   @Override
-  public Optional<Assignment> updateAssignment(
+  public Assignment updateAssignment(
       Long id, Long studentID, Long labProblemID, int grade) throws ValidatorException {
     return assignmentService.updateAssignment(id, studentID, labProblemID, grade);
   }
 
   @Override
-  public Optional<AbstractMap.SimpleEntry<Long, Double>> greatestMean() {
+  public AbstractMap.SimpleEntry<Long, Double> greatestMean() {
     return assignmentService.greatestMean();
   }
 
   @Override
-  public Optional<AbstractMap.SimpleEntry<Long, Long>> idOfLabProblemMostAssigned() {
+  public AbstractMap.SimpleEntry<Long, Long> idOfLabProblemMostAssigned() {
     return assignmentService.idOfLabProblemMostAssigned();
   }
 
   @Override
-  public Optional<Double> averageGrade() {
+  public Double averageGrade() {
     return assignmentService.averageGrade();
   }
 
   @Override
-  public Optional<Map<Student, List<LabProblem>>> studentAssignedProblems() {
+  public Map<Student, List<LabProblem>> studentAssignedProblems() {
     return assignmentService.studentAssignedProblems();
   }
 }

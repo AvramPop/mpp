@@ -170,11 +170,11 @@ public class Console {
   }
 
   private void studentProblems() {
-    Optional<Map<Student, List<LabProblem>>> studentsLabProblems =
+    Map<Student, List<LabProblem>> studentsLabProblems =
         assignmentService.studentAssignedProblems();
     Student emptyStudent = new Student();
-    if (studentsLabProblems.isPresent()) {
-      for (Map.Entry<Student, List<LabProblem>> entry : studentsLabProblems.get().entrySet()) {
+    if (studentsLabProblems != null) {
+      for (Map.Entry<Student, List<LabProblem>> entry : studentsLabProblems.entrySet()) {
         if (!entry.getKey().getSerialNumber().equals("")) {
           System.out.println(entry.getKey().toString());
           System.out.println("Problems:");
@@ -187,7 +187,7 @@ public class Console {
         }
       }
       System.out.println("Unused problems:");
-      studentsLabProblems.get().get(emptyStudent).forEach(System.out::println);
+      studentsLabProblems.get(emptyStudent).forEach(System.out::println);
     }
   }
   /*
@@ -205,23 +205,23 @@ public class Console {
   }
   */
   private void averageGrade() {
-    Optional<Double> mean = assignmentService.averageGrade();
-    if (mean.isPresent()) {
-      System.out.println("The mean of all assignments is " + mean.get());
+    Double mean = assignmentService.averageGrade();
+    if (mean != null) {
+      System.out.println("The mean of all assignments is " + mean);
     } else {
       System.err.println("assignments");
     }
   }
 
   private void labProblemMostAssigned() {
-    Optional<AbstractMap.SimpleEntry<Long, Long>> idOfLabProblemMostAssigned =
+    AbstractMap.SimpleEntry<Long, Long> idOfLabProblemMostAssigned =
         assignmentService.idOfLabProblemMostAssigned();
-    if (idOfLabProblemMostAssigned.isPresent()) {
+    if (idOfLabProblemMostAssigned != null) {
       System.out.println(
           "lab problem most assigned id: "
-              + idOfLabProblemMostAssigned.get().getKey()
+              + idOfLabProblemMostAssigned.getKey()
               + " - "
-              + idOfLabProblemMostAssigned.get().getValue()
+              + idOfLabProblemMostAssigned.getValue()
               + "times");
     } else {
       System.err.println("no lab problems assigned");
@@ -229,13 +229,13 @@ public class Console {
   }
 
   private void greatestMeanOfStudent() {
-    Optional<AbstractMap.SimpleEntry<Long, Double>> greatestMean = assignmentService.greatestMean();
-    if (greatestMean.isPresent()) {
+    AbstractMap.SimpleEntry<Long, Double> greatestMean = assignmentService.greatestMean();
+    if (greatestMean != null) {
       System.out.println(
           "The greatest mean is of student id = "
-              + greatestMean.get().getKey()
+              + greatestMean.getKey()
               + ": "
-              + greatestMean.get().getValue());
+              + greatestMean.getValue());
     } else {
       System.err.println("no students or assignments");
     }
@@ -309,7 +309,7 @@ public class Console {
       long labProblemId = Long.parseLong(input.readLine().strip());
       System.out.println("Enter grade: ");
       int grade = Integer.parseInt(input.readLine().strip());
-      if (assignmentService.addAssignment(id, studentId, labProblemId, grade).isEmpty())
+      if (assignmentService.addAssignment(id, studentId, labProblemId, grade) == null)
         System.out.println("Assignment added");
       else System.out.println("Assignment not added");
     } catch (ValidatorException e) {
@@ -334,7 +334,7 @@ public class Console {
       String name = input.readLine().strip();
       System.out.println("Enter group: ");
       int group = Integer.parseInt(input.readLine().strip());
-      if (studentService.addStudent(id, serialNumber, name, group).isEmpty())
+      if (studentService.addStudent(id, serialNumber, name, group) == null)
         System.out.println("Student added");
       else System.out.println("Student not added");
 
@@ -361,7 +361,7 @@ public class Console {
       int problemNumber = Integer.parseInt(input.readLine().strip());
       System.out.println("Enter description: ");
       String description = input.readLine().strip();
-      if (labProblemService.addLabProblem(id, problemNumber, description).isEmpty())
+      if (labProblemService.addLabProblem(id, problemNumber, description) == null)
         System.out.println("Lab Problem added");
       else System.out.println("Lab Problem not added");
     } catch (ValidatorException e) {
@@ -386,7 +386,7 @@ public class Console {
       int problemNumber = Integer.parseInt(input.readLine().strip());
       System.out.println("Enter description: ");
       String description = input.readLine().strip();
-      if (labProblemService.updateLabProblem(id, problemNumber, description).isEmpty())
+      if (labProblemService.updateLabProblem(id, problemNumber, description) == null)
         System.out.println("Lab Problem updated");
       else System.out.println("Lab Problem not updated");
     } catch (ValidatorException e) {
@@ -407,7 +407,7 @@ public class Console {
       System.out.println("Invalid input!");
       return;
     }
-    if (labProblemService.deleteLabProblem(id).isEmpty()) System.out.println("Delete failed");
+    if (labProblemService.deleteLabProblem(id) == null) System.out.println("Delete failed");
     else System.out.println("Delete successful");
   }
   /** ro.ubb.UI method filters lab problems by problem number */
@@ -440,7 +440,7 @@ public class Console {
       String name = input.readLine().strip();
       System.out.println("Enter group: ");
       int group = Integer.parseInt(input.readLine().strip());
-      if (studentService.updateStudent(id, serialNumber, name, group).isEmpty())
+      if (studentService.updateStudent(id, serialNumber, name, group) == null)
         System.out.println("Student updated");
       else System.out.println("Student not updated");
     } catch (ValidatorException ex) {
@@ -463,7 +463,7 @@ public class Console {
       System.out.println("Invalid input!");
       return;
     }
-    if (studentService.deleteStudent(id).isEmpty()) System.out.println("Delete failed");
+    if (studentService.deleteStudent(id) == null) System.out.println("Delete failed");
     else System.out.println("Delete successful");
   }
   /** ro.ubb.UI method filters students by group number */
@@ -495,7 +495,7 @@ public class Console {
       long labProblemId = Long.parseLong(input.readLine().strip());
       System.out.println("Enter grade: ");
       int grade = Integer.parseInt(input.readLine().strip());
-      if (assignmentService.updateAssignment(id, studentId, labProblemId, grade).isEmpty())
+      if (assignmentService.updateAssignment(id, studentId, labProblemId, grade) == null)
         System.out.println("Assignment updated");
       else System.out.println("Assignment not updated");
     } catch (ValidatorException e) {
@@ -513,7 +513,7 @@ public class Console {
     try {
       System.out.println("Enter id: ");
       id = Long.parseLong(input.readLine().strip());
-      if (assignmentService.deleteAssignment(id).isEmpty()) System.out.println("Delete failed");
+      if (assignmentService.deleteAssignment(id) == null) System.out.println("Delete failed");
       else System.out.println("Delete successful");
 
     } catch (IOException | NumberFormatException e) {

@@ -10,7 +10,7 @@ import java.util.*;
 
 public interface AssignmentService {
 
-  Optional<Assignment> addAssignment(Long id, Long studentID, Long labProblemID, int grade)
+  Assignment addAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException;
 
   Set<Assignment> getAllAssignments();
@@ -25,7 +25,7 @@ public interface AssignmentService {
    * @param id to find assignment by
    * @return Optional containing the sought Assignment or null otherwise
    */
-  Optional<Assignment> getAssignmentById(Long id);
+  Assignment getAssignmentById(Long id);
 
   /**
    * Deletes an assignment from the ro.ubb.repository
@@ -34,9 +34,9 @@ public interface AssignmentService {
    * @return an {@code Optional} containing a null if successfully deleted otherwise the entity
    *     passed to the repository
    */
-  Optional<Assignment> deleteAssignment(Long id);
+  Assignment deleteAssignment(Long id);
 
-  Optional<Assignment> updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
+  Assignment updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException;
 
   /**
@@ -46,7 +46,7 @@ public interface AssignmentService {
    *     {@code Optional} containing a {@code Pair} of Long and Double, for the ID and the grade
    *     average
    */
-  Optional<AbstractMap.SimpleEntry<Long, Double>> greatestMean();
+  AbstractMap.SimpleEntry<Long, Double> greatestMean();
 
   /**
    * Returns the id of the lab problem which was assigned the most often
@@ -55,7 +55,7 @@ public interface AssignmentService {
    *     {@code Optional} containing a {@code Pair} of Long and Long, for the ID and the number of
    *     assignments
    */
-  Optional<AbstractMap.SimpleEntry<Long, Long>> idOfLabProblemMostAssigned();
+  AbstractMap.SimpleEntry<Long, Long> idOfLabProblemMostAssigned();
 
   /**
    * Returns the average grade of all the groups
@@ -63,7 +63,7 @@ public interface AssignmentService {
    * @return an {@code Optional} containing a null if no student is in the repository otherwise a
    *     {@code Double} which represents the average grade
    */
-  Optional<Double> averageGrade();
+  Double averageGrade();
 
   /**
    * Return a mapping of every Student and a list of it's assigned LabProblems.
@@ -71,5 +71,5 @@ public interface AssignmentService {
    * @return the sought Student - List of LabProblems. If student has no assignment, map to an empty
    *     list.
    */
-  Optional<Map<Student, List<LabProblem>>> studentAssignedProblems();
+  Map<Student, List<LabProblem>> studentAssignedProblems();
 }

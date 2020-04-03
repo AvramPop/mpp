@@ -5,7 +5,6 @@ import ro.ubb.remoting.common.domain.exceptions.ValidatorException;
 import ro.ubb.remoting.common.service.sort.Sort;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 /** Created by radu. */
@@ -21,7 +20,7 @@ public interface StudentService {
    *     the ro.ubb.repository otherwise
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
-  Optional<Student> addStudent(Long id, String serialNumber, String name, int group)
+  Student addStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException;
   /**
    * Returns all the students in the ro.ubb.repository
@@ -40,7 +39,7 @@ public interface StudentService {
    * @return * @return an {@code Optional} containing a null if successfully deleted otherwise the
    *     entity passed to the repository
    */
-  Optional<Student> deleteStudent(Long id);
+  Student deleteStudent(Long id);
 
   /**
    * Updates a student inside the ro.ubb.repository
@@ -53,7 +52,7 @@ public interface StudentService {
    *     the ro.ubb.repository otherwise
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
-  Optional<Student> updateStudent(Long id, String serialNumber, String name, int group)
+  Student updateStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException;
 
   /**
@@ -70,5 +69,5 @@ public interface StudentService {
    * @param id to find student by
    * @return Optional containing the sought Student or null otherwise
    */
-  Optional<Student> getStudentById(Long id);
+  Student getStudentById(Long id);
 }

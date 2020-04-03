@@ -9,7 +9,6 @@ import ro.ubb.remoting.server.service.validators.Validator;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -25,14 +24,14 @@ public class LabProblemServiceImpl implements LabProblemService {
   }
 
   @Override
-  public Optional<LabProblem> addLabProblem(Long id, int problemNumber, String description)
+  public LabProblem addLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException {
     LabProblem newLabProblem = new LabProblem(problemNumber, description);
     newLabProblem.setId(id);
 
     labProblemValidator.validate(newLabProblem);
 
-    return repository.save(newLabProblem);
+    return repository.save(newLabProblem).get();
   }
 
   @Override
@@ -48,30 +47,30 @@ public class LabProblemServiceImpl implements LabProblemService {
   }
 
   @Override
-  public Optional<LabProblem> getLabProblemById(Long id) {
+  public LabProblem getLabProblemById(Long id) {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("invalid id!");
     }
-    return repository.findOne(id);
+    return repository.findOne(id).get();
   }
 
   @Override
-  public Optional<LabProblem> deleteLabProblem(Long id) {
+  public LabProblem deleteLabProblem(Long id) {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("Invalid id!");
     }
-    return repository.delete(id);
+    return repository.delete(id).get();
   }
 
   @Override
-  public Optional<LabProblem> updateLabProblem(Long id, int problemNumber, String description)
+  public LabProblem updateLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException {
     LabProblem newLabProblem = new LabProblem(problemNumber, description);
     newLabProblem.setId(id);
 
     labProblemValidator.validate(newLabProblem);
 
-    return repository.update(newLabProblem);
+    return repository.update(newLabProblem).get();
   }
 
   @Override

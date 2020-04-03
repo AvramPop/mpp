@@ -5,7 +5,6 @@ import ro.ubb.remoting.common.domain.exceptions.ValidatorException;
 import ro.ubb.remoting.common.service.sort.Sort;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 public interface LabProblemService {
@@ -19,7 +18,7 @@ public interface LabProblemService {
    *     otherwise
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
-  Optional<LabProblem> addLabProblem(Long id, int problemNumber, String description)
+  LabProblem addLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException;
 
   /**
@@ -39,7 +38,7 @@ public interface LabProblemService {
    * @param id to find lab problem by
    * @return Optional containing the sought LabProblem or null otherwise
    */
-  Optional<LabProblem> getLabProblemById(Long id);
+  LabProblem getLabProblemById(Long id);
 
   /**
    * Deletes a lab problem from the ro.ubb.repository
@@ -48,7 +47,7 @@ public interface LabProblemService {
    * @return an {@code Optional} containing a null if successfully deleted otherwise the entity
    *     passed to the repository
    */
-  Optional<LabProblem> deleteLabProblem(Long id);
+  LabProblem deleteLabProblem(Long id);
 
   /**
    * Updates a lab problem inside the ro.ubb.repository
@@ -60,7 +59,7 @@ public interface LabProblemService {
    *     the ro.ubb.repository
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
-  Optional<LabProblem> updateLabProblem(Long id, int problemNumber, String description)
+  LabProblem updateLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException;
 
   /**

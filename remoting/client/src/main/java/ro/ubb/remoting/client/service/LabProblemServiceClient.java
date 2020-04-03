@@ -7,14 +7,13 @@ import ro.ubb.remoting.common.service.LabProblemService;
 import ro.ubb.remoting.common.service.sort.Sort;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 public class LabProblemServiceClient implements LabProblemService {
   @Autowired private LabProblemService labProblemService;
 
   @Override
-  public Optional<LabProblem> addLabProblem(Long id, int problemNumber, String description)
+  public LabProblem addLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException {
     return labProblemService.addLabProblem(id, problemNumber, description);
   }
@@ -30,17 +29,17 @@ public class LabProblemServiceClient implements LabProblemService {
   }
 
   @Override
-  public Optional<LabProblem> getLabProblemById(Long id) {
+  public LabProblem getLabProblemById(Long id) {
     return labProblemService.getLabProblemById(id);
   }
 
   @Override
-  public Optional<LabProblem> deleteLabProblem(Long id) {
+  public LabProblem deleteLabProblem(Long id) {
     return labProblemService.deleteLabProblem(id);
   }
 
   @Override
-  public Optional<LabProblem> updateLabProblem(Long id, int problemNumber, String description)
+  public LabProblem updateLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException {
     return labProblemService.updateLabProblem(id, problemNumber, description);
   }

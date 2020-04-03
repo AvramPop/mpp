@@ -9,7 +9,6 @@ import ro.ubb.remoting.server.service.validators.Validator;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -26,14 +25,14 @@ public class StudentServiceImpl implements StudentService {
   }
 
   @Override
-  public Optional<Student> addStudent(Long id, String serialNumber, String name, int group)
+  public Student addStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException {
     Student newStudent = new Student(serialNumber, name, group);
     newStudent.setId(id);
 
     validator.validate(newStudent);
 
-    return repository.save(newStudent);
+    return repository.save(newStudent).get();
   }
 
   @Override
@@ -49,18 +48,18 @@ public class StudentServiceImpl implements StudentService {
   }
 
   @Override
-  public Optional<Student> deleteStudent(Long id) {
+  public Student deleteStudent(Long id) {
     if (id == null || id < 0) throw new IllegalArgumentException("Invalid id!");
-    return repository.delete(id);
+    return repository.delete(id).get();
   }
 
   @Override
-  public Optional<Student> updateStudent(Long id, String serialNumber, String name, int group)
+  public Student updateStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException {
     Student student = new Student(serialNumber, name, group);
     student.setId(id);
     validator.validate(student);
-    return repository.update(student);
+    return repository.update(student).get();
   }
 
   @Override
@@ -76,10 +75,10 @@ public class StudentServiceImpl implements StudentService {
   }
 
   @Override
-  public Optional<Student> getStudentById(Long id) {
+  public Student getStudentById(Long id) {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("invalid id!");
     }
-    return repository.findOne(id);
+    return repository.findOne(id).get();
   }
 }

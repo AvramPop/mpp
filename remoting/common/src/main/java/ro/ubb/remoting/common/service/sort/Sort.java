@@ -2,6 +2,7 @@ package ro.ubb.remoting.common.service.sort;
 
 import ro.ubb.remoting.common.domain.exceptions.ClassReflectionException;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -9,7 +10,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class Sort {
+public class Sort implements Serializable {
+  private static final long serialVersionUID = 1L;
   private List<Map.Entry<Direction, String>> sortingChain;
   private String className = null;
 

@@ -8,11 +8,13 @@ import ro.ubb.remoting.common.service.AssignmentService;
 import ro.ubb.remoting.common.service.LabProblemService;
 import ro.ubb.remoting.common.service.StudentService;
 import ro.ubb.remoting.common.service.sort.Sort;
-import ro.ubb.remoting.server.repository.Repository;
 import ro.ubb.remoting.server.repository.SortingRepository;
 import ro.ubb.remoting.server.service.validators.Validator;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -34,17 +36,17 @@ public class AssignmentServiceImpl implements AssignmentService {
   }
 
   @Override
-  public Optional<Assignment> addAssignment(Long id, Long studentID, Long labProblemID, int grade)
+  public Assignment addAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException {
     Assignment assignment = new Assignment(studentID, labProblemID, grade);
     assignment.setId(id);
     assignmentValidator.validate(assignment);
 
-    if (studentService.getStudentById(studentID).isPresent()
-        && labProblemService.getLabProblemById(labProblemID).isPresent()) {
-      return repository.save(assignment);
+    if (studentService.getStudentById(studentID) != null
+        && labProblemService.getLabProblemById(labProblemID) != null) {
+      return repository.save(assignment).get();
     }
-    return Optional.of(assignment);
+    return assignment;
   }
 
   @Override
@@ -60,37 +62,37 @@ public class AssignmentServiceImpl implements AssignmentService {
   }
 
   @Override
-  public Optional<Assignment> getAssignmentById(Long id) {
+  public Assignment getAssignmentById(Long id) {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("invalid id!");
     }
-    return repository.findOne(id);
+    return repository.findOne(id).get();
   }
 
   @Override
-  public Optional<Assignment> deleteAssignment(Long id) {
+  public Assignment deleteAssignment(Long id) {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("Invalid id!");
     }
-    return repository.delete(id);
+    return repository.delete(id).get();
   }
 
   @Override
-  public Optional<Assignment> updateAssignment(
+  public Assignment updateAssignment(
       Long id, Long studentID, Long labProblemID, int grade) throws ValidatorException {
     Assignment assignment = new Assignment(studentID, labProblemID, grade);
     assignment.setId(id);
 
-    if (studentService.getStudentById(studentID).isPresent()
-        && labProblemService.getLabProblemById(labProblemID).isPresent()) {
+    if (studentService.getStudentById(studentID) != null
+        && labProblemService.getLabProblemById(labProblemID) != null) {
       assignmentValidator.validate(assignment);
-      return repository.update(assignment);
+      return repository.update(assignment).get();
     }
-    return Optional.of(assignment);
+    return assignment;
   }
 
   @Override
-  public Optional<AbstractMap.SimpleEntry<Long, Double>> greatestMean() {
+  public AbstractMap.SimpleEntry<Long, Double> greatestMean() {
     Iterable<Assignment> assignmentIterable = repository.findAll();
     Set<Assignment> assignments =
         StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
@@ -115,11 +117,11 @@ public class AssignmentServiceImpl implements AssignmentService {
                                 .filter(
                                     assignment -> assignment.getStudentId().equals(student.getId()))
                                 .count()))
-        .max((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue()));
+        .max((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue())).get();
   }
 
   @Override
-  public Optional<AbstractMap.SimpleEntry<Long, Long>> idOfLabProblemMostAssigned() {
+  public AbstractMap.SimpleEntry<Long, Long> idOfLabProblemMostAssigned() {
     Iterable<Assignment> assignmentIterable = repository.findAll();
     Set<Assignment> assignments =
         StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
@@ -133,38 +135,38 @@ public class AssignmentServiceImpl implements AssignmentService {
                         .filter(
                             assignment -> assignment.getLabProblemId().equals(labProblem.getId()))
                         .count()))
-        .max(((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue())));
+        .max(((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue()))).get();
   }
 
   @Override
-  public Optional<Double> averageGrade() {
+  public Double averageGrade() {
     Iterable<Assignment> assignmentIterable = repository.findAll();
     Set<Assignment> assignments =
         StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
     int gradesSum = assignments.stream().map(Assignment::getGrade).reduce(0, Integer::sum);
 
     if (assignments.size() > 0) {
-      return Optional.of((double) gradesSum / (double) assignments.size());
+      return (double) gradesSum / (double) assignments.size();
     } else {
-      return Optional.empty();
+      return null;
     }
   }
 
   @Override
-  public Optional<Map<Student, List<LabProblem>>> studentAssignedProblems() {
+  public Map<Student, List<LabProblem>> studentAssignedProblems() {
     Map<Student, List<LabProblem>> result =
         studentService.getAllStudents().stream()
             .collect(
                 Collectors.toMap(
                     student -> student, this::getAllLabProblemsForAStudent));
 
-    return Optional.of(result);
+    return result;
   }
 
   private List<LabProblem> getAllLabProblemsForAStudent(Student student) {
     return StreamSupport.stream(repository.findAll().spliterator(), false)
         .filter(assignment -> assignment.getStudentId().equals(student.getId()))
-        .map(assignment -> labProblemService.getLabProblemById(assignment.getLabProblemId()).get())
+        .map(assignment -> labProblemService.getLabProblemById(assignment.getLabProblemId()))
         .collect(Collectors.toList());
   }
 }
