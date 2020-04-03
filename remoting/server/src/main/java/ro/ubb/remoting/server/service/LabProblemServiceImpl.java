@@ -31,7 +31,7 @@ public class LabProblemServiceImpl implements LabProblemService {
 
     labProblemValidator.validate(newLabProblem);
 
-    return repository.save(newLabProblem).get();
+    return repository.save(newLabProblem).orElse(null);
   }
 
   @Override
@@ -51,7 +51,7 @@ public class LabProblemServiceImpl implements LabProblemService {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("invalid id!");
     }
-    return repository.findOne(id).get();
+    return repository.findOne(id).orElse(null);
   }
 
   @Override
@@ -59,7 +59,7 @@ public class LabProblemServiceImpl implements LabProblemService {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("Invalid id!");
     }
-    return repository.delete(id).get();
+    return repository.delete(id).orElse(null);
   }
 
   @Override
@@ -70,7 +70,7 @@ public class LabProblemServiceImpl implements LabProblemService {
 
     labProblemValidator.validate(newLabProblem);
 
-    return repository.update(newLabProblem).get();
+    return repository.update(newLabProblem).orElse(null);
   }
 
   @Override

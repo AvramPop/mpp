@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import ro.ubb.remoting.common.domain.Assignment;
-import ro.ubb.remoting.common.domain.exceptions.ValidatorException;
 import ro.ubb.remoting.common.service.sort.Sort;
 
 import java.util.List;
@@ -24,9 +23,9 @@ public class AssignmentRepository implements SortingRepository<Long, Assignment>
     if (aLong == null) throw new IllegalArgumentException();
     String sql = "SELECT * FROM public.\"Assignments\" where assignment_id = " + aLong;
     List<Assignment> result = getAssignments(sql);
-    if (result.size() > 0) {
+    try {
       return Optional.of(result.get(0));
-    } else {
+    } catch (IndexOutOfBoundsException ex) {
       return Optional.empty();
     }
   }

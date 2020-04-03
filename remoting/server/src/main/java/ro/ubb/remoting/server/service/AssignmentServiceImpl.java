@@ -11,10 +11,7 @@ import ro.ubb.remoting.common.service.sort.Sort;
 import ro.ubb.remoting.server.repository.SortingRepository;
 import ro.ubb.remoting.server.service.validators.Validator;
 
-import java.util.AbstractMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -44,7 +41,8 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     if (studentService.getStudentById(studentID) != null
         && labProblemService.getLabProblemById(labProblemID) != null) {
-      return repository.save(assignment).get();
+      Optional<Assignment> result = repository.save(assignment);
+      return result.orElse(null);
     }
     return assignment;
   }
@@ -66,7 +64,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("invalid id!");
     }
-    return repository.findOne(id).get();
+    return repository.findOne(id).orElse(null);
   }
 
   @Override
@@ -74,7 +72,8 @@ public class AssignmentServiceImpl implements AssignmentService {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("Invalid id!");
     }
-    return repository.delete(id).get();
+    Optional<Assignment> result = repository.delete(id);
+    return result.orElse(null);
   }
 
   @Override
@@ -86,7 +85,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     if (studentService.getStudentById(studentID) != null
         && labProblemService.getLabProblemById(labProblemID) != null) {
       assignmentValidator.validate(assignment);
-      return repository.update(assignment).get();
+      return repository.update(assignment).orElse(null);
     }
     return assignment;
   }
@@ -154,13 +153,11 @@ public class AssignmentServiceImpl implements AssignmentService {
 
   @Override
   public Map<Student, List<LabProblem>> studentAssignedProblems() {
-    Map<Student, List<LabProblem>> result =
-        studentService.getAllStudents().stream()
-            .collect(
-                Collectors.toMap(
-                    student -> student, this::getAllLabProblemsForAStudent));
 
-    return result;
+    return studentService.getAllStudents().stream()
+        .collect(
+            Collectors.toMap(
+                student -> student, this::getAllLabProblemsForAStudent));
   }
 
   private List<LabProblem> getAllLabProblemsForAStudent(Student student) {

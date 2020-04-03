@@ -3,7 +3,6 @@ package ro.ubb.remoting.server.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
-import ro.ubb.remoting.common.domain.Assignment;
 import ro.ubb.remoting.common.domain.LabProblem;
 import ro.ubb.remoting.common.service.sort.Sort;
 
@@ -55,7 +54,7 @@ public class LabProblemRepository implements SortingRepository<Long, LabProblem>
   @Override
   public Optional<LabProblem> delete(Long aLong) {
     if (aLong == null) throw new IllegalArgumentException("Id must not be null");
-    String query = "delete from public.\"LabProblems\" where lab_problem_id = " + aLong;
+    String query = "delete from public.\"LabProblems\" where lab_problem_id = ?";
     Optional<LabProblem> labProblem = this.findOne(aLong);
     labProblem.ifPresent((value) -> jdbcOperations.update(query, aLong));
     return labProblem;

@@ -32,7 +32,7 @@ public class StudentServiceImpl implements StudentService {
 
     validator.validate(newStudent);
 
-    return repository.save(newStudent).get();
+    return repository.save(newStudent).orElse(null);
   }
 
   @Override
@@ -50,7 +50,7 @@ public class StudentServiceImpl implements StudentService {
   @Override
   public Student deleteStudent(Long id) {
     if (id == null || id < 0) throw new IllegalArgumentException("Invalid id!");
-    return repository.delete(id).get();
+    return repository.delete(id).orElse(null);
   }
 
   @Override
@@ -59,7 +59,7 @@ public class StudentServiceImpl implements StudentService {
     Student student = new Student(serialNumber, name, group);
     student.setId(id);
     validator.validate(student);
-    return repository.update(student).get();
+    return repository.update(student).orElse(null);
   }
 
   @Override
@@ -79,6 +79,6 @@ public class StudentServiceImpl implements StudentService {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("invalid id!");
     }
-    return repository.findOne(id).get();
+    return repository.findOne(id).orElse(null);
   }
 }

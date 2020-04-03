@@ -246,19 +246,16 @@ public class Console {
     String menu = "";
     menu += "Menu options:" + System.lineSeparator();
     menu += "- add student" + System.lineSeparator();
-    menu += "- get student" + System.lineSeparator();
     menu += "- print students" + System.lineSeparator();
     menu += "- print students sorted" + System.lineSeparator();
     menu += "- update student" + System.lineSeparator();
     menu += "- delete student" + System.lineSeparator();
     menu += "- add lab problem" + System.lineSeparator();
-    menu += "- get lab problem" + System.lineSeparator();
     menu += "- print lab problems" + System.lineSeparator();
     menu += "- print lab problems sorted" + System.lineSeparator();
     menu += "- update lab problem" + System.lineSeparator();
     menu += "- delete lab problem" + System.lineSeparator();
     menu += "- add assignment" + System.lineSeparator();
-    menu += "- get assignment" + System.lineSeparator();
     menu += "- print assignments" + System.lineSeparator();
     menu += "- print assignments sorted" + System.lineSeparator();
     menu += "- update assignment" + System.lineSeparator();
@@ -267,7 +264,6 @@ public class Console {
     menu += "- lab problem most" + System.lineSeparator();
     menu += "- avg grade" + System.lineSeparator();
     menu += "- student problems" + System.lineSeparator();
-    menu += "- shutdown server" + System.lineSeparator();
     menu += "- exit" + System.lineSeparator();
     System.out.println(menu);
   }
