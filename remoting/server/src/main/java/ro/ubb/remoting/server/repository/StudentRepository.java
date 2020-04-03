@@ -57,7 +57,7 @@ public class StudentRepository implements SortingRepository<Long, Student> {
     if (aLong == null) throw new IllegalArgumentException("Id must not be null");
     String query = "delete from public.\"Students\" where student_id = ?";
     Optional<Student> student = this.findOne(aLong);
-    student.ifPresent((value) -> jdbcOperations.update(query, aLong));
+    student.ifPresent((value) -> jdbcOperations.update(query));
     return student;
   }
 

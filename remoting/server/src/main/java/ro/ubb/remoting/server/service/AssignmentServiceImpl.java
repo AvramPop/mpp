@@ -11,7 +11,10 @@ import ro.ubb.remoting.common.service.sort.Sort;
 import ro.ubb.remoting.server.repository.SortingRepository;
 import ro.ubb.remoting.server.service.validators.Validator;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -41,8 +44,7 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     if (studentService.getStudentById(studentID) != null
         && labProblemService.getLabProblemById(labProblemID) != null) {
-      Optional<Assignment> result = repository.save(assignment);
-      return result.orElse(null);
+      return repository.save(assignment).orElse(null);
     }
     return assignment;
   }
@@ -72,8 +74,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("Invalid id!");
     }
-    Optional<Assignment> result = repository.delete(id);
-    return result.orElse(null);
+    return repository.delete(id).orElse(null);
   }
 
   @Override
@@ -116,7 +117,7 @@ public class AssignmentServiceImpl implements AssignmentService {
                                 .filter(
                                     assignment -> assignment.getStudentId().equals(student.getId()))
                                 .count()))
-        .max((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue())).get();
+        .max((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue())).orElse(null);
   }
 
   @Override
@@ -134,7 +135,7 @@ public class AssignmentServiceImpl implements AssignmentService {
                         .filter(
                             assignment -> assignment.getLabProblemId().equals(labProblem.getId()))
                         .count()))
-        .max(((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue()))).get();
+        .max(((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue()))).orElse(null);
   }
 
   @Override
@@ -153,11 +154,13 @@ public class AssignmentServiceImpl implements AssignmentService {
 
   @Override
   public Map<Student, List<LabProblem>> studentAssignedProblems() {
+    Map<Student, List<LabProblem>> result =
+        studentService.getAllStudents().stream()
+            .collect(
+                Collectors.toMap(
+                    student -> student, this::getAllLabProblemsForAStudent));
 
-    return studentService.getAllStudents().stream()
-        .collect(
-            Collectors.toMap(
-                student -> student, this::getAllLabProblemsForAStudent));
+    return result;
   }
 
   private List<LabProblem> getAllLabProblemsForAStudent(Student student) {
