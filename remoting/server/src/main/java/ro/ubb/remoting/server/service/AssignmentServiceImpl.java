@@ -44,7 +44,7 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     if (studentService.getStudentById(studentID) != null
         && labProblemService.getLabProblemById(labProblemID) != null) {
-      return repository.save(assignment).get();
+      return repository.save(assignment).orElse(null);
     }
     return assignment;
   }
@@ -66,7 +66,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("invalid id!");
     }
-    return repository.findOne(id).get();
+    return repository.findOne(id).orElse(null);
   }
 
   @Override
@@ -74,7 +74,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("Invalid id!");
     }
-    return repository.delete(id).get();
+    return repository.delete(id).orElse(null);
   }
 
   @Override
@@ -86,7 +86,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     if (studentService.getStudentById(studentID) != null
         && labProblemService.getLabProblemById(labProblemID) != null) {
       assignmentValidator.validate(assignment);
-      return repository.update(assignment).get();
+      return repository.update(assignment).orElse(null);
     }
     return assignment;
   }
@@ -117,7 +117,7 @@ public class AssignmentServiceImpl implements AssignmentService {
                                 .filter(
                                     assignment -> assignment.getStudentId().equals(student.getId()))
                                 .count()))
-        .max((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue())).get();
+        .max((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue())).orElse(null);
   }
 
   @Override
@@ -135,7 +135,7 @@ public class AssignmentServiceImpl implements AssignmentService {
                         .filter(
                             assignment -> assignment.getLabProblemId().equals(labProblem.getId()))
                         .count()))
-        .max(((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue()))).get();
+        .max(((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue()))).orElse(null);
   }
 
   @Override

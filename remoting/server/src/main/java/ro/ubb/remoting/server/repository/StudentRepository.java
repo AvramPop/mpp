@@ -22,7 +22,7 @@ public class StudentRepository implements SortingRepository<Long, Student> {
   @Override
   public Optional<Student> findOne(Long aLong) {
     if (aLong == null) throw new IllegalArgumentException("Id must not be null");
-    String query = "select * from public.\"LabProblems\" where lab_problem_id=" + aLong;
+    String query = "select * from public.\"Students\" where student_id=" + aLong;
     List<Student> result = this.getStudents(query);
     try {
       return Optional.of(result.get(0));
@@ -58,7 +58,7 @@ public class StudentRepository implements SortingRepository<Long, Student> {
     if (aLong == null) throw new IllegalArgumentException("Id must not be null");
     String query = "delete from public.\"Students\" where student_id = " + aLong;
     Optional<Student> student = this.findOne(aLong);
-    student.ifPresent((value) -> jdbcOperations.update(query, aLong));
+    student.ifPresent((value) -> jdbcOperations.update(query));
     return student;
   }
 
