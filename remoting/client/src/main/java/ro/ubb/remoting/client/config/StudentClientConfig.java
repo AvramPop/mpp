@@ -7,11 +7,11 @@ import ro.ubb.remoting.common.service.StudentService;
 
 @Configuration
 public class StudentClientConfig {
-    @Bean
-    RmiProxyFactoryBean rmiStudentProxyFactoryBean(){
-        RmiProxyFactoryBean rmiProxyFactoryBean = new RmiProxyFactoryBean();
-        rmiProxyFactoryBean.setServiceInterface(StudentService.class);
-        rmiProxyFactoryBean.setServiceUrl("rmi://localhost:1099/StudentService");
-        return rmiProxyFactoryBean;
-    }
+  @Bean
+  RmiProxyFactoryBean rmiStudentProxyFactoryBean() {
+    RmiProxyFactoryBean rmiProxyFactoryBean = new RmiProxyFactoryBean();
+    rmiProxyFactoryBean.setServiceInterface(StudentService.class);
+    rmiProxyFactoryBean.setServiceUrl("rmi://localhost:1099/StudentService");
+    return rmiProxyFactoryBean;
+  }
 }

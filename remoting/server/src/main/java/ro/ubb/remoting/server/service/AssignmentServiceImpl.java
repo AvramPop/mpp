@@ -78,8 +78,8 @@ public class AssignmentServiceImpl implements AssignmentService {
   }
 
   @Override
-  public Assignment updateAssignment(
-      Long id, Long studentID, Long labProblemID, int grade) throws ValidatorException {
+  public Assignment updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
+      throws ValidatorException {
     Assignment assignment = new Assignment(studentID, labProblemID, grade);
     assignment.setId(id);
 
@@ -117,7 +117,8 @@ public class AssignmentServiceImpl implements AssignmentService {
                                 .filter(
                                     assignment -> assignment.getStudentId().equals(student.getId()))
                                 .count()))
-        .max((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue())).orElse(null);
+        .max((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue()))
+        .orElse(null);
   }
 
   @Override
@@ -135,7 +136,8 @@ public class AssignmentServiceImpl implements AssignmentService {
                         .filter(
                             assignment -> assignment.getLabProblemId().equals(labProblem.getId()))
                         .count()))
-        .max(((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue()))).orElse(null);
+        .max(((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue())))
+        .orElse(null);
   }
 
   @Override
@@ -154,13 +156,9 @@ public class AssignmentServiceImpl implements AssignmentService {
 
   @Override
   public Map<Student, List<LabProblem>> studentAssignedProblems() {
-    Map<Student, List<LabProblem>> result =
-        studentService.getAllStudents().stream()
-            .collect(
-                Collectors.toMap(
-                    student -> student, this::getAllLabProblemsForAStudent));
 
-    return result;
+    return studentService.getAllStudents().stream()
+        .collect(Collectors.toMap(student -> student, this::getAllLabProblemsForAStudent));
   }
 
   private List<LabProblem> getAllLabProblemsForAStudent(Student student) {

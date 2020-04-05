@@ -40,8 +40,8 @@ public class AssignmentServiceClient implements AssignmentService {
   }
 
   @Override
-  public Assignment updateAssignment(
-      Long id, Long studentID, Long labProblemID, int grade) throws ValidatorException {
+  public Assignment updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
+      throws ValidatorException {
     return assignmentService.updateAssignment(id, studentID, labProblemID, grade);
   }
 

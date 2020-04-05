@@ -56,7 +56,7 @@ public class LabProblemRepository implements SortingRepository<Long, LabProblem>
     if (aLong == null) throw new IllegalArgumentException("Id must not be null");
     String query = "delete from public.\"LabProblems\" where lab_problem_id = ?";
     Optional<LabProblem> labProblem = this.findOne(aLong);
-    labProblem.ifPresent((value) -> jdbcOperations.update(query));
+    labProblem.ifPresent((value) -> jdbcOperations.update(query, aLong));
     return labProblem;
   }
 
