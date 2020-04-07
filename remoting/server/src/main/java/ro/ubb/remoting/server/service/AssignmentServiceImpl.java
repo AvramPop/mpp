@@ -3,6 +3,7 @@ package ro.ubb.remoting.server.service;
 import ro.ubb.remoting.common.domain.Assignment;
 import ro.ubb.remoting.common.domain.LabProblem;
 import ro.ubb.remoting.common.domain.Student;
+import ro.ubb.remoting.common.domain.exceptions.RepositoryException;
 import ro.ubb.remoting.common.domain.exceptions.ValidatorException;
 import ro.ubb.remoting.common.service.AssignmentService;
 import ro.ubb.remoting.common.service.LabProblemService;
@@ -41,12 +42,14 @@ public class AssignmentServiceImpl implements AssignmentService {
     Assignment assignment = new Assignment(studentID, labProblemID, grade);
     assignment.setId(id);
     assignmentValidator.validate(assignment);
+    String errorMessage = "";
+    if (studentService.getStudentById(studentID) == null)
+      errorMessage += "Student id is not in the database ";
+    if (labProblemService.getLabProblemById(labProblemID) == null)
+      errorMessage += "Lab problem id is not in the database";
+    if (errorMessage.length() > 0) throw new RepositoryException(errorMessage);
 
-    if (studentService.getStudentById(studentID) != null
-        && labProblemService.getLabProblemById(labProblemID) != null) {
-      return repository.save(assignment).orElse(null);
-    }
-    return assignment;
+    return repository.save(assignment).orElse(null);
   }
 
   @Override
@@ -82,7 +85,7 @@ public class AssignmentServiceImpl implements AssignmentService {
       throws ValidatorException {
     Assignment assignment = new Assignment(studentID, labProblemID, grade);
     assignment.setId(id);
-
+    assignmentValidator.validate(assignment);
     if (studentService.getStudentById(studentID) != null
         && labProblemService.getLabProblemById(labProblemID) != null) {
       assignmentValidator.validate(assignment);

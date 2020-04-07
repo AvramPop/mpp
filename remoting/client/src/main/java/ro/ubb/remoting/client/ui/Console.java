@@ -109,6 +109,8 @@ public class Console {
               () -> {
                 try {
                   return assignmentService.getAssignmentById(id).toString();
+                } catch (IllegalArgumentException ex) {
+                  return ex.getMessage();
                 } catch (NullPointerException e) {
                   return "Failed to obtain";
                 }
@@ -131,6 +133,8 @@ public class Console {
               () -> {
                 try {
                   return labProblemService.getLabProblemById(id).toString();
+                } catch (IllegalArgumentException ex) {
+                  return ex.getMessage();
                 } catch (NullPointerException e) {
                   return "Failed to obtain";
                 }
@@ -153,6 +157,8 @@ public class Console {
               () -> {
                 try {
                   return studentService.getStudentById(id).toString();
+                } catch (IllegalArgumentException e) {
+                  return e.getMessage();
                 } catch (NullPointerException e) {
                   return "Failed to obtain student";
                 }
@@ -179,8 +185,8 @@ public class Console {
         } else if (order.equals("DESC")) {
           sortingDirection = Sort.Direction.DESC;
         } else {
-          System.err.println("wrong input!");
-          break;
+          System.out.println("wrong input!");
+          return;
         }
         System.out.println("column-name:");
         String columnName = input.readLine().strip();
@@ -198,8 +204,8 @@ public class Console {
                   return labProblemService.getAllLabProblemsSorted(finalSort).stream()
                       .map(LabProblem::toString)
                       .reduce("", (s1, s2) -> s1 + System.lineSeparator() + s2);
-                } catch (NullPointerException e) {
-                  return e.getMessage();
+                } catch (ClassReflectionException | NullPointerException ex) {
+                  return ex.getMessage();
                 }
               })
           .thenAcceptAsync(System.out::println);
@@ -225,8 +231,8 @@ public class Console {
         } else if (order.equals("DESC")) {
           sortingDirection = Sort.Direction.DESC;
         } else {
-          System.err.println("wrong input!");
-          break;
+          System.out.println("wrong input!");
+          return;
         }
         System.out.println("column-name:");
         String columnName = input.readLine().strip();
@@ -244,8 +250,8 @@ public class Console {
                   return assignmentService.getAllAssignmentsSorted(finalSort).stream()
                       .map(Assignment::toString)
                       .reduce("", (s1, s2) -> s1 + "\n" + s2);
-                } catch (NullPointerException e) {
-                  return e.getMessage();
+                } catch (ClassReflectionException | NullPointerException ex) {
+                  return ex.getMessage();
                 }
               })
           .thenAcceptAsync(System.out::println);
@@ -271,8 +277,8 @@ public class Console {
         } else if (order.equals("DESC")) {
           sortingDirection = Sort.Direction.DESC;
         } else {
-          System.err.println("wrong input!");
-          break;
+          System.out.println("wrong input!");
+          return;
         }
         System.out.println("column-name:");
         String columnName = input.readLine().strip();
@@ -291,8 +297,8 @@ public class Console {
                   return studentService.getAllStudentsSorted(finalSort).stream()
                       .map(Student::toString)
                       .reduce("", (s1, s2) -> s1 + "\n" + s2);
-                } catch (NullPointerException e) {
-                  return e.getMessage();
+                } catch (ClassReflectionException | NullPointerException ex) {
+                  return ex.getMessage();
                 }
               })
           .thenAcceptAsync(System.out::println);
@@ -434,9 +440,13 @@ public class Console {
       int grade = Integer.parseInt(input.readLine().strip());
       CompletableFuture.supplyAsync(
               () -> {
-                if (assignmentService.addAssignment(id, studentId, labProblemId, grade) == null)
-                  return "Assignment added";
-                return "Assignment not added";
+                try {
+                  if (assignmentService.addAssignment(id, studentId, labProblemId, grade) == null)
+                    return "Assignment added";
+                  return "Assignment not added, assignment with that id is already in the database";
+                } catch (ValidatorException | RepositoryException ex) {
+                  return ex.getMessage();
+                }
               })
           .thenAcceptAsync(System.out::println);
 
@@ -465,9 +475,13 @@ public class Console {
 
       CompletableFuture.supplyAsync(
               () -> {
-                if (studentService.addStudent(id, serialNumber, name, group) == null)
-                  return "Student added";
-                return "Student not added";
+                try {
+                  if (studentService.addStudent(id, serialNumber, name, group) == null)
+                    return "Student added";
+                  return "Student not added, already in database";
+                } catch (ValidatorException ex) {
+                  return ex.getMessage();
+                }
               })
           .thenAcceptAsync(System.out::println);
 
@@ -487,7 +501,7 @@ public class Console {
                     .map(Student::toString)
                     .reduce("", (s1, s2) -> s1 + System.lineSeparator() + s2);
               } catch (NullPointerException e) {
-                return e.getMessage().substring(e.getMessage().indexOf(" ") + 1);
+                return "Getting students error";
               }
             })
         .thenAcceptAsync(System.out::println);
@@ -504,11 +518,16 @@ public class Console {
       System.out.println("Enter description: ");
       String description = input.readLine().strip();
       CompletableFuture.supplyAsync(
-          () -> {
-            if (labProblemService.addLabProblem(id, problemNumber, description) == null)
-              return "Lab problem added";
-            return "Lab problem not added";
-          });
+              () -> {
+                try {
+                  if (labProblemService.addLabProblem(id, problemNumber, description) == null)
+                    return "Lab problem added";
+                  return "Lab problem not added, already in the database the entity with that id";
+                } catch (ValidatorException ex) {
+                  return ex.getMessage();
+                }
+              })
+          .thenAcceptAsync(System.out::println);
 
     } catch (ValidatorException e) {
       System.err.println(e.getMessage());
@@ -543,9 +562,13 @@ public class Console {
       String description = input.readLine().strip();
       CompletableFuture.supplyAsync(
               () -> {
-                if (labProblemService.updateLabProblem(id, problemNumber, description) == null)
-                  return "Lab Problem updated";
-                return "Lab Problem not updated";
+                try {
+                  if (labProblemService.updateLabProblem(id, problemNumber, description) == null)
+                    return "Lab Problem updated";
+                  return "Lab Problem not updated, entity with the given id is not in the database";
+                } catch (ValidatorException ex) {
+                  return ex.getMessage();
+                }
               })
           .thenAcceptAsync(System.out::println);
 
@@ -564,8 +587,13 @@ public class Console {
       id = Long.parseLong(input.readLine().strip());
       CompletableFuture.supplyAsync(
               () -> {
-                if (labProblemService.deleteLabProblem(id) == null) return "Delete failed";
-                return "Delete successful";
+                try {
+                  if (labProblemService.deleteLabProblem(id) == null)
+                    return "Delete failed, entity with the given id is not in the database";
+                  return "Delete successful";
+                } catch (IllegalArgumentException ex) {
+                  return ex.getMessage();
+                }
               })
           .thenAcceptAsync(System.out::println);
 
@@ -585,9 +613,17 @@ public class Console {
       System.out.println("Invalid input!");
       return;
     }
-
-    Set<LabProblem> labProblems = labProblemService.filterByProblemNumber(problemNumber);
-    labProblems.forEach(System.out::println);
+    CompletableFuture.supplyAsync(
+            () -> {
+              try {
+                return labProblemService.filterByProblemNumber(problemNumber).stream()
+                    .map(LabProblem::toString)
+                    .reduce("", (s1, s2) -> s1 + System.lineSeparator() + s2);
+              } catch (IllegalArgumentException ex) {
+                return ex.getMessage();
+              }
+            })
+        .thenAcceptAsync(System.out::println);
   }
 
   /** ro.ubb.UI method update a student */
@@ -606,9 +642,13 @@ public class Console {
 
       CompletableFuture.supplyAsync(
               () -> {
-                if (studentService.updateStudent(id, serialNumber, name, group) == null)
-                  return "Student updated";
-                return "Student not updated";
+                try {
+                  if (studentService.updateStudent(id, serialNumber, name, group) == null)
+                    return "Student updated";
+                  return "Student not updated, student with the given id is not in the database";
+                } catch (ValidatorException ex) {
+                  return ex.getMessage();
+                }
               })
           .thenAcceptAsync(System.out::println);
     } catch (ValidatorException ex) {
@@ -629,8 +669,13 @@ public class Console {
 
       CompletableFuture.supplyAsync(
               () -> {
-                if (studentService.deleteStudent(id) == null) return "Delete failed";
-                return "Delete successful!";
+                try {
+                  if (studentService.deleteStudent(id) == null)
+                    return "Delete failed, entity with the given id is not in the database";
+                  return "Delete successful!";
+                } catch (IllegalArgumentException ex) {
+                  return ex.getMessage();
+                }
               })
           .thenAcceptAsync(System.out::println);
 
@@ -650,9 +695,17 @@ public class Console {
       System.out.println("Invalid input!");
       return;
     }
-
-    Set<Student> students = studentService.filterByGroup(groupNumber);
-    students.forEach(System.out::println);
+    CompletableFuture.supplyAsync(
+            () -> {
+              try {
+                return studentService.filterByGroup(groupNumber).stream()
+                    .map(Student::toString)
+                    .reduce("", (s1, s2) -> s1 + System.lineSeparator() + s2);
+              } catch (IllegalArgumentException ex) {
+                return ex.getMessage();
+              }
+            })
+        .thenAcceptAsync(System.out::println);
   }
 
   private void updateAssignment() {
@@ -670,9 +723,13 @@ public class Console {
 
       CompletableFuture.supplyAsync(
               () -> {
-                if (assignmentService.updateAssignment(id, studentId, labProblemId, grade) == null)
-                  return "Assignment updated";
-                return "Assignment not updated";
+                try {
+                  if (assignmentService.updateAssignment(id, studentId, labProblemId, grade)
+                      == null) return "Assignment updated";
+                  return "Assignment not updated";
+                } catch (ValidatorException ex) {
+                  return ex.getMessage();
+                }
               })
           .thenAcceptAsync(System.out::println);
     } catch (ValidatorException e) {
@@ -692,8 +749,13 @@ public class Console {
       id = Long.parseLong(input.readLine().strip());
       CompletableFuture.supplyAsync(
               () -> {
-                if (assignmentService.deleteAssignment(id) == null) return "Assignment not deleted";
-                return "Assignment deleted";
+                try {
+                  if (assignmentService.deleteAssignment(id) == null)
+                    return "Assignment not deleted, entity with the given id is not in the database";
+                  return "Assignment deleted";
+                } catch (IllegalArgumentException ex) {
+                  return ex.getMessage();
+                }
               })
           .thenAcceptAsync(System.out::println);
     } catch (IOException | NumberFormatException e) {
