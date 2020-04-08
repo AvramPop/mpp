@@ -1,4 +1,4 @@
-package ro.ubb.domain.validators;
+package ro.ubb.service.validators;
 
 import ro.ubb.domain.exceptions.ValidatorException;
 

@@ -1,11 +1,13 @@
-package ro.ubb.domain.validators;
+package ro.ubb.service.validators;
 
+import org.springframework.stereotype.Component;
 import ro.ubb.domain.Assignment;
 import ro.ubb.domain.exceptions.ValidatorException;
 /**
  * AssignmentValidator has it's sole purpose to check out whether an instance of Assignment complies
  * to the requirements for such objects.
  */
+@Component
 public class AssignmentValidator implements Validator<Assignment> {
   /**
    * @param entity the entity to be validated

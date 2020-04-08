@@ -1,5 +1,6 @@
-package ro.ubb.domain.validators;
+package ro.ubb.service.validators;
 
+import org.springframework.stereotype.Component;
 import ro.ubb.domain.LabProblem;
 import ro.ubb.domain.exceptions.ValidatorException;
 
@@ -7,6 +8,7 @@ import ro.ubb.domain.exceptions.ValidatorException;
  * LabProblemValidator has it's sole purpose to check out whether an instance of LabProblem complies
  * to the requirements for such objects.
  */
+@Component
 public class LabProblemValidator implements Validator<LabProblem> {
 
   /**

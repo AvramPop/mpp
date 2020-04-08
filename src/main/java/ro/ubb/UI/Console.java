@@ -1,44 +1,35 @@
 package ro.ubb.UI;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ro.ubb.domain.Assignment;
 import ro.ubb.domain.LabProblem;
 import ro.ubb.domain.Student;
 import ro.ubb.domain.exceptions.ClassReflectionException;
 import ro.ubb.domain.exceptions.RepositoryException;
 import ro.ubb.domain.exceptions.ValidatorException;
-import ro.ubb.repository.db.sort.Sort;
-import ro.ubb.service.AssignmentService;
-import ro.ubb.service.LabProblemService;
-import ro.ubb.service.StudentService;
+import ro.ubb.repository.sort.Sort;
+import ro.ubb.service.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
-/** Console based user interface */
+@Component
 public class Console {
-  private StudentService studentService;
-  private LabProblemService labProblemService;
-  private AssignmentService assignmentService;
+  @Autowired private StudentService studentService;
+  @Autowired private LabProblemService labProblemService;
+  @Autowired private AssignmentService assignmentService;
   private HashMap<String, Runnable> dictionaryOfCommands;
-
-  public Console(
-      StudentService studentService,
-      LabProblemService labProblemService,
-      AssignmentService assignmentService) {
-    this.studentService = studentService;
-    this.labProblemService = labProblemService;
-    this.assignmentService = assignmentService;
-    // I use lambda methods with a hash table to not to make if statements
-    // if the thing fails it gets a null pointer exception
-    // which means not a valid command
-    initDictionaryOfCommands();
-  }
 
   private void initDictionaryOfCommands() {
     dictionaryOfCommands = new HashMap<>();
     dictionaryOfCommands.put("add student", this::addStudent);
+    dictionaryOfCommands.put("get student", this::getStudentById);
+    dictionaryOfCommands.put("get lab problem", this::getLabProblemById);
+    dictionaryOfCommands.put("get assignment", this::getAssignmentById);
     dictionaryOfCommands.put("print students", this::printStudents);
     dictionaryOfCommands.put("print students sorted", this::printStudentsSorted);
     dictionaryOfCommands.put("print assignments sorted", this::printAssignmentsSorted);
@@ -61,6 +52,110 @@ public class Console {
     dictionaryOfCommands.put("student problems", this::studentProblems);
     dictionaryOfCommands.put("exit", () -> System.exit(0));
   }
+  /** ro.ubb.UI method for printing the console menu */
+  private void printMenu() {
+    String menu = "";
+    menu += "Menu options:" + System.lineSeparator();
+    menu += "- add student" + System.lineSeparator();
+    menu += "- get student" + System.lineSeparator();
+    menu += "- print students" + System.lineSeparator();
+    menu += "- print students sorted" + System.lineSeparator();
+    menu += "- update student" + System.lineSeparator();
+    menu += "- delete student" + System.lineSeparator();
+    menu += "- filter students [by group]" + System.lineSeparator();
+    menu += "- add lab problem" + System.lineSeparator();
+    menu += "- get lab problem" + System.lineSeparator();
+    menu += "- print lab problems" + System.lineSeparator();
+    menu += "- print lab problems sorted" + System.lineSeparator();
+    menu += "- update lab problem" + System.lineSeparator();
+    menu += "- delete lab problem" + System.lineSeparator();
+    menu += "- filter lab problems [by number]" + System.lineSeparator();
+    menu += "- add assignment" + System.lineSeparator();
+    menu += "- get assignment" + System.lineSeparator();
+    menu += "- print assignments" + System.lineSeparator();
+    menu += "- print assignments sorted" + System.lineSeparator();
+    menu += "- update assignment" + System.lineSeparator();
+    menu += "- delete assignment" + System.lineSeparator();
+    menu += "- max mean student" + System.lineSeparator();
+    menu += "- lab problem most" + System.lineSeparator();
+    menu += "- avg grade" + System.lineSeparator();
+    menu += "- student problems" + System.lineSeparator();
+    menu += "- exit" + System.lineSeparator();
+    System.out.println(menu);
+  }
+
+  /** Take specific user input and print server's answer to the call getAssignmentById call. */
+  private void getAssignmentById() {
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    long id;
+    try {
+      System.out.println("Enter id: ");
+      id = Long.parseLong(input.readLine().strip());
+
+      CompletableFuture.supplyAsync(
+              () -> {
+                try {
+                  return assignmentService.getAssignmentById(id).toString();
+                } catch (IllegalArgumentException ex) {
+                  return ex.getMessage();
+                } catch (NullPointerException e) {
+                  return "Failed to obtain";
+                }
+              })
+          .thenAcceptAsync(System.out::println);
+
+    } catch (IOException | NumberFormatException ex) {
+      System.out.println("Invalid input!");
+    }
+  }
+
+  private void getLabProblemById() {
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    long id;
+    try {
+      System.out.println("Enter id: ");
+      id = Long.parseLong(input.readLine().strip());
+
+      CompletableFuture.supplyAsync(
+              () -> {
+                try {
+                  return labProblemService.getLabProblemById(id).toString();
+                } catch (IllegalArgumentException ex) {
+                  return ex.getMessage();
+                } catch (NullPointerException e) {
+                  return "Failed to obtain";
+                }
+              })
+          .thenAcceptAsync(System.out::println);
+
+    } catch (IOException | NumberFormatException ex) {
+      System.out.println("Invalid input!");
+    }
+  }
+
+  private void getStudentById() {
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    long id;
+    try {
+      System.out.println("Enter id: ");
+      id = Long.parseLong(input.readLine().strip());
+
+      CompletableFuture.supplyAsync(
+              () -> {
+                try {
+                  return studentService.getStudentById(id).toString();
+                } catch (IllegalArgumentException e) {
+                  return e.getMessage();
+                } catch (NullPointerException e) {
+                  return "Failed to obtain student";
+                }
+              })
+          .thenAcceptAsync(System.out::println);
+
+    } catch (IOException | NumberFormatException ex) {
+      System.out.println("Invalid input!");
+    }
+  }
 
   private void printLabProblemsSorted() {
     System.out.println("Sort by criteria: <order {ASC/ DESC} column-name>. 'done' when done");
@@ -77,8 +172,8 @@ public class Console {
         } else if (order.equals("DESC")) {
           sortingDirection = Sort.Direction.DESC;
         } else {
-          System.err.println("wrong input!");
-          break;
+          System.out.println("wrong input!");
+          return;
         }
         System.out.println("column-name:");
         String columnName = input.readLine().strip();
@@ -89,8 +184,18 @@ public class Console {
           sort = sort.and(new Sort(sortingDirection, columnName));
         }
       }
-      List<LabProblem> labProblems = labProblemService.getAllLabProblemsSorted(sort);
-      labProblems.forEach(System.out::println);
+      Sort finalSort = sort;
+      CompletableFuture.supplyAsync(
+              () -> {
+                try {
+                  return labProblemService.getAllLabProblemsSorted(finalSort).stream()
+                      .map(LabProblem::toString)
+                      .reduce("", (s1, s2) -> s1 + System.lineSeparator() + s2);
+                } catch (ClassReflectionException | NullPointerException ex) {
+                  return ex.getMessage();
+                }
+              })
+          .thenAcceptAsync(System.out::println);
     } catch (IOException e) {
       System.out.println("Invalid input!");
     } catch (ClassReflectionException e) {
@@ -113,8 +218,8 @@ public class Console {
         } else if (order.equals("DESC")) {
           sortingDirection = Sort.Direction.DESC;
         } else {
-          System.err.println("wrong input!");
-          break;
+          System.out.println("wrong input!");
+          return;
         }
         System.out.println("column-name:");
         String columnName = input.readLine().strip();
@@ -125,8 +230,18 @@ public class Console {
           sort = sort.and(new Sort(sortingDirection, columnName));
         }
       }
-      List<Assignment> assignments = assignmentService.getAllAssignmentsSorted(sort);
-      assignments.forEach(System.out::println);
+      Sort finalSort = sort;
+      CompletableFuture.supplyAsync(
+              () -> {
+                try {
+                  return assignmentService.getAllAssignmentsSorted(finalSort).stream()
+                      .map(Assignment::toString)
+                      .reduce("", (s1, s2) -> s1 + "\n" + s2);
+                } catch (ClassReflectionException | NullPointerException ex) {
+                  return ex.getMessage();
+                }
+              })
+          .thenAcceptAsync(System.out::println);
     } catch (IOException e) {
       System.out.println("Invalid input!");
     } catch (ClassReflectionException e) {
@@ -149,8 +264,8 @@ public class Console {
         } else if (order.equals("DESC")) {
           sortingDirection = Sort.Direction.DESC;
         } else {
-          System.err.println("wrong input!");
-          break;
+          System.out.println("wrong input!");
+          return;
         }
         System.out.println("column-name:");
         String columnName = input.readLine().strip();
@@ -161,8 +276,20 @@ public class Console {
           sort = sort.and(new Sort(sortingDirection, columnName));
         }
       }
-      List<Student> students = studentService.getAllStudentsSorted(sort);
-      students.forEach(System.out::println);
+
+      Sort finalSort = sort;
+      CompletableFuture.supplyAsync(
+              () -> {
+                try {
+                  return studentService.getAllStudentsSorted(finalSort).stream()
+                      .map(Student::toString)
+                      .reduce("", (s1, s2) -> s1 + "\n" + s2);
+                } catch (ClassReflectionException | NullPointerException ex) {
+                  return ex.getMessage();
+                }
+              })
+          .thenAcceptAsync(System.out::println);
+
     } catch (IOException e) {
       System.out.println("Invalid input!");
     } catch (ClassReflectionException e) {
@@ -171,25 +298,26 @@ public class Console {
   }
 
   private void studentProblems() {
-    Optional<Map<Student, List<LabProblem>>> studentsLabProblems =
-        assignmentService.studentAssignedProblems();
-    Student emptyStudent = new Student();
-    if (studentsLabProblems.isPresent()) {
-      for (Map.Entry<Student, List<LabProblem>> entry : studentsLabProblems.get().entrySet()) {
-        if (!entry.getKey().getSerialNumber().equals("")) {
-          System.out.println(entry.getKey().toString());
-          System.out.println("Problems:");
-          entry
-              .getValue()
-              .forEach(
-                  labProblem -> {
-                    System.out.println(labProblem.toString());
-                  });
-        }
-      }
-      System.out.println("Unused problems:");
-      studentsLabProblems.get().get(emptyStudent).forEach(System.out::println);
-    }
+
+    CompletableFuture.supplyAsync(
+            () -> {
+              Student emptyStudent = new Student();
+              try {
+                return assignmentService.studentAssignedProblems().entrySet().stream()
+                    .map(
+                        entry ->
+                            entry.getKey()
+                                + System.lineSeparator()
+                                + entry.getValue().stream()
+                                    .map(LabProblem::toString)
+                                    .reduce((s1, s2) -> s1 + System.lineSeparator() + s2)
+                                    .orElse(""))
+                    .reduce("", (s1, s2) -> s1 + System.lineSeparator() + s2);
+              } catch (NullPointerException e) {
+                return e.getMessage();
+              }
+            })
+        .thenAcceptAsync(System.out::println);
   }
   /*
   private void greatestMeanOfGroup() {
@@ -206,71 +334,54 @@ public class Console {
   }
   */
   private void averageGrade() {
-    Optional<Double> mean = assignmentService.averageGrade();
-    if (mean.isPresent()) {
-      System.out.println("The mean of all assignments is " + mean.get());
-    } else {
-      System.err.println("assignments");
-    }
+    CompletableFuture.supplyAsync(
+            () -> {
+              try {
+                return "The mean of all assignments is " + assignmentService.averageGrade();
+              } catch (NullPointerException e) {
+                return e.getMessage() + " assignments";
+              }
+            })
+        .thenAcceptAsync(System.out::println);
   }
 
   private void labProblemMostAssigned() {
-    Optional<AbstractMap.SimpleEntry<Long, Long>> idOfLabProblemMostAssigned =
-        assignmentService.idOfLabProblemMostAssigned();
-    if (idOfLabProblemMostAssigned.isPresent()) {
-      System.out.println(
-          "lab problem most assigned id: "
-              + idOfLabProblemMostAssigned.get().getKey()
-              + " - "
-              + idOfLabProblemMostAssigned.get().getValue()
-              + "times");
-    } else {
-      System.err.println("no lab problems assigned");
-    }
+    CompletableFuture.supplyAsync(
+            () -> {
+              try {
+                AbstractMap.SimpleEntry<Long, Long> result =
+                    assignmentService.idOfLabProblemMostAssigned();
+                return "lab problem most assigned id: "
+                    + result.getKey()
+                    + " - "
+                    + result.getValue()
+                    + "times";
+              } catch (NullPointerException e) {
+                return e.getMessage() + "\nno lab problems assigned";
+              }
+            })
+        .thenAcceptAsync(System.out::println);
   }
 
   private void greatestMeanOfStudent() {
-    Optional<AbstractMap.SimpleEntry<Long, Double>> greatestMean = assignmentService.greatestMean();
-    if (greatestMean.isPresent()) {
-      System.out.println(
-          "The greatest mean is of student id = "
-              + greatestMean.get().getKey()
-              + ": "
-              + greatestMean.get().getValue());
-    } else {
-      System.err.println("no students or assignments");
-    }
-  }
-
-  /** ro.ubb.UI method for printing the console menu */
-  private void printMenu() {
-    System.out.println("Menu options:");
-    System.out.println("- add student");
-    System.out.println("- print students");
-    System.out.println("- add lab problem");
-    System.out.println("- print lab problems");
-    System.out.println("- update lab problem");
-    System.out.println("- delete lab problem");
-    System.out.println("- filter lab problems [by number]");
-    System.out.println("- update student");
-    System.out.println("- delete student");
-    System.out.println("- filter students [by group]");
-    System.out.println("- add assignment");
-    System.out.println("- print assignments");
-    System.out.println("- update assignment");
-    System.out.println("- delete assignment");
-    System.out.println("- max mean student");
-    System.out.println("- lab problem most");
-    System.out.println("- avg grade");
-    System.out.println("- student problems");
-    System.out.println("- print students sorted");
-    System.out.println("- print assignments sorted");
-    System.out.println("- print lab problems sorted");
-    System.out.println("- exit");
+    CompletableFuture.supplyAsync(
+            () -> {
+              try {
+                AbstractMap.SimpleEntry<Long, Double> result = assignmentService.greatestMean();
+                return "The greatest mean is of student id = "
+                    + result.getKey()
+                    + ": "
+                    + result.getValue();
+              } catch (NullPointerException e) {
+                return e.getMessage() + "\nno students or assignments";
+              }
+            })
+        .thenAcceptAsync(System.out::println);
   }
 
   /** ro.ubb.Main loop of the user interface */
   public void run() {
+    initDictionaryOfCommands();
     while (true) {
       printMenu();
       BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -290,12 +401,21 @@ public class Console {
 
   private void printAssignments() {
 
-    Set<Assignment> students = assignmentService.getAllAssignments();
-    students.forEach(System.out::println);
+    CompletableFuture.supplyAsync(
+            () -> {
+              try {
+                return assignmentService.getAllAssignments().stream()
+                    .map(Assignment::toString)
+                    .reduce("", (s1, s2) -> s1 + System.lineSeparator() + s2);
+              } catch (NullPointerException e) {
+                return e.getMessage().substring(e.getMessage().indexOf(" ") + 1);
+              }
+            })
+        .thenAcceptAsync(System.out::println);
   }
 
   private void addAssignment() {
-    System.out.println("Read assignment {id, studentId, labProblemId}");
+    System.out.println("Read assignment {id, studentId, labProblemId. grade}");
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     try {
       System.out.println("Enter id: ");
@@ -306,9 +426,18 @@ public class Console {
       long labProblemId = Long.parseLong(input.readLine().strip());
       System.out.println("Enter grade: ");
       int grade = Integer.parseInt(input.readLine().strip());
-      if (assignmentService.addAssignment(id, studentId, labProblemId, grade).isEmpty())
-        System.out.println("Assignment added");
-      else System.out.println("Assignment not added");
+      CompletableFuture.supplyAsync(
+              () -> {
+                try {
+                  if (assignmentService.addAssignment(id, studentId, labProblemId, grade) == null)
+                    return "Assignment added";
+                  return "Assignment not added, assignment with that id is already in the database";
+                } catch (ValidatorException | RepositoryException ex) {
+                  return ex.getMessage();
+                }
+              })
+          .thenAcceptAsync(System.out::println);
+
     } catch (ValidatorException e) {
       System.err.println(e.getMessage());
     } catch (IOException | NumberFormatException ex) {
@@ -331,21 +460,39 @@ public class Console {
       String name = input.readLine().strip();
       System.out.println("Enter group: ");
       int group = Integer.parseInt(input.readLine().strip());
-      if (studentService.addStudent(id, serialNumber, name, group).isEmpty())
-        System.out.println("Student added");
-      else System.out.println("Student not added");
+
+      CompletableFuture.supplyAsync(
+              () -> {
+                try {
+                  if (studentService.addStudent(id, serialNumber, name, group) == null)
+                    return "Student added";
+                  return "Student not added, already in database";
+                } catch (ValidatorException ex) {
+                  return ex.getMessage();
+                }
+              })
+          .thenAcceptAsync(System.out::println);
 
     } catch (ValidatorException ex) {
       System.out.println(ex.getMessage());
     } catch (IOException | NumberFormatException e) {
-      //      e.printStackTrace();
       System.out.println("invalid input");
     }
   }
   /** ro.ubb.UI method for printing all students */
   private void printStudents() {
-    Set<Student> students = studentService.getAllStudents();
-    students.forEach(System.out::println);
+
+    CompletableFuture.supplyAsync(
+            () -> {
+              try {
+                return studentService.getAllStudents().stream()
+                    .map(Student::toString)
+                    .reduce("", (s1, s2) -> s1 + System.lineSeparator() + s2);
+              } catch (NullPointerException e) {
+                return "Getting students error";
+              }
+            })
+        .thenAcceptAsync(System.out::println);
   }
   /** ro.ubb.UI method for adding a lab problem */
   private void addLabProblem() {
@@ -358,9 +505,18 @@ public class Console {
       int problemNumber = Integer.parseInt(input.readLine().strip());
       System.out.println("Enter description: ");
       String description = input.readLine().strip();
-      if (labProblemService.addLabProblem(id, problemNumber, description).isEmpty())
-        System.out.println("Lab Problem added");
-      else System.out.println("Lab Problem not added");
+      CompletableFuture.supplyAsync(
+              () -> {
+                try {
+                  if (labProblemService.addLabProblem(id, problemNumber, description) == null)
+                    return "Lab problem added";
+                  return "Lab problem not added, already in the database the entity with that id";
+                } catch (ValidatorException ex) {
+                  return ex.getMessage();
+                }
+              })
+          .thenAcceptAsync(System.out::println);
+
     } catch (ValidatorException e) {
       System.err.println(e.getMessage());
     } catch (IOException | NumberFormatException ex) {
@@ -369,8 +525,17 @@ public class Console {
   }
   /** ro.ubb.UI method for printing all lab problems */
   private void printLabProblems() {
-    Set<LabProblem> students = labProblemService.getAllLabProblems();
-    students.forEach(System.out::println);
+    CompletableFuture.supplyAsync(
+            () -> {
+              try {
+                return labProblemService.getAllLabProblems().stream()
+                    .map(LabProblem::toString)
+                    .reduce("", (s1, s2) -> s1 + System.lineSeparator() + s2);
+              } catch (NullPointerException e) {
+                return e.getMessage().substring(e.getMessage().indexOf(" ") + 1);
+              }
+            })
+        .thenAcceptAsync(System.out::println);
   }
   /** ro.ubb.UI method update a lab problem */
   private void updateLabProblem() {
@@ -383,9 +548,18 @@ public class Console {
       int problemNumber = Integer.parseInt(input.readLine().strip());
       System.out.println("Enter description: ");
       String description = input.readLine().strip();
-      if (labProblemService.updateLabProblem(id, problemNumber, description).isEmpty())
-        System.out.println("Lab Problem updated");
-      else System.out.println("Lab Problem not updated");
+      CompletableFuture.supplyAsync(
+              () -> {
+                try {
+                  if (labProblemService.updateLabProblem(id, problemNumber, description) == null)
+                    return "Lab Problem updated";
+                  return "Lab Problem not updated, entity with the given id is not in the database";
+                } catch (ValidatorException ex) {
+                  return ex.getMessage();
+                }
+              })
+          .thenAcceptAsync(System.out::println);
+
     } catch (ValidatorException e) {
       System.err.println(e.getMessage());
     } catch (IOException | NumberFormatException ex) {
@@ -399,13 +573,21 @@ public class Console {
     try {
       System.out.println("Enter id: ");
       id = Long.parseLong(input.readLine().strip());
+      CompletableFuture.supplyAsync(
+              () -> {
+                try {
+                  if (labProblemService.deleteLabProblem(id) == null)
+                    return "Delete failed, entity with the given id is not in the database";
+                  return "Delete successful";
+                } catch (IllegalArgumentException ex) {
+                  return ex.getMessage();
+                }
+              })
+          .thenAcceptAsync(System.out::println);
 
     } catch (IOException | NumberFormatException ex) {
       System.out.println("Invalid input!");
-      return;
     }
-    if (assignmentService.deleteLabProblem(id).isEmpty()) System.out.println("Delete failed");
-    else System.out.println("Delete successful");
   }
   /** ro.ubb.UI method filters lab problems by problem number */
   private void filterLabProblemsByProblemNumber() {
@@ -419,9 +601,17 @@ public class Console {
       System.out.println("Invalid input!");
       return;
     }
-
-    Set<LabProblem> labProblems = labProblemService.filterByProblemNumber(problemNumber);
-    labProblems.forEach(System.out::println);
+    CompletableFuture.supplyAsync(
+            () -> {
+              try {
+                return labProblemService.filterByProblemNumber(problemNumber).stream()
+                    .map(LabProblem::toString)
+                    .reduce("", (s1, s2) -> s1 + System.lineSeparator() + s2);
+              } catch (IllegalArgumentException ex) {
+                return ex.getMessage();
+              }
+            })
+        .thenAcceptAsync(System.out::println);
   }
 
   /** ro.ubb.UI method update a student */
@@ -437,9 +627,18 @@ public class Console {
       String name = input.readLine().strip();
       System.out.println("Enter group: ");
       int group = Integer.parseInt(input.readLine().strip());
-      if (studentService.updateStudent(id, serialNumber, name, group).isEmpty())
-        System.out.println("Student updated");
-      else System.out.println("Student not updated");
+
+      CompletableFuture.supplyAsync(
+              () -> {
+                try {
+                  if (studentService.updateStudent(id, serialNumber, name, group) == null)
+                    return "Student updated";
+                  return "Student not updated, student with the given id is not in the database";
+                } catch (ValidatorException ex) {
+                  return ex.getMessage();
+                }
+              })
+          .thenAcceptAsync(System.out::println);
     } catch (ValidatorException ex) {
       // ex.printStackTrace();
       System.out.println(ex.getMessage());
@@ -456,12 +655,21 @@ public class Console {
       System.out.println("Enter id: ");
       id = Long.parseLong(input.readLine().strip());
 
+      CompletableFuture.supplyAsync(
+              () -> {
+                try {
+                  if (studentService.deleteStudent(id) == null)
+                    return "Delete failed, entity with the given id is not in the database";
+                  return "Delete successful!";
+                } catch (IllegalArgumentException ex) {
+                  return ex.getMessage();
+                }
+              })
+          .thenAcceptAsync(System.out::println);
+
     } catch (IOException | NumberFormatException ex) {
       System.out.println("Invalid input!");
-      return;
     }
-    if (assignmentService.deleteStudent(id).isEmpty()) System.out.println("Delete failed");
-    else System.out.println("Delete successful");
   }
   /** ro.ubb.UI method filters students by group number */
   private void filterStudentsByGroup() {
@@ -475,13 +683,21 @@ public class Console {
       System.out.println("Invalid input!");
       return;
     }
-
-    Set<Student> students = studentService.filterByGroup(groupNumber);
-    students.forEach(System.out::println);
+    CompletableFuture.supplyAsync(
+            () -> {
+              try {
+                return studentService.filterByGroup(groupNumber).stream()
+                    .map(Student::toString)
+                    .reduce("", (s1, s2) -> s1 + System.lineSeparator() + s2);
+              } catch (IllegalArgumentException ex) {
+                return ex.getMessage();
+              }
+            })
+        .thenAcceptAsync(System.out::println);
   }
 
   private void updateAssignment() {
-    System.out.println("Update assignment {id, studentId, labProblemId}");
+    System.out.println("Update assignment {id, studentId, labProblemId, grade}");
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     try {
       System.out.println("Enter id: ");
@@ -492,9 +708,18 @@ public class Console {
       long labProblemId = Long.parseLong(input.readLine().strip());
       System.out.println("Enter grade: ");
       int grade = Integer.parseInt(input.readLine().strip());
-      if (assignmentService.updateAssignment(id, studentId, labProblemId, grade).isEmpty())
-        System.out.println("Assignment updated");
-      else System.out.println("Assignment not updated");
+
+      CompletableFuture.supplyAsync(
+              () -> {
+                try {
+                  if (assignmentService.updateAssignment(id, studentId, labProblemId, grade)
+                      == null) return "Assignment updated";
+                  return "Assignment not updated";
+                } catch (ValidatorException ex) {
+                  return ex.getMessage();
+                }
+              })
+          .thenAcceptAsync(System.out::println);
     } catch (ValidatorException e) {
       System.err.println(e.getMessage());
     } catch (IOException | NumberFormatException ex) {
@@ -510,9 +735,17 @@ public class Console {
     try {
       System.out.println("Enter id: ");
       id = Long.parseLong(input.readLine().strip());
-      if (assignmentService.deleteAssignment(id).isEmpty()) System.out.println("Delete failed");
-      else System.out.println("Delete successful");
-
+      CompletableFuture.supplyAsync(
+              () -> {
+                try {
+                  if (assignmentService.deleteAssignment(id) == null)
+                    return "Assignment not deleted, entity with the given id is not in the database";
+                  return "Assignment deleted";
+                } catch (IllegalArgumentException ex) {
+                  return ex.getMessage();
+                }
+              })
+          .thenAcceptAsync(System.out::println);
     } catch (IOException | NumberFormatException e) {
       System.err.println("bad input");
     }

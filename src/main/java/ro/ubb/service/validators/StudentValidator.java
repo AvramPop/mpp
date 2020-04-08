@@ -1,5 +1,6 @@
-package ro.ubb.domain.validators;
+package ro.ubb.service.validators;
 
+import org.springframework.stereotype.Component;
 import ro.ubb.domain.Student;
 import ro.ubb.domain.exceptions.ValidatorException;
 
@@ -7,6 +8,7 @@ import ro.ubb.domain.exceptions.ValidatorException;
  * StudentValidator has it's sole purpose to check out whether an instance of Student complies to
  * the requirements for such objects.
  */
+@Component
 public class StudentValidator implements Validator<Student> {
 
   /**
