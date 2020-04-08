@@ -3,13 +3,18 @@ package ro.ubb.domain;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
 /**
  * A base class to be extended by any in ro.ubb.domain, having only an id.
  *
  * @param <ID> the type of the identifier
  */
+@MappedSuperclass
 public abstract class BaseEntity<ID> {
-  private ID id;
+  @Id @GeneratedValue private ID id;
 
   public ID getId() {
     return id;

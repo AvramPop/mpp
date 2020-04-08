@@ -1,11 +1,14 @@
 package ro.ubb.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ro.ubb.domain.Student;
 import ro.ubb.domain.exceptions.ValidatorException;
+import ro.ubb.repository.StudentRepository;
 import ro.ubb.service.validators.Validator;
-import ro.ubb.repository.SortingRepository;
 import ro.ubb.repository.sort.Sort;
 
 import java.util.HashSet;
@@ -20,7 +23,8 @@ import java.util.stream.StreamSupport;
  */
 @Service
 public class StudentServiceImplementation implements StudentService {
-  @Autowired private SortingRepository<Long, Student> repository;
+  public static final Logger log = LoggerFactory.getLogger(StudentServiceImplementation.class);
+  @Autowired private StudentRepository repository;
   @Autowired private Validator<Student> validator;
 
   /**
@@ -34,6 +38,7 @@ public class StudentServiceImplementation implements StudentService {
    *     the ro.ubb.repository otherwise
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
+  @Override
   public Student addStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException {
     Student newStudent = new Student(serialNumber, name, group);
@@ -41,7 +46,7 @@ public class StudentServiceImplementation implements StudentService {
 
     validator.validate(newStudent);
 
-    return repository.save(newStudent).orElse(null);
+    return repository.save(newStudent);
   }
 
   /**
@@ -49,14 +54,15 @@ public class StudentServiceImplementation implements StudentService {
    *
    * @return a set of all the students
    */
-  public Set<Student> getAllStudents() {
-    Iterable<Student> students = repository.findAll();
-    return StreamSupport.stream(students.spliterator(), false).collect(Collectors.toSet());
+  @Override
+  public List<Student> getAllStudents() {
+    return repository.findAll();
   }
 
   /** Return all Students sorted by the sort criteria. */
+  @Override
   public List<Student> getAllStudentsSorted(Sort sort) {
-    Iterable<Student> students = repository.findAll(sort);
+    Iterable<Student> students = sort.sort(repository.findAll());
     return StreamSupport.stream(students.spliterator(), false).collect(Collectors.toList());
   }
 
@@ -67,9 +73,10 @@ public class StudentServiceImplementation implements StudentService {
    * @return * @return an {@code Optional} containing a null if successfully deleted otherwise the
    *     entity passed to the repository
    */
-  public Student deleteStudent(Long id) {
+  @Override
+  public void deleteStudent(Long id) {
     if (id == null || id < 0) throw new IllegalArgumentException("Invalid id!");
-    return repository.delete(id).orElse(null);
+    repository.deleteById(id);
   }
 
   /**
@@ -83,12 +90,24 @@ public class StudentServiceImplementation implements StudentService {
    *     the ro.ubb.repository otherwise
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
-  public Student updateStudent(Long id, String serialNumber, String name, int group)
+  @Override
+  @Transactional
+  public void updateStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException {
     Student student = new Student(serialNumber, name, group);
     student.setId(id);
     validator.validate(student);
-    return repository.update(student).orElse(null);
+    log.trace("updateStudent - method entered: student={}", student);
+    repository
+        .findById(student.getId())
+        .ifPresent(
+            s -> {
+              s.setName(student.getName());
+              s.setGroupNumber(student.getGroupNumber());
+              s.setSerialNumber(student.getSerialNumber());
+              log.debug("updateStudent - updated: s={}", s);
+            });
+    log.trace("updateStudent - method finished");
   }
 
   /**
@@ -97,6 +116,7 @@ public class StudentServiceImplementation implements StudentService {
    * @param group the group number to be filtered by
    * @return a {@code Set} - of entities filtered by the given group number
    */
+  @Override
   public Set<Student> filterByGroup(Integer group) {
     if (group < 0) {
       throw new IllegalArgumentException("group negative!");
@@ -104,7 +124,7 @@ public class StudentServiceImplementation implements StudentService {
     Iterable<Student> students = repository.findAll();
     Set<Student> filteredStudents = new HashSet<>();
     students.forEach(filteredStudents::add);
-    filteredStudents.removeIf(entity -> entity.getGroup() != group);
+    filteredStudents.removeIf(entity -> entity.getGroupNumber() != group);
     return filteredStudents;
   }
 
@@ -114,10 +134,12 @@ public class StudentServiceImplementation implements StudentService {
    * @param id to find student by
    * @return Optional containing the sought Student or null otherwise
    */
+  @Override
   public Student getStudentById(Long id) {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("invalid id!");
     }
-    return repository.findOne(id).orElse(null);
+
+    return repository.findById(id).orElse(null);
   }
 }

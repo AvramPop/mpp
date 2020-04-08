@@ -47,7 +47,7 @@ public interface LabProblemService {
    * @return an {@code Optional} containing a null if successfully deleted otherwise the entity
    *     passed to the repository
    */
-  LabProblem deleteLabProblem(Long id);
+  void deleteLabProblem(Long id);
 
   /**
    * Updates a lab problem inside the ro.ubb.repository
@@ -59,8 +59,7 @@ public interface LabProblemService {
    *     the ro.ubb.repository
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
-  LabProblem updateLabProblem(Long id, int problemNumber, String description)
-      throws ValidatorException;
+  void updateLabProblem(Long id, int problemNumber, String description) throws ValidatorException;
 
   /**
    * Filters the elements of the ro.ubb.repository by a given problem number

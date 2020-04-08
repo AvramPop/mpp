@@ -4,24 +4,26 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import javax.persistence.Entity;
 import java.util.Objects;
 /** A student having group (positive integer), name (nonempty) and serialNumber (nonempty). */
+@Entity
 public class Student extends BaseEntity<Long> {
   private String serialNumber;
   private String name;
-  private int group;
+  private Integer groupNumber;
 
   public Student() {
     serialNumber = "";
     name = "";
-    group = -1;
+    groupNumber = -1;
     setId(-1L);
   }
 
-  public Student(String serialNumber, String name, int group) {
+  public Student(String serialNumber, String name, int groupNumber) {
     this.serialNumber = serialNumber;
     this.name = name;
-    this.group = group;
+    this.groupNumber = groupNumber;
   }
 
   public String getSerialNumber() {
@@ -40,12 +42,12 @@ public class Student extends BaseEntity<Long> {
     this.name = name;
   }
 
-  public int getGroup() {
-    return group;
+  public int getGroupNumber() {
+    return groupNumber;
   }
 
-  public void setGroup(int group) {
-    this.group = group;
+  public void setGroupNumber(int groupNumber) {
+    this.groupNumber = groupNumber;
   }
 
   @Override
@@ -60,7 +62,7 @@ public class Student extends BaseEntity<Long> {
         + name
         + '\''
         + ", group="
-        + group
+        + groupNumber
         + '}';
   }
 
@@ -74,7 +76,7 @@ public class Student extends BaseEntity<Long> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(serialNumber, name, group);
+    return Objects.hash(serialNumber, name, groupNumber);
   }
 
   //  /**
@@ -93,7 +95,7 @@ public class Student extends BaseEntity<Long> {
         + delimiter
         + this.name
         + delimiter
-        + this.group;
+        + this.groupNumber;
   }
 
   @Override
@@ -102,7 +104,8 @@ public class Student extends BaseEntity<Long> {
     studentElement.setAttribute("Id", this.getId().toString());
     appendChildWithTextToNode(document, studentElement, "serialNumber", this.serialNumber);
     appendChildWithTextToNode(document, studentElement, "name", this.name);
-    appendChildWithTextToNode(document, studentElement, "group", Integer.toString(this.group));
+    appendChildWithTextToNode(
+        document, studentElement, "group", Integer.toString(this.groupNumber));
     return studentElement;
   }
 

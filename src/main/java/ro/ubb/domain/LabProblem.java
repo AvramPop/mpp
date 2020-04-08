@@ -4,9 +4,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import javax.persistence.Entity;
 import java.util.Objects;
 
 /** A LabProblem having a number (positive integer) and a description (nonempty). */
+@Entity
 public class LabProblem extends BaseEntity<Long> {
   private int problemNumber;
   private String description;

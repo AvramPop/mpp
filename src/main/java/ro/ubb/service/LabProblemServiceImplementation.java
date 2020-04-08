@@ -1,11 +1,13 @@
 package ro.ubb.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.ubb.domain.LabProblem;
 import ro.ubb.domain.exceptions.ValidatorException;
+import ro.ubb.repository.LabProblemRepository;
 import ro.ubb.service.validators.Validator;
-import ro.ubb.repository.SortingRepository;
 import ro.ubb.repository.sort.Sort;
 
 import java.util.HashSet;
@@ -16,8 +18,8 @@ import java.util.stream.StreamSupport;
 
 @Service
 public class LabProblemServiceImplementation implements LabProblemService {
-
-  @Autowired private SortingRepository<Long, LabProblem> repository;
+  public static final Logger log = LoggerFactory.getLogger(LabProblemServiceImplementation.class);
+  @Autowired private LabProblemRepository repository;
   @Autowired private Validator<LabProblem> labProblemValidator;
 
   /**
@@ -30,6 +32,7 @@ public class LabProblemServiceImplementation implements LabProblemService {
    *     otherwise
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
+  @Override
   public LabProblem addLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException {
     LabProblem newLabProblem = new LabProblem(problemNumber, description);
@@ -37,7 +40,7 @@ public class LabProblemServiceImplementation implements LabProblemService {
 
     labProblemValidator.validate(newLabProblem);
 
-    return repository.save(newLabProblem).orElse(null);
+    return repository.save(newLabProblem);
   }
 
   /**
@@ -45,14 +48,16 @@ public class LabProblemServiceImplementation implements LabProblemService {
    *
    * @return a Set which stores all the lab problems
    */
+  @Override
   public Set<LabProblem> getAllLabProblems() {
     Iterable<LabProblem> problems = repository.findAll();
     return StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toSet());
   }
 
   /** Return all Lab problems sorted by the sort criteria. */
+  @Override
   public List<LabProblem> getAllLabProblemsSorted(Sort sort) {
-    Iterable<LabProblem> problems = repository.findAll(sort);
+    Iterable<LabProblem> problems = sort.sort(repository.findAll());
     return StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toList());
   }
 
@@ -63,11 +68,12 @@ public class LabProblemServiceImplementation implements LabProblemService {
    * @param id to find lab problem by
    * @return Optional containing the sought LabProblem or null otherwise
    */
+  @Override
   public LabProblem getLabProblemById(Long id) {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("invalid id!");
     }
-    return repository.findOne(id).orElse(null);
+    return repository.findById(id).orElse(null);
   }
 
   /**
@@ -77,11 +83,12 @@ public class LabProblemServiceImplementation implements LabProblemService {
    * @return an {@code Optional} containing a null if successfully deleted otherwise the entity
    *     passed to the repository
    */
-  public LabProblem deleteLabProblem(Long id) {
+  @Override
+  public void deleteLabProblem(Long id) {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("Invalid id!");
     }
-    return repository.delete(id).orElse(null);
+    repository.deleteById(id);
   }
 
   /**
@@ -94,14 +101,23 @@ public class LabProblemServiceImplementation implements LabProblemService {
    *     the ro.ubb.repository
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
-  public LabProblem updateLabProblem(Long id, int problemNumber, String description)
+  @Override
+  public void updateLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException {
     LabProblem newLabProblem = new LabProblem(problemNumber, description);
     newLabProblem.setId(id);
 
     labProblemValidator.validate(newLabProblem);
-
-    return repository.update(newLabProblem).orElse(null);
+    log.trace("updateLabProblem - method entered: newLabProblem={}", newLabProblem);
+    repository
+        .findById(newLabProblem.getId())
+        .ifPresent(
+            labProblem -> {
+              labProblem.setDescription(newLabProblem.getDescription());
+              labProblem.setProblemNumber(newLabProblem.getProblemNumber());
+              log.debug("updateStudent - updated: labProblem={}", newLabProblem);
+            });
+    log.trace("updateLabProblem - method finished");
   }
 
   /**
@@ -110,6 +126,7 @@ public class LabProblemServiceImplementation implements LabProblemService {
    * @param problemNumberToFilterBy the problem number to be filtered by
    * @return a {@code Set} - of entities filtered by the given problem number
    */
+  @Override
   public Set<LabProblem> filterByProblemNumber(Integer problemNumberToFilterBy) {
     if (problemNumberToFilterBy < 0) {
       throw new IllegalArgumentException("problem number negative!");

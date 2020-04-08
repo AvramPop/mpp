@@ -465,8 +465,8 @@ public class Console {
               () -> {
                 try {
                   if (studentService.addStudent(id, serialNumber, name, group) == null)
-                    return "Student added";
-                  return "Student not added, already in database";
+                    return "Student not added, already in database";
+                  return "Student added";
                 } catch (ValidatorException ex) {
                   return ex.getMessage();
                 }
@@ -481,7 +481,7 @@ public class Console {
   }
   /** ro.ubb.UI method for printing all students */
   private void printStudents() {
-
+    System.out.println(studentService.getAllStudents().size());
     CompletableFuture.supplyAsync(
             () -> {
               try {
@@ -551,9 +551,8 @@ public class Console {
       CompletableFuture.supplyAsync(
               () -> {
                 try {
-                  if (labProblemService.updateLabProblem(id, problemNumber, description) == null)
-                    return "Lab Problem updated";
-                  return "Lab Problem not updated, entity with the given id is not in the database";
+                  labProblemService.updateLabProblem(id, problemNumber, description);
+                  return "Update method completed";
                 } catch (ValidatorException ex) {
                   return ex.getMessage();
                 }
@@ -576,9 +575,8 @@ public class Console {
       CompletableFuture.supplyAsync(
               () -> {
                 try {
-                  if (labProblemService.deleteLabProblem(id) == null)
-                    return "Delete failed, entity with the given id is not in the database";
-                  return "Delete successful";
+                  labProblemService.deleteLabProblem(id);
+                  return "Delete method completed";
                 } catch (IllegalArgumentException ex) {
                   return ex.getMessage();
                 }
@@ -631,9 +629,8 @@ public class Console {
       CompletableFuture.supplyAsync(
               () -> {
                 try {
-                  if (studentService.updateStudent(id, serialNumber, name, group) == null)
-                    return "Student updated";
-                  return "Student not updated, student with the given id is not in the database";
+                  studentService.updateStudent(id, serialNumber, name, group);
+                  return "Update method finished";
                 } catch (ValidatorException ex) {
                   return ex.getMessage();
                 }
@@ -658,9 +655,8 @@ public class Console {
       CompletableFuture.supplyAsync(
               () -> {
                 try {
-                  if (studentService.deleteStudent(id) == null)
-                    return "Delete failed, entity with the given id is not in the database";
-                  return "Delete successful!";
+                  studentService.deleteStudent(id);
+                  return "Delete method finished";
                 } catch (IllegalArgumentException ex) {
                   return ex.getMessage();
                 }
@@ -712,9 +708,8 @@ public class Console {
       CompletableFuture.supplyAsync(
               () -> {
                 try {
-                  if (assignmentService.updateAssignment(id, studentId, labProblemId, grade)
-                      == null) return "Assignment updated";
-                  return "Assignment not updated";
+                  assignmentService.updateAssignment(id, studentId, labProblemId, grade);
+                  return "Update method finished";
                 } catch (ValidatorException ex) {
                   return ex.getMessage();
                 }
@@ -738,9 +733,8 @@ public class Console {
       CompletableFuture.supplyAsync(
               () -> {
                 try {
-                  if (assignmentService.deleteAssignment(id) == null)
-                    return "Assignment not deleted, entity with the given id is not in the database";
-                  return "Assignment deleted";
+                  assignmentService.deleteAssignment(id);
+                  return "Delete method finished";
                 } catch (IllegalArgumentException ex) {
                   return ex.getMessage();
                 }

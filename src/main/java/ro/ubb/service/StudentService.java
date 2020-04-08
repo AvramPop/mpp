@@ -27,7 +27,7 @@ public interface StudentService {
    *
    * @return a set of all the students
    */
-  Set<Student> getAllStudents();
+  List<Student> getAllStudents();
 
   /** Return all Students sorted by the sort criteria. */
   List<Student> getAllStudentsSorted(Sort sort);
@@ -39,7 +39,7 @@ public interface StudentService {
    * @return * @return an {@code Optional} containing a null if successfully deleted otherwise the
    *     entity passed to the repository
    */
-  Student deleteStudent(Long id);
+  void deleteStudent(Long id);
 
   /**
    * Updates a student inside the ro.ubb.repository
@@ -52,7 +52,7 @@ public interface StudentService {
    *     the ro.ubb.repository otherwise
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
-  Student updateStudent(Long id, String serialNumber, String name, int group)
+  void updateStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException;
 
   /**

@@ -37,9 +37,9 @@ public interface AssignmentService {
    * @return an {@code Optional} containing a null if successfully deleted otherwise the entity
    *     passed to the repository
    */
-  Assignment deleteAssignment(Long id);
+  void deleteAssignment(Long id);
 
-  Assignment updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
+  void updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException;
 
   /**

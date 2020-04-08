@@ -23,7 +23,7 @@ public class StudentValidator implements Validator<Student> {
     if (entity.getId() == null) errorMessage.append("Id is null");
     else if (entity.getId() < 0) errorMessage.append("Invalid id! ");
     if (entity.getName().equals("")) errorMessage.append("Invalid name! ");
-    if (entity.getGroup() < 0) errorMessage.append("Invalid group id! ");
+    if (entity.getGroupNumber() < 0) errorMessage.append("Invalid group id! ");
 
     char[] arrayOfSerial = entity.getSerialNumber().toCharArray();
 
