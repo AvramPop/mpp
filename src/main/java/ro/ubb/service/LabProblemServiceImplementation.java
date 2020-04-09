@@ -37,10 +37,14 @@ public class LabProblemServiceImplementation implements LabProblemService {
       throws ValidatorException {
     LabProblem newLabProblem = new LabProblem(problemNumber, description);
     newLabProblem.setId(id);
+    log.trace("addLabProblem - method entered: labProblem={}", newLabProblem);
 
     labProblemValidator.validate(newLabProblem);
+    log.trace("addLabProblem - student validated");
 
-    return repository.save(newLabProblem);
+    LabProblem result = repository.save(newLabProblem);
+    log.trace("addLabProblem - method finished");
+    return result;
   }
 
   /**
@@ -49,16 +53,22 @@ public class LabProblemServiceImplementation implements LabProblemService {
    * @return a Set which stores all the lab problems
    */
   @Override
-  public Set<LabProblem> getAllLabProblems() {
-    Iterable<LabProblem> problems = repository.findAll();
-    return StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toSet());
+  public List<LabProblem> getAllLabProblems() {
+    log.trace("getAllLabProblems - method entered");
+    List<LabProblem> result = repository.findAll();
+    log.trace("getAllLabProblems - method finished");
+    return result;
   }
 
   /** Return all Lab problems sorted by the sort criteria. */
   @Override
   public List<LabProblem> getAllLabProblemsSorted(Sort sort) {
+    log.trace("getAllLabProblemsSorted - method entered");
     Iterable<LabProblem> problems = sort.sort(repository.findAll());
-    return StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toList());
+    log.trace("getAllLabProblemsSorted - students sorted");
+    List<LabProblem> result = StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toList());
+    log.trace("getAllLabProblemsSorted - method finished");
+    return result;
   }
 
   /**
@@ -73,7 +83,13 @@ public class LabProblemServiceImplementation implements LabProblemService {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("invalid id!");
     }
-    return repository.findById(id).orElse(null);
+    log.trace("getLabProblemById - method entered: id={}", id);
+
+    LabProblem labProblem = repository.findById(id).orElse(null);
+    log.debug("getLabProblemById - obtained: labProblem={}", labProblem);
+    log.trace("getLabProblemById - method finished");
+    return labProblem;
+
   }
 
   /**
@@ -88,7 +104,9 @@ public class LabProblemServiceImplementation implements LabProblemService {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("Invalid id!");
     }
+    log.trace("deleteLabProblem - method entered: id={}", id);
     repository.deleteById(id);
+    log.trace("deleteLabProblem - method finished");
   }
 
   /**
@@ -106,9 +124,11 @@ public class LabProblemServiceImplementation implements LabProblemService {
       throws ValidatorException {
     LabProblem newLabProblem = new LabProblem(problemNumber, description);
     newLabProblem.setId(id);
+    log.trace("updateLabProblem - method entered: newLabProblem={}", newLabProblem);
 
     labProblemValidator.validate(newLabProblem);
-    log.trace("updateLabProblem - method entered: newLabProblem={}", newLabProblem);
+    log.trace("updateLabProblem - labProblem validated");
+
     repository
         .findById(newLabProblem.getId())
         .ifPresent(
@@ -131,10 +151,13 @@ public class LabProblemServiceImplementation implements LabProblemService {
     if (problemNumberToFilterBy < 0) {
       throw new IllegalArgumentException("problem number negative!");
     }
+    log.trace("filterByProblemNumber - method entered: problemNumber={}", problemNumberToFilterBy);
     Iterable<LabProblem> labProblems = repository.findAll();
     Set<LabProblem> filteredLabProblems = new HashSet<>();
     labProblems.forEach(filteredLabProblems::add);
     filteredLabProblems.removeIf(entity -> entity.getProblemNumber() != problemNumberToFilterBy);
+    log.debug("filterByProblemNumber - number of obtained elements: number of labProblems={}", filteredLabProblems.size());
+    log.trace("filterByProblemNumber - method finished");
     return filteredLabProblems;
   }
 }

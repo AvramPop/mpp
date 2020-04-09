@@ -26,7 +26,7 @@ public interface LabProblemService {
    *
    * @return a Set which stores all the lab problems
    */
-  Set<LabProblem> getAllLabProblems();
+  List<LabProblem> getAllLabProblems();
 
   /** Return all Lab problems sorted by the sort criteria. */
   List<LabProblem> getAllLabProblemsSorted(Sort sort);

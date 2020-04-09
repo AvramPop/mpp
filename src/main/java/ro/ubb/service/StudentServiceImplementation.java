@@ -43,10 +43,14 @@ public class StudentServiceImplementation implements StudentService {
       throws ValidatorException {
     Student newStudent = new Student(serialNumber, name, group);
     newStudent.setId(id);
+    log.trace("addStudent - method entered: student={}", newStudent);
 
     validator.validate(newStudent);
+    log.trace("addStudent - student validated");
 
-    return repository.save(newStudent);
+    Student result = repository.save(newStudent);
+    log.trace("addStudent - method finished");
+    return result;
   }
 
   /**
@@ -56,14 +60,21 @@ public class StudentServiceImplementation implements StudentService {
    */
   @Override
   public List<Student> getAllStudents() {
-    return repository.findAll();
+    log.trace("getAllStudents - method entered");
+    List<Student> result = repository.findAll();
+    log.trace("getAllStudents - method finished");
+    return result;
   }
 
   /** Return all Students sorted by the sort criteria. */
   @Override
   public List<Student> getAllStudentsSorted(Sort sort) {
+    log.trace("getAllStudentsSorted - method entered");
     Iterable<Student> students = sort.sort(repository.findAll());
-    return StreamSupport.stream(students.spliterator(), false).collect(Collectors.toList());
+    log.trace("getAllStudentsSorted - students sorted");
+    List<Student> result = StreamSupport.stream(students.spliterator(), false).collect(Collectors.toList());
+    log.trace("getAllStudentsSorted - method finished");
+    return result;
   }
 
   /**
@@ -76,7 +87,10 @@ public class StudentServiceImplementation implements StudentService {
   @Override
   public void deleteStudent(Long id) {
     if (id == null || id < 0) throw new IllegalArgumentException("Invalid id!");
+    log.trace("deleteStudent - method entered: id={}", id);
     repository.deleteById(id);
+    log.trace("deleteStudent - method finished");
+
   }
 
   /**
@@ -96,8 +110,10 @@ public class StudentServiceImplementation implements StudentService {
       throws ValidatorException {
     Student student = new Student(serialNumber, name, group);
     student.setId(id);
-    validator.validate(student);
     log.trace("updateStudent - method entered: student={}", student);
+    validator.validate(student);
+    log.trace("updateStudent - student validated");
+
     repository
         .findById(student.getId())
         .ifPresent(
@@ -121,10 +137,13 @@ public class StudentServiceImplementation implements StudentService {
     if (group < 0) {
       throw new IllegalArgumentException("group negative!");
     }
+    log.trace("filterByGroup - method entered: group={}", group);
     Iterable<Student> students = repository.findAll();
     Set<Student> filteredStudents = new HashSet<>();
     students.forEach(filteredStudents::add);
     filteredStudents.removeIf(entity -> entity.getGroupNumber() != group);
+    log.debug("filterByGroup - number of obtained elements: number of students={}", filteredStudents.size());
+    log.trace("filterByGroup - method finished");
     return filteredStudents;
   }
 

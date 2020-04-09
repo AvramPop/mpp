@@ -139,7 +139,7 @@ public class Console {
     try {
       System.out.println("Enter id: ");
       id = Long.parseLong(input.readLine().strip());
-
+      studentService.getStudentById(id);
       CompletableFuture.supplyAsync(
               () -> {
                 try {
