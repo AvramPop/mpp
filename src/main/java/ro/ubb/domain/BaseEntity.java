@@ -14,7 +14,7 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public abstract class BaseEntity<ID> {
-  @Id @GeneratedValue private ID id;
+  @Id private ID id;
 
   public ID getId() {
     return id;

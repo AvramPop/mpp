@@ -139,7 +139,10 @@ public class StudentServiceImplementation implements StudentService {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("invalid id!");
     }
-
-    return repository.findById(id).orElse(null);
+    log.trace("getStudentById - method entered: id={}", id);
+    Student student = repository.findById(id).orElse(null);
+    log.debug("getStudentById - obtained: student={}", student);
+    log.trace("getStudentById - method finished");
+    return student;
   }
 }
