@@ -1,29 +1,62 @@
 package ro.ubb.domain;
 
+import jdk.jfr.Name;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.Objects;
 
 @Entity
+@Table(name="Assignments")
+@AttributeOverrides({
+        @AttributeOverride(name="id",column = @Column(name = "assignment_id"))
+})
 public class Assignment extends BaseEntity<Long> {
 
-  private Long studentId;
-  private Long labProblemId;
-  private int grade;
+  @ManyToOne(optional = false,fetch = FetchType.LAZY)
+  @JoinColumn(name="student_id")
+  private Student student;
+
+  @ManyToOne(optional = false,fetch = FetchType.LAZY)
+  @JoinColumn(name="lab_problem_id")
+  private LabProblem labProblem;
+
+  @Column(name="grade")
+  @Min(0)
+  @Max(10)
+  private Integer grade;
+
+  public Student getStudent() {
+    return student;
+  }
+
+  public void setStudent(Student student) {
+    this.student = student;
+  }
+
+  public LabProblem getLabProblem() {
+    return labProblem;
+  }
+
+  public void setLabProblem(LabProblem labProblem) {
+    this.labProblem = labProblem;
+  }
+
 
   public Assignment() {}
 
-  public Assignment(Long studentId, Long labProblemId) {
-    this.studentId = studentId;
-    this.labProblemId = labProblemId;
+  public Assignment(Student student, LabProblem labProblem) {
+    this.student = student;
+    this.labProblem = labProblem;
   }
 
-  public Assignment(Long studentId, Long labProblemId, int grade) {
-    this.studentId = studentId;
-    this.labProblemId = labProblemId;
+  public Assignment(Student student, LabProblem labProblem, int grade) {
+    this.student = student;
+    this.labProblem = labProblem;
     this.grade = grade;
   }
 
@@ -33,9 +66,9 @@ public class Assignment extends BaseEntity<Long> {
         + "id= "
         + getId()
         + ", studentId="
-        + studentId
+        + student.getId()
         + ", labProblemId="
-        + labProblemId
+        + labProblem.getId()
         + ", grade="
         + grade
         + '}';
@@ -51,24 +84,10 @@ public class Assignment extends BaseEntity<Long> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(studentId, labProblemId, grade);
+    return Objects.hash(student.getId(), labProblem.getId(), grade);
   }
 
-  public Long getStudentId() {
-    return studentId;
-  }
 
-  public void setStudentId(Long studentId) {
-    this.studentId = studentId;
-  }
-
-  public Long getLabProblemId() {
-    return labProblemId;
-  }
-
-  public void setLabProblemId(Long labProblemId) {
-    this.labProblemId = labProblemId;
-  }
 
   public int getGrade() {
     return grade;
@@ -78,34 +97,4 @@ public class Assignment extends BaseEntity<Long> {
     this.grade = grade;
   }
 
-  @Override
-  public String objectToFileLine(String delimiter) {
-    return this.getId()
-        + delimiter
-        + this.studentId
-        + delimiter
-        + this.labProblemId
-        + delimiter
-        + grade;
-  }
-
-  @Override
-  public Node objectToXMLNode(Document document) {
-    Element assignmentElement = document.createElement("assignment");
-    assignmentElement.setAttribute("Id", this.getId().toString());
-    appendChildWithTextToNode(
-        document, assignmentElement, "studentId", Long.toString(this.studentId));
-    appendChildWithTextToNode(
-        document, assignmentElement, "labProblemId", Long.toString(this.labProblemId));
-    appendChildWithTextToNode(document, assignmentElement, "grade", Integer.toString(this.grade));
-    return assignmentElement;
-  }
-
-  private void appendChildWithTextToNode(
-      Document document, Node parentNode, String tagName, String textContent) {
-
-    Element element = document.createElement(tagName);
-    element.setTextContent(textContent);
-    parentNode.appendChild(element);
-  }
 }

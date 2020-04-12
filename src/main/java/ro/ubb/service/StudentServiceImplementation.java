@@ -23,7 +23,7 @@ import java.util.stream.StreamSupport;
  */
 @Service
 public class StudentServiceImplementation implements StudentService {
-  public static final Logger log = LoggerFactory.getLogger(StudentServiceImplementation.class);
+  private static final Logger log = LoggerFactory.getLogger(StudentServiceImplementation.class);
   @Autowired private StudentRepository repository;
   @Autowired private Validator<Student> validator;
 
@@ -34,22 +34,22 @@ public class StudentServiceImplementation implements StudentService {
    * @param serialNumber serial number of entity to be updated
    * @param name name of entity to be updated
    * @param group group number of entity to be updated
-   * @return an {@code Optional} containing the null if successfully added or the entity passed to
+   * @return a null if successfully added or the entity passed to
    *     the ro.ubb.repository otherwise
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
   @Override
   public Student addStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException {
+    log.trace("addStudent - method entered: id={} serialNumber={}, name={}, group={}", id,serialNumber,name,group);
     Student newStudent = new Student(serialNumber, name, group);
     newStudent.setId(id);
-    log.trace("addStudent - method entered: student={}", newStudent);
 
     validator.validate(newStudent);
     log.trace("addStudent - student validated");
 
     Student result = repository.save(newStudent);
-    log.trace("addStudent - method finished");
+    log.trace("addStudent - method finished: result={}",result);
     return result;
   }
 
@@ -62,7 +62,7 @@ public class StudentServiceImplementation implements StudentService {
   public List<Student> getAllStudents() {
     log.trace("getAllStudents - method entered");
     List<Student> result = repository.findAll();
-    log.trace("getAllStudents - method finished");
+    log.trace("getAllStudents - method finished: result={}",result);
     return result;
   }
 
@@ -73,7 +73,7 @@ public class StudentServiceImplementation implements StudentService {
     Iterable<Student> students = sort.sort(repository.findAll());
     log.trace("getAllStudentsSorted - students sorted");
     List<Student> result = StreamSupport.stream(students.spliterator(), false).collect(Collectors.toList());
-    log.trace("getAllStudentsSorted - method finished");
+    log.trace("getAllStudentsSorted - method finished: result={}",result);
     return result;
   }
 
@@ -108,9 +108,9 @@ public class StudentServiceImplementation implements StudentService {
   @Transactional
   public void updateStudent(Long id, String serialNumber, String name, int group)
       throws ValidatorException {
+    log.trace("updateStudent - method entered: id={} serialNumber={}, name={}, group={}", id,serialNumber,name,group);
     Student student = new Student(serialNumber, name, group);
     student.setId(id);
-    log.trace("updateStudent - method entered: student={}", student);
     validator.validate(student);
     log.trace("updateStudent - student validated");
 
@@ -142,8 +142,7 @@ public class StudentServiceImplementation implements StudentService {
     Set<Student> filteredStudents = new HashSet<>();
     students.forEach(filteredStudents::add);
     filteredStudents.removeIf(entity -> entity.getGroupNumber() != group);
-    log.debug("filterByGroup - number of obtained elements: number of students={}", filteredStudents.size());
-    log.trace("filterByGroup - method finished");
+    log.debug("filterByGroup - method finished: result={}", filteredStudents);
     return filteredStudents;
   }
 
@@ -160,8 +159,7 @@ public class StudentServiceImplementation implements StudentService {
     }
     log.trace("getStudentById - method entered: id={}", id);
     Student student = repository.findById(id).orElse(null);
-    log.debug("getStudentById - obtained: student={}", student);
-    log.trace("getStudentById - method finished");
+    log.debug("getStudentById - method exit: student={}", student);
     return student;
   }
 }

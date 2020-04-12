@@ -139,7 +139,6 @@ public class Console {
     try {
       System.out.println("Enter id: ");
       id = Long.parseLong(input.readLine().strip());
-      studentService.getStudentById(id);
       CompletableFuture.supplyAsync(
               () -> {
                 try {
@@ -337,7 +336,7 @@ public class Console {
     CompletableFuture.supplyAsync(
             () -> {
               try {
-                return "The mean of all assignments is " + assignmentService.averageGrade();
+                return "The mean of all assignments is " + assignmentService.averageGrade().toString();
               } catch (NullPointerException e) {
                 return e.getMessage() + " assignments";
               }

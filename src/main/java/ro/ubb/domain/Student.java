@@ -4,14 +4,34 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 /** A student having group (positive integer), name (nonempty) and serialNumber (nonempty). */
 @Entity
+@Table(name="Students")
+@AttributeOverrides({
+        @AttributeOverride(name="id",column = @Column(name = "student_id"))
+})
 public class Student extends BaseEntity<Long> {
+
+  @Column(name="serial_number")
+  @NotEmpty
   private String serialNumber;
+  @Column(name="name")
+  @NotEmpty
   private String name;
+  @Column(name="group_number")
+  @NotEmpty
   private Integer groupNumber;
+
+  @OneToMany(mappedBy = "student",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private Set<Assignment> assignments = new HashSet<>();
 
   public Student() {
     serialNumber = "";
@@ -24,6 +44,15 @@ public class Student extends BaseEntity<Long> {
     this.serialNumber = serialNumber;
     this.name = name;
     this.groupNumber = groupNumber;
+  }
+  public Set<LabProblem> getLabProblems() {
+    return Collections.unmodifiableSet(assignments.stream().
+            map(Assignment::getLabProblem).
+            collect(Collectors.toSet()));
+  }
+
+  public void addLabProblem(LabProblem labProblem) {
+      assignments.add(new Assignment(this,labProblem));
   }
 
   public String getSerialNumber() {
@@ -79,41 +108,4 @@ public class Student extends BaseEntity<Long> {
     return Objects.hash(serialNumber, name, groupNumber);
   }
 
-  //  /**
-  //   * Parse given string to object of the type of the generic
-  //   *
-  //   * @param fileLine given string to parse
-  //   * @param delimiter character between object fields in fileLine
-  //   * @return object of type given with member as parsed from string
-  //   */
-
-  @Override
-  public String objectToFileLine(String delimiter) {
-    return this.getId()
-        + delimiter
-        + this.serialNumber
-        + delimiter
-        + this.name
-        + delimiter
-        + this.groupNumber;
-  }
-
-  @Override
-  public Node objectToXMLNode(Document document) {
-    Element studentElement = document.createElement("student");
-    studentElement.setAttribute("Id", this.getId().toString());
-    appendChildWithTextToNode(document, studentElement, "serialNumber", this.serialNumber);
-    appendChildWithTextToNode(document, studentElement, "name", this.name);
-    appendChildWithTextToNode(
-        document, studentElement, "group", Integer.toString(this.groupNumber));
-    return studentElement;
-  }
-
-  private void appendChildWithTextToNode(
-      Document document, Node parentNode, String tagName, String textContent) {
-
-    Element element = document.createElement(tagName);
-    element.setTextContent(textContent);
-    parentNode.appendChild(element);
-  }
 }

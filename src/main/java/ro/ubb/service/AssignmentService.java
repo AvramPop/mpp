@@ -16,7 +16,7 @@ public interface AssignmentService {
   Assignment addAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException;
 
-  Set<Assignment> getAllAssignments();
+  List<Assignment> getAllAssignments();
 
   /** Return all Assignments sorted by the sort criteria. */
   List<Assignment> getAllAssignmentsSorted(Sort sort);

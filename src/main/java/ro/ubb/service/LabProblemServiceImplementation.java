@@ -18,7 +18,7 @@ import java.util.stream.StreamSupport;
 
 @Service
 public class LabProblemServiceImplementation implements LabProblemService {
-  public static final Logger log = LoggerFactory.getLogger(LabProblemServiceImplementation.class);
+    private static final Logger log = LoggerFactory.getLogger(LabProblemServiceImplementation.class);
   @Autowired private LabProblemRepository repository;
   @Autowired private Validator<LabProblem> labProblemValidator;
 
@@ -35,15 +35,15 @@ public class LabProblemServiceImplementation implements LabProblemService {
   @Override
   public LabProblem addLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException {
+    log.trace("addLabProblem - method entered: id={}, problemNumber={}, description={}", id,problemNumber,description);
     LabProblem newLabProblem = new LabProblem(problemNumber, description);
     newLabProblem.setId(id);
-    log.trace("addLabProblem - method entered: labProblem={}", newLabProblem);
 
     labProblemValidator.validate(newLabProblem);
     log.trace("addLabProblem - student validated");
 
     LabProblem result = repository.save(newLabProblem);
-    log.trace("addLabProblem - method finished");
+    log.trace("addLabProblem - method finished: result={}", result);
     return result;
   }
 
@@ -56,7 +56,7 @@ public class LabProblemServiceImplementation implements LabProblemService {
   public List<LabProblem> getAllLabProblems() {
     log.trace("getAllLabProblems - method entered");
     List<LabProblem> result = repository.findAll();
-    log.trace("getAllLabProblems - method finished");
+    log.trace("getAllLabProblems - method finished: result={}",result);
     return result;
   }
 
@@ -67,7 +67,7 @@ public class LabProblemServiceImplementation implements LabProblemService {
     Iterable<LabProblem> problems = sort.sort(repository.findAll());
     log.trace("getAllLabProblemsSorted - students sorted");
     List<LabProblem> result = StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toList());
-    log.trace("getAllLabProblemsSorted - method finished");
+    log.trace("getAllLabProblemsSorted - method finished: result={}",result);
     return result;
   }
 
@@ -86,8 +86,7 @@ public class LabProblemServiceImplementation implements LabProblemService {
     log.trace("getLabProblemById - method entered: id={}", id);
 
     LabProblem labProblem = repository.findById(id).orElse(null);
-    log.debug("getLabProblemById - obtained: labProblem={}", labProblem);
-    log.trace("getLabProblemById - method finished");
+    log.debug("getLabProblemById - method exit: labProblem={}", labProblem);
     return labProblem;
 
   }
@@ -156,8 +155,7 @@ public class LabProblemServiceImplementation implements LabProblemService {
     Set<LabProblem> filteredLabProblems = new HashSet<>();
     labProblems.forEach(filteredLabProblems::add);
     filteredLabProblems.removeIf(entity -> entity.getProblemNumber() != problemNumberToFilterBy);
-    log.debug("filterByProblemNumber - number of obtained elements: number of labProblems={}", filteredLabProblems.size());
-    log.trace("filterByProblemNumber - method finished");
+    log.debug("filterByGroup - method finished: result={}", filteredLabProblems);
     return filteredLabProblems;
   }
 }

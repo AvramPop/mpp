@@ -19,7 +19,7 @@ import java.util.stream.StreamSupport;
 
 @Service
 public class AssignmentServiceImplementation implements AssignmentService {
-  public static final Logger log = LoggerFactory.getLogger(AssignmentServiceImplementation.class);
+  private static final Logger log = LoggerFactory.getLogger(AssignmentServiceImplementation.class);
   @Autowired private AssignmentRepository repository;
   @Autowired private LabProblemService labProblemService;
   @Autowired private StudentService studentService;
@@ -28,30 +28,43 @@ public class AssignmentServiceImplementation implements AssignmentService {
   @Override
   public Assignment addAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException {
-    Assignment assignment = new Assignment(studentID, labProblemID, grade);
+    log.trace("addLabProblem - method entered: id={}, studentID={}, labProblemID={}. grade={}", id,studentID,labProblemID,grade);
+
+    String errorMessage = "";
+    Student student = studentService.getStudentById(studentID);
+    if (student == null)
+      errorMessage += "Student id is not in the database ";
+    LabProblem labProblem = labProblemService.getLabProblemById(labProblemID);
+    if (labProblem == null)
+          errorMessage += "Lab problem id is not in the database";
+    if (errorMessage.length() > 0) throw new RepositoryException(errorMessage);
+    Assignment assignment = new Assignment(student, labProblem, grade);
     assignment.setId(id);
     assignmentValidator.validate(assignment);
-    String errorMessage = "";
-    if (studentService.getStudentById(studentID) == null)
-      errorMessage += "Student id is not in the database ";
-    if (labProblemService.getLabProblemById(labProblemID) == null)
-      errorMessage += "Lab problem id is not in the database";
-    if (errorMessage.length() > 0) throw new RepositoryException(errorMessage);
+    log.trace("addAssignment - assignment validated");
 
-    return repository.save(assignment);
+    Assignment result = repository.save(assignment);
+      log.trace("addAssignment - method finished: result={}", result);
+    return result;
   }
 
   @Override
-  public Set<Assignment> getAllAssignments() {
-    Iterable<Assignment> problems = repository.findAll();
-    return StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toSet());
+  public List<Assignment> getAllAssignments() {
+      log.trace("getAllAssignments - method entered");
+      List<Assignment> result = repository.findAll();
+      log.trace("getAllAssignments - method finished: result={}",result);
+      return result;
   }
 
   /** Return all Assignments sorted by the sort criteria. */
   @Override
   public List<Assignment> getAllAssignmentsSorted(Sort sort) {
-    Iterable<Assignment> problems = sort.sort(repository.findAll());
-    return StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toList());
+      log.trace("getAllAssignmentsSorted - method entered");
+      Iterable<Assignment> assignments = sort.sort(repository.findAll());
+      log.trace("getAllAssignmentsSorted - students sorted");
+      List<Assignment> result = StreamSupport.stream(assignments.spliterator(), false).collect(Collectors.toList());
+      log.trace("getAllAssignmentsSorted - method finished: result={}",result);
+      return result;
   }
 
   /**
@@ -63,10 +76,14 @@ public class AssignmentServiceImplementation implements AssignmentService {
    */
   @Override
   public Assignment getAssignmentById(Long id) {
-    if (id == null || id < 0) {
-      throw new IllegalArgumentException("invalid id!");
-    }
-    return repository.findById(id).orElse(null);
+      if (id == null || id < 0) {
+          throw new IllegalArgumentException("invalid id!");
+      }
+      log.trace("getAssignmentById - method entered: id={}", id);
+
+      Assignment assignment = repository.findById(id).orElse(null);
+      log.debug("getAssignmentById - method exit: labProblem={}", assignment);
+      return assignment;
   }
 
   /**
@@ -78,10 +95,12 @@ public class AssignmentServiceImplementation implements AssignmentService {
    */
   @Override
   public void deleteAssignment(Long id) {
-    if (id == null || id < 0) {
-      throw new IllegalArgumentException("Invalid id!");
-    }
-    repository.deleteById(id);
+      if (id == null || id < 0) {
+          throw new IllegalArgumentException("Invalid id!");
+      }
+      log.trace("deleteAssignment - method entered: id={}", id);
+      repository.deleteById(id);
+      log.trace("deleteAssignment - method finished");
   }
 
   /**
@@ -95,22 +114,30 @@ public class AssignmentServiceImplementation implements AssignmentService {
   @Override
   public void updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException {
-    Assignment newAssignment = new Assignment(studentID, labProblemID, grade);
-    newAssignment.setId(id);
-    assignmentValidator.validate(newAssignment);
-    log.trace("updateAssignment - method entered: assignment={}", newAssignment);
-    if (studentService.getStudentById(studentID) != null
-        && labProblemService.getLabProblemById(labProblemID) != null) {
+    log.trace("updateAssignment - method entered: studentId {}, labProblemID {}, grade{}", studentID, labProblemID,grade);
 
-      repository
+    String errorMessage = "";
+    Student student = studentService.getStudentById(studentID);
+    if (student == null)
+      errorMessage += "Student id is not in the database ";
+    LabProblem labProblem = labProblemService.getLabProblemById(labProblemID);
+    if (labProblem == null)
+      errorMessage += "Lab problem id is not in the database";
+    if (errorMessage.length() > 0) throw new RepositoryException(errorMessage);
+    Assignment newAssignment = new Assignment(student, labProblem, grade);
+    newAssignment.setId(id);
+
+
+    repository
           .findById(newAssignment.getId())
           .ifPresent(
-              assignment -> {
-                assignment.setGrade(newAssignment.getGrade());
-                assignment.setStudentId(newAssignment.getStudentId());
-                assignment.setLabProblemId(newAssignment.getLabProblemId());
+              assignmentObj -> {
+                assignmentObj.setGrade(newAssignment.getGrade());
+                assignmentObj.setStudent(newAssignment.getStudent());
+                assignmentObj.setLabProblem(newAssignment.getLabProblem());
+                log.debug("updateAssignment - updated: assignmentObj={}", assignmentObj);
               });
-    }
+      log.trace("updateAssignment - method finished");
   }
 
   /**
@@ -122,15 +149,16 @@ public class AssignmentServiceImplementation implements AssignmentService {
    */
   @Override
   public AbstractMap.SimpleEntry<Long, Double> greatestMean() {
+    log.trace("greatestMean - method entered");
     Iterable<Assignment> assignmentIterable = repository.findAll();
     Set<Assignment> assignments =
         StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
 
-    return studentService.getAllStudents().stream()
+    AbstractMap.SimpleEntry<Long,Double> result = studentService.getAllStudents().stream()
         .filter(
             student ->
                 assignments.stream()
-                    .anyMatch(assignment -> assignment.getStudentId().equals(student.getId())))
+                    .anyMatch(assignment -> assignment.getStudent().getId().equals(student.getId())))
         .map(
             student ->
                 new AbstractMap.SimpleEntry<>(
@@ -138,16 +166,18 @@ public class AssignmentServiceImplementation implements AssignmentService {
                     (double)
                             assignments.stream()
                                 .filter(
-                                    assignment -> assignment.getStudentId().equals(student.getId()))
+                                    assignment -> assignment.getLabProblem().getId().equals(student.getId()))
                                 .map(Assignment::getGrade)
                                 .reduce(0, Integer::sum)
                         / (double)
                             assignments.stream()
                                 .filter(
-                                    assignment -> assignment.getStudentId().equals(student.getId()))
+                                    assignment -> assignment.getStudent().getId().equals(student.getId()))
                                 .count()))
         .max((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue()))
         .orElse(null);
+      log.trace("greatestMean - method finished: result={}",result);
+      return result;
   }
 
   /**
@@ -159,21 +189,25 @@ public class AssignmentServiceImplementation implements AssignmentService {
    */
   @Override
   public AbstractMap.SimpleEntry<Long, Long> idOfLabProblemMostAssigned() {
-    Iterable<Assignment> assignmentIterable = repository.findAll();
+      log.trace("idOfLabProblemMostAssigned - method entered");
+      Iterable<Assignment> assignmentIterable = repository.findAll();
     Set<Assignment> assignments =
         StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
 
-    return labProblemService.getAllLabProblems().stream()
+      AbstractMap.SimpleEntry<Long, Long> result =  labProblemService.getAllLabProblems().stream()
         .map(
             labProblem ->
                 new AbstractMap.SimpleEntry<>(
                     labProblem.getId(),
                     assignments.stream()
                         .filter(
-                            assignment -> assignment.getLabProblemId().equals(labProblem.getId()))
+                            assignment -> assignment.getLabProblem().getId().equals(labProblem.getId()))
                         .count()))
         .max(((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue())))
         .orElse(null);
+      log.trace("idOfLabProblemMostAssigned - method finished: result={}",result);
+      return result;
+
   }
 
   /**
@@ -184,15 +218,19 @@ public class AssignmentServiceImplementation implements AssignmentService {
    */
   @Override
   public Double averageGrade() {
-    Iterable<Assignment> assignmentIterable = repository.findAll();
+      log.trace("averageGrade - method entered");
+      Iterable<Assignment> assignmentIterable = repository.findAll();
     Set<Assignment> assignments =
         StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
     int gradesSum = assignments.stream().map(Assignment::getGrade).reduce(0, Integer::sum);
 
     if (assignments.size() > 0) {
-      return (double) gradesSum / (double) assignments.size();
+        Double result = (double) gradesSum / (double) assignments.size();
+        log.trace("averageGrade - method finished: result={}",result);
+        return result;
     } else {
-      return null;
+        log.trace("averageGrade - method finished: result={null value}");
+        return null;
     }
   }
 
@@ -204,15 +242,17 @@ public class AssignmentServiceImplementation implements AssignmentService {
    */
   @Override
   public Map<Student, List<LabProblem>> studentAssignedProblems() {
-
-    return studentService.getAllStudents().stream()
+      log.trace("studentAssignedProblems - method entered");
+    Map<Student,List<LabProblem>> result = studentService.getAllStudents().stream()
         .collect(Collectors.toMap(student -> student, this::getAllLabProblemsForAStudent));
+      log.trace("studentAssignedProblems - method finished: result={}",result);
+      return result;
   }
 
   private List<LabProblem> getAllLabProblemsForAStudent(Student student) {
     return repository.findAll().stream()
-        .filter(assignment -> assignment.getStudentId().equals(student.getId()))
-        .map(assignment -> labProblemService.getLabProblemById(assignment.getLabProblemId()))
+        .filter(assignment -> assignment.getStudent().getId().equals(student.getId()))
+        .map(assignment -> labProblemService.getLabProblemById(assignment.getLabProblem().getId()))
         .collect(Collectors.toList());
   }
 }

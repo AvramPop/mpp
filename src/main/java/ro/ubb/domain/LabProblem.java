@@ -4,14 +4,26 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import javax.persistence.Entity;
-import java.util.Objects;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /** A LabProblem having a number (positive integer) and a description (nonempty). */
 @Entity
+@Table(name="LabProblems")
+@AttributeOverrides({
+        @AttributeOverride(name="id",column = @Column(name = "lab_problem_id"))
+})
 public class LabProblem extends BaseEntity<Long> {
+  @Column(name="problem_number")
+  @NotEmpty
   private int problemNumber;
+  @Column(name="description")
+  @NotEmpty
   private String description;
+  @OneToMany(mappedBy = "labProblem",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private Set<Assignment> assignments = new HashSet<>();
 
   public LabProblem() {
     this.problemNumber = -1;
@@ -22,6 +34,14 @@ public class LabProblem extends BaseEntity<Long> {
   public LabProblem(int problemNumber, String description) {
     this.problemNumber = problemNumber;
     this.description = description;
+  }
+
+  public Set<Student> getStudents(){
+    return assignments.stream()
+            .map(Assignment::getStudent).collect(Collectors.toUnmodifiableSet());
+  }
+  public void addStudent(Student student){
+    assignments.add(new Assignment(student,this));
   }
 
   public int getProblemNumber() {
@@ -66,26 +86,5 @@ public class LabProblem extends BaseEntity<Long> {
     return Objects.hash(problemNumber, description);
   }
 
-  @Override
-  public String objectToFileLine(String delimiter) {
-    return this.getId() + delimiter + this.problemNumber + delimiter + this.description;
-  }
 
-  @Override
-  public Node objectToXMLNode(Document document) {
-    Element studentElement = document.createElement("labProblem");
-    studentElement.setAttribute("Id", this.getId().toString());
-    appendChildWithTextToNode(
-        document, studentElement, "problemNumber", Integer.toString(this.problemNumber));
-    appendChildWithTextToNode(document, studentElement, "description", this.description);
-    return studentElement;
-  }
-
-  private void appendChildWithTextToNode(
-      Document document, Node parentNode, String tagName, String textContent) {
-
-    Element element = document.createElement(tagName);
-    element.setTextContent(textContent);
-    parentNode.appendChild(element);
-  }
 }
