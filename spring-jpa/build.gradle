@@ -31,7 +31,6 @@ allprojects {
 
         compile group: 'org.springframework', name: 'spring-context', version: "$springVersion"
         
-//        compile group: 'org.apache.commons', name: 'commons-dbcp2', version: "$dbcpVersion"
 
         //logging
         compile group: 'org.slf4j', name: 'slf4j-api', version: "$slf4jVersion"

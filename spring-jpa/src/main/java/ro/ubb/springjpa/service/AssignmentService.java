@@ -71,4 +71,15 @@ public interface AssignmentService {
    *     list.
    */
   Optional<Map<Student, List<LabProblem>>> studentAssignedProblems();
+
+  Optional<Student> deleteStudent(Long id);
+  /**
+   * Deletes a lab problem from the ro.ubb.repository and also deletes all assignments corresponding
+   * to that student
+   *
+   * @param id the id of the lab problem to be deleted
+   * @return an {@code Optional} containing a null if successfully deleted otherwise the entity
+   *     passed to the repository
+   */
+  Optional<LabProblem> deleteLabProblem(Long id);
 }

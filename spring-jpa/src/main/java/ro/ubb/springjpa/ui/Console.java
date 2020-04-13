@@ -369,8 +369,8 @@ public class Console {
           () -> {
             try {
               if (studentService.addStudent(id, serialNumber, name, group).isEmpty())
-                return "Student not added, already in database";
-              return "Student added";
+                return "Student added";
+              return "Student not added";
             } catch (ValidatorException ex) {
               return ex.getMessage();
             }
@@ -480,7 +480,7 @@ public class Console {
       CompletableFuture.supplyAsync(
               () -> {
                 try {
-                  if (labProblemService.deleteLabProblem(id).isPresent()) {
+                  if (assignmentService.deleteLabProblem(id).isPresent()) {
                     return "Delete method completed";
                   } else return "delete failed";
                 } catch (IllegalArgumentException ex) {
@@ -561,7 +561,7 @@ public class Console {
       CompletableFuture.supplyAsync(
           () -> {
             try {
-              if(studentService.deleteStudent(id).isPresent()){
+              if(assignmentService.deleteStudent(id).isPresent()){
 
                 return "Delete method finished";
               } else return "bad delete";

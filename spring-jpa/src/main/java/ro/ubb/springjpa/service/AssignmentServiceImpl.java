@@ -30,7 +30,9 @@ public class AssignmentServiceImpl implements AssignmentService {
   @Override
   public Optional<Assignment> addAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException {
+
     Assignment assignment = new Assignment(studentID, labProblemID, grade);
+    log.trace("addAssignment - method entered: assignment={}", assignment);
     assignment.setId(id);
     validator.validate(assignment);
     if(getAssignmentById(id).isPresent()) return Optional.of(assignment);
@@ -38,27 +40,82 @@ public class AssignmentServiceImpl implements AssignmentService {
     if (studentService.getStudentById(studentID).isPresent()
         && labProblemService.getLabProblemById(labProblemID).isPresent()) {
       try {
+        log.debug("addAssignment - updated: a={}", assignment);
+
         repository.save(assignment);
+        log.trace("addAssignment - finished well");
         return Optional.empty();
       } catch (JpaSystemException e) {
+        log.trace("addAssignment - finished bad");
         return Optional.of(assignment);
       }
     }
+    log.trace("addAssignment - finished bad");
     return Optional.of(assignment);
   }
 
   @Override
   public Set<Assignment> getAllAssignments() {
+    log.trace("getAllAssignments - method entered");
     Iterable<Assignment> problems = repository.findAll();
+    log.trace("getAllAssignments - finished well");
     return StreamSupport.stream(problems.spliterator(), false).collect(Collectors.toSet());
   }
 
   @Override
   public List<Assignment> getAllAssignmentsSorted(Sort sort) {
+    log.trace("getAllAssignmentsSorted - method entered");
     Iterable<Assignment> assignments = repository.findAll();
     Iterable<Assignment> assignmentsSorted = sort.sort(assignments);
+    log.trace("getAllAssignmentsSorted - finished well");
     return StreamSupport.stream(assignmentsSorted.spliterator(), false)
         .collect(Collectors.toList());
+  }
+
+  public Optional<Student> deleteStudent(Long id) {
+    if (id == null || id < 0) throw new IllegalArgumentException("Invalid id!");
+    log.trace("deleteStudent - method entered: student id={}", id);
+    if (studentService.getStudentById(id).isEmpty()) return Optional.empty();
+
+    Set<Assignment> allAssignments = this.getAllAssignments();
+    log.debug("deleteStudent - deleted: a={}", id);
+    allAssignments.stream()
+        .filter(entity -> entity.getStudentId().equals(id))
+        .forEach(entity -> this.deleteAssignment(entity.getId()));
+Optional<Student> result = studentService.deleteStudent(id);
+    if (result.isPresent()) {
+      log.trace("deleteStudent - finished well");
+    } else {
+      log.trace("deleteStudent - finished bad");
+    }
+    return result;
+  }
+  /**
+   * Deletes a lab problem from the ro.ubb.repository and also deletes all assignments corresponding
+   * to that student
+   *
+   * @param id the id of the lab problem to be deleted
+   * @return an {@code Optional} containing a null if successfully deleted otherwise the entity
+   *     passed to the repository
+   */
+  public Optional<LabProblem> deleteLabProblem(Long id) {
+    if (id == null || id < 0) throw new IllegalArgumentException("Invalid id!");
+    log.trace("deleteLabProblem - method entered: delete={}", id);
+    if (labProblemService.getLabProblemById(id).isEmpty()) return Optional.empty();
+    log.debug("deleteLabProblem - deleted: a={}", id);
+    Set<Assignment> allAssignments = this.getAllAssignments();
+
+    allAssignments.stream()
+        .filter(entity -> entity.getLabProblemId().equals(id))
+        .forEach(entity -> this.deleteAssignment(entity.getId()));
+
+    Optional<LabProblem> result =  labProblemService.deleteLabProblem(id);
+    if (result.isPresent()) {
+      log.trace("deleteLabProblem - finished well");
+    } else {
+      log.trace("deleteLabProblem - finished bad");
+    }
+    return result;
   }
 
   @Override
@@ -66,6 +123,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     if (id == null || id < 0) {
       throw new IllegalArgumentException("invalid id!");
     }
+    log.trace("getAssignmentById - method entered");
     return repository.findById(id);
   }
 
@@ -73,10 +131,14 @@ public class AssignmentServiceImpl implements AssignmentService {
   public Optional<Assignment> deleteAssignment(Long id) {
     if (id == null || id < 0) throw new IllegalArgumentException("Invalid id!");
     try {
+      log.trace("deleteAssignment - method entered: assignment={}", id);
+      log.debug("addAssignment - delete: a={}", id);
       Optional<Assignment> entity = repository.findById(id);
       repository.deleteById(id);
+      log.trace("addAssignment - finished well");
       return entity;
     } catch (EmptyResultDataAccessException e) {
+      log.trace("addAssignment - finished bad");
       return Optional.empty();
     }
   }
@@ -114,7 +176,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     Iterable<Assignment> assignmentIterable = repository.findAll();
     Set<Assignment> assignments =
         StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
-
+    log.trace("greatestMean - method entered");
     return studentService.getAllStudents().stream()
         .filter(
             student ->
@@ -143,7 +205,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     Iterable<Assignment> assignmentIterable = repository.findAll();
     Set<Assignment> assignments =
         StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
-
+    log.trace("idOfLabProblemMostAssigned - method entered");
     return labProblemService.getAllLabProblems().stream()
         .map(
             labProblem ->
@@ -158,6 +220,7 @@ public class AssignmentServiceImpl implements AssignmentService {
 
   @Override
   public Optional<Double> averageGrade() {
+    log.trace("averageGrade - method entered");
     Iterable<Assignment> assignmentIterable = repository.findAll();
     Set<Assignment> assignments =
         StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
@@ -170,7 +233,9 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
   }
 
+  @Override
   public Optional<Map<Student, List<LabProblem>>> studentAssignedProblems() {
+    log.trace("studentAssignedProblems - method entered");
 
     Map<Student, List<LabProblem>> result =
         studentService.getAllStudents().stream()
