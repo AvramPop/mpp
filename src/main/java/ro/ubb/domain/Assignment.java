@@ -11,7 +11,7 @@ import javax.validation.constraints.Min;
 import java.util.Objects;
 
 @Entity
-@Table(name="Assignments")
+@Table(name="assignments")
 @AttributeOverrides({
         @AttributeOverride(name="id",column = @Column(name = "assignment_id"))
 })
@@ -31,6 +31,7 @@ public class Assignment extends BaseEntity<Long> {
   private Integer grade;
 
   public Student getStudent() {
+    System.out.println("Hello");
     return student;
   }
 

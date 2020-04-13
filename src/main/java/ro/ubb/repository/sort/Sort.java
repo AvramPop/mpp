@@ -64,7 +64,7 @@ public class Sort implements Serializable {
   }
 
   private String getClassWithPackages(String className) {
-    return "ro.ubb.remoting.common.domain." + className;
+    return "ro.ubb.domain." + className;
   }
 
   /** Inner class to provide sorting logic for the criteria of current instance. */

@@ -300,7 +300,7 @@ public class Console {
 
     CompletableFuture.supplyAsync(
             () -> {
-              Student emptyStudent = new Student();
+//              Student emptyStudent = new Student();
               try {
                 return assignmentService.studentAssignedProblems().entrySet().stream()
                     .map(

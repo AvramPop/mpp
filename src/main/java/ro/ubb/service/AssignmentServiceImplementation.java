@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ro.ubb.domain.Assignment;
 import ro.ubb.domain.LabProblem;
 import ro.ubb.domain.Student;
@@ -42,7 +43,7 @@ public class AssignmentServiceImplementation implements AssignmentService {
     assignment.setId(id);
     assignmentValidator.validate(assignment);
     log.trace("addAssignment - assignment validated");
-
+    
     Assignment result = repository.save(assignment);
       log.trace("addAssignment - method finished: result={}", result);
     return result;
@@ -112,6 +113,7 @@ public class AssignmentServiceImplementation implements AssignmentService {
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
   @Override
+  @Transactional
   public void updateAssignment(Long id, Long studentID, Long labProblemID, int grade)
       throws ValidatorException {
     log.trace("updateAssignment - method entered: studentId {}, labProblemID {}, grade{}", studentID, labProblemID,grade);
@@ -241,6 +243,7 @@ public class AssignmentServiceImplementation implements AssignmentService {
    *     list.
    */
   @Override
+  @Transactional
   public Map<Student, List<LabProblem>> studentAssignedProblems() {
       log.trace("studentAssignedProblems - method entered");
     Map<Student,List<LabProblem>> result = studentService.getAllStudents().stream()
@@ -249,10 +252,13 @@ public class AssignmentServiceImplementation implements AssignmentService {
       return result;
   }
 
+  @Transactional
   private List<LabProblem> getAllLabProblemsForAStudent(Student student) {
-    return repository.findAll().stream()
-        .filter(assignment -> assignment.getStudent().getId().equals(student.getId()))
-        .map(assignment -> labProblemService.getLabProblemById(assignment.getLabProblem().getId()))
-        .collect(Collectors.toList());
+    System.out.println("Hello");
+      return new ArrayList<>(student.getLabProblems());
+//      return repository.findAll().stream()
+//        .filter(assignment -> assignment.getStudent().getId().equals(student.getId()))
+//        .map(assignment -> labProblemService.getLabProblemById(assignment.getLabProblem().getId()))
+//        .collect(Collectors.toList());
   }
 }

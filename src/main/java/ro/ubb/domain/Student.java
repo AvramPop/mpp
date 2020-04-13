@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 /** A student having group (positive integer), name (nonempty) and serialNumber (nonempty). */
 @Entity
-@Table(name="Students")
+@Table(name="students")
 @AttributeOverrides({
         @AttributeOverride(name="id",column = @Column(name = "student_id"))
 })
@@ -46,9 +46,9 @@ public class Student extends BaseEntity<Long> {
     this.groupNumber = groupNumber;
   }
   public Set<LabProblem> getLabProblems() {
-    return Collections.unmodifiableSet(assignments.stream().
+    return assignments.stream().
             map(Assignment::getLabProblem).
-            collect(Collectors.toSet()));
+            collect(Collectors.toSet());
   }
 
   public void addLabProblem(LabProblem labProblem) {

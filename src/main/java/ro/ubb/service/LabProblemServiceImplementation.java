@@ -4,12 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ro.ubb.domain.LabProblem;
 import ro.ubb.domain.exceptions.ValidatorException;
 import ro.ubb.repository.LabProblemRepository;
 import ro.ubb.service.validators.Validator;
 import ro.ubb.repository.sort.Sort;
 
+import javax.persistence.Temporal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -119,6 +121,7 @@ public class LabProblemServiceImplementation implements LabProblemService {
    * @throws ValidatorException if the object is incorrectly defined by the user
    */
   @Override
+  @Transactional
   public void updateLabProblem(Long id, int problemNumber, String description)
       throws ValidatorException {
     LabProblem newLabProblem = new LabProblem(problemNumber, description);

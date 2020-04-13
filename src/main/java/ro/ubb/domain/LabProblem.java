@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 /** A LabProblem having a number (positive integer) and a description (nonempty). */
 @Entity
-@Table(name="LabProblems")
+@Table(name="lab_problems")
 @AttributeOverrides({
         @AttributeOverride(name="id",column = @Column(name = "lab_problem_id"))
 })
