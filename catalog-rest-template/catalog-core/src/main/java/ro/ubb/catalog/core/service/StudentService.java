@@ -1,18 +1,25 @@
 package ro.ubb.catalog.core.service;
 
+import org.springframework.stereotype.Service;
 import ro.ubb.catalog.core.model.Student;
+import ro.ubb.catalog.core.service.sort.Sort;
 
 import java.util.List;
 
-/**
- * Created by radu.
- */
+/** Created by radu. */
+@Service
 public interface StudentService {
-    List<Student> getAllStudents();
+  List<Student> getAllStudents();
 
-    Student saveStudent(Student student);
+  boolean saveStudent(Student student);
 
-    Student updateStudent(Long id, Student student);
+  List<Student> getAllStudentsSorted(Sort sort);
 
-    void deleteStudent(Long id);
+  List<Student> filterByGroup(Integer group);
+
+  boolean updateStudent(Long id, Student student);
+
+  boolean deleteStudent(Long id);
+
+  Student getStudentById(Long id);
 }

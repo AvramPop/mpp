@@ -8,8 +8,7 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Builder
-public class StudentDto extends BaseDto {
-  private String serialNumber;
-  private String name;
-  private int studentGroup;
+public class LabProblemDto extends BaseDto {
+  private int problemNumber;
+  private String description;
 }

@@ -6,10 +6,7 @@ import ro.ubb.catalog.core.model.BaseEntity;
 
 import java.io.Serializable;
 
-/**
- * Created by radu.
- */
+/** Created by radu. */
 @NoRepositoryBean
 public interface CatalogRepository<T extends BaseEntity<ID>, ID extends Serializable>
-        extends JpaRepository<T, ID> {
-}
+    extends JpaRepository<T, ID> {}

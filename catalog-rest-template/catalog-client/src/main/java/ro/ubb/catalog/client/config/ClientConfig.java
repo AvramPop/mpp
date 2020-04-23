@@ -4,13 +4,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
-/**
- * Created by radu.
- */
+/** Created by radu. */
 @Configuration
 public class ClientConfig {
-    @Bean
-    RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
+  @Bean
+  RestTemplate restTemplate() {
+    return new RestTemplate();
+  }
 }

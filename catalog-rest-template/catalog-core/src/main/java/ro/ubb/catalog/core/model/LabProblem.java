@@ -5,7 +5,6 @@ import org.hibernate.annotations.Proxy;
 
 import javax.persistence.Entity;
 
-/** Created by radu. */
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,8 +13,7 @@ import javax.persistence.Entity;
 @ToString(callSuper = true)
 @Builder
 @Proxy(lazy = false)
-public class Student extends BaseEntity<Long> {
-  private String serialNumber;
-  private String name;
-  private int groupNumber;
+public class LabProblem extends BaseEntity<Long> {
+  private int problemNumber;
+  private String description;
 }
