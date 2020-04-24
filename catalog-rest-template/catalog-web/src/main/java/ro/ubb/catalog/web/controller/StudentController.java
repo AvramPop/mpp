@@ -26,20 +26,20 @@ public class StudentController {
 
   @RequestMapping(value = "/students", method = RequestMethod.GET)
   StudentsDto getStudents() {
-    // todo: log
+    log.trace("getStudents call - params:");
     return new StudentsDto(studentConverter.convertModelsToDtos(studentService.getAllStudents()));
   }
 
   @RequestMapping(value = "/students/group/{groupNumber}", method = RequestMethod.GET)
   StudentsDto getStudentsFilteredByGroup(@PathVariable Integer groupNumber) {
-    // todo: log
+    log.trace("getStudentsFilteredByGroup call - params = group:{}", groupNumber);
     return new StudentsDto(
         studentConverter.convertModelsToDtos(studentService.filterByGroup(groupNumber)));
   }
 
   @RequestMapping(value = "/students/sorted", method = RequestMethod.POST)
   StudentsDto getStudentsSorted(@RequestBody SortDto sort) {
-    // todo: log
+    log.trace("getStudentsSorted call - params = sort:{}", sort);
     return new StudentsDto(
         studentConverter.convertModelsToDtos(
             studentService.getAllStudentsSorted(sortConverter.convertDtoToSort(sort))));
@@ -47,7 +47,7 @@ public class StudentController {
 
   @RequestMapping(value = "/students", method = RequestMethod.POST)
   ResponseEntity<?> saveStudent(@RequestBody StudentDto studentDto) {
-    // todo log
+    log.trace("saveStudent call - params = new Student:{}", studentDto);
     if (studentService.saveStudent(studentConverter.convertDtoToModel(studentDto))) {
       return new ResponseEntity<>(HttpStatus.OK);
     } else {
@@ -57,6 +57,7 @@ public class StudentController {
 
   @RequestMapping(value = "/students/{id}", method = RequestMethod.PUT)
   ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody StudentDto studentDto) {
+    log.trace("updateStudent call - params = up Student:{}", studentDto);
 
     if (studentService.updateStudent(id, studentConverter.convertDtoToModel(studentDto))) {
       return new ResponseEntity<>(HttpStatus.OK);
@@ -67,7 +68,7 @@ public class StudentController {
 
   @RequestMapping(value = "/students/{id}", method = RequestMethod.GET)
   StudentDto getStudent(@PathVariable Long id) {
-    // todo: log
+    log.trace("getStudent call - params = id:{}", id);
     return studentConverter.convertModelToDto(studentService.getStudentById(id));
   }
 }

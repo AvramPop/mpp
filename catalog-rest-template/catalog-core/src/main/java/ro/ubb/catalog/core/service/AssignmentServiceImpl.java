@@ -49,7 +49,7 @@ public class AssignmentServiceImpl implements AssignmentService {
 
   @Override
   public boolean saveAssignment(Assignment assignment) {
-    // todo: log
+    log.trace("saveAssignment - finished well");
     if (assignmentRepository.existsById(assignment.getId())) return false;
     assignmentRepository.save(assignment);
     return true;
@@ -59,6 +59,7 @@ public class AssignmentServiceImpl implements AssignmentService {
   @Transactional
   public boolean updateAssignment(Long id, Assignment assignment) {
     // todo log
+    log.trace("updateAssignment - finished well");
 
     if (!assignmentRepository.existsById(id)) return false;
 

@@ -30,14 +30,14 @@ public class LabProblemController {
 
   @RequestMapping(value = "/labs", method = RequestMethod.GET)
   LabProblemsDto getLabProblems() {
-    // todo: log
+    log.trace("getLabProblems call - params");
     return new LabProblemsDto(
         labProblemConverter.convertModelsToDtos(labProblemService.getAllLabProblems()));
   }
 
   @RequestMapping(value = "/labs/bynumber/{problemNumber}", method = RequestMethod.GET)
   LabProblemsDto getLabProblemsFilteredByNumber(@PathVariable Integer problemNumber) {
-    // todo: log
+    log.trace("getLabProblemsFilteredByNumber call - params = problemNumber:{}", problemNumber);
     return new LabProblemsDto(
         labProblemConverter.convertModelsToDtos(
             labProblemService.filterByProblemNumber(problemNumber)));
@@ -45,7 +45,7 @@ public class LabProblemController {
 
   @RequestMapping(value = "/labs", method = RequestMethod.POST)
   ResponseEntity<?> saveLabProblem(@RequestBody LabProblemDto labProblemDto) {
-    // todo log
+    log.trace("saveLabProblem call - params = LabProblemDto:{}", labProblemDto);
     if (labProblemService.saveLabProblem(labProblemConverter.convertDtoToModel(labProblemDto))) {
       return new ResponseEntity<>(HttpStatus.OK);
     } else {
@@ -55,13 +55,10 @@ public class LabProblemController {
 
   @RequestMapping(value = "/labs/sorted", method = RequestMethod.POST)
   LabProblemsDto getLabProblemsSorted(@RequestBody SortDto sortDto) {
-    System.out.println("successful call");
-    System.out.println(sortDto.toString());
     Sort convertedSort = sortConverter.convertDtoToSort(sortDto);
-    System.out.println(convertedSort.toString());
     convertedSort.setClassName("LabProblem");
     List<LabProblem> problems = labProblemService.getAllLabProblemsSorted(convertedSort);
-    problems.forEach(System.out::println);
+    log.trace("getLabProblemsSorted call - params = SortDto:{}", sortDto);
     return new LabProblemsDto(
         labProblemConverter.convertModelsToDtos(problems));
   }
@@ -69,7 +66,7 @@ public class LabProblemController {
   @RequestMapping(value = "/labs/{id}", method = RequestMethod.PUT)
   ResponseEntity<?> updateLabProblem(
       @PathVariable Long id, @RequestBody LabProblemDto labProblemDto) {
-    // todo: log
+    log.trace("updateLabProblem call - params = labProblemDto:{}", labProblemDto);
     if (labProblemService.updateLabProblem(
         id, labProblemConverter.convertDtoToModel(labProblemDto))) {
       return new ResponseEntity<>(HttpStatus.OK);
@@ -80,7 +77,7 @@ public class LabProblemController {
 
   @RequestMapping(value = "/labs/{id}", method = RequestMethod.GET)
   LabProblemDto getLabProblem(@PathVariable Long id) {
-    // todo: log
+    log.trace("getLabProblem call - params = id:{}", id);
     return labProblemConverter.convertModelToDto(labProblemService.getLabProblem(id));
   }
 }

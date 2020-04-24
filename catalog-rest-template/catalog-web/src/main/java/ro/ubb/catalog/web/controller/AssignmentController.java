@@ -26,14 +26,14 @@ public class AssignmentController {
 
   @RequestMapping(value = "/assignments", method = RequestMethod.GET)
   AssignmentsDto getAssignments() {
-    // todo: log
+    log.trace("getAssignments call - params");
     return new AssignmentsDto(
         assignmentConverter.convertModelsToDtos(assignmentService.getAllAssignments()));
   }
 
   @RequestMapping(value = "/assignments", method = RequestMethod.POST)
   ResponseEntity<?> saveAssignment(@RequestBody AssignmentDto assignmentDto) {
-    // todo log
+    log.trace("saveAssignment call - params = assignmentDto:{}", assignmentDto);
     if (assignmentService.saveAssignment(assignmentConverter.convertDtoToModel(assignmentDto))) {
       return new ResponseEntity<>(HttpStatus.OK);
     } else {
@@ -44,7 +44,7 @@ public class AssignmentController {
   @RequestMapping(value = "/assignments/{id}", method = RequestMethod.PUT)
   ResponseEntity<?> updateAssignment(
       @PathVariable Long id, @RequestBody AssignmentDto assignmentDto) {
-    // todo: log
+    log.trace("updateAssignment call - params = assignmentDto:{}", assignmentDto);
     if (assignmentService.updateAssignment(
         id, assignmentConverter.convertDtoToModel(assignmentDto))) {
       return new ResponseEntity<>(HttpStatus.OK);
@@ -55,7 +55,7 @@ public class AssignmentController {
 
   @RequestMapping(value = "/assignments/sorted", method = RequestMethod.POST)
   AssignmentsDto getAssignmentsSorted(@RequestBody SortDto sort) {
-    // todo: log
+    log.trace("getAssignmentsSorted call - params = sort:{}", sort);
     return new AssignmentsDto(
         assignmentConverter.convertModelsToDtos(
             assignmentService.getAllAssignmentsSorted(sortConverter.convertDtoToSort(sort))));
@@ -64,6 +64,7 @@ public class AssignmentController {
   @RequestMapping(value = "/assignments/{id}", method = RequestMethod.DELETE)
   ResponseEntity<?> deleteAssignment(@PathVariable Long id) {
     // todo:log
+    log.trace("deleteAssignment call - params = id:{}", id);
 
     if (assignmentService.deleteAssignment(id)) {
       return new ResponseEntity<>(HttpStatus.OK);
@@ -74,30 +75,31 @@ public class AssignmentController {
 
   @RequestMapping(value = "/assignments/{id}", method = RequestMethod.GET)
   AssignmentDto getAssignment(@PathVariable Long id) {
-    // todo: log
+    log.trace("getAssignment call - params = id:{}", id);
     return assignmentConverter.convertModelToDto(assignmentService.getAssignmentById(id));
   }
 
   @RequestMapping(value = "/logic/mean", method = RequestMethod.GET)
   PairDto<Long, Double> getGreatestMean() {
-    // todo: log
+    log.trace("getGreatestMean call - params");
     return conversionFactory.convertMeanToDto(assignmentService.greatestMean());
   }
 
   @RequestMapping(value = "/logic/assigned", method = RequestMethod.GET)
   PairDto<Long, Long> getIdOfLabProblemMostAssigned() {
-    // todo: log
+    log.trace("getIdOfLabProblemMostAssigned call - params");
     return conversionFactory.convertIdToDto(assignmentService.idOfLabProblemMostAssigned());
   }
 
   @RequestMapping(value = "/logic/avg", method = RequestMethod.GET)
   DoubleDto getAverageGrade() {
-    // todo: log
+    log.trace("getAverageGrade call - params");
     return conversionFactory.convertDoubleToDto(assignmentService.averageGrade());
   }
 
   @RequestMapping(value = "/labs/{id}", method = RequestMethod.DELETE)
   ResponseEntity<?> deleteLabProblem(@PathVariable Long id) {
+    log.trace("deleteLabProblem call - params = id:{}", id);
 
     if (assignmentService.deleteLabProblem(id)) {
       return new ResponseEntity<>(HttpStatus.OK);
@@ -108,7 +110,7 @@ public class AssignmentController {
 
   @RequestMapping(value = "/students/{id}", method = RequestMethod.DELETE)
   ResponseEntity<?> deleteStudent(@PathVariable Long id) {
-    // todo:log
+    log.trace("deleteStudent call - params = id:{}", id);
 
     if (assignmentService.deleteStudent(id)) {
       return new ResponseEntity<>(HttpStatus.OK);

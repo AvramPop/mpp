@@ -37,7 +37,7 @@ public class StudentServiceImpl implements StudentService {
 
   @Override
   public boolean saveStudent(Student student) {
-    // todo: log
+    log.trace("saveStudent --- method entered");
     if (studentRepository.existsById(student.getId())) return false;
     studentRepository.save(student);
     return true;
@@ -71,7 +71,7 @@ public class StudentServiceImpl implements StudentService {
   @Override
   @Transactional
   public boolean updateStudent(Long id, Student student) {
-    // todo log
+    log.trace("updateStudent - method entered");
     if (!studentRepository.existsById(id)) return false;
 
     Student update = studentRepository.findById(id).get();
@@ -84,7 +84,6 @@ public class StudentServiceImpl implements StudentService {
 
   @Override
   public boolean deleteStudent(Long id) {
-    // todo log
     if (id == null || id < 0) throw new IllegalArgumentException("Invalid id!");
     try {
       log.trace("deleteStudent - method entered: id={}", id);

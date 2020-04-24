@@ -47,7 +47,7 @@ public class LabProblemServiceImpl implements LabProblemService {
 
   @Override
   public boolean saveLabProblem(LabProblem labProblem) {
-    // todo: log
+    log.trace("saveLabProblem - method entered");
     if (labProblemRepository.existsById(labProblem.getId())) return false;
     labProblemRepository.save(labProblem);
     return true;
@@ -56,7 +56,7 @@ public class LabProblemServiceImpl implements LabProblemService {
   @Override
   @Transactional
   public boolean updateLabProblem(Long id, LabProblem labProblem) {
-    // todo log
+    log.trace("updateLabProblem - method entered");
     if (!labProblemRepository.existsById(id)) return false;
 
     LabProblem update = labProblemRepository.findById(id).get();
