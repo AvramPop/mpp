@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
     <Properties>
-        <Property name="filename">./log/catalog.log</Property>
-        <Property name="filenamePattern">log/catalog-%i.log</Property>
+        <Property name="filename">/home/dani/Desktop/code/faculta/an2/sem2/mpp/catalog-rest-template/log/catalog.log</Property>
+        <Property name="filenamePattern">/home/dani/Desktop/code/faculta/an2/sem2/mpp/catalog-rest-template/log/catalog-%i.log</Property>
         <Property name="pattern">%d{ISO8601} %-5p [%t]: %-36.36c{1} - %m %n
         </Property>
     </Properties>

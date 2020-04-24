@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ro.ubb.catalog.core.model.Student;
 import ro.ubb.catalog.core.repository.StudentRepository;
 import ro.ubb.catalog.core.service.sort.Sort;
+import ro.ubb.catalog.core.service.validator.LabProblemValidator;
+import ro.ubb.catalog.core.service.validator.StudentValidator;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class StudentServiceImpl implements StudentService {
   public static final Logger log = LoggerFactory.getLogger(StudentServiceImpl.class);
 
   @Autowired private StudentRepository studentRepository;
+  @Autowired private StudentValidator validator;
 
   @Override
   public List<Student> getAllStudents() {
@@ -38,6 +41,8 @@ public class StudentServiceImpl implements StudentService {
   @Override
   public boolean saveStudent(Student student) {
     log.trace("saveStudent --- method entered");
+    validator.validate(student);
+
     if (studentRepository.existsById(student.getId())) return false;
     studentRepository.save(student);
     return true;
@@ -73,6 +78,7 @@ public class StudentServiceImpl implements StudentService {
   public boolean updateStudent(Long id, Student student) {
     log.trace("updateStudent - method entered");
     if (!studentRepository.existsById(id)) return false;
+    validator.validate(student);
 
     Student update = studentRepository.findById(id).get();
     update.setSerialNumber(student.getSerialNumber());

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ro.ubb.catalog.core.model.Assignment;
 import ro.ubb.catalog.core.repository.AssignmentRepository;
 import ro.ubb.catalog.core.service.sort.Sort;
+import ro.ubb.catalog.core.service.validator.AssignmentValidator;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.AbstractMap;
@@ -25,6 +26,7 @@ public class AssignmentServiceImpl implements AssignmentService {
   @Autowired private AssignmentRepository assignmentRepository;
   @Autowired private StudentService studentService;
   @Autowired private LabProblemService labProblemService;
+  @Autowired private AssignmentValidator validator;
 
   @Override
   public List<Assignment> getAllAssignments() {
@@ -50,6 +52,7 @@ public class AssignmentServiceImpl implements AssignmentService {
   @Override
   public boolean saveAssignment(Assignment assignment) {
     log.trace("saveAssignment - finished well");
+    validator.validate(assignment);
     if (assignmentRepository.existsById(assignment.getId())) return false;
     assignmentRepository.save(assignment);
     return true;
@@ -60,6 +63,7 @@ public class AssignmentServiceImpl implements AssignmentService {
   public boolean updateAssignment(Long id, Assignment assignment) {
     // todo log
     log.trace("updateAssignment - finished well");
+    validator.validate(assignment);
 
     if (!assignmentRepository.existsById(id)) return false;
 

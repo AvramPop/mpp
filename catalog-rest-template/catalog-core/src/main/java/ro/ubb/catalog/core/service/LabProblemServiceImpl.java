@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ro.ubb.catalog.core.model.LabProblem;
 import ro.ubb.catalog.core.repository.LabProblemRepository;
 import ro.ubb.catalog.core.service.sort.Sort;
+import ro.ubb.catalog.core.service.validator.AssignmentValidator;
+import ro.ubb.catalog.core.service.validator.LabProblemValidator;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class LabProblemServiceImpl implements LabProblemService {
   public static final Logger log = LoggerFactory.getLogger(LabProblemServiceImpl.class);
 
   @Autowired private LabProblemRepository labProblemRepository;
+  @Autowired private LabProblemValidator validator;
 
   @Override
   public List<LabProblem> getAllLabProblems() {
@@ -48,6 +51,8 @@ public class LabProblemServiceImpl implements LabProblemService {
   @Override
   public boolean saveLabProblem(LabProblem labProblem) {
     log.trace("saveLabProblem - method entered");
+    validator.validate(labProblem);
+
     if (labProblemRepository.existsById(labProblem.getId())) return false;
     labProblemRepository.save(labProblem);
     return true;
@@ -58,6 +63,7 @@ public class LabProblemServiceImpl implements LabProblemService {
   public boolean updateLabProblem(Long id, LabProblem labProblem) {
     log.trace("updateLabProblem - method entered");
     if (!labProblemRepository.existsById(id)) return false;
+    validator.validate(labProblem);
 
     LabProblem update = labProblemRepository.findById(id).get();
     update.setDescription(labProblem.getDescription());
