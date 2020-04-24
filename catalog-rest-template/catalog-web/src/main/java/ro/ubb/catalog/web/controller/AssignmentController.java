@@ -53,7 +53,7 @@ public class AssignmentController {
     }
   }
 
-  @RequestMapping(value = "/assignments/sorted", method = RequestMethod.GET)
+  @RequestMapping(value = "/assignments/sorted", method = RequestMethod.POST)
   AssignmentsDto getAssignmentsSorted(@RequestBody SortDto sort) {
     // todo: log
     return new AssignmentsDto(

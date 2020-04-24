@@ -37,7 +37,7 @@ public class StudentController {
         studentConverter.convertModelsToDtos(studentService.filterByGroup(groupNumber)));
   }
 
-  @RequestMapping(value = "/students/sorted", method = RequestMethod.GET)
+  @RequestMapping(value = "/students/sorted", method = RequestMethod.POST)
   StudentsDto getStudentsSorted(@RequestBody SortDto sort) {
     // todo: log
     return new StudentsDto(

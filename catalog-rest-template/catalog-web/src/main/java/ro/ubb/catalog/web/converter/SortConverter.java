@@ -8,10 +8,10 @@ import ro.ubb.catalog.web.dto.SortDto;
 public class SortConverter {
   public Sort convertDtoToSort(SortDto sortDto) {
     Sort sort =
-        new Sort(stringToDirection(sortDto.getSortData().get(0).getKey()), sortDto.getSortData().get(0).getValue());
-    for (int i = 1; i < sortDto.getSortData().size(); i++) {
+        new Sort(stringToDirection(sortDto.getKeys().get(0)), sortDto.getValues().get(0));
+    for (int i = 1; i < sortDto.getKeys().size(); i++) {
       sort.and(
-          new Sort(stringToDirection(sortDto.getSortData().get(i).getKey()), sortDto.getSortData().get(i).getValue()));
+          new Sort(stringToDirection(sortDto.getKeys().get(i)), sortDto.getValues().get(i)));
     }
     sort.setClassName(sortDto.getClassName());
     return sort;

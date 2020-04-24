@@ -4,9 +4,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import ro.ubb.catalog.core.model.LabProblem;
-import ro.ubb.catalog.core.service.sort.ClassReflectionException;
-import ro.ubb.catalog.core.service.sort.Sort;
 import ro.ubb.catalog.web.dto.*;
 
 import java.io.BufferedReader;
@@ -393,9 +390,10 @@ public class Console {
   private void printLabProblemsSorted() {
     System.out.println("Sort by criteria: <order {ASC/ DESC} column-name>. 'done' when done");
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-    var ref = new Object() {
-      SortDto sortDto = null;
-    };
+    var ref =
+        new Object() {
+          SortDto sortDto = null;
+        };
     try {
       while (true) {
         System.out.println("order: ");
@@ -414,25 +412,112 @@ public class Console {
         String columnName = input.readLine().strip();
         if (ref.sortDto == null) {
           ref.sortDto = new SortDto();
-          AbstractMap.SimpleEntry<String, String> pair = new AbstractMap.SimpleEntry<>(sortingDirection, columnName);
-          ref.sortDto.getSortData().add(pair);
+          ref.sortDto.getKeys().add(sortingDirection);
+          ref.sortDto.getValues().add(columnName);
           ref.sortDto.setClassName("LabProblem");
         } else {
-          AbstractMap.SimpleEntry<String, String> pair = new AbstractMap.SimpleEntry<>(sortingDirection, columnName);
-          ref.sortDto.getSortData().add(pair);
+          ref.sortDto.getKeys().add(sortingDirection);
+          ref.sortDto.getValues().add(columnName);
         }
       }
+      System.out.println(ref.sortDto.toString());
       CompletableFuture.supplyAsync(
-          () -> restTemplate.getForObject(baseURL + "/labs/sorted", LabProblemsDto.class, ref.sortDto))
+              () ->
+                  restTemplate.postForObject(
+                      baseURL + "/labs/sorted", ref.sortDto, LabProblemsDto.class))
           .thenAcceptAsync(result -> result.getLabProblems().forEach(System.out::println));
     } catch (IOException e) {
       System.out.println("Invalid input!");
     }
   }
 
-  private void printAssignmentsSorted() {}
+  private void printAssignmentsSorted() {
+    System.out.println("Sort by criteria: <order {ASC/ DESC} column-name>. 'done' when done");
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    var ref =
+        new Object() {
+          SortDto sortDto = null;
+        };
+    try {
+      while (true) {
+        System.out.println("order: ");
+        String order = input.readLine().strip();
+        if (order.equals("done")) break;
+        String sortingDirection;
+        if (order.equals("ASC")) {
+          sortingDirection = "ASC";
+        } else if (order.equals("DESC")) {
+          sortingDirection = "DESC";
+        } else {
+          System.err.println("wrong input!");
+          break;
+        }
+        System.out.println("column-name:");
+        String columnName = input.readLine().strip();
+        if (ref.sortDto == null) {
+          ref.sortDto = new SortDto();
+          ref.sortDto.getKeys().add(sortingDirection);
+          ref.sortDto.getValues().add(columnName);
+          ref.sortDto.setClassName("Assignment");
+        } else {
+          ref.sortDto.getKeys().add(sortingDirection);
+          ref.sortDto.getValues().add(columnName);
+        }
+      }
+      System.out.println(ref.sortDto.toString());
+      CompletableFuture.supplyAsync(
+          () ->
+              restTemplate.postForObject(
+                  baseURL + "/assignments/sorted", ref.sortDto, AssignmentsDto.class))
+          .thenAcceptAsync(result -> result.getAssignments().forEach(System.out::println));
+    } catch (IOException e) {
+      System.out.println("Invalid input!");
+    }
+  }
 
-  private void printStudentsSorted() {}
+  private void printStudentsSorted() {
+    System.out.println("Sort by criteria: <order {ASC/ DESC} column-name>. 'done' when done");
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    var ref =
+        new Object() {
+          SortDto sortDto = null;
+        };
+    try {
+      while (true) {
+        System.out.println("order: ");
+        String order = input.readLine().strip();
+        if (order.equals("done")) break;
+        String sortingDirection;
+        if (order.equals("ASC")) {
+          sortingDirection = "ASC";
+        } else if (order.equals("DESC")) {
+          sortingDirection = "DESC";
+        } else {
+          System.err.println("wrong input!");
+          break;
+        }
+        System.out.println("column-name:");
+        String columnName = input.readLine().strip();
+        if (ref.sortDto == null) {
+          ref.sortDto = new SortDto();
+          ref.sortDto.getKeys().add(sortingDirection);
+          ref.sortDto.getValues().add(columnName);
+          ref.sortDto.setClassName("Student");
+        } else {
+          ref.sortDto.getKeys().add(sortingDirection);
+          ref.sortDto.getValues().add(columnName);
+        }
+      }
+      System.out.println(ref.sortDto.toString());
+      CompletableFuture.supplyAsync(
+          () ->
+              restTemplate.postForObject(
+                  baseURL + "/students/sorted", ref.sortDto, StudentsDto.class))
+          .thenAcceptAsync(result -> result.getStudents().forEach(System.out::println));
+    } catch (IOException e) {
+      System.out.println("Invalid input!");
+    }
+  }
 
   private void printStudents() {
     CompletableFuture.supplyAsync(

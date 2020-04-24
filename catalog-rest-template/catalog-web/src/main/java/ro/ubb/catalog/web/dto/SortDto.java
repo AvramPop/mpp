@@ -11,9 +11,10 @@ import java.util.List;
 @Data
 public class SortDto {
   private String className;
-  private List<AbstractMap.SimpleEntry<String, String>> sortData;
-
+  private List<String> keys;
+  private List<String> values;
   public SortDto() {
-    sortData = new ArrayList<>();
+    keys = new ArrayList<>();
+    values = new ArrayList<>();
   }
 }
