@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {Assignment} from "../../model/assignment";
 import {catchError, map} from "rxjs/operators";
-import {Sort} from "../../model/dto";
+import {Response, Sort} from "../../model/dto";
 
 @Injectable({
   providedIn: 'root'
@@ -33,24 +33,24 @@ export class AssignmentService {
       );
   }
 
-  saveAssignment(assignment: Assignment): Observable<HttpResponse<any>> {
-    return this.http.post<HttpResponse<any>>(this.url, assignment, this.httpOptions)
+  saveAssignment(assignment: Assignment): Observable<Response> {
+    return this.http.post<Response>(this.url, assignment, this.httpOptions)
       .pipe(
-        catchError(this.handleError<HttpResponse<any>>('saveAssignment'))
+        catchError(this.handleError<Response>('saveAssignment'))
       );
   }
 
-  updateAssignment(assignment: Assignment): Observable<HttpResponse<any>> {
-    return this.http.put<HttpResponse<any>>(this.url + "/" + assignment.id, assignment, this.httpOptions)
+  updateAssignment(assignment: Assignment): Observable<Response> {
+    return this.http.put<Response>(this.url + "/" + assignment.id, assignment, this.httpOptions)
       .pipe(
-        catchError(this.handleError<HttpResponse<any>>('updateAssignment'))
+        catchError(this.handleError<Response>('updateAssignment'))
       );
   }
 
-  deleteAssignment(id: number): Observable<HttpResponse<any>> {
-    return this.http.delete<HttpResponse<any>>(this.url + "/" + id, this.httpOptions)
+  deleteAssignment(id: number): Observable<Response> {
+    return this.http.delete<Response>(this.url + "/" + id, this.httpOptions)
       .pipe(
-        catchError(this.handleError<HttpResponse<any>>('updateAssignment'))
+        catchError(this.handleError<Response>('updateAssignment'))
       );
   }
 

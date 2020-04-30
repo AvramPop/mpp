@@ -26,6 +26,7 @@ import { AssignmentComponent } from './components/assignment/assignment.componen
 import { LabProblemComponent } from './components/labproblem/lab-problem.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
 import {MatTableModule} from "@angular/material/table";
+import { SortComponent } from './components/sort/sort.component';
 
 
 @NgModule({
@@ -66,6 +67,7 @@ import {MatTableModule} from "@angular/material/table";
     AssignmentComponent,
     LabProblemComponent,
     StatisticsComponent,
+    SortComponent,
   ],
   bootstrap: [AppComponent]
 })

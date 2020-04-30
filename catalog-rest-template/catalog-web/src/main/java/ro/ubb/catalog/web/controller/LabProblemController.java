@@ -3,15 +3,16 @@ package ro.ubb.catalog.web.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.ubb.catalog.core.model.LabProblem;
 import ro.ubb.catalog.core.service.LabProblemService;
 import ro.ubb.catalog.core.service.sort.Sort;
 import ro.ubb.catalog.web.converter.LabProblemConverter;
 import ro.ubb.catalog.web.converter.SortConverter;
-import ro.ubb.catalog.web.dto.*;
+import ro.ubb.catalog.web.dto.LabProblemDto;
+import ro.ubb.catalog.web.dto.LabProblemsDto;
+import ro.ubb.catalog.web.dto.ResponseDto;
+import ro.ubb.catalog.web.dto.SortDto;
 
 import java.util.List;
 
@@ -43,9 +44,13 @@ public class LabProblemController {
   @RequestMapping(value = "/labs", method = RequestMethod.POST)
   ResponseDto saveLabProblem(@RequestBody LabProblemDto labProblemDto) {
     log.trace("saveLabProblem call - params = LabProblemDto:{}", labProblemDto);
-    if (labProblemService.saveLabProblem(labProblemConverter.convertDtoToModel(labProblemDto))) {
-      return new ResponseDto(200);
-    } else {
+    try {
+      if (labProblemService.saveLabProblem(labProblemConverter.convertDtoToModel(labProblemDto))) {
+        return new ResponseDto(200);
+      } else {
+        return new ResponseDto(404);
+      }
+    } catch (Exception e) {
       return new ResponseDto(404);
     }
   }
@@ -56,18 +61,20 @@ public class LabProblemController {
     convertedSort.setClassName("LabProblem");
     List<LabProblem> problems = labProblemService.getAllLabProblemsSorted(convertedSort);
     log.trace("getLabProblemsSorted call - params = SortDto:{}", sortDto);
-    return new LabProblemsDto(
-        labProblemConverter.convertModelsToDtos(problems));
+    return new LabProblemsDto(labProblemConverter.convertModelsToDtos(problems));
   }
 
   @RequestMapping(value = "/labs/{id}", method = RequestMethod.PUT)
-  ResponseDto updateLabProblem(
-      @PathVariable Long id, @RequestBody LabProblemDto labProblemDto) {
+  ResponseDto updateLabProblem(@PathVariable Long id, @RequestBody LabProblemDto labProblemDto) {
     log.trace("updateLabProblem call - params = labProblemDto:{}", labProblemDto);
-    if (labProblemService.updateLabProblem(
-        id, labProblemConverter.convertDtoToModel(labProblemDto))) {
-      return new ResponseDto(200);
-    } else {
+    try {
+      if (labProblemService.updateLabProblem(
+          id, labProblemConverter.convertDtoToModel(labProblemDto))) {
+        return new ResponseDto(200);
+      } else {
+        return new ResponseDto(404);
+      }
+    } catch (Exception e) {
       return new ResponseDto(404);
     }
   }

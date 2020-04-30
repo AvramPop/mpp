@@ -1,4 +1,4 @@
-div {
+.main-div {
   margin-left: 10px;
   margin-top: 1%;
   width: 100%;
@@ -19,23 +19,9 @@ table {
   width: 100%;
 }
 
-.decorationText {
-  width: 30%;
-  margin-left: 43%;
-  margin-top: 20%;
-  color: #1a8b04;
+td {
+  padding-right: 8px;
 }
-
-[hidden] {
-  display: none !important;
-}
-
-h1 {
-  margin: auto;
-  margin-top: 2%;
-  width: 20%;
-}
-
 input {
   margin-left: 8px;
 }
@@ -46,17 +32,6 @@ form {
   margin: auto;
 }
 
-.registerButton {
-  width: 20%;
-  margin-left: 40%;
-  margin-bottom: 2%;
-}
-
-.homeButton {
-  width: 20%;
-  margin-left: 1%;
-  margin-top: 1%;
-}
 
 mat-form-field {
   margin: auto;

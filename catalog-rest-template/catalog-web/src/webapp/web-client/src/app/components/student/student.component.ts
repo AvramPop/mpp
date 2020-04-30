@@ -23,6 +23,10 @@ export class StudentComponent implements OnInit {
   badAdd: boolean = false;
   badDelete: boolean = false;
   badUpdate: boolean = false;
+  groupNumberToFilterBy: number;
+  badFilterInput: boolean = false;
+  filtered: boolean = false;
+  studentsFiltered: Student[];
   constructor(private studentService: StudentService) { }
 
   ngOnInit() {
@@ -48,19 +52,68 @@ export class StudentComponent implements OnInit {
     } else {
       this.badAdd = true;
     }
-
   }
 
   deleteStudent() {
-    window.location.reload();
+    if(this.validDeleteData()) {
+      this.studentService.deleteStudent(this.idToDelete)
+        .subscribe(response => {
+          if (response.statusCode == 404) {
+            this.badDelete = true;
+          } else {
+            this.getStudents();
+            this.badDelete = false;
+          }
+        })
+    } else {
+      this.badDelete = true;
+    }
   }
 
   updateStudent() {
-    window.location.reload();
+    if(this.validUpdateData()) {
+      this.studentService.updateStudent(new Student(this.idToUpdate, this.serialNumberToUpdate, this.nameToUpdate, this.groupToUpdate))
+        .subscribe(response => {
+          if (response.statusCode == 404) {
+            this.badUpdate = true;
+          } else {
+            this.getStudents();
+            this.badUpdate = false;
+          }
+        })
+    } else {
+      this.badUpdate = true;
+    }
   }
 
   private validAddData():boolean {
     return !isNaN(this.idToAdd) && !isNaN(this.groupToAdd);
+  }
 
+  private validUpdateData():boolean {
+    return !isNaN(this.idToUpdate) && !isNaN(this.groupToUpdate);
+  }
+
+  private validDeleteData():boolean {
+    return !isNaN(this.idToDelete);
+  }
+
+  private validFilterData():boolean {
+    return !isNaN(this.groupNumberToFilterBy);
+  }
+
+  filterStudents() {
+    if(this.validFilterData()) {
+      this.studentService.getStudentsByGroup(this.groupNumberToFilterBy).subscribe(
+        result => {
+          this.badFilterInput = false;
+          this.filtered = true;
+          this.studentsFiltered = result;
+        }
+      )
+    } else {
+      this.badFilterInput = true;
+      this.filtered = false;
+    }
   }
 }

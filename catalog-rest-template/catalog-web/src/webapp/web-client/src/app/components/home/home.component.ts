@@ -29,5 +29,9 @@ export class HomeComponent implements OnInit {
   redirectToStats() {
     this.router.navigateByUrl("/stats");
   }
+
+  redirectToSort() {
+    this.router.navigateByUrl("/sort");
+  }
 }
 

@@ -1,1 +1,128 @@
-<p>labproblem works!</p>
+<div class="main-div">
+  <mat-card>
+
+    <h1 class="mat-h1">Lab Problems:</h1>
+
+    <table mat-table [dataSource]="labProblems" class="mat-elevation-z8">
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> Id</th>
+        <td mat-cell *matCellDef="let labProblem"> {{labProblem.id}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Description</th>
+        <td mat-cell *matCellDef="let labProblem"> {{labProblem.description}} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="problemNumber">
+        <th mat-header-cell *matHeaderCellDef> Problem Number</th>
+        <td mat-cell *matCellDef="let labProblem"> {{labProblem.problemNumber}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+
+    <form class="example-form" name="add-form">
+      <h2 class="mat-h2">Add a new labProblem</h2>
+      <mat-form-field class="example-full-width">
+        <mat-label>Id</mat-label>
+        <input matInput placeholder="Ex. 56" id="add-id" [(ngModel)]="idToAdd" name="add-id">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Description</mat-label>
+        <input matInput placeholder="Ex. Some very interesting problem description" id="add-name" [(ngModel)]="descriptionToAdd" name="add-description">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Problem number</mat-label>
+        <input matInput placeholder="Ex. 39" id="add-problemNumber" [(ngModel)]="problemNumberToAdd" name="add-problem-number">
+      </mat-form-field>
+
+      <button (click)="addLabProblem()" color="primary" class="labProblem-button" mat-raised-button>
+        Add!
+      </button>
+      <mat-error *ngIf="badAdd">Input data is invalid!</mat-error>
+    </form>
+
+    <form class="example-form" name="delete-form">
+      <h2 class="mat-h2">Delete a Lab Problem</h2>
+      <mat-form-field class="example-full-width">
+        <mat-label>Id</mat-label>
+        <input matInput placeholder="Ex. 56" id="delete-id" [(ngModel)]="idToDelete" name="delete-id">
+      </mat-form-field>
+      <button (click)="deleteLabProblem()" color="primary" class="labProblem-button" mat-raised-button>
+        Delete!
+      </button>
+      <mat-error *ngIf="badDelete">Input data is invalid!</mat-error>
+
+    </form>
+
+    <form class="example-form" name="update-form">
+      <h2 class="mat-h2">Update a Lab Problem</h2>
+      <mat-form-field class="example-full-width">
+        <mat-label>Id</mat-label>
+        <input matInput placeholder="Ex. 56" id="update-id" [(ngModel)]="idToUpdate" name="update-id">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Description</mat-label>
+        <input matInput placeholder="Ex. Henry" id="update-name" [(ngModel)]="descriptionToUpdate" name="update-description">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Problem Number</mat-label>
+        <input matInput placeholder="Ex. 926" id="update-problemNumber" [(ngModel)]="problemNumberToUpdate" name="update-problem-number">
+      </mat-form-field>
+
+      <button (click)="updateLabProblem()" color="primary" class="labProblem-button" mat-raised-button>
+        Update!
+      </button>
+      <mat-error *ngIf="badUpdate">Input data is invalid!</mat-error>
+
+    </form>
+
+    <form class="example-form" name="delete-form">
+      <h2 class="mat-h2">Filter lab problems by problem number</h2>
+      <mat-form-field class="example-full-width">
+        <mat-label>Problem Number</mat-label>
+        <input matInput placeholder="Ex. 56" id="problem-number-to-filter-by" [(ngModel)]="problemNumberToFilterBy" name="problem-number-to-filter-by">
+      </mat-form-field>
+      <button (click)="filterLabProblems()" color="primary" class="labProblem-button" mat-raised-button>
+        Filter!
+      </button>
+      <mat-error *ngIf="badFilterInput">Input data is invalid!</mat-error>
+
+    </form>
+    <table *ngIf="filtered" mat-table [dataSource]="labProblemsFiltered" class="mat-elevation-z8">
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> Id</th>
+        <td mat-cell *matCellDef="let labProblem"> {{labProblem.id}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Description</th>
+        <td mat-cell *matCellDef="let labProblem"> {{labProblem.description}} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="problemNumber">
+        <th mat-header-cell *matHeaderCellDef> Problem Number</th>
+        <td mat-cell *matCellDef="let labProblem"> {{labProblem.problemNumber}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-card>
+
+</div>

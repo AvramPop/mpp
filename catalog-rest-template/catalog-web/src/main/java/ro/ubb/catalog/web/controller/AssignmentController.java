@@ -32,21 +32,28 @@ public class AssignmentController {
   @RequestMapping(value = "/assignments", method = RequestMethod.POST)
   ResponseDto saveAssignment(@RequestBody AssignmentDto assignmentDto) {
     log.trace("saveAssignment call - params = assignmentDto:{}", assignmentDto);
-    if (assignmentService.saveAssignment(assignmentConverter.convertDtoToModel(assignmentDto))) {
-      return new ResponseDto(200);
-    } else {
+    try {
+      if (assignmentService.saveAssignment(assignmentConverter.convertDtoToModel(assignmentDto))) {
+        return new ResponseDto(200);
+      } else {
+        return new ResponseDto(404);
+      }
+    } catch (Exception e) {
       return new ResponseDto(404);
     }
   }
 
   @RequestMapping(value = "/assignments/{id}", method = RequestMethod.PUT)
-  ResponseDto updateAssignment(
-      @PathVariable Long id, @RequestBody AssignmentDto assignmentDto) {
+  ResponseDto updateAssignment(@PathVariable Long id, @RequestBody AssignmentDto assignmentDto) {
     log.trace("updateAssignment call - params = assignmentDto:{}", assignmentDto);
-    if (assignmentService.updateAssignment(
-        id, assignmentConverter.convertDtoToModel(assignmentDto))) {
-      return new ResponseDto(200);
-    } else {
+    try {
+      if (assignmentService.updateAssignment(
+          id, assignmentConverter.convertDtoToModel(assignmentDto))) {
+        return new ResponseDto(200);
+      } else {
+        return new ResponseDto(404);
+      }
+    } catch (Exception e) {
       return new ResponseDto(404);
     }
   }
@@ -63,10 +70,13 @@ public class AssignmentController {
   ResponseDto deleteAssignment(@PathVariable Long id) {
     // todo:log
     log.trace("deleteAssignment call - params = id:{}", id);
-
-    if (assignmentService.deleteAssignment(id)) {
-      return new ResponseDto(200);
-    } else {
+    try {
+      if (assignmentService.deleteAssignment(id)) {
+        return new ResponseDto(200);
+      } else {
+        return new ResponseDto(404);
+      }
+    } catch (Exception e) {
       return new ResponseDto(404);
     }
   }
@@ -98,10 +108,13 @@ public class AssignmentController {
   @RequestMapping(value = "/labs/{id}", method = RequestMethod.DELETE)
   ResponseDto deleteLabProblem(@PathVariable Long id) {
     log.trace("deleteLabProblem call - params = id:{}", id);
-
-    if (assignmentService.deleteLabProblem(id)) {
-      return new ResponseDto(200);
-    } else {
+    try {
+      if (assignmentService.deleteLabProblem(id)) {
+        return new ResponseDto(200);
+      } else {
+        return new ResponseDto(404);
+      }
+    } catch (Exception e) {
       return new ResponseDto(404);
     }
   }
@@ -109,10 +122,13 @@ public class AssignmentController {
   @RequestMapping(value = "/students/{id}", method = RequestMethod.DELETE)
   ResponseDto deleteStudent(@PathVariable Long id) {
     log.trace("deleteStudent call - params = id:{}", id);
-
-    if (assignmentService.deleteStudent(id)) {
-      return new ResponseDto(200);
-    } else {
+    try {
+      if (assignmentService.deleteStudent(id)) {
+        return new ResponseDto(200);
+      } else {
+        return new ResponseDto(404);
+      }
+    } catch (Exception e) {
       return new ResponseDto(404);
     }
   }

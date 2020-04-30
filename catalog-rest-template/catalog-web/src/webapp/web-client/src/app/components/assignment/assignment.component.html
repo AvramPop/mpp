@@ -1,1 +1,110 @@
-<p>assignment works!</p>
+<div class="main-div">
+  <mat-card>
+
+    <h1 class="mat-h1">Assignments:</h1>
+
+    <table mat-table [dataSource]="assignments" class="mat-elevation-z8">
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> Id</th>
+        <td mat-cell *matCellDef="let assignment"> {{assignment.id}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="studentId">
+        <th mat-header-cell *matHeaderCellDef> Student Id</th>
+        <td mat-cell *matCellDef="let assignment"> {{assignment.studentId}} </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="labProblemId">
+        <th mat-header-cell *matHeaderCellDef> Lab Problem Id</th>
+        <td mat-cell *matCellDef="let assignment"> {{assignment.labProblemId}} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="grade">
+        <th mat-header-cell *matHeaderCellDef> Grade</th>
+        <td mat-cell *matCellDef="let assignment"> {{assignment.grade}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+
+    <form class="example-form" name="add-form">
+      <h2 class="mat-h2">Add a new assignment</h2>
+      <mat-form-field class="example-full-width">
+        <mat-label>Id</mat-label>
+        <input matInput placeholder="Ex. 56" id="add-id" [(ngModel)]="idToAdd" name="add-id">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Student Id</mat-label>
+        <input matInput placeholder="Ex. 11" id="add-name" [(ngModel)]="studentIdToAdd" name="add-student-id">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Lab Problem Id</mat-label>
+        <input matInput placeholder="Ex. 6" id="add-problem-id" [(ngModel)]="labProblemIdToAdd"
+               name="add-lab-problem-id">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Grade</mat-label>
+        <input matInput placeholder="Ex. 9" id="add-group" [(ngModel)]="gradeToAdd" name="add-grade">
+      </mat-form-field>
+
+      <button (click)="addAssignment()" color="primary" class="assignment-button" mat-raised-button>
+        Add!
+      </button>
+      <mat-error *ngIf="badAdd">Input data is invalid!</mat-error>
+    </form>
+
+    <form class="example-form" name="delete-form">
+      <h2 class="mat-h2">Delete an assignment</h2>
+      <mat-form-field class="example-full-width">
+        <mat-label>Id</mat-label>
+        <input matInput placeholder="Ex. 56" id="delete-id" [(ngModel)]="idToDelete" name="delete-id">
+      </mat-form-field>
+      <button (click)="deleteAssignment()" color="primary" class="assignment-button" mat-raised-button>
+        Delete!
+      </button>
+      <mat-error *ngIf="badDelete">Input data is invalid!</mat-error>
+
+    </form>
+
+    <form class="example-form" name="update-form">
+      <h2 class="mat-h2">Update an assignment</h2>
+      <mat-form-field class="example-full-width">
+        <mat-label>Id</mat-label>
+        <input matInput placeholder="Ex. 56" id="update-id" [(ngModel)]="idToUpdate" name="update-id">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Student Id</mat-label>
+        <input matInput placeholder="Ex. 11" id="update-name" [(ngModel)]="studentIdToUpdate" name="update-student-id">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Lab Problem Id</mat-label>
+        <input matInput placeholder="Ex. 6" id="update-problem-id" [(ngModel)]="labProblemIdToUpdate"
+               name="update-lab-problem-id">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Grade</mat-label>
+        <input matInput placeholder="Ex. 9" id="update-group" [(ngModel)]="gradeToUpdate" name="update-grade">
+      </mat-form-field>
+
+      <button (click)="updateAssignment()" color="primary" class="assignment-button" mat-raised-button>
+        Update!
+      </button>
+      <mat-error *ngIf="badUpdate">Input data is invalid!</mat-error>
+
+    </form>
+  </mat-card>
+
+</div>

@@ -20,13 +20,19 @@ export class StudentService {
   }
 
   getStudentsByGroup(groupNumber: number): Observable<Student[]> {
-    return this.http.get<Student[]>(this.url + "/bynumber/" + groupNumber, this.httpOptions)
+    return this.http.get<Student[]>(this.url + "/group/" + groupNumber, this.httpOptions)
       .pipe(
         map(result => result['students']),
         catchError(this.handleError<Student[]>('getStudentsByGroupNUmber', []))
       );
   }
-
+  getStudentsSorted(sort: Sort): Observable<Student[]> {
+    return this.http.post<Student[]>(this.url + "/sorted", sort, this.httpOptions)
+      .pipe(
+        map(result => result['students']),
+        catchError(this.handleError<Student[]>('getStudentsSorted', []))
+      );
+  }
   getStudents(): Observable<Student[]> {
     return this.http.get<Student[]>(this.url, this.httpOptions)
       .pipe(
@@ -39,7 +45,6 @@ export class StudentService {
   saveStudent(student: Student): Observable<Response> {
     return this.http.post<Response>(this.url, student, this.httpOptions)
       .pipe(
-        tap(result => console.log("asta e exceptia minunata" + result["statusCode"])),
         catchError(this.handleError<Response>('saveStudent'))
       );
   }
@@ -62,14 +67,6 @@ export class StudentService {
     return this.http.delete<Response>(this.url + "/" + id, this.httpOptions)
       .pipe(
         catchError(this.handleError<Response>('deleteStudent'))
-      );
-  }
-
-  getStudentsSorted(sort: Sort): Observable<Student[]> {
-    return this.http.post<Student[]>(this.url + "/sorted", sort, this.httpOptions)
-      .pipe(
-        map(result => result['Students']),
-        catchError(this.handleError<Student[]>('getStudentsSorted', []))
       );
   }
 
