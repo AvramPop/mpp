@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ro.ubb.catalog.core.service.StudentService;
 import ro.ubb.catalog.web.converter.SortConverter;
 import ro.ubb.catalog.web.converter.StudentConverter;
+import ro.ubb.catalog.web.dto.ResponseDto;
 import ro.ubb.catalog.web.dto.SortDto;
 import ro.ubb.catalog.web.dto.StudentDto;
 import ro.ubb.catalog.web.dto.StudentsDto;
@@ -46,23 +47,30 @@ public class StudentController {
   }
 
   @RequestMapping(value = "/students", method = RequestMethod.POST)
-  ResponseEntity<?> saveStudent(@RequestBody StudentDto studentDto) {
+  ResponseDto saveStudent(@RequestBody StudentDto studentDto) {
     log.trace("saveStudent call - params = new Student:{}", studentDto);
-    if (studentService.saveStudent(studentConverter.convertDtoToModel(studentDto))) {
-      return new ResponseEntity<>(HttpStatus.OK);
-    } else {
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    try{
+      if (studentService.saveStudent(studentConverter.convertDtoToModel(studentDto))) {
+        System.out.println("200");
+        return new ResponseDto(200);
+      } else {
+        System.out.println("primul 404");
+        return new ResponseDto(404);
+      }
+    } catch (Exception e){
+      System.out.println("al doilea 404");
+      return new ResponseDto(404);
     }
   }
 
   @RequestMapping(value = "/students/{id}", method = RequestMethod.PUT)
-  ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody StudentDto studentDto) {
+  ResponseDto updateStudent(@PathVariable Long id, @RequestBody StudentDto studentDto) {
     log.trace("updateStudent call - params = up Student:{}", studentDto);
 
     if (studentService.updateStudent(id, studentConverter.convertDtoToModel(studentDto))) {
-      return new ResponseEntity<>(HttpStatus.OK);
+      return new ResponseDto(200);
     } else {
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+      return new ResponseDto(404);
     }
   }
 

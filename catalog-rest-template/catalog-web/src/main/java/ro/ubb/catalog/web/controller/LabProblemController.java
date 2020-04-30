@@ -11,10 +11,7 @@ import ro.ubb.catalog.core.service.LabProblemService;
 import ro.ubb.catalog.core.service.sort.Sort;
 import ro.ubb.catalog.web.converter.LabProblemConverter;
 import ro.ubb.catalog.web.converter.SortConverter;
-import ro.ubb.catalog.web.dto.DoubleDto;
-import ro.ubb.catalog.web.dto.LabProblemDto;
-import ro.ubb.catalog.web.dto.LabProblemsDto;
-import ro.ubb.catalog.web.dto.SortDto;
+import ro.ubb.catalog.web.dto.*;
 
 import java.util.List;
 
@@ -44,12 +41,12 @@ public class LabProblemController {
   }
 
   @RequestMapping(value = "/labs", method = RequestMethod.POST)
-  ResponseEntity<?> saveLabProblem(@RequestBody LabProblemDto labProblemDto) {
+  ResponseDto saveLabProblem(@RequestBody LabProblemDto labProblemDto) {
     log.trace("saveLabProblem call - params = LabProblemDto:{}", labProblemDto);
     if (labProblemService.saveLabProblem(labProblemConverter.convertDtoToModel(labProblemDto))) {
-      return new ResponseEntity<>(HttpStatus.OK);
+      return new ResponseDto(200);
     } else {
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+      return new ResponseDto(404);
     }
   }
 
@@ -64,14 +61,14 @@ public class LabProblemController {
   }
 
   @RequestMapping(value = "/labs/{id}", method = RequestMethod.PUT)
-  ResponseEntity<?> updateLabProblem(
+  ResponseDto updateLabProblem(
       @PathVariable Long id, @RequestBody LabProblemDto labProblemDto) {
     log.trace("updateLabProblem call - params = labProblemDto:{}", labProblemDto);
     if (labProblemService.updateLabProblem(
         id, labProblemConverter.convertDtoToModel(labProblemDto))) {
-      return new ResponseEntity<>(HttpStatus.OK);
+      return new ResponseDto(200);
     } else {
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+      return new ResponseDto(404);
     }
   }
 

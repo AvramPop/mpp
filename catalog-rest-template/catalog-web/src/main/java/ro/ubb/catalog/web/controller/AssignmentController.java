@@ -3,8 +3,6 @@ package ro.ubb.catalog.web.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.ubb.catalog.core.service.AssignmentService;
 import ro.ubb.catalog.web.converter.AssignmentConverter;
@@ -32,24 +30,24 @@ public class AssignmentController {
   }
 
   @RequestMapping(value = "/assignments", method = RequestMethod.POST)
-  ResponseEntity<?> saveAssignment(@RequestBody AssignmentDto assignmentDto) {
+  ResponseDto saveAssignment(@RequestBody AssignmentDto assignmentDto) {
     log.trace("saveAssignment call - params = assignmentDto:{}", assignmentDto);
     if (assignmentService.saveAssignment(assignmentConverter.convertDtoToModel(assignmentDto))) {
-      return new ResponseEntity<>(HttpStatus.OK);
+      return new ResponseDto(200);
     } else {
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+      return new ResponseDto(404);
     }
   }
 
   @RequestMapping(value = "/assignments/{id}", method = RequestMethod.PUT)
-  ResponseEntity<?> updateAssignment(
+  ResponseDto updateAssignment(
       @PathVariable Long id, @RequestBody AssignmentDto assignmentDto) {
     log.trace("updateAssignment call - params = assignmentDto:{}", assignmentDto);
     if (assignmentService.updateAssignment(
         id, assignmentConverter.convertDtoToModel(assignmentDto))) {
-      return new ResponseEntity<>(HttpStatus.OK);
+      return new ResponseDto(200);
     } else {
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+      return new ResponseDto(404);
     }
   }
 
@@ -62,14 +60,14 @@ public class AssignmentController {
   }
 
   @RequestMapping(value = "/assignments/{id}", method = RequestMethod.DELETE)
-  ResponseEntity<?> deleteAssignment(@PathVariable Long id) {
+  ResponseDto deleteAssignment(@PathVariable Long id) {
     // todo:log
     log.trace("deleteAssignment call - params = id:{}", id);
 
     if (assignmentService.deleteAssignment(id)) {
-      return new ResponseEntity<>(HttpStatus.OK);
+      return new ResponseDto(200);
     } else {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      return new ResponseDto(404);
     }
   }
 
@@ -98,24 +96,24 @@ public class AssignmentController {
   }
 
   @RequestMapping(value = "/labs/{id}", method = RequestMethod.DELETE)
-  ResponseEntity<?> deleteLabProblem(@PathVariable Long id) {
+  ResponseDto deleteLabProblem(@PathVariable Long id) {
     log.trace("deleteLabProblem call - params = id:{}", id);
 
     if (assignmentService.deleteLabProblem(id)) {
-      return new ResponseEntity<>(HttpStatus.OK);
+      return new ResponseDto(200);
     } else {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      return new ResponseDto(404);
     }
   }
 
   @RequestMapping(value = "/students/{id}", method = RequestMethod.DELETE)
-  ResponseEntity<?> deleteStudent(@PathVariable Long id) {
+  ResponseDto deleteStudent(@PathVariable Long id) {
     log.trace("deleteStudent call - params = id:{}", id);
 
     if (assignmentService.deleteStudent(id)) {
-      return new ResponseEntity<>(HttpStatus.OK);
+      return new ResponseDto(200);
     } else {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      return new ResponseDto(404);
     }
   }
 }

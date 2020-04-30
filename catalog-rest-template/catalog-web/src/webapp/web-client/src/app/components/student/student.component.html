@@ -1,0 +1,103 @@
+<div class="main-div">
+  <mat-card>
+
+    <h1 class="mat-h1">Students:</h1>
+
+    <table mat-table [dataSource]="students" class="mat-elevation-z8">
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> Id. </th>
+        <td mat-cell *matCellDef="let student"> {{student.id}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let student"> {{student.name}} </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="serialNumber">
+        <th mat-header-cell *matHeaderCellDef> Serial Number </th>
+        <td mat-cell *matCellDef="let student"> {{student.serialNumber}} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="group">
+        <th mat-header-cell *matHeaderCellDef> Group </th>
+        <td mat-cell *matCellDef="let student"> {{student.studentGroup}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+
+    <form class="example-form" name="add-form">
+      <h2 class="mat-h2">Add a new student</h2>
+      <mat-form-field class="example-full-width">
+        <mat-label>Id</mat-label>
+        <input matInput placeholder="Ex. 56" id="add-id" [(ngModel)]="idToAdd" name="add-id">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Ex. Henry" id="add-name" [(ngModel)]="nameToAdd" name="add-name">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Serial number</mat-label>
+        <input matInput placeholder="Ex. MRK657" id="add-serial-number" [(ngModel)]="serialNumberToAdd" name="add-serial-number">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Group</mat-label>
+        <input matInput placeholder="Ex. 926" id="add-group" [(ngModel)]="groupToAdd" name="add-group">
+      </mat-form-field>
+
+      <button (click)="addStudent()" color="primary" class="student-button" mat-raised-button>
+        Add!
+      </button>
+      <mat-error *ngIf="badAdd">Input data is invalid!</mat-error>
+    </form>
+    <form class="example-form">
+      <h2 class="mat-h2">Delete a student</h2>
+      <mat-form-field class="example-full-width">
+        <mat-label>Id</mat-label>
+        <input matInput placeholder="Ex. 56" id="delete-id" [(ngModel)]="idToDelete" name="delete-id">
+      </mat-form-field>
+      <button (click)="deleteStudent()" color="primary" class="student-button" mat-raised-button>
+        Delete!
+      </button>
+    </form>
+
+    <form class="example-form">
+      <h2 class="mat-h2">Update a student</h2>
+      <mat-form-field class="example-full-width">
+        <mat-label>Id</mat-label>
+        <input matInput placeholder="Ex. 56" id="update-id" [(ngModel)]="idToUpdate" name="update-id">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Ex. Henry" id="update-name" [(ngModel)]="nameToUpdate" name="update-name">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Serial number</mat-label>
+        <input matInput placeholder="Ex. MRK657" id="update-serial-number" [(ngModel)]="serialNumberToUpdate" name="update-serial-number">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Group</mat-label>
+        <input matInput placeholder="Ex. 926" id="update-group" [(ngModel)]="groupToUpdate" name="update-group">
+      </mat-form-field>
+
+      <button (click)="updateStudent()" color="primary" class="student-button" mat-raised-button>
+        Update!
+      </button>
+    </form>
+  </mat-card>
+
+</div>
