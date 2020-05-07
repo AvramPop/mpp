@@ -7,12 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import ro.ubb.catalog.core.model.LabProblem;
 import ro.ubb.catalog.core.service.LabProblemService;
 import ro.ubb.catalog.core.service.sort.Sort;
+import ro.ubb.catalog.web.converter.ConversionFactory;
 import ro.ubb.catalog.web.converter.LabProblemConverter;
 import ro.ubb.catalog.web.converter.SortConverter;
-import ro.ubb.catalog.web.dto.LabProblemDto;
-import ro.ubb.catalog.web.dto.LabProblemsDto;
-import ro.ubb.catalog.web.dto.ResponseDto;
-import ro.ubb.catalog.web.dto.SortDto;
+import ro.ubb.catalog.web.dto.*;
 
 import java.util.List;
 
@@ -21,6 +19,7 @@ public class LabProblemController {
   public static final Logger log = LoggerFactory.getLogger(LabProblemController.class);
 
   @Autowired private LabProblemService labProblemService;
+  @Autowired private ConversionFactory conversionFactory;
 
   @Autowired private LabProblemConverter labProblemConverter;
 
@@ -31,6 +30,12 @@ public class LabProblemController {
     log.trace("getLabProblems call - params");
     return new LabProblemsDto(
         labProblemConverter.convertModelsToDtos(labProblemService.getAllLabProblems()));
+  }
+
+  @RequestMapping(value = "/labs/page/{pageNumber}/{perPage}", method = RequestMethod.GET)
+  PagedLabProblemsDto getLabProblems(@PathVariable Integer pageNumber, @PathVariable Integer perPage) {
+    log.trace("getLabProblems call - params:");
+    return conversionFactory.convertPagedLabProblemsToDtos(labProblemService.getAllLabProblems(pageNumber, perPage));
   }
 
   @RequestMapping(value = "/labs/bynumber/{problemNumber}", method = RequestMethod.GET)

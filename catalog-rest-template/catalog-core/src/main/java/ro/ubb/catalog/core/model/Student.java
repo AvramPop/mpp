@@ -2,6 +2,7 @@ package ro.ubb.catalog.core.model;
 
 import lombok.*;
 import org.hibernate.annotations.Proxy;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.Entity;
 
@@ -15,7 +16,10 @@ import javax.persistence.Entity;
 @Builder
 @Proxy(lazy = false)
 public class Student extends BaseEntity<Long> {
+  @NonNull
   private String serialNumber;
+  @NonNull
   private String name;
-  private int groupNumber;
+  @NonNull
+  private Integer groupNumber;
 }

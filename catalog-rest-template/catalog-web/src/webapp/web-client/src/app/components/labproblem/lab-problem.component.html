@@ -26,6 +26,12 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    <mat-paginator [length]="totalNumberOfLabProblems"
+                   [pageSize]="3"
+                   [pageSizeOptions]="[]"
+                   [pageIndex]="currentPage"
+                   (page)="getLabProblems($event)">
+    </mat-paginator>
 
 
     <form class="example-form" name="add-form">

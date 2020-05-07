@@ -27,34 +27,36 @@ import { LabProblemComponent } from './components/labproblem/lab-problem.compone
 import { StatisticsComponent } from './components/statistics/statistics.component';
 import {MatTableModule} from "@angular/material/table";
 import { SortComponent } from './components/sort/sort.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpClientModule,
-    AppRoutingModule,
-    MatButtonModule,
-    BrowserAnimationsModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatIconModule,
-    MatListModule,
-    MatSnackBarModule,
-    AmazingTimePickerModule,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatNativeDateModule,
-    NgxMaterialTimepickerModule,
-    MatSliderModule,
-    MatSlideToggleModule,
-    MatCheckboxModule,
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpClientModule,
+        AppRoutingModule,
+        MatButtonModule,
+        BrowserAnimationsModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatIconModule,
+        MatListModule,
+        MatSnackBarModule,
+        AmazingTimePickerModule,
+        ReactiveFormsModule,
+        MatCardModule,
+        MatNativeDateModule,
+        NgxMaterialTimepickerModule,
+        MatSliderModule,
+        MatSlideToggleModule,
+        MatCheckboxModule,
 
-    MatFormFieldModule,
-    MatSelectModule,
-    MatTableModule
-  ],
+        MatFormFieldModule,
+        MatSelectModule,
+        MatTableModule,
+        MatPaginatorModule
+    ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}},
     {provide: MAT_DATE_LOCALE, useValue: 'ro-RO'}

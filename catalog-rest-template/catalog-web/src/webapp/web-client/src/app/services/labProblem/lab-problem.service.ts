@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {LabProblem} from "../../model/labProblem";
-import {catchError, map} from "rxjs/operators";
+import {catchError, map, tap} from "rxjs/operators";
 import {Response, Sort} from "../../model/dto";
 import {Student} from "../../model/student";
 
@@ -32,6 +32,14 @@ export class LabProblemService {
       .pipe(
         map(result => result['labProblems']),
         catchError(this.handleError<LabProblem[]>('getLabProblems', []))
+      );
+  }
+
+  getLabProblemsPaged(pageIndex: number): Observable<any> {
+    return this.http.get<any>(this.url + "/page/" + pageIndex + "/3", this.httpOptions)
+      .pipe(
+        tap(result => console.log(result)),
+        catchError(this.handleError<any>('getLabProblemsPaged', []))
       );
   }
 

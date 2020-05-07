@@ -33,6 +33,13 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
+    <mat-paginator [length]="totalNumberOfAssignments"
+                   [pageSize]="3"
+                   [pageSizeOptions]="[]"
+                   [pageIndex]="currentPage"
+                   (page)="getAssignments($event)">
+    </mat-paginator>
+
 
     <form class="example-form" name="add-form">
       <h2 class="mat-h2">Add a new assignment</h2>

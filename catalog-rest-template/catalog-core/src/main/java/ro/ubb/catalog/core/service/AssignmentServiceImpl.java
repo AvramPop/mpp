@@ -4,9 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.ubb.catalog.core.model.Assignment;
+import ro.ubb.catalog.core.model.LabProblem;
 import ro.ubb.catalog.core.repository.AssignmentRepository;
 import ro.ubb.catalog.core.service.sort.Sort;
 import ro.ubb.catalog.core.service.validator.AssignmentValidator;
@@ -18,6 +21,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import static org.springframework.data.domain.PageRequest.of;
 
 @Service
 public class AssignmentServiceImpl implements AssignmentService {
@@ -40,12 +45,33 @@ public class AssignmentServiceImpl implements AssignmentService {
   }
 
   @Override
+  public Page<Assignment> getAllAssignments(int pageNumber, int perPage){
+    log.trace("getAllAssignments paginated --- method entered, {}", pageNumber);
+    Pageable pageable = of(pageNumber, perPage);
+    return assignmentRepository.findAll(pageable);
+  }
+
+  @Override
   public List<Assignment> getAllAssignmentsSorted(Sort sort) {
-    log.trace("getAllAssignmentsSorted - method entered");
-    Iterable<Assignment> assignments = assignmentRepository.findAll();
-    Iterable<Assignment> assignmentsSorted = sort.sort(assignments);
+//    log.trace("getAllAssignmentsSorted - method entered");
+//    Iterable<Assignment> assignments = assignmentRepository.findAll();
+//    Iterable<Assignment> assignmentsSorted = sort.sort(assignments);
+//    log.trace("getAllAssignmentsSorted - finished well");
+//    return StreamSupport.stream(assignmentsSorted.spliterator(), false)
+//        .collect(Collectors.toList());
+    org.springframework.data.domain.Sort springSort = null;
+    for(int i = 0; i < sort.getSortingChain().size(); i++){
+      org.springframework.data.domain.Sort.Direction direction = sort.getSortingChain().get(i).getKey() == Sort.Direction.ASC ? org.springframework.data.domain.Sort.Direction.ASC : org.springframework.data.domain.Sort.Direction.DESC;
+      if(i == 0){
+        springSort = new org.springframework.data.domain.Sort(direction, sort.getSortingChain().get(i).getValue());
+      } else {
+        org.springframework.data.domain.Sort newSpringSort = new org.springframework.data.domain.Sort(direction, sort.getSortingChain().get(i).getValue());
+        springSort = springSort.and(newSpringSort);
+      }
+    }
+    Iterable<Assignment> assignments = assignmentRepository.findAll(springSort);
     log.trace("getAllAssignmentsSorted - finished well");
-    return StreamSupport.stream(assignmentsSorted.spliterator(), false)
+    return StreamSupport.stream(assignments.spliterator(), false)
         .collect(Collectors.toList());
   }
 

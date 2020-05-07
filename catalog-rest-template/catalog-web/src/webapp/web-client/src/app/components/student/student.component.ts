@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Student} from "../../model/student";
 import {StudentService} from "../../services/student/student.service";
 import {Router} from "@angular/router";
+import {PageEvent} from "@angular/material/paginator";
 
 @Component({
   selector: 'app-student',
@@ -27,15 +28,26 @@ export class StudentComponent implements OnInit {
   badFilterInput: boolean = false;
   filtered: boolean = false;
   studentsFiltered: Student[];
+  currentPage = 0;
+  totalNumberOfStudents: number;
   constructor(private studentService: StudentService) { }
 
   ngOnInit() {
-    this.getStudents();
+    this.setTotalStudents();
+    this.getStudentsLoad();
   }
 
-  getStudents(): void {
-    this.studentService.getStudents()
-      .subscribe(students => this.students = students);
+  getStudentsLoad(): void {
+    this.studentService.getStudentsPaged(0)
+      .subscribe(students => this.students = students["students"]);
+  }
+
+  getStudents(event?): void {
+    this.studentService.getStudentsPaged(event.pageIndex)
+      .subscribe(students => {
+        this.students = students["students"];
+        this.currentPage = students["pageNumber"];
+      });
   }
 
   addStudent() {
@@ -45,7 +57,10 @@ export class StudentComponent implements OnInit {
           if (response.statusCode == 404) {
             this.badAdd = true;
           } else {
-            this.getStudents();
+            this.currentPage = 0;
+            this.getStudentsLoad();
+            this.setTotalStudents();
+
             this.badAdd = false;
           }
         })
@@ -61,7 +76,10 @@ export class StudentComponent implements OnInit {
           if (response.statusCode == 404) {
             this.badDelete = true;
           } else {
-            this.getStudents();
+            this.currentPage = 0;
+            this.getStudentsLoad();
+            this.setTotalStudents();
+
             this.badDelete = false;
           }
         })
@@ -77,7 +95,10 @@ export class StudentComponent implements OnInit {
           if (response.statusCode == 404) {
             this.badUpdate = true;
           } else {
-            this.getStudents();
+            this.currentPage = 0;
+            this.getStudentsLoad();
+            this.setTotalStudents();
+
             this.badUpdate = false;
           }
         })
@@ -115,5 +136,16 @@ export class StudentComponent implements OnInit {
       this.badFilterInput = true;
       this.filtered = false;
     }
+  }
+
+  private setTotalStudents() {
+
+    this.studentService.getStudents().subscribe(response => this.totalNumberOfStudents = response.length);
+  }
+
+  sortClient() {
+    // console.log(this.students);
+    this.students.sort((a, b) => (a.id < b.id ? 1 : -1));
+    // console.log(this.students);
   }
 }

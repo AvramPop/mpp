@@ -29,6 +29,12 @@ public class AssignmentController {
         assignmentConverter.convertModelsToDtos(assignmentService.getAllAssignments()));
   }
 
+  @RequestMapping(value = "/assignments/page/{pageNumber}/{perPage}", method = RequestMethod.GET)
+  PagedAssignmentsDto getAssignments(@PathVariable Integer pageNumber, @PathVariable Integer perPage) {
+    log.trace("getAssignments call - params:");
+    return conversionFactory.convertPagedAssignmentsToDtos(assignmentService.getAllAssignments(pageNumber, perPage));
+  }
+
   @RequestMapping(value = "/assignments", method = RequestMethod.POST)
   ResponseDto saveAssignment(@RequestBody AssignmentDto assignmentDto) {
     log.trace("saveAssignment call - params = assignmentDto:{}", assignmentDto);

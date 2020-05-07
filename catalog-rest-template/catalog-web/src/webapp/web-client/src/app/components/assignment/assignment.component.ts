@@ -22,15 +22,26 @@ export class AssignmentComponent implements OnInit {
   badAdd: boolean = false;
   badDelete: boolean = false;
   badUpdate: boolean = false;
+  currentPage = 0;
+  totalNumberOfAssignments: number;
   constructor(private assignmentService: AssignmentService) { }
 
   ngOnInit() {
-    this.getAssignments();
+    this.setTotalAssignments();
+    this.getAssignmentsLoad();
   }
 
-  getAssignments(): void {
-    this.assignmentService.getAssignments()
-      .subscribe(assignments => this.assignments = assignments);
+  getAssignmentsLoad(): void {
+    this.assignmentService.getAssignmentsPaged(0)
+      .subscribe(assignments => this.assignments = assignments["assignments"]);
+  }
+
+  getAssignments(event?): void {
+    this.assignmentService.getAssignmentsPaged(event.pageIndex)
+      .subscribe(assignments => {
+        this.assignments = assignments["assignments"];
+        this.currentPage = assignments["pageNumber"];
+      });
   }
 
   addAssignment() {
@@ -40,7 +51,11 @@ export class AssignmentComponent implements OnInit {
           if (response.statusCode == 404) {
             this.badAdd = true;
           } else {
-            this.getAssignments();
+            this.currentPage = 0;
+
+            this.getAssignmentsLoad();
+            this.setTotalAssignments();
+
             this.badAdd = false;
           }
         })
@@ -56,7 +71,11 @@ export class AssignmentComponent implements OnInit {
           if (response.statusCode == 404) {
             this.badDelete = true;
           } else {
-            this.getAssignments();
+            this.currentPage = 0;
+
+            this.getAssignmentsLoad();
+            this.setTotalAssignments();
+
             this.badDelete = false;
           }
         })
@@ -72,7 +91,11 @@ export class AssignmentComponent implements OnInit {
           if (response.statusCode == 404) {
             this.badUpdate = true;
           } else {
-            this.getAssignments();
+            this.currentPage = 0;
+
+            this.getAssignmentsLoad();
+            this.setTotalAssignments();
+
             this.badUpdate = false;
           }
         })
@@ -91,6 +114,11 @@ export class AssignmentComponent implements OnInit {
 
   private validDeleteData():boolean {
     return !isNaN(this.idToDelete);
+  }
+
+  private setTotalAssignments() {
+
+    this.assignmentService.getAssignments().subscribe(response => this.totalNumberOfAssignments = response.length);
   }
 
 }

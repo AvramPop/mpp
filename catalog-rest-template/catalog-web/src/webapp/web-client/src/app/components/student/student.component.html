@@ -33,6 +33,17 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
+    <mat-paginator [length]="totalNumberOfStudents"
+                   [pageSize]="3"
+                   [pageSizeOptions]="[]"
+                   [pageIndex]="currentPage"
+                   (page)="getStudents($event)">
+    </mat-paginator>
+<!--    <button (click)="sortClient()" color="warn" class="sort-button" mat-raised-button>-->
+<!--      Sort!-->
+<!--    </button>-->
+
+
 
     <form class="example-form" name="add-form">
       <h2 class="mat-h2">Add a new student</h2>

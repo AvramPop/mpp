@@ -25,15 +25,25 @@ export class LabProblemComponent implements OnInit {
   badFilterInput: boolean = false;
   filtered: boolean = false;
   labProblemsFiltered: LabProblem[];
+  currentPage = 0;
+  totalNumberOfLabProblems: number;
   constructor(private labProblemService: LabProblemService) { }
 
   ngOnInit() {
-    this.getLabProblems();
+    this.getTotalLabProblems();
+    this.getLabProblemsLoad();
   }
 
-  getLabProblems(): void {
-    this.labProblemService.getLabProblems()
-      .subscribe(labProblems => this.labProblems = labProblems);
+  getLabProblemsLoad(): void {
+    this.labProblemService.getLabProblemsPaged(0)
+      .subscribe(labProblems => this.labProblems = labProblems["labProblems"]);
+  }
+  getLabProblems(event?): void {
+    this.labProblemService.getLabProblemsPaged(event.pageIndex)
+      .subscribe(labProblems => {
+        this.labProblems = labProblems["labProblems"];
+        this.currentPage = labProblems["pageNumber"];
+      });
   }
 
   addLabProblem() {
@@ -43,7 +53,11 @@ export class LabProblemComponent implements OnInit {
           if (response.statusCode == 404) {
             this.badAdd = true;
           } else {
-            this.getLabProblems();
+            this.currentPage = 0;
+
+            this.getLabProblemsLoad();
+            this.getTotalLabProblems();
+
             this.badAdd = false;
           }
         })
@@ -59,7 +73,11 @@ export class LabProblemComponent implements OnInit {
           if (response.statusCode == 404) {
             this.badDelete = true;
           } else {
-            this.getLabProblems();
+            this.currentPage = 0;
+
+            this.getLabProblemsLoad();
+            this.getTotalLabProblems();
+
             this.badDelete = false;
           }
         })
@@ -75,7 +93,11 @@ export class LabProblemComponent implements OnInit {
           if (response.statusCode == 404) {
             this.badUpdate = true;
           } else {
-            this.getLabProblems();
+            this.currentPage = 0;
+
+            this.getLabProblemsLoad();
+            this.getTotalLabProblems();
+
             this.badUpdate = false;
           }
         })
@@ -113,5 +135,10 @@ export class LabProblemComponent implements OnInit {
       this.badFilterInput = true;
       this.filtered = false;
     }
+  }
+
+  private getTotalLabProblems() {
+
+    this.labProblemService.getLabProblems().subscribe(response => this.totalNumberOfLabProblems = response.length);
   }
 }

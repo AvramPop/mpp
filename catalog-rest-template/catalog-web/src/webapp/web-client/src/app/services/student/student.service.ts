@@ -33,12 +33,20 @@ export class StudentService {
         catchError(this.handleError<Student[]>('getStudentsSorted', []))
       );
   }
+
   getStudents(): Observable<Student[]> {
     return this.http.get<Student[]>(this.url, this.httpOptions)
       .pipe(
-        map(result => result['students']),
         tap(result => console.log(result)),
+        map(result => result['students']),
         catchError(this.handleError<Student[]>('getStudents', []))
+      );
+  }
+  getStudentsPaged(pageIndex: number): Observable<any> {
+    return this.http.get<any>(this.url + "/page/" + pageIndex + "/3", this.httpOptions)
+      .pipe(
+        tap(result => console.log(result)),
+        catchError(this.handleError<any>('getStudentsPaged', []))
       );
   }
 

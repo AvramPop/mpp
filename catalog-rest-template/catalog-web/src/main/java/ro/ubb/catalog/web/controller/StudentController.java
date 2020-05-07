@@ -5,12 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ro.ubb.catalog.core.service.StudentService;
+import ro.ubb.catalog.web.converter.ConversionFactory;
 import ro.ubb.catalog.web.converter.SortConverter;
 import ro.ubb.catalog.web.converter.StudentConverter;
-import ro.ubb.catalog.web.dto.ResponseDto;
-import ro.ubb.catalog.web.dto.SortDto;
-import ro.ubb.catalog.web.dto.StudentDto;
-import ro.ubb.catalog.web.dto.StudentsDto;
+import ro.ubb.catalog.web.dto.*;
 
 /** Created by radu. */
 @RestController
@@ -20,6 +18,7 @@ public class StudentController {
   @Autowired private StudentService studentService;
 
   @Autowired private StudentConverter studentConverter;
+  @Autowired private ConversionFactory conversionFactory;
 
   @Autowired private SortConverter sortConverter;
 
@@ -27,6 +26,12 @@ public class StudentController {
   StudentsDto getStudents() {
     log.trace("getStudents call - params:");
     return new StudentsDto(studentConverter.convertModelsToDtos(studentService.getAllStudents()));
+  }
+
+  @RequestMapping(value = "/students/page/{pageNumber}/{perPage}", method = RequestMethod.GET)
+  PagedStudentsDto getStudents(@PathVariable Integer pageNumber, @PathVariable Integer perPage) {
+    log.trace("getStudents call - params:");
+    return conversionFactory.convertPagedStudentsToDtos(studentService.getAllStudents(pageNumber, perPage));
   }
 
   @RequestMapping(value = "/students/group/{groupNumber}", method = RequestMethod.GET)

@@ -1,5 +1,7 @@
 package ro.ubb.catalog.core.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ro.ubb.catalog.core.model.Student;
 import ro.ubb.catalog.core.service.sort.Sort;
@@ -10,6 +12,8 @@ import java.util.List;
 @Service
 public interface StudentService {
   List<Student> getAllStudents();
+
+  Page<Student> getAllStudents(int pageNumber, int perPage);
 
   boolean saveStudent(Student student);
 

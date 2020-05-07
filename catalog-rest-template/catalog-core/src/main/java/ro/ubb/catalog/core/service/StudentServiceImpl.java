@@ -4,6 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.ubb.catalog.core.model.Student;
@@ -15,9 +18,12 @@ import ro.ubb.catalog.core.service.validator.StudentValidator;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import static org.springframework.data.domain.PageRequest.of;
 
 /** Created by radu. */
 @Service
@@ -39,6 +45,13 @@ public class StudentServiceImpl implements StudentService {
   }
 
   @Override
+  public Page<Student> getAllStudents(int pageNumber, int perPage){
+    log.trace("getAllStudents paginated --- method entered, {}", pageNumber);
+    Pageable pageable = of(pageNumber, perPage);
+    return studentRepository.findAll(pageable);
+  }
+
+  @Override
   public boolean saveStudent(Student student) {
     log.trace("saveStudent --- method entered");
     validator.validate(student);
@@ -50,13 +63,30 @@ public class StudentServiceImpl implements StudentService {
 
   @Override
   public List<Student> getAllStudentsSorted(Sort sort) {
-    log.trace("getAllStudentsSorted - method entered");
+//    log.trace("getAllStudentsSorted - method entered");
+//
+//    Iterable<Student> students = studentRepository.findAll();
+//    Iterable<Student> studentsSorted = sort.sort(students);
+//    log.trace("getAllStudentsSorted - finished well");
+//
+//    return StreamSupport.stream(studentsSorted.spliterator(), false).collect(Collectors.toList());
 
-    Iterable<Student> students = studentRepository.findAll();
-    Iterable<Student> studentsSorted = sort.sort(students);
+
+    log.trace("getAllStudentsSorted - method entered");
+    org.springframework.data.domain.Sort springSort = null;
+    for(int i = 0; i < sort.getSortingChain().size(); i++){
+      org.springframework.data.domain.Sort.Direction direction = sort.getSortingChain().get(i).getKey() == Sort.Direction.ASC ? org.springframework.data.domain.Sort.Direction.ASC : org.springframework.data.domain.Sort.Direction.DESC;
+      if(i == 0){
+        springSort = new org.springframework.data.domain.Sort(direction, sort.getSortingChain().get(i).getValue());
+      } else {
+        org.springframework.data.domain.Sort newSpringSort = new org.springframework.data.domain.Sort(direction, sort.getSortingChain().get(i).getValue());
+        springSort = springSort.and(newSpringSort);
+      }
+    }
+    Iterable<Student> students = studentRepository.findAll(springSort);
     log.trace("getAllStudentsSorted - finished well");
 
-    return StreamSupport.stream(studentsSorted.spliterator(), false).collect(Collectors.toList());
+    return StreamSupport.stream(students.spliterator(), false).collect(Collectors.toList());
   }
 
   @Override

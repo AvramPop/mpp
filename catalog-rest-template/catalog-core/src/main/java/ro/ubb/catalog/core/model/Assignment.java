@@ -2,6 +2,8 @@ package ro.ubb.catalog.core.model;
 
 import lombok.*;
 import org.hibernate.annotations.Proxy;
+import org.springframework.lang.NonNull;
+
 
 import javax.persistence.Entity;
 
@@ -14,7 +16,10 @@ import javax.persistence.Entity;
 @Builder
 @Proxy(lazy = false)
 public class Assignment extends BaseEntity<Long> {
+  @NonNull
   private Long studentId;
+  @NonNull
   private Long labProblemId;
-  private int grade;
+  @NonNull
+  private Integer grade;
 }
