@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Student} from "../../model/student";
 import {StudentService} from "../../services/student/student.service";
 import {Router} from "@angular/router";
 import {PageEvent} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-student',
@@ -11,7 +13,7 @@ import {PageEvent} from "@angular/material/paginator";
 })
 export class StudentComponent implements OnInit {
   students: Student[];
-  displayedColumns: string[] = ['id', 'name', 'serialNumber', 'group'];
+  displayedColumns: string[] = ['id', 'name', 'serialNumber', 'studentGroup'];
   idToAdd: number;
   nameToAdd: string;
   serialNumberToAdd: string;
@@ -28,7 +30,9 @@ export class StudentComponent implements OnInit {
   badFilterInput: boolean = false;
   filtered: boolean = false;
   studentsFiltered: Student[];
+  dataSource: any;
   currentPage = 0;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
   totalNumberOfStudents: number;
   constructor(private studentService: StudentService) { }
 
@@ -39,15 +43,26 @@ export class StudentComponent implements OnInit {
 
   getStudentsLoad(): void {
     this.studentService.getStudentsPaged(0)
-      .subscribe(students => this.students = students["students"]);
+      .subscribe(students => {
+        this.dataSource = new MatTableDataSource<Student>(students["students"]);
+        this.dataSource.sort = this.sort;
+     //   this.students = students["students"]
+      });
   }
 
   getStudents(event?): void {
     this.studentService.getStudentsPaged(event.pageIndex)
       .subscribe(students => {
-        this.students = students["students"];
+        // this.students = students["students"];
+        this.dataSource = new MatTableDataSource<Student>(students["students"]);
+        this.dataSource.sort = this.sort;
         this.currentPage = students["pageNumber"];
       });
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   addStudent() {
@@ -144,8 +159,19 @@ export class StudentComponent implements OnInit {
   }
 
   sortClient() {
+    // //this.students = [new Student(1, 'a', 'a', 1), new Student(2, 'a', 'a', 1)];
     // console.log(this.students);
-    this.students.sort((a, b) => (a.id < b.id ? 1 : -1));
+    // // console.log(this.students);
+    // const temp = this.students;
+    // temp.sort((a, b) => (a.name > b.name ? -1 : 1));
+    // this.students = temp;
     // console.log(this.students);
+    this.studentService.getStudentsPaged(this.currentPage).subscribe(
+      students => {
+      const temp = students["students"];
+      temp.sort((a, b) => a.name > b.name ? -1 : 1);
+      this.students = temp;
+      this.currentPage = students["pageNumber"];
+    })
   }
 }

@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Assignment} from "../../model/assignment";
 import {AssignmentService} from "../../services/assignment/assignment.service";
+import {MatSort} from "@angular/material/sort";
+import {MatTableDataSource} from "@angular/material/table";
+import {Student} from "../../model/student";
 
 @Component({
   selector: 'app-assignment',
@@ -22,7 +25,9 @@ export class AssignmentComponent implements OnInit {
   badAdd: boolean = false;
   badDelete: boolean = false;
   badUpdate: boolean = false;
+  dataSource: any;
   currentPage = 0;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
   totalNumberOfAssignments: number;
   constructor(private assignmentService: AssignmentService) { }
 
@@ -33,15 +38,26 @@ export class AssignmentComponent implements OnInit {
 
   getAssignmentsLoad(): void {
     this.assignmentService.getAssignmentsPaged(0)
-      .subscribe(assignments => this.assignments = assignments["assignments"]);
+      .subscribe(assignments => {
+        this.dataSource = new MatTableDataSource<Assignment>(assignments["assignments"]);
+        this.dataSource.sort = this.sort;
+        // this.assignments = assignments["assignments"]
+      });
   }
 
   getAssignments(event?): void {
     this.assignmentService.getAssignmentsPaged(event.pageIndex)
       .subscribe(assignments => {
-        this.assignments = assignments["assignments"];
+        this.dataSource = new MatTableDataSource<Assignment>(assignments["assignments"]);
+        this.dataSource.sort = this.sort;
+        // this.assignments = assignments["assignments"];
         this.currentPage = assignments["pageNumber"];
       });
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   addAssignment() {

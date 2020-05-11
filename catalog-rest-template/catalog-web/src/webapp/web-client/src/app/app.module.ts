@@ -28,6 +28,7 @@ import { StatisticsComponent } from './components/statistics/statistics.componen
 import {MatTableModule} from "@angular/material/table";
 import { SortComponent } from './components/sort/sort.component';
 import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatSortModule} from "@angular/material/sort";
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import {MatPaginatorModule} from "@angular/material/paginator";
         MatFormFieldModule,
         MatSelectModule,
         MatTableModule,
-        MatPaginatorModule
+        MatPaginatorModule,
+        MatSortModule
     ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'fill'}},

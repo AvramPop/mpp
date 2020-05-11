@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {LabProblem} from "../../model/labProblem";
 import {LabProblemService} from "../../services/labProblem/lab-problem.service";
+import {MatSort} from "@angular/material/sort";
+import {MatTableDataSource} from "@angular/material/table";
+import {Assignment} from "../../model/assignment";
 
 @Component({
   selector: 'app-labproblem',
@@ -25,7 +28,9 @@ export class LabProblemComponent implements OnInit {
   badFilterInput: boolean = false;
   filtered: boolean = false;
   labProblemsFiltered: LabProblem[];
+  dataSource: any;
   currentPage = 0;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
   totalNumberOfLabProblems: number;
   constructor(private labProblemService: LabProblemService) { }
 
@@ -36,12 +41,16 @@ export class LabProblemComponent implements OnInit {
 
   getLabProblemsLoad(): void {
     this.labProblemService.getLabProblemsPaged(0)
-      .subscribe(labProblems => this.labProblems = labProblems["labProblems"]);
+      .subscribe(labProblems => {
+        this.dataSource = new MatTableDataSource<LabProblem>(labProblems["labProblems"]);
+        this.dataSource.sort = this.sort;
+      });
   }
   getLabProblems(event?): void {
     this.labProblemService.getLabProblemsPaged(event.pageIndex)
       .subscribe(labProblems => {
-        this.labProblems = labProblems["labProblems"];
+        this.dataSource = new MatTableDataSource<LabProblem>(labProblems["labProblems"]);
+        this.dataSource.sort = this.sort;
         this.currentPage = labProblems["pageNumber"];
       });
   }
@@ -64,6 +73,11 @@ export class LabProblemComponent implements OnInit {
     } else {
       this.badAdd = true;
     }
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   deleteLabProblem() {
