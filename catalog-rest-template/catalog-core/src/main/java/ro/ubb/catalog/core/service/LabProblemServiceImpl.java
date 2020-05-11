@@ -133,11 +133,12 @@ public class LabProblemServiceImpl implements LabProblemService {
       throw new IllegalArgumentException("problem number negative!");
     }
     log.trace("filterByProblemNumber - method entered");
-    Iterable<LabProblem> labProblems = labProblemRepository.findAll();
-    List<LabProblem> filteredLabProblems = new ArrayList<>();
-    labProblems.forEach(filteredLabProblems::add);
-    filteredLabProblems.removeIf(entity -> entity.getProblemNumber() != problemNumberToFilterBy);
-    log.trace("addAssignment - finished well");
+//    Iterable<LabProblem> labProblems = labProblemRepository.findAll();
+//    List<LabProblem> filteredLabProblems = new ArrayList<>();
+//    labProblems.forEach(filteredLabProblems::add);
+//    filteredLabProblems.removeIf(entity -> entity.getProblemNumber() != problemNumberToFilterBy);
+    List<LabProblem> filteredLabProblems = labProblemRepository.findByProblemNumber(problemNumberToFilterBy);
+    log.trace("filterByProblemNumber - finished well");
     return filteredLabProblems;
   }
 }

@@ -95,10 +95,11 @@ public class StudentServiceImpl implements StudentService {
       throw new IllegalArgumentException("group negative!");
     }
     log.trace("filterByGroup - method entered");
-    Iterable<Student> students = studentRepository.findAll();
-    List<Student> filteredStudents = new ArrayList<>();
-    students.forEach(filteredStudents::add);
-    filteredStudents.removeIf(entity -> entity.getGroupNumber() != group);
+//    Iterable<Student> students = studentRepository.findAll();
+//    List<Student> filteredStudents = new ArrayList<>();
+//    students.forEach(filteredStudents::add);
+//    filteredStudents.removeIf(entity -> entity.getGroupNumber() != group);
+    List<Student> filteredStudents = studentRepository.findByGroupNumber(group);
     log.trace("filterByGroup - finished well");
     return filteredStudents;
   }

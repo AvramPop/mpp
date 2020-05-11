@@ -25,4 +25,6 @@ public interface LabProblemService {
   LabProblem getLabProblem(Long id);
 
   List<LabProblem> filterByProblemNumber(Integer problemNumberToFilterBy);
+
+//  List<LabProblem> findByProblemNumber(int problemNumber);
 }
