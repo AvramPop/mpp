@@ -61,8 +61,8 @@ public class ConversionFactory {
     AssignmentDto dto =
         AssignmentDto.builder()
             .grade(assignment.getGrade())
-            .studentId(assignment.getStudentId())
-            .labProblemId(assignment.getLabProblemId())
+            .studentId(assignment.getStudent().getId())
+            .labProblemId(assignment.getLabProblem().getId())
             .build();
     dto.setId(assignment.getId());
     return dto;

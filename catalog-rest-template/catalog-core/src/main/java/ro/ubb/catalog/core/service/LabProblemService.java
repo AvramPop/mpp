@@ -26,5 +26,8 @@ public interface LabProblemService {
 
   List<LabProblem> filterByProblemNumber(Integer problemNumberToFilterBy);
 
+  List<LabProblem> findByProblemNumberCustom(int problemNumber);
+
+  List<LabProblem> findByDescriptionCustom(String description);
 //  List<LabProblem> findByProblemNumber(int problemNumber);
 }

@@ -1,6 +1,8 @@
 package ro.ubb.catalog.web.dto;
 
 import lombok.*;
+import ro.ubb.catalog.core.model.LabProblem;
+import ro.ubb.catalog.core.model.Student;
 
 @NoArgsConstructor
 @AllArgsConstructor

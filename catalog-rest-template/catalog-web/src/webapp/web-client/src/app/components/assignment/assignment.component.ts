@@ -37,18 +37,21 @@ export class AssignmentComponent implements OnInit {
   }
 
   getAssignmentsLoad(): void {
-    this.assignmentService.getAssignmentsPaged(0)
+    //this.assignmentService.getAssignmentsPaged(0)
+    this.assignmentService.getAssignments()
       .subscribe(assignments => {
-        this.dataSource = new MatTableDataSource<Assignment>(assignments["assignments"]);
+        console.log(assignments);
+        this.dataSource = new MatTableDataSource<Assignment>(assignments);
         this.dataSource.sort = this.sort;
         // this.assignments = assignments["assignments"]
       });
   }
 
   getAssignments(event?): void {
-    this.assignmentService.getAssignmentsPaged(event.pageIndex)
+   // this.assignmentService.getAssignmentsPaged(event.pageIndex)
+    this.assignmentService.getAssignments()
       .subscribe(assignments => {
-        this.dataSource = new MatTableDataSource<Assignment>(assignments["assignments"]);
+        this.dataSource = new MatTableDataSource<Assignment>(assignments);
         this.dataSource.sort = this.sort;
         // this.assignments = assignments["assignments"];
         this.currentPage = assignments["pageNumber"];

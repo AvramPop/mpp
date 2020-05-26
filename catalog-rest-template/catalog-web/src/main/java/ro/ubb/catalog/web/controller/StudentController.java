@@ -24,7 +24,13 @@ public class StudentController {
 
   @RequestMapping(value = "/students", method = RequestMethod.GET)
   StudentsDto getStudents() {
-    log.trace("getStudents call - params:");
+    System.out.println("----------------");
+    System.out.println("group number");
+    studentService.findByGroupNumberCustom(2).forEach(System.out::println);
+    System.out.println("name");
+    studentService.findByNameCustom("dani").forEach(System.out::println);
+    System.out.println("----------------");
+
     return new StudentsDto(studentConverter.convertModelsToDtos(studentService.getAllStudents()));
   }
 

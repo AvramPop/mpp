@@ -141,4 +141,14 @@ public class LabProblemServiceImpl implements LabProblemService {
     log.trace("filterByProblemNumber - finished well");
     return filteredLabProblems;
   }
+
+  @Override
+  public List<LabProblem> findByProblemNumberCustom(int problemNumber){
+    return labProblemRepository.findByProblemNumberCustom(1);
+  }
+
+  @Override
+  public List<LabProblem> findByDescriptionCustom(String description){
+    return labProblemRepository.findByDescriptionCustom(description);
+  }
 }

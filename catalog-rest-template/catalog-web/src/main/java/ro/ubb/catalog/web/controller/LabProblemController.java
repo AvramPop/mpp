@@ -27,6 +27,11 @@ public class LabProblemController {
 
   @RequestMapping(value = "/labs", method = RequestMethod.GET)
   LabProblemsDto getLabProblems() {
+    System.out.println("description");
+    labProblemService.findByDescriptionCustom("My very interesting description").forEach(System.out::println);
+    System.out.println("problemNumber");
+    labProblemService.findByProblemNumberCustom(1).forEach(System.out::println);
+
     log.trace("getLabProblems call - params");
     return new LabProblemsDto(
         labProblemConverter.convertModelsToDtos(labProblemService.getAllLabProblems()));

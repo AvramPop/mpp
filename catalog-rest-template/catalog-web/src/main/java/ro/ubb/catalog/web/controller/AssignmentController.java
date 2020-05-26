@@ -39,12 +39,13 @@ public class AssignmentController {
   ResponseDto saveAssignment(@RequestBody AssignmentDto assignmentDto) {
     log.trace("saveAssignment call - params = assignmentDto:{}", assignmentDto);
     try {
-      if (assignmentService.saveAssignment(assignmentConverter.convertDtoToModel(assignmentDto))) {
+      if (assignmentService.saveAssignment(assignmentDto.getId(), assignmentDto.getStudentId(), assignmentDto.getLabProblemId(), assignmentDto.getGrade())) {
         return new ResponseDto(200);
       } else {
         return new ResponseDto(404);
       }
     } catch (Exception e) {
+      System.err.println(e);
       return new ResponseDto(404);
     }
   }
@@ -54,12 +55,13 @@ public class AssignmentController {
     log.trace("updateAssignment call - params = assignmentDto:{}", assignmentDto);
     try {
       if (assignmentService.updateAssignment(
-          id, assignmentConverter.convertDtoToModel(assignmentDto))) {
+          id, assignmentDto.getStudentId(), assignmentDto.getLabProblemId(), assignmentDto.getGrade())) {
         return new ResponseDto(200);
       } else {
         return new ResponseDto(404);
       }
     } catch (Exception e) {
+      System.err.println(e);
       return new ResponseDto(404);
     }
   }

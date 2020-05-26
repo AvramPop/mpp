@@ -5,21 +5,30 @@ import org.hibernate.annotations.Proxy;
 import org.springframework.lang.NonNull;
 
 
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Table(name="assignment")
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Builder
-@Proxy(lazy = false)
 public class Assignment extends BaseEntity<Long> {
   @NonNull
-  private Long studentId;
-  @NonNull
-  private Long labProblemId;
-  @NonNull
   private Integer grade;
+
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  @JoinColumn(name = "studentid")
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
+  private Student student;
+
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  @JoinColumn(name = "labproblemid")
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
+  private LabProblem labProblem;
 }

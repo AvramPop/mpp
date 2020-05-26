@@ -26,4 +26,6 @@ public interface StudentService {
   boolean deleteStudent(Long id);
 
   Student getStudentById(Long id);
+  List<Student> findByGroupNumberCustom(int groupNumber);
+  List<Student> findByNameCustom(String name);
 }

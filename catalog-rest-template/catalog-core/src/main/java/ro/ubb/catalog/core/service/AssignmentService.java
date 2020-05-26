@@ -17,9 +17,9 @@ public interface AssignmentService {
 
   List<Assignment> getAllAssignmentsSorted(Sort sort);
 
-  boolean saveAssignment(Assignment assignment);
+  boolean saveAssignment(Long id, Long studentId, Long labProblemId, int grade);
 
-  boolean updateAssignment(Long id, Assignment assignment);
+  boolean updateAssignment(Long id, Long studentId, Long labProblemId, int grade);
 
   boolean deleteAssignment(Long id);
 

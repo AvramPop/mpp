@@ -19,9 +19,11 @@ export class AssignmentService {
   }
 
   getAssignments(): Observable<Assignment[]> {
+    console.log("making call");
     return this.http.get<Assignment[]>(this.url, this.httpOptions)
       .pipe(
         map(result => result['assignments']),
+        tap(result => console.log(result)),
         catchError(this.handleError<Assignment[]>('getAssignments', []))
       );
   }

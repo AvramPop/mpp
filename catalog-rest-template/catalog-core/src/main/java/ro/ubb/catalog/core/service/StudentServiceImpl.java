@@ -35,18 +35,18 @@ public class StudentServiceImpl implements StudentService {
 
   @Override
   public List<Student> getAllStudents() {
-    log.trace("getAllStudents --- method entered");
+//    log.trace("getAllStudents --- method entered");
 
     List<Student> result = studentRepository.findAll();
 
-    log.trace("getAllStudents: result={}", result);
+//    log.trace("getAllStudents: result={}", result);
 
     return result;
   }
 
   @Override
   public Page<Student> getAllStudents(int pageNumber, int perPage){
-    log.trace("getAllStudents paginated --- method entered, {}", pageNumber);
+//    log.trace("getAllStudents paginated --- method entered, {}", pageNumber);
     Pageable pageable = of(pageNumber, perPage);
     return studentRepository.findAll(pageable);
   }
@@ -143,5 +143,15 @@ public class StudentServiceImpl implements StudentService {
     } catch (EntityNotFoundException e) {
       return null;
     }
+  }
+
+  @Override
+  public List<Student> findByGroupNumberCustom(int groupNumber){
+    return studentRepository.findByGroupNumberCustom(groupNumber);
+  }
+
+  @Override
+  public List<Student> findByNameCustom(String name){
+    return studentRepository.findByNameCustom(name);
   }
 }
