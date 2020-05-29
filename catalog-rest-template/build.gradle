@@ -50,6 +50,10 @@ allprojects {
 //        compile group: 'org.projectlombok', name: 'lombok', version: "$lombokVersion"
         compileOnly "org.projectlombok:lombok:${lombokVersion}"
         annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        testCompile (group: 'junit', name: 'junit', version: '4.12'){
+            exclude group:'org.hamcrest', module:'hamcrest-core'
+        }
+        testCompile group: 'org.springframework', name: 'spring-test', version: "$springVersion"
 
 
     }
