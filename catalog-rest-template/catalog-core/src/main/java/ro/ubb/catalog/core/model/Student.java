@@ -37,7 +37,7 @@ public class Student extends BaseEntity<Long> {
   @NonNull
   @Column(name = "groupnumber")
   private Integer groupNumber;
-  @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
   private List<Assignment> assignments;

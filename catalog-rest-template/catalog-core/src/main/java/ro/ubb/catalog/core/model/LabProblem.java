@@ -31,7 +31,7 @@ public class LabProblem extends BaseEntity<Long> {
   private int problemNumber;
   @NonNull
   private String description;
-  @OneToMany(mappedBy = "labProblem", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "labProblem", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
   private List<Assignment> assignments;

@@ -40,6 +40,20 @@ public class StudentController {
     return conversionFactory.convertPagedStudentsToDtos(studentService.getAllStudents(pageNumber, perPage));
   }
 
+    @RequestMapping(value = "/students/{id}", method = RequestMethod.DELETE)
+  ResponseDto deleteStudent(@PathVariable Long id) {
+    log.trace("deleteStudent call - params = id:{}", id);
+    try {
+      if (studentService.deleteStudent(id)) {
+        return new ResponseDto(200);
+      } else {
+        return new ResponseDto(404);
+      }
+    } catch (Exception e) {
+      return new ResponseDto(404);
+    }
+  }
+
   @RequestMapping(value = "/students/group/{groupNumber}", method = RequestMethod.GET)
   StudentsDto getStudentsFilteredByGroup(@PathVariable Integer groupNumber) {
     log.trace("getStudentsFilteredByGroup call - params = group:{}", groupNumber);

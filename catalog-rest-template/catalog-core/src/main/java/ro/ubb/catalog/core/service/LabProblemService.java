@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ro.ubb.catalog.core.model.LabProblem;
 import ro.ubb.catalog.core.service.sort.Sort;
 
+import java.util.AbstractMap;
 import java.util.List;
 
 @Service
@@ -23,9 +24,10 @@ public interface LabProblemService {
   boolean deleteLabProblem(Long id);
 
   LabProblem getLabProblem(Long id);
+  AbstractMap.SimpleEntry<Long, Long> idOfLabProblemMostAssigned();
 
   List<LabProblem> filterByProblemNumber(Integer problemNumberToFilterBy);
-
+  boolean saveAssignment(Long id, Long studentId, Long labProblemId, int grade);
   List<LabProblem> findByProblemNumberCustom(int problemNumber);
 
   List<LabProblem> findByDescriptionCustom(String description);

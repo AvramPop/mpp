@@ -9,7 +9,7 @@ import ro.ubb.catalog.core.model.Student;
 import java.util.List;
 import java.util.Optional;
 
-@Component("StudentCriteriaRepository")
+@Component("StudentJpqlRepository")
 public interface StudentRepository extends CatalogRepository<Student, Long>, StudentCustomRepository {
   @Query("select distinct s from Student s where s.groupNumber = :groupNumber")
   @EntityGraph(value = "allStudentsWithGroupNumber", type =
