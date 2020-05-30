@@ -29,7 +29,7 @@
     <Loggers>
 
         <!-- Spring framework -->
-        <!--<Logger name="org.hibernate.stat" level="INFO" />-->
+        <Logger name="org.hibernate.stat" level="INFO" />
         <Logger name="org.springframework.data" level="WARN"/>
         <Logger name="org.springframework.web" level="WARN"/>
         <Logger name="org.springframework.http.converter.json" level="WARN"/>

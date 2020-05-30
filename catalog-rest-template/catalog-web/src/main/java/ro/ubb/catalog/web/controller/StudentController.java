@@ -28,7 +28,13 @@ public class StudentController {
 
   @RequestMapping(value = "/students", method = RequestMethod.GET)
   StudentsDto getStudents() {
-    log.trace("getStudents call - params:");
+    System.out.println("----------------");
+    System.out.println("group number");
+    studentService.findByGroupNumberCustom(2).forEach(System.out::println);
+    System.out.println("name");
+    studentService.findByNameCustom("dani").forEach(System.out::println);
+    System.out.println("----------------");
+
     return new StudentsDto(studentConverter.convertModelsToDtos(studentService.getAllStudents()));
   }
 
@@ -50,6 +56,20 @@ public class StudentController {
   PagedStudentsDto getStudents(@PathVariable Integer pageNumber, @PathVariable Integer perPage) {
     log.trace("getStudents call - params:");
     return conversionFactory.convertPagedStudentsToDtos(studentService.getAllStudents(pageNumber, perPage));
+  }
+
+    @RequestMapping(value = "/students/{id}", method = RequestMethod.DELETE)
+  ResponseDto deleteStudent(@PathVariable Long id) {
+    log.trace("deleteStudent call - params = id:{}", id);
+    try {
+      if (studentService.deleteStudent(id)) {
+        return new ResponseDto(200);
+      } else {
+        return new ResponseDto(404);
+      }
+    } catch (Exception e) {
+      return new ResponseDto(404);
+    }
   }
 
   @RequestMapping(value = "/students/group/{groupNumber}", method = RequestMethod.GET)

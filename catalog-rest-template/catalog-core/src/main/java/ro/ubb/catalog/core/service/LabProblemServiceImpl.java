@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ro.ubb.catalog.core.model.Assignment;
 import ro.ubb.catalog.core.model.LabProblem;
 import ro.ubb.catalog.core.model.Student;
 import ro.ubb.catalog.core.repository.LabProblemRepository;
@@ -15,10 +16,10 @@ import ro.ubb.catalog.core.service.sort.Sort;
 import ro.ubb.catalog.core.service.validator.AssignmentValidator;
 import ro.ubb.catalog.core.service.validator.LabProblemValidator;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import javax.persistence.PersistenceContext;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -30,6 +31,9 @@ public class LabProblemServiceImpl implements LabProblemService {
 
   @Autowired private LabProblemRepository labProblemRepository;
   @Autowired private LabProblemValidator validator;
+  @PersistenceContext
+  private EntityManager entityManager;
+  @Autowired private AssignmentValidator assignmentValidator;
 
   @Override
   public List<LabProblem> getAllLabProblems() {
@@ -140,5 +144,74 @@ public class LabProblemServiceImpl implements LabProblemService {
     List<LabProblem> filteredLabProblems = labProblemRepository.findByProblemNumber(problemNumberToFilterBy);
     log.trace("filterByProblemNumber - finished well");
     return filteredLabProblems;
+  }
+
+  @Override
+  @Transactional
+  public boolean saveAssignment(Long id, Long studentId, Long labProblemId, int grade) {
+    Assignment assignment =
+        new Assignment(
+            grade,
+            entityManager.getReference(Student.class, studentId),
+            entityManager.getReference(LabProblem.class, labProblemId));
+    assignment.setId(id);
+    assignmentValidator.validate(assignment);
+
+    labProblemRepository.findAllLabProblemsWithAssignments().stream()
+        .filter(labProblem -> labProblem.getId().equals(assignment.getLabProblem().getId()))
+        .findFirst()
+        .get()
+        .getAssignments()
+        .add(assignment);
+    return true;
+  }
+
+  public List<Assignment> getAllAssignments() {
+    log.trace("getAllAssignments --- method entered");
+
+    List<Assignment> result =
+        labProblemRepository.findAllLabProblemsWithAssignments().stream()
+            .map(LabProblem::getAssignments)
+            .reduce(
+                new ArrayList<>(),
+                (a, b) -> {
+                  a.addAll(b);
+                  return a;
+                });
+
+    log.trace("getAllAssignments: result={}", result);
+
+    return result;
+  }
+
+  @Override
+  public AbstractMap.SimpleEntry<Long, Long> idOfLabProblemMostAssigned() {
+    Iterable<Assignment> assignmentIterable = getAllAssignments();
+    Set<Assignment> assignments =
+        StreamSupport.stream(assignmentIterable.spliterator(), false).collect(Collectors.toSet());
+    log.trace("idOfLabProblemMostAssigned - method entered");
+    return labProblemRepository.findAll().stream()
+        .map(
+            labProblem ->
+                new AbstractMap.SimpleEntry<>(
+                    labProblem.getId(),
+                    assignments.stream()
+                        .filter(
+                            assignment ->
+                                assignment.getLabProblem().getId().equals(labProblem.getId()))
+                        .count()))
+        .max(((pair1, pair2) -> (int) (pair1.getValue() - pair2.getValue())))
+        .orElse(null);
+  }
+
+
+  @Override
+  public List<LabProblem> findByProblemNumberCustom(int problemNumber){
+    return labProblemRepository.findByProblemNumberCustom(1);
+  }
+
+  @Override
+  public List<LabProblem> findByDescriptionCustom(String description){
+    return labProblemRepository.findByDescriptionCustom(description);
   }
 }
