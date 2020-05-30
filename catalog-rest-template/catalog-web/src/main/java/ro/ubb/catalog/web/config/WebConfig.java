@@ -20,7 +20,10 @@ public class WebConfig {
         registry
             .addMapping("/**")
             .allowedOrigins("http://localhost:4200", "http://localhost:8082")
-            .allowedMethods("GET", "PUT", "POST", "DELETE");
+            .allowedMethods("GET", "PUT", "POST", "DELETE")
+            .exposedHeaders("Access-Control-Allow-Origin:*")
+            .exposedHeaders("Access-Control-Allow-Headers:*")
+            .exposedHeaders("Access-Control-Allow-Methods:*");
       }
     };
   }

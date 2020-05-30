@@ -111,31 +111,6 @@ public class AssignmentController {
     return conversionFactory.convertDoubleToDto(assignmentService.averageGrade());
   }
 
-  @RequestMapping(value = "/labs/{id}", method = RequestMethod.DELETE)
-  ResponseDto deleteLabProblem(@PathVariable Long id) {
-    log.trace("deleteLabProblem call - params = id:{}", id);
-    try {
-      if (assignmentService.deleteLabProblem(id)) {
-        return new ResponseDto(200);
-      } else {
-        return new ResponseDto(404);
-      }
-    } catch (Exception e) {
-      return new ResponseDto(404);
-    }
-  }
 
-  @RequestMapping(value = "/students/{id}", method = RequestMethod.DELETE)
-  ResponseDto deleteStudent(@PathVariable Long id) {
-    log.trace("deleteStudent call - params = id:{}", id);
-    try {
-      if (assignmentService.deleteStudent(id)) {
-        return new ResponseDto(200);
-      } else {
-        return new ResponseDto(404);
-      }
-    } catch (Exception e) {
-      return new ResponseDto(404);
-    }
-  }
+
 }

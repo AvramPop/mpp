@@ -89,4 +89,19 @@ public class LabProblemController {
     log.trace("getLabProblem call - params = id:{}", id);
     return labProblemConverter.convertModelToDto(labProblemService.getLabProblem(id));
   }
+
+  @RequestMapping(value = "/labs/{id}", method = RequestMethod.DELETE)
+  ResponseDto deleteLabProblem(@PathVariable Long id) {
+    log.trace("deleteLabProblem call - params = id:{}", id);
+    try {
+      if (labProblemService.deleteLabProblem(id)) {
+        return new ResponseDto(200);
+      } else {
+        return new ResponseDto(404);
+      }
+    } catch (Exception e) {
+      return new ResponseDto(404);
+    }
+  }
+
 }

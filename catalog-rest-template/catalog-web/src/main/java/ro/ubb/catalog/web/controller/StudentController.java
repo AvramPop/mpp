@@ -3,7 +3,11 @@ package ro.ubb.catalog.web.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import ro.ubb.catalog.core.model.Student;
+import ro.ubb.catalog.core.model.User;
 import ro.ubb.catalog.core.service.StudentService;
 import ro.ubb.catalog.web.converter.ConversionFactory;
 import ro.ubb.catalog.web.converter.SortConverter;
@@ -26,6 +30,20 @@ public class StudentController {
   StudentsDto getStudents() {
     log.trace("getStudents call - params:");
     return new StudentsDto(studentConverter.convertModelsToDtos(studentService.getAllStudents()));
+  }
+
+  @RequestMapping(value = "/students/{id}", method = RequestMethod.DELETE)
+  ResponseDto deleteStudent(@PathVariable Long id) {
+    log.trace("deleteStudent call - params = id:{}", id);
+    try {
+      if (studentService.deleteStudent(id)) {
+        return new ResponseDto(200);
+      } else {
+        return new ResponseDto(404);
+      }
+    } catch (Exception e) {
+      return new ResponseDto(404);
+    }
   }
 
   @RequestMapping(value = "/students/page/{pageNumber}/{perPage}", method = RequestMethod.GET)
@@ -53,12 +71,18 @@ public class StudentController {
   ResponseDto saveStudent(@RequestBody StudentDto studentDto) {
     log.trace("saveStudent call - params = new Student:{}", studentDto);
     try {
-      if (studentService.saveStudent(studentConverter.convertDtoToModel(studentDto))) {
+//      System.out.println(studentConverter.convertDtoToModel(studentDto).toString());
+      Student student = studentConverter.convertDtoToModel(studentDto);
+      if (studentService.saveStudent(student)) {
+
         return new ResponseDto(200);
       } else {
+        System.out.println("E PE ELSE");
         return new ResponseDto(404);
       }
     } catch (Exception e) {
+      System.err.println(e.getStackTrace());
+      System.out.println("E PE CATCH");
       return new ResponseDto(404);
     }
   }

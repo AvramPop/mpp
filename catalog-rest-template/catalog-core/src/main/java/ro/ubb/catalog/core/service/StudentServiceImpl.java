@@ -55,9 +55,13 @@ public class StudentServiceImpl implements StudentService {
   public boolean saveStudent(Student student) {
     log.trace("saveStudent --- method entered");
     validator.validate(student);
+    System.out.println("a trecut de valid");
 
     if (studentRepository.existsById(student.getId())) return false;
+    System.out.println("a trecut de uniq");
     studentRepository.save(student);
+    System.out.println("a trecut de save");
+
     return true;
   }
 
