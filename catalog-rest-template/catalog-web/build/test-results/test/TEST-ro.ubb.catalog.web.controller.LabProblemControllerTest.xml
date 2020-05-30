@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ro.ubb.catalog.web.controller.LabProblemControllerTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2020-05-29T19:47:20" hostname="dani" time="7.56">
+  <properties/>
+  <testcase name="createLabProblem" classname="ro.ubb.catalog.web.controller.LabProblemControllerTest" time="6.688"/>
+  <testcase name="getLabProblems" classname="ro.ubb.catalog.web.controller.LabProblemControllerTest" time="0.669"/>
+  <testcase name="deleteLabProblem" classname="ro.ubb.catalog.web.controller.LabProblemControllerTest" time="0.124"/>
+  <testcase name="updateLabProblem" classname="ro.ubb.catalog.web.controller.LabProblemControllerTest" time="0.066"/>
+  <system-out><![CDATA[{"id":1,"problemNumber":1,"description":"sn1"}
+2020-05-29T22:47:27,054 TRACE [Test worker]: LabProblemController                 - saveLabProblem call - params = LabProblemDto:LabProblemDto(super=BaseDto(id=1), problemNumber=1, description=sn1) 
+2020-05-29T22:47:28,008 TRACE [Test worker]: LabProblemController                 - getLabProblems call - params 
+2020-05-29T22:47:28,431 TRACE [Test worker]: LabProblemController                 - deleteLabProblem call - params = id:1 
+{"id":1,"problemNumber":1,"description":"sn1"}
+2020-05-29T22:47:28,496 TRACE [Test worker]: LabProblemController                 - updateLabProblem call - params = labProblemDto:LabProblemDto(super=BaseDto(id=1), problemNumber=1, description=sn1) 
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

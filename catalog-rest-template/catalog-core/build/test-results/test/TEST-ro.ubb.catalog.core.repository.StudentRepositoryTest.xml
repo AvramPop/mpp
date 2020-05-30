@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ro.ubb.catalog.core.repository.StudentRepositoryTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-05-29T16:46:41" hostname="dani" time="0.568">
+  <properties/>
+  <testcase name="createStudent" classname="ro.ubb.catalog.core.repository.StudentRepositoryTest" time="0.568"/>
+  <system-out><![CDATA[Hibernate: create table Assignment (id bigint not null, grade integer, labProblemId bigint, studentId bigint, primary key (id))
+Hibernate: create table LabProblem (id bigint not null, description varchar(255), problemNumber integer not null, primary key (id))
+Hibernate: create table Student (id bigint not null, groupNumber integer, name varchar(255), serialNumber varchar(255), primary key (id))
+Hibernate: select student0_.id as id1_2_0_, student0_.groupNumber as groupNum2_2_0_, student0_.name as name3_2_0_, student0_.serialNumber as serialNu4_2_0_ from Student student0_ where student0_.id=?
+Hibernate: insert into Student (groupNumber, name, serialNumber, id) values (?, ?, ?, ?)
+Hibernate: select student0_.id as id1_2_, student0_.groupNumber as groupNum2_2_, student0_.name as name3_2_, student0_.serialNumber as serialNu4_2_ from Student student0_
+]]></system-out>
+  <system-err><![CDATA[ERROR StatusLogger No log4j2 configuration file found. Using default configuration: logging only errors to the console. Set system property 'log4j2.debug' to show Log4j2 internal initialization logging.
+]]></system-err>
+</testsuite>

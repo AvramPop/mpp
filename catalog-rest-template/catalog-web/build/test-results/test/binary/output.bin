@@ -1,0 +1,6 @@
+/{"id":1,"problemNumber":1,"description":"sn1"}
+Ç2020-05-29T22:47:27,054 TRACE [Test worker]: LabProblemController                 - saveLabProblem call - params = LabProblemDto:LabProblemDto(super=BaseDto(id=1), problemNumber=1, description=sn1) 
+r2020-05-29T22:47:28,008 TRACE [Test worker]: LabProblemController                 - getLabProblems call - params 
+{2020-05-29T22:47:28,431 TRACE [Test worker]: LabProblemController                 - deleteLabProblem call - params = id:1 
+/{"id":1,"problemNumber":1,"description":"sn1"}
+É2020-05-29T22:47:28,496 TRACE [Test worker]: LabProblemController                 - updateLabProblem call - params = labProblemDto:LabProblemDto(super=BaseDto(id=1), problemNumber=1, description=sn1) 

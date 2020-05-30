@@ -1,0 +1,29 @@
+<div class="main-div">
+  <mat-card>
+
+    <h1 class="mat-h1">Assignments:</h1>
+
+
+
+
+    <form class="example-form" name="add-form">
+      <h2 class="mat-h2">Login</h2>
+      <mat-form-field class="example-full-width">
+        <mat-label>Id</mat-label>
+        <input #userIn="ngModel" type="text" matInput id="login" [(ngModel)]="name" name="login-in" required>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Student Id</mat-label>
+        <input #passIn="ngModel" type="password" matInput id="password-in" [(ngModel)]="password" name="password" required>
+      </mat-form-field>
+
+      <button (click)="login()" color="primary" class="assignment-button" mat-raised-button>
+        Add!
+      </button>
+      <mat-error *ngIf="badLogin">Invalid login!</mat-error>
+    </form>
+
+  </mat-card>
+
+</div>

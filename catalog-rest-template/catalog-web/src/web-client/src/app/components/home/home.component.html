@@ -1,0 +1,26 @@
+<div class="main-div">
+  <mat-card>
+    <button (click)="logout()" color="primary" class="assignment-button" mat-raised-button>
+      Logout!
+    </button>
+    <h1 class="mat-h1">Welcome to the Problems Assignment app!</h1>
+
+    <button (click)="redirectToStudents()" color="primary" class="redirect-button" mat-raised-button>
+      Students
+    </button> <br>
+    <button (click)="redirectToLabProblems()" color="primary" class="redirect-button" mat-raised-button>
+      Lab Problems
+    </button> <br>
+    <button *ngIf="isTeacher" (click)="redirectToAssignments()" color="primary" class="redirect-button" mat-raised-button>
+      Assignments
+    </button> <br>
+    <button (click)="redirectToStats()" color="primary" class="redirect-button" mat-raised-button>
+      Stats
+    </button>
+    <button (click)="redirectToSort()" color="primary" class="redirect-button" mat-raised-button>
+      Sort
+    </button>
+
+  </mat-card>
+
+</div>
